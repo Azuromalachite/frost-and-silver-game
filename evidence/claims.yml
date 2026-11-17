@@ -86,10 +86,12 @@ claims:
 
   - id: claim.game.gdp_rise_from_land
     statement: >
-      In the game, GDP per person rises over time mainly because of the
-      population collapse, chiefly because survivors drop chuño crews and their
-      highest fields and farm only their best land; more land per survivor adds
-      about a quarter. The colonial rules roughly break even on output.
+      In the game, GDP per person rises over time through silver and through the
+      population collapse, and which is the main cause depends on the
+      decomposition: without silver it barely rises, without the collapse it
+      still rises. The collapse works mostly through the board's crew trim, which
+      leaves survivors farming their best land; more land per survivor adds about
+      a quarter of that.
     layer: game_result
     status: labelled
     sources: [maddison2003]
@@ -97,7 +99,7 @@ claims:
       - path: frost-and-silver.html
         anchor: The rest came mostly from the population collapse
       - path: docs/history-and-evidence.md
-        anchor: In the game, GDP per person rises mainly because survivors farm only their best land
+        anchor: In the game, GDP per person rises through silver and through the population collapse
     notes: >
       Measured 2026-11-18 (docs/sensitivity-2026-11-18.md), default plan, seeds
       1-80: of about 6.5 index points not caused by the rules, about 3.0 come
@@ -105,8 +107,30 @@ claims:
       zones, 1.5 from the land exponent (0 at exponent 1). The first two follow
       from clampAlloc's trim order, a play rule, not a historical claim. Until
       2026-11-18 this claim said "more land per survivor", which the sweep
-      showed to be about a quarter of the effect. Depends on
-      claim.game.gdp_formula and claim.game.reduccion_sizes.
+      showed to be about a quarter of the effect. A combined review of 1edc416
+      showed the remaining single-cause wording was decomposition-dependent:
+      without silver the rise is +0.19 points, without the pre-1573 collapse
+      +5.14 (reproduced 2026-11-18). Depends on claim.game.gdp_formula,
+      claim.game.reduccion_sizes and claim.game.crew_trim_order.
+
+  - id: claim.game.crew_trim_order
+    statement: >
+      When crews are lost, the board drops wage crews first, then chuño crews, then
+      the highest fields. It is a play rule, not a historical finding, and it
+      decides much of the GDP rise and the GDP grade.
+    layer: game_assumption
+    status: labelled
+    sources: [maddison2003]
+    code: ["const order = [() => S.wage > 0 && S.wage--, () => S.chuno > 0 && S.chuno--,"]
+    pages:
+      - path: frost-and-silver.html
+        anchor: This order is a play rule, not a historical finding
+    notes: >
+      Measured 2026-11-18, default plan, seeds 1-80: with chuño dropped last
+      instead of first, the colonial rules' GDP effect grades "rise" in 80 of 80
+      seeds instead of "stay" in 74, and the over-time GDP rise falls from +8.1 to
+      +2.3 points. The source listed is the GDP estimate the game is tuned to; no
+      source sets the order.
 
   - id: claim.game.grading_weather
     statement: >

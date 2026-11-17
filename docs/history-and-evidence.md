@@ -15,10 +15,11 @@ still match the game.
   the size.** The course figure of 1,700 falling to 1,200 kcal a day has no
   source we could find. The game keeps it only as a labelled teaching figure.
 - **The game's central claim is a model result, not a finding.** In the game,
-  GDP per person rises mainly because of the population collapse, while the
-  colonial rules take the food. Most of that rise comes from survivors
-  dropping chuño work and their highest fields to farm their best land; only
-  about a quarter is more land per survivor (see the sensitivity sweep). That is a defensible
+  GDP per person rises for two reasons, silver and the population collapse,
+  and which counts as the main one depends on how you decompose it, while the
+  colonial rules take the food. The collapse works mostly through the board
+  dropping chuño work and the highest fields, so survivors farm their best
+  land (see the sensitivity sweep). That is a defensible
   reading of the estimates, but it depends on numbers the game chose.
 
 ## The game's key message
@@ -104,7 +105,7 @@ years in a row; harvests 4–6 are snapshots decades apart.
 | GDP per person: 416 in 1500, 438 in 1600 (1990 international dollars) | estimate | Maddison (2003), checked: Latin America as a whole. Not Andes-specific. Newer Maddison Project figures use different dollars and must not be mixed in (Bolt & van Zanden 2025, from notes). |
 | Total output and population fell while output per person rose | estimate | Maddison (2003). |
 | Colonial Peru and Mexico saw economic growth from about 1550, driven partly by mining | interpretation | Arroyo Abad & van Zanden (2016), cited from a literature review, not re-read. |
-| In the game, GDP per person rises mainly because survivors farm only their best land; the colonial rules roughly break even on output | game result | At the game's settings, of about 6.5 GDP points not caused by the rules: about 3 from chuño crews moved to the fields, 2 from retreating to the best zones, 1.5 from more land per survivor ([sensitivity sweep](sensitivity-2026-11-18.md)). The first two follow from how the board trims a plan when crews are lost, a play rule. Depends on the assumed value of silver and the resettlement loss; the end screen's sliders, which model only the land channel, show where it reverses. |
+| In the game, GDP per person rises through silver and through the population collapse; which is the main cause depends on the decomposition | game result | Default plan, seeds 1–80: silver adds about 8 index points and the mita's lost field labour takes about 6.5 back; the collapse adds about 6.5, of which about 3.0 is chuño crews moved to the fields, 2.0 retreating to the best zones and 1.5 more land per survivor ([sensitivity sweep](sensitivity-2026-11-18.md)). Without silver GDP barely rises (+0.2); without the collapse it still rises (+5.1). Chuño work counts for nothing in GDP. The board's crew-drop order is a play rule (claim.game.crew_trim_order). |
 | Food per person fell from about 1,700 to about 1,200 kcal a day | unsourced | The original game's figure. Not found in any source. Shown in the game as a dotted, labelled line. |
 | Households can go short even when a region produces a surplus | documented | Wernke & Whitmore (2009), checked from the abstract. The game's "households below 1,700 kcal" share comes from an assumed 30% spread, not from their figures. |
 | Adults use about 2,190 (women) and 2,720 (men) kcal a day | documented, modern | Pontzer et al. (2016), Table 1, read. A modern multi-country sample that excluded manual labourers; used only for scale. |
