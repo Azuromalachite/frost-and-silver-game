@@ -486,7 +486,7 @@ function rollYear(){
   const rnd = mulberry32(S.seed + S.year * 7919);
   const r = rnd();
   const line = r < .15 ? 4 : r < .45 ? 3 : r < .80 ? 2 : r < .97 ? 1 : 0; // zones with index >= line freeze
-  const drought = rnd() < .5;
+  const drought = rnd() < .2;
   const hazy = drought ? rnd() < .75 : rnd() < .25;
   // drawn last, so the frosts, droughts and forecasts of every seed are unchanged
   const w = rnd(), winter = w < .25 ? 'hard' : w < .75 ? 'normal' : 'mild';
