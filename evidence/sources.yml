@@ -256,6 +256,35 @@ sources:
     locator: Table 1, TEE for Homo
     notes: The human sample excluded people employed in manual labour.
 
+  - key: ascher1981
+    title: "Code of the Quipu: A Study in Media, Mathematics, and Culture"
+    author: Marcia Ascher; Robert Ascher
+    date: 1981
+    access: not_read
+    by: null
+    when: null
+    url: null
+    notes: Standard description of the decimal knot convention.
+
+  - key: urton2003
+    title: "Signs of the Inka Khipu: Binary Coding in the Andean Knotted-String Records"
+    author: Gary Urton
+    date: 2003
+    access: not_read
+    by: null
+    when: null
+    url: null
+
+  - key: flynn2015
+    title: "Silver in a Global Context, 1400–1800"
+    author: Dennis O. Flynn
+    date: 2015
+    access: from_notes
+    by: literature review supplied by the user
+    when: 2026-11-17
+    url: null
+    locator: The Cambridge World History, vol. 6
+
   - key: thitibordin_game
     title: "Week 2: Tahuantinsuyu Harvest & Frost Defense (Interactive Game), and its author's description"
     author: Amnuayvit Thitibordin

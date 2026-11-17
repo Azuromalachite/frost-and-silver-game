@@ -111,6 +111,74 @@ claims:
       - path: frost-and-silver.html
         anchor: Teaching assumptions, tuned so the Inca years start near Maddison's 416
 
+  - id: claim.game.key_message
+    statement: >
+      In the game, GDP per person rises from the Inca harvests to the colonial
+      harvests while food per person falls: growth without a better life.
+    layer: game_result
+    status: labelled
+    sources: [maddison2003, thitibordin_game]
+    pages:
+      - path: frost-and-silver.html
+        anchor: GDP grew. Did life get better?
+      - path: docs/history-and-evidence.md
+        anchor: GDP per person grew in sixteenth-century Latin America, but life did not
+    notes: >
+      The original author's message. The GDP half rests on claim.gdp.maddison_1500_1600;
+      the food half on claim.food.kcal_1700_to_1200, which is unsourced.
+
+  - id: claim.colonial.silver_to_spain_china
+    statement: Potosí silver went to Spain and, through trade, as far as China.
+    layer: documented
+    status: unverified
+    sources: [flynn2015]
+    pages:
+      - path: frost-and-silver.html
+        anchor: GDP counts silver sent to Spain and China as output.
+      - path: docs/history-and-evidence.md
+        anchor: Potosí silver went to Spain and, through trade, as far as China
+
+  # --- records ------------------------------------------------------------------
+  - id: claim.quipu.decimal_knots
+    statement: >
+      Quipus recorded numbers in base ten: clusters of single knots for tens,
+      hundreds and thousands, a long knot for the units, a figure-eight knot for
+      one, and an empty place for zero.
+    layer: documented
+    status: unverified
+    sources: [ascher1981, urton2003]
+    pages:
+      - path: frost-and-silver.html
+        anchor: a figure-eight knot for 1
+      - path: docs/history-and-evidence.md
+        anchor: Quipus recorded numbers in base ten on pendant cords
+
+  - id: claim.quipu.colonial_counts
+    statement: >
+      Early Spanish officials relied on quipu accounts for tribute and census
+      counts.
+    layer: documented
+    status: unverified
+    sources: [urton2003]
+    pages:
+      - path: frost-and-silver.html
+        anchor: early Spanish officials relied on them for tribute and census counts
+      - path: docs/history-and-evidence.md
+        anchor: Early Spanish officials relied on quipu accounts
+
+  - id: claim.game.quipu_report
+    statement: >
+      Each harvest report is drawn as the community's quipu, recording food grown,
+      feasts or tribute, food available, people and days of stores.
+    layer: game_assumption
+    status: labelled
+    sources: [ascher1981]
+    code: ["function quipuSVG(cords)"]
+    pages:
+      - path: frost-and-silver.html
+        anchor: Your cord keeper's quipu for this harvest.
+    notes: Which figures a cord keeper recorded is not known; GDP is left off on purpose.
+
   # --- food -------------------------------------------------------------------
   - id: claim.food.kcal_1700_to_1200
     statement: >

@@ -18,6 +18,14 @@ version at commit `3ac65ac`.
   per survivor, while the colonial rules take the food. That is a defensible
   reading of the estimates, but it depends on numbers the game chose.
 
+## The game's key message
+
+**GDP per person grew in sixteenth-century Latin America, but life did not get
+better, because food per person fell.** This is the original author's framing.
+The first half rests on Maddison's estimates; the second half is plausible but
+its size is unsourced (see the food claims below). The game shows both numbers
+side by side so students can see growth and welfare come apart.
+
 ## How to read this document
 
 Each claim is labelled by the kind of support it has. These are kept apart on
@@ -94,6 +102,20 @@ years in a row; harvests 4–6 are snapshots decades apart.
 | Adults use about 2,190 (women) and 2,720 (men) kcal a day | documented, modern | Pontzer et al. (2016), Table 1, read. A modern multi-country sample that excluded manual labourers; used only for scale. |
 | Skeletons and isotopes show diet changed after contact | documented, from notes | Klaus & Tam (2010); Tessone et al. (2025). Neither gives kcal a day. |
 
+### Records: the quipu
+
+| claim in the game | label | source and limits |
+| --- | --- | --- |
+| Quipus recorded numbers in base ten on pendant cords: clusters of single knots for tens, hundreds and thousands, a long knot for the units, a figure-eight knot for one, and a gap for zero | documented | Ascher & Ascher (1981); Urton (2003). Not re-read here. The game's quipu follows this convention but leaves out colour coding, subsidiary cords and how cords were grouped. |
+| Early Spanish officials relied on quipu accounts for tribute and census counts | documented | Urton (2003), not re-read here. |
+| Each harvest report is drawn as the community's quipu | game assumption | Which figures a community's cord keeper actually recorded is not known; the game picks the ones on its ledger. GDP is not put on the quipu, because no one at the time counted it. |
+
+### Silver
+
+| claim in the game | label | source and limits |
+| --- | --- | --- |
+| Potosí silver went to Spain and, through trade, as far as China | documented | Flynn (2015), cited from a literature review. |
+
 ## What the game leaves out
 
 - Markets, trade and money inside the community.
@@ -144,6 +166,9 @@ years in a row; harvests 4–6 are snapshots decades apart.
 | Klaus, H. D., & Tam, M. E. (2010). Oral health and the postcontact adaptive transition. *American Journal of Physical Anthropology*, 141(4), 594–609. | diet change | from notes |
 | Tessone, A., Barberena, R., & Knudson, K. J. (2025). Isotopes and bioarchaeology in the Andes. *Archaeometry*. https://doi.org/10.1111/arcm.12989 | isotopes | from notes |
 | Covey, R. A., & Quave, K. E. (2017). The economic transformation of the Inca heartland (Cuzco, Peru) in the late sixteenth century. *Comparative Studies in Society and History*, 59(2), 277–309. | colonial markets | no |
+| Ascher, M., & Ascher, R. (1981). *Code of the Quipu: A Study in Media, Mathematics, and Culture*. University of Michigan Press. | quipu number system | no |
+| Urton, G. (2003). *Signs of the Inka Khipu: Binary Coding in the Andean Knotted-String Records*. University of Texas Press. | quipus and colonial counts | no |
+| Flynn, D. O. (2015). Silver in a global context, 1400–1800. In *The Cambridge World History*, vol. 6. | silver flows | from notes |
 | Pontzer, H., et al. (2016). Metabolic acceleration and the evolution of human brain size and life history. *Nature*, 533, 390–392. https://doi.org/10.1038/nature17654 | energy use for scale | read |
 
 "From notes" means the source was cited from a reference collection's reading

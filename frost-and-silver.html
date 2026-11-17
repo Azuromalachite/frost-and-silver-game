@@ -123,6 +123,11 @@ canvas{display:block;width:100%;aspect-ratio:16/7.2;max-width:100%}
 .tl b{position:absolute;top:13px;transform:translateX(-50%);font:500 10px var(--f-mono);color:var(--muted);white-space:nowrap}
 .tl b.gap{color:var(--accent);font-weight:700}
 .zone .state{font-size:12px;font-family:var(--f-mono);color:var(--muted)}
+.quipu{margin:4px 0 0;display:grid;gap:4px;justify-items:start}
+.quipu svg{width:100%;max-width:380px;height:auto;display:block}
+.quipu figcaption{font-size:13px;color:var(--muted);max-width:60ch}
+.keymsg{border-left:4px solid var(--accent);padding:8px 0 8px 14px;max-width:70ch}
+.keymsg p{margin:4px 0 0}
 .rev{border:1px solid var(--line);border-radius:6px;padding:14px;background:var(--bg)}
 .sliders{display:grid;grid-template-columns:minmax(0,1fr) minmax(140px,220px);gap:8px 16px;align-items:center;max-width:720px}
 .sliders label{font-size:14px}
@@ -221,7 +226,7 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
 <div class="wrap">
   <header class="top">
     <div class="mark">Frost <span class="amp">&amp;</span> Silver <span class="ag">1500 → 1600</span></div>
-    <div class="sub">Feed an Andean community through frost, drought and the Potosí silver mita. Six harvests across a century, one question: can output rise while people go hungry?</div>
+    <div class="sub">In sixteenth-century Latin America, GDP per person grew. Life did not get better: people had less to eat. Play six harvests across the century and see how both can be true.</div>
   </header>
 
   <section class="stage" id="stage" aria-label="The mountainside" hidden>
@@ -251,6 +256,10 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
 
   <section class="panel intro" id="p-intro">
     <span class="eyebrow">Before you start</span>
+    <div class="keymsg">
+      <span class="eyebrow">The question</span>
+      <p><b>GDP grew. Did life get better?</b> Economic historians estimate that output per person in Latin America rose a little across the 1500s, even as the population collapsed. GDP counts everything produced, including silver shipped across the world. It does not show who ate. Through six harvests you will watch two numbers side by side: <b>GDP per person</b> and <b>food per person</b>.</p>
+    </div>
     <h2 style="font-size:26px;font-stretch:112%;text-transform:uppercase">You run an ayllu of about 1,000 people</h2>
     <p>Your fields climb the mountain from a warm maize valley at 1,800 m to the frozen puna at 4,300 m. Higher fields freeze more often, so spreading crews across the zones is your insurance. Each year you send about 14 work crews (fewer if people die) to plant, build terraces, or freeze-dry potatoes into chuño for your community stores.</p>
     <p>You play six harvests, each one farming year. Harvests 1–3 are three years in a row under the Inca, around 1500. Harvests 4–6 are sample years from c. 1575, c. 1592 and c. 1600, after the Spanish colonial mita began sending one man in seven from the communities of the mita region (yours is one) to the silver mines at Potosí. Between them, decades pass. Your goal is to feed everyone 1,700 kcal a day.</p>
@@ -313,7 +322,7 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
   </details>
 
   <footer class="foot">
-    <p>Adapted from <a href="https://superlative-sprinkles-2653a1.netlify.app/" target="_blank" rel="noopener">“Week 2: Tahuantinsuyu Harvest &amp; Frost Defense”</a> by Amnuayvit Thitibordin, licensed <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a>. Changes: rebuilt as a turn-based game with a colonial second act, a new model and a new visual design. This adaptation is also licensed CC BY-NC-SA 4.0. Adapted by Thanakrit Wongsatit.</p>
+    <p>Adapted from <a href="https://superlative-sprinkles-2653a1.netlify.app/" target="_blank" rel="noopener">“Week 2: Tahuantinsuyu Harvest &amp; Frost Defense”</a> by Amnuayvit Thitibordin, licensed <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a>. Changes: rebuilt as a turn-based game with a colonial second act, a new model and a new visual design. This adaptation is also licensed CC BY-NC-SA 4.0. Adapted by Thanakrit Wongsatit. The original author built the game around one message: GDP per person grew in sixteenth-century Latin America, but life did not get better, because food per person fell. He drew on Maddison's historical statistics and his familiarity with global economic history, and also used the game to teach the quipu.</p>
     <p>The game is a model, not a reconstruction. Anchors: GDP per person of 416 in 1500 and 438 in 1600 are Maddison's conjectural estimates for Latin America as a whole (1990 international dollars; not Andes-specific), and the game's GDP formula was tuned to start near 416. The fall from about 1,700 to about 1,200 kcal is the original game's teaching figure and has no source we could confirm. Here “kcal per person per day” means average food available across all ages, capped at 1,900. The household share assumes household food varies 30% around the average; it is a guess that illustrates the point Wernke &amp; Whitmore (2009, <i>Human Ecology</i> 37:421) make, that households can go short while a region has a surplus. Every other number is the game's own. For scale, adults in a modern multi-country sample that excluded manual labourers used about 2,190 (women) and 2,720 (men) kcal a day (Pontzer et al. 2016, <i>Nature</i> 533:390, Table 1); a community average that includes children is lower.</p>
   </footer>
 </div>
@@ -336,7 +345,8 @@ const TERMS = [
   ['Yunga, Quechua, Suni, Puna', 'Quechua-derived names for the altitude zones, from warm valley to cold high grassland, used by the geographer Javier Pulgar Vidal in 1941. The puna, above about 4,000 m, is too cold for most crops but good for herds.'],
   ['Chuño', 'Potatoes frozen at night and dried by day until they keep for years. Food for bad harvests.'],
   ['Qollqa', 'A state storehouse. The Inca built thousands of them along roads and above towns, filled from the state fields. Households and communities kept their own stores too; in the game, your chuño goes into those community stores (Morris 1986).'],
-  ['Andenes', 'Stone terraces. They make flat fields on steep slopes, hold water and soil, and give some protection from frost.'],
+  ['Quipu (khipu)', 'Knotted cords used to keep accounts: harvests, stores, labour owed and census counts. Numbers are knotted in tens, with the units at the bottom of each cord; colours and positions said what was being counted. Trained cord keepers (khipukamayuq) made and read them, and early Spanish officials relied on them for tribute and census counts.'],
+  ['Andenes','Stone terraces. They make flat fields on steep slopes, hold water and soil, and give some protection from frost.'],
   ['Waru waru', 'Raised fields between water channels. The water soaks up heat by day and gives it back at night, softening frost; how well it works depends on the field\'s shape and water (Kolata & Ortloff 1989).'],
   ['Tribute', 'A tax the colonial government collected from Indigenous communities, in goods, silver or labour.'],
   ['kcal per person per day', 'Food energy available on average to each person, children included. Adults working hard need more.']
@@ -355,7 +365,8 @@ const ICONS = {
   form:'<path d="M5.25 2 L9 2 L12.75 5.75 L12.75 12 C12.75 13.105 11.855 14 10.75 14 L5.25 14 C4.145 14 3.25 13.105 3.25 12 L3.25 4 C3.25 2.895 4.145 2 5.25 2 Z"/><path d="M9 2 L9 4.75 C9 5.302 9.448 5.75 10 5.75 L12.75 5.75"/><line x1="5.5" y1="5.25" x2="7" y2="5.25"/><circle cx="6.25" cy="8.5" r="0.66" fill="currentColor" stroke="none"/><circle cx="9.75" cy="12" r="0.66" fill="currentColor" stroke="none"/><line x1="10.25" y1="8" x2="5.75" y2="12.5"/>',
   flame:'<path d="M8 14 C5.25 14 3.5 12 3.5 9.5 C3.5 6.5 6.25 5 6.5 2 C8.75 3.25 10 5.25 10 7.25 C10.75 6.75 11.25 6 11.25 5.25 C12.25 6.25 12.5 8 12.5 9.5 C12.5 12 10.75 14 8 14 Z"/><path d="M8 11.5 C7 11.5 6.5 10.85 6.5 10.1 C6.5 9.25 7.35 8.75 8 7.75 C8.65 8.75 9.5 9.25 9.5 10.1 C9.5 10.85 9 11.5 8 11.5 Z"/>'
 };
-ICONS.leaf = '<path d="M3.5 12.5 C3 6.5 6.75 2.75 13.25 2.75 C13.25 9.25 9.5 13 3.5 12.5 Z"/><line x1="2.25" y1="13.75" x2="3.5" y2="12.5"/><line x1="3.5" y1="12.5" x2="8.75" y2="7.25"/>';
+ICONS.quipu = '<path d="M2 3.5 Q8 2 14 3.5"/><line x1="4" y1="3.2" x2="4" y2="13.5"/><line x1="8" y1="2.8" x2="8" y2="12"/><line x1="12" y1="3.2" x2="12" y2="14"/><circle cx="4" cy="6.5" r="0.9" fill="currentColor" stroke="none"/><circle cx="8" cy="6" r="0.9" fill="currentColor" stroke="none"/><circle cx="8" cy="8.2" r="0.9" fill="currentColor" stroke="none"/><rect x="11.1" y="8.5" width="1.8" height="3.5" rx="0.9" fill="currentColor" stroke="none"/><rect x="3.1" y="9.5" width="1.8" height="2.6" rx="0.9" fill="currentColor" stroke="none"/>';
+ICONS.leaf ='<path d="M3.5 12.5 C3 6.5 6.75 2.75 13.25 2.75 C13.25 9.25 9.5 13 3.5 12.5 Z"/><line x1="2.25" y1="13.75" x2="3.5" y2="12.5"/><line x1="3.5" y1="12.5" x2="8.75" y2="7.25"/>';
 ICONS.corn ='<path d="M8 1.75 C9.75 1.75 10.5 4 10.5 6.5 L10.5 8.5 L8 10.5 L5.5 8.5 L5.5 6.5 C5.5 4 6.25 1.75 8 1.75 Z"/><line x1="7.125" y1="5" x2="8.875" y2="5"/><path d="M8 14.25 C4.75 13.5 3 10.5 3.25 6.5 C4.25 8 5.5 9 8 10.5 C10.5 9 11.75 8 12.75 6.5 C13 10.5 11.25 13.5 8 14.25 Z"/>';
 ICONS.snow = '<line x1="8" y1="1.75" x2="8" y2="14.25"/><line x1="2.6" y1="4.875" x2="13.4" y2="11.125"/><line x1="2.6" y1="11.125" x2="13.4" y2="4.875"/>';
 ICONS.llama = '<path d="M4.25 11.25 V5.75 H2.75 C2 5.75 1.75 5.25 1.75 4.75 C1.75 3.75 2.5 3.25 3.5 3.25 H4.5 L4.75 1.5 L6.25 3 C6.5 3.5 6.75 4 6.75 5 V7.75 H12.25 C13.25 7.75 13.75 8.5 13.75 9.5 V11.25 Z"/><line x1="5.25" y1="11.25" x2="5.25" y2="14"/><line x1="12.75" y1="11.25" x2="12.75" y2="14"/>';
@@ -377,7 +388,7 @@ function vertHTML(){
 }
 // term → [icon, colour token]: people & state in red/gold, land in zone colours, food in gold/green
 const TERM_ICON = {'Ayllu':['community','--z1'],'Inca':['sun','--gold'],'Mita':['pickaxe','--accent'],'Potosí':['coins','--accent'],
-  'Yunga, Quechua, Suni, Puna':['mountains','--z2'],'Chuño':['potato','--z1'],'Qollqa':['store','--gold'],'Andenes':['steps','--z0'],
+  'Yunga, Quechua, Suni, Puna':['mountains','--z2'],'Chuño':['potato','--z1'],'Qollqa':['store','--gold'],'Quipu (khipu)':['quipu','--z2'],'Andenes':['steps','--z0'],
   'Waru waru':['waves','--ice'],'Tribute':['form','--accent'],'kcal per person per day':['flame','--good']};
 const glossHTML = () => TERMS.map(([t, d]) => { const [ic, c] = TERM_ICON[t];
   return `<li><span class="gico" style="--c:var(${c})" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">${ICONS[ic]}</svg></span><div><b>${t}</b><p>${d}</p></div></li>`; }).join('');
@@ -678,6 +689,37 @@ $('endyear').addEventListener('click', () => {
   setTimeout(() => { S.anim.done = true; showSummary(rec); }, S.anim.dur);
 });
 
+/* Quipu (khipu): numbers knotted in base ten on pendant cords hanging from a main cord. Highest place nearest
+   the main cord; tens, hundreds and thousands as clusters of single knots; units as one long knot with as many
+   turns as the digit, except 1, which is a figure-eight knot; zero is an empty place. */
+function quipuSVG(cords){
+  // levels 50 apart, knots 4.4 apart: a full cluster of 9 spans 35, so each place keeps a visible gap
+  const W = 66, top = 16, levels = [42, 92, 142, 196], H = 262, width = cords.length * W + 16;
+  let s = `<svg viewBox="0 0 ${width} ${H}" role="img" aria-label="Quipu: ${cords.map(c => `${c.label} ${fmt(c.value)}`).join(', ')}">`;
+  s += `<path d="M4 ${top} Q ${width/2} ${top-8} ${width-4} ${top}" style="fill:none;stroke:var(--rock);stroke-width:4;stroke-linecap:round"/>`;
+  cords.forEach((c, i) => {
+    const x = 8 + W * (i + .5), v = Math.max(0, Math.round(c.value));
+    const digits = String(v).padStart(4, '0').slice(-4).split('').map(Number); // thousands, hundreds, tens, units
+    const col = `var(${c.c})`;
+    s += `<line x1="${x}" y1="${top}" x2="${x}" y2="${levels[3] + 26}" style="stroke:${col};stroke-width:2.5;stroke-linecap:round"/>`;
+    digits.forEach((d, p) => {
+      const y = levels[p];
+      if (!d) return;
+      if (p < 3) { // cluster of single knots
+        for (let k = 0; k < d; k++) s += `<circle cx="${x}" cy="${y - (d - 1) * 2.2 + k * 4.4}" r="2.4" style="fill:${col};stroke:var(--surface);stroke-width:.8"/>`;
+      } else if (d === 1) { // figure-eight knot
+        s += `<circle cx="${x}" cy="${y - 3}" r="3.1" style="fill:none;stroke:${col};stroke-width:2.2"/><circle cx="${x}" cy="${y + 3}" r="3.1" style="fill:none;stroke:${col};stroke-width:2.2"/>`;
+      } else { // long knot with d turns
+        const h = 6 + d * 3.4;
+        s += `<rect x="${x - 4.5}" y="${y - h/2}" width="9" height="${h}" rx="4.5" style="fill:${col}"/>`;
+        for (let k = 1; k < d; k++) s += `<line x1="${x - 4.5}" x2="${x + 4.5}" y1="${y - h/2 + k * (h / d)}" y2="${y - h/2 + k * (h / d)}" style="stroke:var(--surface);stroke-width:1"/>`;
+      }
+    });
+    s += `<text x="${x}" y="${H - 18}" text-anchor="middle" style="fill:var(--muted);font:600 10px var(--f-mono)">${fmt(v)}</text>`;
+    s += `<text x="${x}" y="${H - 5}" text-anchor="middle" style="fill:var(--ink);font:10px var(--f-body)">${c.label}</text>`;
+  });
+  return s + '</svg>';
+}
 const lineName = l => l >= 4 ? null : ZONES[l].name;
 function whyList(r){
   const out = [];
@@ -726,6 +768,16 @@ function showSummary(r){
       <tr><td>Community stores hold</td><td>${fmt(r.storeDays)} days of food</td></tr>
     </tbody></table>
     <p class="eyebrow" style="margin-top:4px">All food figures are kcal per person per day</p>
+    <figure class="quipu">
+      ${quipuSVG([
+        {label: 'Grown', value: r.H + r.lost, c: '--z1'},
+        r.act === 1 ? {label: 'Feasts', value: r.ret, c: '--gold'} : {label: 'Tribute', value: r.tribute, c: '--accent'},
+        {label: 'Food', value: r.intake, c: '--good'},
+        {label: 'People', value: r.pop, c: '--ink'},
+        {label: 'Stores (days)', value: r.storeDays, c: '--ice'}
+      ])}
+      <figcaption>Your cord keeper's quipu for this harvest. Read each cord from the top: a cluster of single knots for the thousands, hundreds and tens, then a long knot for the units, with one turn per unit (a figure-eight knot for 1). A gap means zero.</figcaption>
+    </figure>
     <ul class="why">${whyList(r).map(s => `<li>${s}</li>`).join('')}</ul>`);
   $('next').onclick = () => { closeModal(); if (r.year === 3) showTransition(); else if (r.year === 6) showEnd(); else nextYear(); };
 }
@@ -848,7 +900,8 @@ function showEnd(){
   const p = $('p-end'); p.hidden = false;
   p.innerHTML = `
     <span class="eyebrow">Results</span>
-    <h2 style="font-size:28px;font-stretch:112%;text-transform:uppercase">${dg === 'rise' && dk === 'fall' ? 'Output rose. People ate less.' : dk !== 'fall' ? 'You kept people fed' : 'Six harvests on the mountain'}</h2>
+    <h2 style="font-size:28px;font-stretch:112%;text-transform:uppercase">${dg === 'rise' && dk === 'fall' ? 'GDP grew. Life did not get better.' : dk !== 'fall' ? 'You kept people fed' : 'Six harvests on the mountain'}</h2>
+    <p class="keymsg" style="margin:0"><b>GDP per person ${g2 >= g1 ? 'rose' : 'fell'} ${Math.abs(Math.round((g2/g1 - 1)*100))}%; food per person ${k2 >= k1 ? 'rose' : 'fell'} ${Math.abs(Math.round((k2/k1 - 1)*100))}%.</b> GDP counts silver sent to Spain and China as output. It says nothing about who ate. That gap between growth and welfare is the point of this game.</p>
     <div class="cmp">
       <div><span>Inca years, food available per person</span><b>${fmt(k1)} kcal</b></div>
       <div><span>Colonial years, food available per person</span><b class="${k2<k1-50?'neg':''}">${fmt(k2)} kcal</b></div>

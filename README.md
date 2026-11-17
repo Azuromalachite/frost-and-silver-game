@@ -2,7 +2,9 @@
 
 A browser game for a world-history class. You run an Andean ayllu (a farming community of about 1,000 people) across six harvests, each one farming year. Harvests 1–3 are consecutive years under the Inca, around 1500. Harvests 4–6 are sample years (c. 1575, c. 1592, c. 1600) after the 1573 colonial mita began sending one man in seven from the mita region to the silver mines at Potosí. Play by hand (Manual) or let the harvests run (Auto, at 1×, 2× or 4×).
 
-The question the game puts to students: **can output per person rise while people go hungry?**
+**The key message: GDP per person grew in sixteenth-century Latin America, but life did not get better, because food per person fell.** The game lets students watch both numbers side by side and see how growth and welfare can come apart.
+
+That message comes from the original game's author, Amnuayvit Thitibordin, who built it on Maddison's historical statistics and his familiarity with global economic history, and also used it to teach the quipu, the Andean knotted-cord records. This adaptation keeps both: each harvest report is drawn as a quipu.
 
 ## Play
 
