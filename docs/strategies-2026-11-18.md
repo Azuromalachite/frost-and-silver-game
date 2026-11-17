@@ -1,5 +1,11 @@
 # Strategy sweep, 18 November 2026
 
+> **Update, later on 18 November 2026.** The game now asks the player to re-plan
+> when crews fall, instead of trimming silently. The strategies below set their
+> own plans, so their results are unchanged; the "default plan" row now means
+> choosing "Best land first" at each re-plan, which gives colonial food of about
+> 1,385 kcal (1,386 before).
+
 **Question.** What is the best way to play, how much better is it than the
 default plan, and do the game's numbers reward what its text teaches?
 

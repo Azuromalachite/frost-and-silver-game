@@ -184,6 +184,9 @@ canvas{display:block;width:100%;aspect-ratio:16/7.2;max-width:100%}
 .notes summary{cursor:pointer;font-weight:700}
 .notes h4{margin:12px 0 4px;font-family:var(--f-display);text-transform:uppercase;font-size:13px;letter-spacing:.03em}
 .notes ul{margin:0;padding-left:18px;display:grid;gap:3px;max-width:75ch}
+.replan{margin:0;padding:8px 10px;border-left:3px solid var(--accent);background:color-mix(in srgb,var(--accent) 7%,transparent);font-size:14px;border-radius:0 4px 4px 0;display:grid;gap:6px}
+.replan .rpbtns{display:inline-flex;flex-wrap:wrap;gap:6px}
+.replan .rphint{font-size:12px;color:var(--muted)}
 .notice{margin:0;padding:8px 12px;border-left:3px solid var(--gold);background:color-mix(in srgb,var(--gold) 10%,transparent);font-size:14px;border-radius:0 4px 4px 0}
 /* vertical archipelago: four steps rising left to right */
 .vert{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;align-items:end;margin-top:4px}
@@ -280,6 +283,7 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
       <div class="hud" id="hud"></div>
     </div>
     <div class="dock" id="dock" hidden>
+      <p class="replan" id="replan" role="status" hidden></p>
       <div class="dzones" id="dzones"></div>
       <div class="drow">
         <div class="dxs" id="dextras"></div>
@@ -355,8 +359,8 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
       <li><b>Land per person:</b> output in a zone grows with labour to the power 0.9, so survivors of an epidemic each farm a little more land. The exponent is close to 1 because terraces need labour to keep up (Wernke 2010 describes terraces abandoned as people were lost). Teaching assumption.</li>
       <li><b>Resettlement:</b> Toledo's reducciones moved families into nucleated towns, often far from their fields (Wernke 2010). The change came gradually as distant fields and terraces were given up, and it varied from place to place, with some communities negotiating to keep their land (Hunter 2025; de la Puente Luna &amp; Perales 2026). The game lowers colonial yields by 7% at c. 1575, 12% at c. 1592 and 15% at c. 1600; the sizes are teaching assumptions.</li>
       <li><b>Population:</b> a 50% fall before 1573 and 15% more in the 1585–91 epidemics. Historians' estimates vary widely; these are round game figures.</li>
-      <li><b>Which crews are dropped first:</b> when people die and crews are lost, the board drops chuño crews first, then the highest fields. Survivors are left farming the best land, which raises output per person. This order is a play rule, not a historical finding, and it decides much of the GDP rise: with chuño dropped last instead, the colonial rules' GDP effect grades "rise" in every one of seeds 1–80 instead of "stay" in 74.</li>
-      <li><b>Zone yields:</b> the valley yields most and the puna least. With the drop order above, this sets how much output per person rises after the collapse.</li>
+      <li><b>Re-planning when crews fall:</b> at 1573 and after the 1585–91 epidemics you must re-plan fewer crews: keep your plan's shares, put every crew on the best land first, or set them yourself. The choice is yours, and it decides much of the result. With the default plan and seeds 1–80, best land first gives colonial food of about 1,385 kcal a day, and the colonial rules' GDP effect grades "stay" in 75 runs; keeping the same shares gives about 1,000 kcal and splits the grade 40 "stay", 40 "rise". Farming only the best land raises output per person but leaves no chuño crews and nothing growing up high. Before 18 November 2026 the board made this choice silently, always best land first.</li>
+      <li><b>Zone yields:</b> the valley yields most and the puna least. With the re-plan above, this sets how much output per person rises after the collapse.</li>
       <li><b>Silver versus food in GDP:</b> GDP per person = 340 + 0.045 × field output + silver. Chuño crews add nothing to GDP: preserving food is not counted as output, so moving crews from chuño to the fields raises measured GDP even though nobody eats more. A mine worker's silver counts somewhat more than a farm worker's output. Teaching assumptions, tuned so the Inca years start near Maddison's 416; the "reverse" panel shows what happens if they are different.</li>
     </ul>
     <h4>Only for play (they change single years, not the lesson)</h4>
@@ -564,7 +568,7 @@ function renderPlan(){
   const free = avail - used();
   $('planh').innerHTML = 'Your plan';
   $('plansub').textContent = `${act(S.year)===1 ? 'Inca' : 'Colonial'} · ${avail} crews to assign`;
-  const eb = $('endyear'); eb.disabled = false; eb.textContent = `Bring in harvest ${S.year}`;
+  const eb = $('endyear'); eb.disabled = replanPending(); eb.textContent = replanPending() ? 'Choose a re-plan first' : `Bring in harvest ${S.year}`;
   const stepper = (attr, key, n, canDec, canInc, label) =>
     `<div class="step"><button ${attr}="${key}" data-d="-1" aria-label="One fewer crew: ${label}" ${canDec?'':'disabled'}>−</button>
       <output aria-live="polite">${n}</output>
@@ -711,6 +715,11 @@ function scheduleAuto(){
   if (S.phase === 'end') { stopAutoTimers(); return; } // the finished game keeps its "See results" status
   stopAutoTimers(); renderTransport();
   if (S.phase !== 'anim' || (S.anim && S.anim.done)) { const s = tlStart(); tlSeg(s, s, 0); }
+  if (S.phase === 'plan' && replanPending()) {
+    if (PLAY.auto) { PLAY.auto = false; stopAutoTimers(); renderTransport(); }
+    $('tstatus').textContent = 'Paused: choose how to re-plan your crews above, then press Play or Next step.';
+    return;
+  }
   if (!PLAY.auto) return;
   let ms, step, label, to;
   const u = yearUnit(S.year);
@@ -735,6 +744,9 @@ $('tplay').addEventListener('click', () => { PLAY.auto = !PLAY.auto; scheduleAut
 document.querySelectorAll('[data-speed]').forEach(b => b.addEventListener('click', () => { PLAY.speed = +b.dataset.speed; scheduleAuto(); }));
 document.addEventListener('click', e => {
   const t = e.target.closest('button'); if (!t || S.phase !== 'plan') return;
+  if ((t.dataset.z || t.dataset.x || t.dataset.b) && replanPending()) {
+    S.replan.kind = 'own'; logAdd(logTag(S.year), 'Re-planned by hand.'); renderReplan();
+  }
   const free = crews().avail - used();
   if (t.dataset.z) { const z = ZONES.find(q => q.key === t.dataset.z), d = +t.dataset.d;
     if (d > 0 && (free <= 0 || S.alloc[z.key] >= cap(z))) return;
@@ -830,9 +842,9 @@ function harvest(){
   return rec;
 }
 $('endyear').addEventListener('click', () => {
-  if (S.phase !== 'plan') return;
+  if (S.phase !== 'plan' || replanPending()) return;
   const idle = crews().avail - used();
-  const rec = harvest(); rec.idle = idle;
+  const rec = harvest(); rec.idle = idle; if (S.replan) { S.replan.done = true; $('replan').hidden = true; }
   S.phase = 'anim';
   S.anim = {t0: performance.now(), rec, dur: matchMedia('(prefers-reduced-motion: reduce)').matches ? 300 : 2400 / PLAY.speed};
   const b = $('endyear'); b.disabled = true; b.textContent = 'Harvesting…';
@@ -1016,23 +1028,65 @@ function showMilestone(r){
   $('ms-close').onclick = close;
   if (wasAuto) $('ms-go').onclick = () => { close(); PLAY.auto = true; scheduleAuto(); };
 }
+/* Re-planning when crews fall (1573, and the 1585-91 epidemics). The board used to cut chuño crews first and then
+   the highest fields, silently; that hidden rule drove much of the GDP rise (docs/sensitivity-2026-11-18.md). Now it
+   asks the player to choose: keep the plan's shares on fewer crews, put every crew on the best land first, or set
+   the crews by hand. Harvest, Next step and Play wait until they do. */
+const SHARE_KEYS = ['yunga', 'quechua', 'suni', 'puna', 'chuno', 'wage'];
+function planCounts(){ return SHARE_KEYS.map(k => k === 'chuno' || k === 'wage' ? S[k] : S.alloc[k]); }
+function setCounts(c){ SHARE_KEYS.forEach((k, i) => { if (k === 'chuno' || k === 'wage') S[k] = c[i]; else S.alloc[k] = c[i]; }); }
+function keepShares(from, B){
+  // largest remainder: each share's whole part, then the leftover crews to the largest fractions (lower zones first on ties)
+  const tot = from.reduce((a, b) => a + b, 0);
+  if (!tot) return from.map(() => 0);
+  const raw = from.map(v => v * B / tot), out = raw.map(Math.floor);
+  let left = B - out.reduce((a, b) => a + b, 0);
+  raw.map((v, i) => [v - out[i], i]).sort((a, b) => b[0] - a[0] || a[1] - b[1]).slice(0, left).forEach(([, i]) => out[i]++);
+  return out;
+}
+function bestLandFirst(B){
+  const out = SHARE_KEYS.map(() => 0); let free = B;
+  ZONES.forEach((z, i) => { const k = Math.min(free, cap(z)); out[i] = k; free -= k; });
+  return out;
+}
+function replanTo(kind){
+  if (!S.replan) return;
+  setCounts(kind === 'best' ? bestLandFirst(S.replan.B) : keepShares(S.replan.from, S.replan.B));
+  S.replan.kind = kind; clampAlloc();
+  logAdd(logTag(S.year), kind === 'best' ? 'Re-planned: every crew on the best land first; no chuño crews.' : 'Re-planned: the same shares as before, on fewer crews.');
+  renderReplan(); renderPlan();
+}
+function renderReplan(){
+  const el = $('replan'); if (!el) return;
+  if (!S.replan || S.phase !== 'plan') { el.hidden = true; return; }
+  const k = S.replan.kind;
+  el.hidden = false;
+  el.innerHTML = `<b>${k ? 'Re-planned' : 'Choose how to re-plan'}: ${S.replan.B} crews instead of ${S.replan.was}.</b> Keep your plan's shares on fewer crews, or put every crew on your best land: more food grown per crew, but no chuño for your stores and nothing growing up high. The harvest waits until you choose.
+    <span class="rpbtns"><button class="tbtn" data-replan="shares" aria-pressed="${k === 'shares'}">Keep the same shares</button><button class="tbtn" data-replan="best" aria-pressed="${k === 'best'}">Best land first</button></span>
+    <span class="rphint">${k === 'own' ? 'You set the crews yourself.' : 'Or set the crews yourself below; changing any crew counts as your choice.'}</span>`;
+  el.querySelectorAll('[data-replan]').forEach(b => b.onclick = () => replanTo(b.dataset.replan));
+}
+const replanPending = () => !!(S.replan && !S.replan.kind && !S.replan.done);
 function nextYear(){
-  const prevBase = S.lastBase ?? BASE_CREWS, usedBefore = used();
+  const prevBase = S.lastBase ?? BASE_CREWS, usedBefore = used(), before = planCounts();
   S.year++; S.yr = rollYear(); S.phase = 'plan'; S.anim = null;
   const late = S.year === 5;
   if (late) { S.store /= (1 - LATE_EPIDEMIC); S.pop *= (1 - LATE_EPIDEMIC); } // same food, fewer people
+  S.replan = null;
+  const B = crews().avail;
+  if (usedBefore > B) { S.replan = {from: before, B, was: usedBefore, kind: null}; setCounts(keepShares(before, B)); }
   clampAlloc();
-  const {base} = crews(), removed = usedBefore - used(), diff = base - prevBase;
+  const {base} = crews(), diff = base - prevBase;
   S.lastBase = base;
   const msgs = [];
-  if (diff < 0) msgs.push(`${-diff} fewer crew${diff < -1 ? 's' : ''} this year: hunger and disease cost lives.${removed > 0 ? ` The board took ${removed} off your plan, from chuño first, then the highest fields. Check your plan.` : ''}`);
+  if (diff < 0) msgs.push(`${-diff} fewer crew${diff < -1 ? 's' : ''} this year: ${S.year === 4 ? 'conquest and epidemics have halved your community' : 'hunger and disease cost lives'}.`);
   else if (diff > 0) msgs.push(`${diff} more crew${diff > 1 ? 's' : ''} this year: the community grew. Assign ${diff > 1 ? 'them' : 'it'} below.`);
   if (S.year === 4) msgs.push('From now on one man in seven is at Potosí, so every crew works one-seventh short, and tribute is due.');
   if (diff) logAdd(logTag(S.year), diff < 0 ? `${-diff} fewer crew${diff < -1 ? 's' : ''}: hunger and disease cost lives.` : `${diff} more crew${diff > 1 ? 's' : ''}: the community grew.`, diff < 0 ? 'neg' : 'pos');
   if (late) logAdd(logTag(S.year), 'Epidemics, 1585–91: about 15% of people died (game figure). Quotas stay on the 1573 count.', 'neg');
   if (late) msgs.push(`1585–91: new epidemics killed about 15% of your people (game figure). Your mita and tribute quotas still use the 1573 count, so each survivor now carries more: ${(crews().d * 7).toFixed(1)} men in seven are at Potosí.`);
   const n = $('notice'); n.textContent = msgs.join(' '); n.hidden = !msgs.length;
-  $('p-plan').hidden = false; renderPlan(); bringIntoView($('stage'));
+  $('p-plan').hidden = false; renderReplan(); renderPlan(); bringIntoView($('stage'));
 }
 
 function showTransition(){
@@ -1123,7 +1177,7 @@ function showEnd(){
   const am = f => a2.reduce((s,r) => s + f(r), 0) / a2.length;
   // Over time (what an observer sees, weather included) versus caused by the colonial rules (same people, same
   // weather, Inca rules instead). Predictions are graded on the second. Weather can still nudge the GDP grade:
-  // silver ignores the weather but the farm output the mita removes does not (default plan, seeds 1-80: 6 "rise", 74 "stay").
+  // silver ignores the weather but the farm output the mita removes does not (default plan with best land first at each re-plan, seeds 1-80: 5 "rise", 75 "stay").
   const dg = dir(g1, g2, 5), dk = dir(k1, k2, 50);
   const ck = am(r => r.intake - r.cf.intake), cg = am(r => r.gdp - r.cf.gdp);
   const dgC = dir(0, cg, 12.5), dkC = dir(0, ck, 50); // GDP tolerance: 12.5 $ = 3 index points
@@ -1212,7 +1266,7 @@ function showEnd(){
         <tr class="total"><td>GDP index</td><td>${gi(g2).toFixed(0)}</td></tr>
       </tbody></table>
       </div>
-      <p style="margin:10px 0 0;max-width:65ch;font-size:15px"><b>So why did GDP per person ${dg === 'rise' ? 'rise' : 'change'} over time (${sgn1(gi(g2-g1))} points)?</b> The colonial rules themselves ${Math.abs(cg) <= 12.5 ? 'roughly broke even on output: silver came in, field labour went out' : cg > 0 ? `added ${sgn1(gi(cg))} points: silver outweighed the field labour lost` : `cost ${sgn1(gi(cg))} points: the field labour lost outweighed the silver`}. The rest came mostly from the population collapse (plus this run's weather and choices). With fewer crews, the board drops the chuño crews and the highest, frostiest fields first, so unless you put them back the survivors farm only their best land, and each has a little more of it. Output per person ${dg === 'rise' ? 'rose' : 'changed'} while the rules took the food. Which cause matters more depends on what you take away: in this game, without silver GDP per person would barely have risen, and without the collapse it would still have risen, by less. GDP also moves less than food because most of it, a fixed 340 for everything else produced, is held constant in the game.</p>
+      <p style="margin:10px 0 0;max-width:65ch;font-size:15px"><b>So why did GDP per person ${dg === 'rise' ? 'rise' : 'change'} over time (${sgn1(gi(g2-g1))} points)?</b> The colonial rules themselves ${Math.abs(cg) <= 12.5 ? 'roughly broke even on output: silver came in, field labour went out' : cg > 0 ? `added ${sgn1(gi(cg))} points: silver outweighed the field labour lost` : `cost ${sgn1(gi(cg))} points: the field labour lost outweighed the silver`}. The rest came mostly from the population collapse (plus this run's weather and choices). How you re-planned your fewer crews mattered: putting every crew on the best land raises output per person, while keeping chuño crews and the high fields keeps stores and variety but grows less. Each survivor also has a little more land. Output per person ${dg === 'rise' ? 'rose' : 'changed'} while the rules took the food. Which cause matters more depends on what you take away: in this game, without silver GDP per person would barely have risen, and without the collapse it would still have risen, by less. GDP also moves less than food because most of it, a fixed 340 for everything else produced, is held constant in the game.</p>
       <p style="margin:8px 0 0;max-width:65ch;font-size:14px;color:var(--muted)">This comparison holds the people and the weather fixed, so it shows what the rules did. The harvest-by-harvest charts above also include frost, drought and the population collapse, which is what an observer at the time would have seen. Rows may be off by 1 or 2 from rounding.</p>
     </div>
     <div>
@@ -1222,7 +1276,7 @@ function showEnd(){
         <li>…and food per person <b>${S.pred.k}</b>. ${right(S.pred.k, dkC)} <span style="color:var(--muted)">(${sgn(ck)} kcal against Inca rules. Over time: ${pastTense(dk)})</span></li>
         ${S.hyp ? `<li>Your reasoning: “${esc(S.hyp)}”</li>` : ''}
       </ul>
-      <p style="margin:6px 0 0;font-size:13px;color:var(--muted);max-width:65ch">Predictions are checked against the same people with the same weather under Inca rules, which removes most of the weather's effect, but not all of it. Silver does not depend on the weather, while the farm work the mita takes away does, so in a frosty run the colonial rules look a little better for GDP. With the same plan every time, the weather alone turns the GDP answer from "stay" to "rise" in about 1 run in 13, always just past the 3-point line.</p>
+      <p style="margin:6px 0 0;font-size:13px;color:var(--muted);max-width:65ch">Predictions are checked against the same people with the same weather under Inca rules, which removes most of the weather's effect, but not all of it. Silver does not depend on the weather, while the farm work the mita takes away does, so in a frosty run the colonial rules look a little better for GDP. With the same plan every time, the weather alone turns the GDP answer from "stay" to "rise" in about 1 run in 16 (with best land first at each re-plan), always just past the 3-point line.</p>
     </div>
     <div class="rev">
       <h3 style="font-size:18px;margin-bottom:6px">What would have to be true for this to reverse?</h3>
@@ -1237,7 +1291,7 @@ function showEnd(){
     </div>
     <div>
       <h3 style="font-size:18px;margin-bottom:6px">What the record suggests</h3>
-      <p style="margin:0;max-width:65ch">Maddison's estimates for Latin America as a whole have GDP per person rising slightly, from 416 in 1500 to 438 in 1600 (1990 Int$), even as total output and population fell. For this period they are informed guesses, not measurements. Output per person can rise for more than one reason: more silver, or fewer people sharing the same land. In this game both matter, and which matters more depends on how you count: silver brings in about as much as the mita's lost field labour takes out, and the survivors stop storing food and farm only their best land. The course figure of 1,700 falling to 1,200 kcal a day has no primary source we could confirm, so treat it as a teaching figure. From the sources checked so far: colonial labour drafts pulled workers out of the farming cycle, the population fell steeply, and one village study (Wernke &amp; Whitmore 2009, abstract read) finds households short of food even where the community as a whole produced a surplus. GDP per person is an average of output. It says nothing about who eats.</p>
+      <p style="margin:0;max-width:65ch">Maddison's estimates for Latin America as a whole have GDP per person rising slightly, from 416 in 1500 to 438 in 1600 (1990 Int$), even as total output and population fell. For this period they are informed guesses, not measurements. Output per person can rise for more than one reason: more silver, or fewer people sharing the same land. In this game both matter, and which matters more depends on how you count: silver brings in about as much as the mita's lost field labour takes out, and survivors who put every crew on their best land grow more per person. The course figure of 1,700 falling to 1,200 kcal a day has no primary source we could confirm, so treat it as a teaching figure. From the sources checked so far: colonial labour drafts pulled workers out of the farming cycle, the population fell steeply, and one village study (Wernke &amp; Whitmore 2009, abstract read) finds households short of food even where the community as a whole produced a surplus. GDP per person is an average of output. It says nothing about who eats.</p>
     </div>
     <div class="actions">
       <span class="free" id="copymsg">Copy a text report to paste into your class page.</span>

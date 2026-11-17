@@ -1,5 +1,13 @@
 # Sensitivity sweep, 18 November 2026
 
+> **Update, later on 18 November 2026.** The silent trim described below is
+> gone. When crews fall, the game now asks the player to re-plan: keep the plan's
+> shares, put every crew on the best land first, or set them by hand.
+> `tools/sweep.html` chooses "Best land first", which reproduces the old trim
+> closely (GDP grading split 75 stay / 5 rise instead of 74 / 6). Keeping the same
+> shares gives colonial food of about 1,000 kcal and a 40 / 40 split. The analysis
+> below was measured on the earlier version and is kept as measured.
+
 **Question.** The game is tuned with about ten constants that no source fixes. Does
 its lesson come from the history the game describes, or from those settings? And
 when GDP per person rises over time, what in the model makes it rise?

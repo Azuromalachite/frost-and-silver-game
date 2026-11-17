@@ -57,9 +57,13 @@ A source records how far anyone in this project has read it (`access`):
 ## Pinned run (check after any change)
 
 Open the game with `?seed=12345`, predict anything, and play the default plan
-with Next step only. The results tiles must read, in order:
+with Next step only, choosing **Best land first** each time the game asks you to
+re-plan (at 1573 and after the 1585–91 epidemics). The results tiles must read, in order:
 
-`1,764 kcal | 1,371 kcal | 80 → 53 | 103 | 108 | 46% → 73%`
+`1,764 kcal | 1,411 kcal | 80 → 55 | 103 | 109 | 46% → 73%`
+
+(Since the re-plan choice, 18 November 2026. Before it the board re-planned
+silently and the line read `1,764 | 1,371 | 80 → 53 | 103 | 108 | 46% → 73%`.)
 
 (Since the chuño winter roll, 2026-11-18. Seed 12345 draws three mild Inca winters, so
 its chuño stores are smaller than before; it read `1,740 | 1,401 | 80 → 54 | 103 | 108 |

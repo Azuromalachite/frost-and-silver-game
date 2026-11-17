@@ -6,7 +6,7 @@
 //
 // Asserted (each is recorded elsewhere, and a change that moves it must update
 // both places in the same pull request):
-//   - the pinned run (CONTRIBUTING.md, AGENTS.md): seed 12345, default plan;
+//   - the pinned run (CONTRIBUTING.md, AGENTS.md): seed 12345, default plan, "Best land first" at each re-plan;
 //   - an identical replay reproduces every harvest;
 //   - changing a choice keeps the weather and changes the result;
 //   - the welfare index equals the sum of its parts;
@@ -21,13 +21,15 @@ const vm = require('node:vm');
 const path = require('node:path');
 const assert = require('node:assert/strict');
 
-const PINNED = [1764, 1371, 80, 53, 103, 108, 46, 73]; // food Inca, colonial; welfare; GDP index; % short
-const GRADES_1_80 = {stay: 74, rise: 6};
+const PINNED = [1764, 1411, 80, 55, 103, 109, 46, 73]; // food Inca, colonial; welfare; GDP index; % short
+const GRADES_1_80 = {stay: 75, rise: 5};
+// When crews fall the game asks the player to re-plan; this check always chooses "Best land first".
+const REPLAN = 'best';
 
 function load(html) {
   const m = html.match(/<script>\s*([\s\S]*?)<\/script>/);
   assert.ok(m, 'no inline <script> in the game file');
-  const code = m[1].replace(/\}\)\(\);\s*$/, `globalThis.game={get state(){return S}, fresh,rollYear,clampAlloc,harvest,nextYear,showTransition,showEnd,replaySame,settle,shortShare,gi,dir,reportText,PLAY};})();`);
+  const code = m[1].replace(/\}\)\(\);\s*$/, `globalThis.game={get state(){return S}, fresh,rollYear,clampAlloc,harvest,nextYear,showTransition,showEnd,replaySame,settle,shortShare,gi,dir,reportText,PLAY,replanTo};})();`);
   assert.notEqual(code, m[1], 'the game script no longer ends in })(); so the harness cannot reach the model');
   return code;
 }
@@ -69,6 +71,7 @@ function finish(g, replay = false, edit) {
     g.harvest();
     if (g.state.year === 3) { g.showTransition(); node('go').click(); }
     else if (g.state.year < 6) g.nextYear();
+    if (g.state.replan && !g.state.replan.kind) g.replanTo(REPLAN);
   }
   g.showEnd();
   const h = g.state.hist, a = h.slice(0, 3), b = h.slice(3);

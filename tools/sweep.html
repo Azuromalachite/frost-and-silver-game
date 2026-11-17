@@ -14,7 +14,7 @@
 <h1>Sensitivity sweep</h1>
 <p>Runs the game's own model headless, many times, with its tuned constants changed. Serve the repository root
 (<code>python -m http.server</code>) and open <code>/tools/sweep.html</code>. It first checks that the unchanged model
-reproduces the pinned run and the 74/6 grading split; if it does not, the game changed and the ranges and results in
+reproduces the pinned run and the 75/5 grading split; if it does not, the game changed and the ranges and results in
 <code>docs/sensitivity-2026-11-18.md</code> need re-measuring. Results are deterministic (fixed seeds, fixed draws).</p>
 <p><button id="run">Run the sweep</button> <span id="status"></span></p>
 <pre id="out">Not run yet.</pre>
@@ -23,7 +23,7 @@ reproduces the pinned run and the 74/6 grading split; if it does not, the game c
 // cover any value a teacher might defend. SILVER scales the silver path; REDUC is the final resettlement loss.
 const BASE = {ALPHA:0.9, INCA_LEVY:0.10, INCA_RETURN:0.5, COLLAPSE:0.5, LATE_EPIDEMIC:0.15, TRIB_PP:500, P:0.045, SILVER:1, REDUC:0.15, CHUNO_CAP:120};
 const RANGES = {ALPHA:[0.6,1.0], INCA_LEVY:[0.05,0.20], INCA_RETURN:[0.25,0.75], COLLAPSE:[0.3,0.7], LATE_EPIDEMIC:[0.05,0.25], TRIB_PP:[300,700], P:[0.03,0.06], SILVER:[0.5,1.5], REDUC:[0.05,0.25], CHUNO_CAP:[80,160]};
-const PINNED = [1764, 1371, 80, 53, 103, 108, 46, 73], GRADES = {stay: 74, rise: 6};
+const PINNED = [1764, 1411, 80, 55, 103, 109, 46, 73], GRADES = {stay: 75, rise: 5};
 let HTML = '';
 
 function buildCode(p) {
@@ -36,7 +36,7 @@ function buildCode(p) {
   rep('const REDUC_BY_HARVEST = {4: 0.93, 5: 0.88, 6: 0.85};', `const REDUC_BY_HARVEST = {4: ${1-0.07*r}, 5: ${1-0.12*r}, 6: ${1-0.15*r}};`);
   rep('CHUNO_CAP = 120;', `CHUNO_CAP = ${p.CHUNO_CAP};`);
   const m = h.match(/<script>\s*([\s\S]*?)<\/script>/);
-  const code = m[1].replace(/\}\)\(\);\s*$/, `globalThis.game={get state(){return S}, reset(seed){S=fresh(); S.seed=seed; S.pred={g:'stay',k:'stay'};}, rollYear,clampAlloc,harvest,nextYear,showTransition,gi,dir,shortShare,crews};})();`);
+  const code = m[1].replace(/\}\)\(\);\s*$/, `globalThis.game={get state(){return S}, reset(seed){S=fresh(); S.seed=seed; S.pred={g:'stay',k:'stay'};}, rollYear,clampAlloc,harvest,nextYear,showTransition,gi,dir,shortShare,crews,replanTo};})();`);
   if (code === m[1]) throw new Error('the game script no longer ends in })();');
   return code;
 }
@@ -58,8 +58,8 @@ function makeGame(code) {
   new Function('ctx', 'with (ctx) {' + code + '}')(ctx);
   return {g: ctx.game, node};
 }
-// One game with the default plan. mode 'trim' is the game as it is; 'prop' and 'propNoChuno' replace the
-// board's trim (chuño first, then the highest zones) with the 1500 plan scaled to the crews available.
+// One game with the default plan. mode 'trim' is the game with "Best land first" chosen at each re-plan (before
+// 18 Nov 2026 the board did this silently); 'prop' and 'propNoChuno' replace it with the 1500 plan scaled to the crews.
 const PLAN = {yunga:4, quechua:4, suni:3, puna:1, chuno:2};
 function scalePlan(B, keys) {
   const tot = keys.reduce((s, k) => s + PLAN[k], 0), raw = keys.map(k => PLAN[k] * B / tot), fl = raw.map(Math.floor);
@@ -75,6 +75,7 @@ function play(G, seed, mode = 'trim') {
       const a = scalePlan(g.crews().avail, keys); for (const z of ['yunga','quechua','suni','puna']) g.state.alloc[z] = a[z]; g.state.chuno = a.chuno || 0;
     }
     g.harvest(); if (g.state.year === 3) { g.showTransition(); node('go').click(); } else if (g.state.year < 6) g.nextYear();
+    if (g.state.replan && !g.state.replan.kind) g.replanTo('best'); // the game asks; the sweep, like the pinned run, chooses best land first
   }
   const h = g.state.hist, a = h.slice(0, 3), b = h.slice(3), avg = (x, k) => x.reduce((s, r) => s + r[k], 0) / x.length;
   const cg = b.reduce((s, r) => s + r.gdp - r.cf.gdp, 0) / 3;

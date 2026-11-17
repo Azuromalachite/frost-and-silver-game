@@ -53,7 +53,7 @@ jobs:
         # Runs the game's own script headless and asserts the numbers the
         # repository records: the pinned run in CONTRIBUTING.md and AGENTS.md,
         # identical replays, weather unchanged by choices, the welfare sum,
-        # and the 74/6 GDP grading split (claim.game.grading_weather). A model
+        # and the 75/5 GDP grading split (claim.game.grading_weather). A model
         # change that moves any of them must update them in the same PR.
         # --self-test plants three model changes (a constant, the frost odds,
         # the winter roll) and requires each to be caught.

@@ -27,7 +27,7 @@ const SHORT = {yunga:'V', quechua:'U', suni:'W'};
 
 function makeGame(html) {
   const m = html.match(/<script>\s*([\s\S]*?)<\/script>/);
-  const code = m[1].replace(/\}\)\(\);\s*$/, `globalThis.game={get state(){return S}, reset(seed){S=fresh(); S.seed=seed; S.pred={g:'stay',k:'stay'};}, rollYear,clampAlloc,harvest,nextYear,showTransition,gi,crews,cap,ZONES,act};})();`);
+  const code = m[1].replace(/\}\)\(\);\s*$/, `globalThis.game={get state(){return S}, reset(seed){S=fresh(); S.seed=seed; S.pred={g:'stay',k:'stay'};}, rollYear,clampAlloc,harvest,nextYear,showTransition,gi,crews,cap,ZONES,act,replanTo};})();`);
   if (code === m[1]) throw new Error('the game script no longer ends in })();');
   const nodes = new Map();
   const node = id => { if (nodes.has(id)) return nodes.get(id); const handlers = {};
@@ -63,6 +63,7 @@ function play(G, st, seed) {
   while (g.state.hist.length < 6) {
     if (st) applyPlan(g, st);
     g.harvest(); if (g.state.year === 3) { g.showTransition(); node('go').click(); } else if (g.state.year < 6) g.nextYear();
+    if (!st && g.state.replan && !g.state.replan.kind) g.replanTo('best'); // the default plan chooses best land first, as the pinned run does
   }
   const h = g.state.hist, a = h.slice(0, 3), b = h.slice(3), avg = (x, k) => x.reduce((s, r) => s + r[k], 0) / x.length;
   return {k1:avg(a,'intake'), k2:avg(b,'intake'), w1:avg(a,'cwi'), w2:avg(b,'cwi'), g2:g.gi(avg(b,'gdp')),
