@@ -305,7 +305,7 @@ claims:
     code: ["function quipuSVG(cords)"]
     pages:
       - path: frost-and-silver.html
-        anchor: Your cord keeper's quipu for this harvest.
+        anchor: This harvest's numbers knotted as a quipu, an illustration
     notes: Which figures a cord keeper recorded is not known; GDP is left off on purpose.
 
   # --- food -------------------------------------------------------------------
