@@ -203,7 +203,7 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
     <div class="sub">Feed an Andean community through frost, drought and the Potosí silver mita. Six farming years, one question: can output rise while people go hungry?</div>
   </header>
 
-  <section class="stage" aria-label="The mountainside">
+  <section class="stage" id="stage" aria-label="The mountainside" hidden>
     <div class="view">
       <canvas id="cv" aria-hidden="true"></canvas>
       <div class="hud" id="hud"></div>
@@ -254,7 +254,7 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
       <textarea id="hyp" rows="2" placeholder="e.g. Silver adds to output, but the mita takes the labour that grows food."></textarea></div>
     <div class="field"><label for="who">Your name (goes on your report)</label>
       <input type="text" id="who" autocomplete="name"></div>
-    <div class="actions"><span class="free" id="intro-msg">Pick both predictions to start.</span><button class="btn" id="start">Start year 1</button></div>
+    <div class="actions"><span class="free" id="intro-msg">Pick both predictions to start.</span><button class="btn" id="start">Start the game →</button></div>
   </section>
 
   <section class="card" id="card" role="region" aria-live="polite" aria-labelledby="mt" hidden></section>
@@ -771,7 +771,7 @@ function reportText(k1,k2,g1,g2,dg,dk){
 function restart(){
   PLAY.auto = false; stopAutoTimers();
   S = fresh(); $('p-end').hidden = true; $('p-plan').hidden = true; $('card').hidden = true; $('notice').hidden = true; $('p-intro').hidden = false;
-  $('dock').hidden = true; $('transport').hidden = true;
+  $('dock').hidden = true; $('transport').hidden = true; $('stage').hidden = true;
   renderHUD(); renderForecast(); window.scrollTo({top:0});
 }
 
@@ -780,7 +780,7 @@ $('start').addEventListener('click', () => {
   const g = document.querySelector('input[name=pg]:checked'), k = document.querySelector('input[name=pk]:checked');
   if (!g || !k) { $('intro-msg').textContent = 'Pick both predictions first.'; $('intro-msg').classList.add('warn'); return; }
   S.pred = {g: g.value, k: k.value}; S.hyp = $('hyp').value.trim(); S.who = $('who').value.trim();
-  $('p-intro').hidden = true; $('p-plan').hidden = false; $('transport').hidden = false;
+  $('p-intro').hidden = true; $('stage').hidden = false; $('p-plan').hidden = false; $('transport').hidden = false;
   S.year = 1; S.yr = rollYear(); S.phase = 'plan'; clampAlloc(); renderPlan(); bringIntoView($('cv'));
 });
 
