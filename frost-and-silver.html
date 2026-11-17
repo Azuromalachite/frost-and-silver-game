@@ -774,7 +774,7 @@ function renderAutobar(){
   if (!bar.hidden) $('autobar-txt').textContent = $('tstatus').textContent;
 }
 // checked on scroll, resize and every status change (the countdown ticks), not by an observer that a background page may never fire
-addEventListener('scroll', renderAutobar, {passive: true}); addEventListener('resize', renderAutobar);
+window.addEventListener('scroll', renderAutobar, {passive: true}); window.addEventListener('resize', renderAutobar);
 new MutationObserver(renderAutobar).observe($('tstatus'), {childList: true, characterData: true, subtree: true});
 $('autobar-pause').addEventListener('click', () => { if (PLAY.auto) $('tplay').click(); renderAutobar(); });
 $('tplay').addEventListener('click', () => {
