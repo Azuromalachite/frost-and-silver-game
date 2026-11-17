@@ -1,0 +1,825 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Frost and Silver</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+/* Layout: one column. Mountain stage with a HUD strip on its top edge; the crew board sits directly under the four zones, column for column. */
+:root{
+  --bg:#e7ecf1; --surface:#f7f9fb; --ink:#18203a; --muted:#56607a; --line:#cbd3de;
+  --accent:#ad1240; --gold:#b97f00; --ice:#2f86c0; --good:#2c7a4c; --bad:#ad1240;
+  --sky-top:#9cc1df; --sky-bot:#e8eef4; --far:#b9c6d3; --rock:#7b6a5a; --rock2:#9d8873; --soil:#694a35; --snow:#ffffff;
+  --z0:#3c8d47; --z1:#b07f1e; --z2:#7462a6; --z3:#7f8f9c;
+  --f-display:"Archivo","Arial Narrow",system-ui,sans-serif;
+  --f-body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0d1221; --surface:#151c30; --ink:#e6eaf4; --muted:#9aa5bd; --line:#28314a;
+  --accent:#ff5c84; --gold:#f0b432; --ice:#7cc5f1; --good:#5cc48a; --bad:#ff5c84;
+  --sky-top:#08102a; --sky-bot:#26355c; --far:#2b3656; --rock:#4a4153; --rock2:#5d5367; --soil:#3c2d29; --snow:#c9d4e6;
+  --z0:#4fae5b; --z1:#d4a43c; --z2:#9d8dd2; --z3:#a0b0bd; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0d1221; --surface:#151c30; --ink:#e6eaf4; --muted:#9aa5bd; --line:#28314a;
+  --accent:#ff5c84; --gold:#f0b432; --ice:#7cc5f1; --good:#5cc48a; --bad:#ff5c84;
+  --sky-top:#08102a; --sky-bot:#26355c; --far:#2b3656; --rock:#4a4153; --rock2:#5d5367; --soil:#3c2d29; --snow:#c9d4e6;
+  --z0:#4fae5b; --z1:#d4a43c; --z2:#9d8dd2; --z3:#a0b0bd; color-scheme:dark}
+html,body{background:var(--bg);color:var(--ink)}
+body{font-family:var(--f-body);font-size:16px;line-height:1.5}
+.wrap{max-width:980px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 40px;display:grid;gap:16px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.1}
+.top{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 20px}
+.mark{font-family:var(--f-display);font-weight:900;font-stretch:125%;font-size:clamp(28px,6vw,44px);letter-spacing:-.01em;text-transform:uppercase}
+.mark .amp{color:var(--accent)}
+.mark .ag{color:var(--muted);font-stretch:62%;font-weight:600;white-space:nowrap}
+.sub{color:var(--muted);font-size:14px;max-width:46ch}
+.eyebrow{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+
+/* stage */
+.stage{position:relative;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--sky-bot)}
+canvas{display:block;width:100%;aspect-ratio:16/7.2;max-width:100%}
+.hud{position:absolute;inset:0 0 auto 0;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;padding:8px 10px;background:color-mix(in srgb,var(--surface) 82%,transparent);border-bottom:1px solid var(--line);font-size:13px}
+.hud .yr{font-family:var(--f-display);font-weight:800;font-stretch:110%;text-transform:uppercase;font-size:13px}
+.hud .yr b{color:var(--accent)}
+.gauge{display:flex;align-items:center;gap:8px;flex:1 1 220px;min-width:0}
+.gbar{position:relative;flex:1;height:10px;border-radius:2px;background:var(--line);overflow:visible}
+.gfill{position:absolute;inset:0 auto 0 0;background:var(--good);border-radius:2px;transition:width .6s}
+.gmark{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--ink)}
+.gmark.col{background:var(--accent)}
+.stat{display:flex;gap:4px;align-items:baseline;white-space:nowrap}
+.stat span{color:var(--muted);font-size:11px;font-family:var(--f-mono);text-transform:uppercase;letter-spacing:.06em}
+.stat b{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.forecast{position:absolute;left:10px;bottom:10px;right:10px;max-width:520px;padding:6px 10px;border-radius:4px;background:color-mix(in srgb,var(--surface) 88%,transparent);border:1px solid var(--line);font-size:13px}
+.forecast b{font-family:var(--f-mono);font-size:12px}
+
+/* panels */
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:16px;display:grid;gap:14px;min-width:0}
+.zones{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.zone{border-top:4px solid var(--zc);padding:8px 2px 0;display:grid;gap:6px;align-content:start;min-width:0}
+.zone h3{font-size:16px;font-stretch:115%;text-transform:uppercase;font-weight:800}
+.zone .crop{font-size:13px;color:var(--muted);line-height:1.3}
+.zone .risk{font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+.step{display:flex;align-items:center;gap:4px}
+.step button{width:34px;height:34px;flex:none;border-radius:4px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:700 18px/1 var(--f-mono);cursor:pointer}
+.step button:disabled{opacity:.35;cursor:not-allowed}
+.step output{min-width:2.2ch;text-align:center;font:600 20px var(--f-mono)}
+.step small{color:var(--muted);font-size:11px;font-family:var(--f-mono)}
+.build{font:13px var(--f-body);text-align:left;padding:6px 8px;border-radius:4px;border:1px dashed var(--zc);background:transparent;color:var(--ink);cursor:pointer;line-height:1.25}
+.build[aria-pressed="true"]{border-style:solid;background:color-mix(in srgb,var(--zc) 18%,transparent)}
+.build:disabled{cursor:default}
+.done{font-size:12px;color:var(--good);font-family:var(--f-mono)}
+.extras{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px 16px;border-top:1px solid var(--line);padding-top:12px}
+.extra{display:grid;gap:4px;min-width:0}
+.extra .lbl{font-weight:700}
+.extra p{margin:0;font-size:13px;color:var(--muted)}
+.mita{border-left:3px solid var(--accent);padding-left:10px}
+.actions{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:12px}
+.free{font-family:var(--f-mono);font-size:14px}
+.free.warn{color:var(--bad)}
+.btn{font:800 15px var(--f-display);font-stretch:110%;text-transform:uppercase;letter-spacing:.03em;padding:12px 18px;border-radius:4px;border:0;background:var(--accent);color:#fff;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.whybox{border-left:4px solid var(--z1);padding:4px 0 4px 14px;display:grid;gap:8px}
+.whybox h3{font-size:17px;font-stretch:110%;text-transform:uppercase}
+.gloss{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px 22px;margin:0;padding:0;list-style:none}
+.gloss li{display:grid;grid-template-columns:40px minmax(0,1fr);gap:12px;align-items:start;font-size:14px;line-height:1.45}
+.gico{width:40px;height:40px;border-radius:6px;display:grid;place-items:center;color:var(--c);background:color-mix(in srgb,var(--c) 15%,transparent)}
+.gico svg{width:24px;height:24px;display:block}
+.gloss b{display:block;font-family:var(--f-display);font-weight:800;font-stretch:110%;text-transform:uppercase;font-size:13px;letter-spacing:.02em}
+.gloss p{margin:2px 0 0;color:var(--muted)}
+.glossbox{border-top:1px solid var(--line);padding-top:10px}
+.glossbox summary{cursor:pointer;font-weight:700;font-size:14px}
+.glossbox[open] summary{margin-bottom:10px}
+.zone .why{font-size:12px;line-height:1.35}
+.notice{margin:0;padding:8px 12px;border-left:3px solid var(--gold);background:color-mix(in srgb,var(--gold) 10%,transparent);font-size:14px;border-radius:0 4px 4px 0}
+/* vertical archipelago: four steps rising left to right */
+.vert{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;align-items:end;margin-top:4px}
+.vcol{display:grid;gap:6px;min-width:0}
+.vtop{display:grid;gap:3px;justify-items:start;padding:0 4px}
+.vtop .gico{position:relative}
+.vtop .gico .badge{position:absolute;right:-6px;top:-6px;width:18px;height:18px;border-radius:50%;background:var(--surface);color:var(--ice);display:grid;place-items:center;border:1px solid var(--line)}
+.vtop .gico .badge svg{width:13px;height:13px}
+.vname{font-family:var(--f-display);font-weight:800;font-stretch:110%;text-transform:uppercase;font-size:14px;line-height:1.1}
+.valt{font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+.vcrop{font-size:13px;line-height:1.3}
+.vfrost{display:flex;flex-wrap:wrap;gap:3px;align-items:center;font-size:11px;color:var(--muted);font-family:var(--f-mono)}
+.vfrost span{flex-basis:100%;order:-1}
+.vfrost i{width:9px;height:9px;border-radius:2px;border:1px solid var(--ice);display:inline-block}
+.vfrost i.on{background:var(--ice)}
+.vrock{height:var(--h);background:color-mix(in srgb,var(--c) 22%,transparent);border-top:3px solid var(--c);border-radius:2px 2px 0 0}
+@media (max-width:520px){.vcrop{font-size:12px}.vname{font-size:12px}.vfrost span{display:none}.vtop .gico{width:34px;height:34px}}
+
+/* intro */
+.intro p{margin:0;max-width:65ch}
+.preds{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+fieldset{border:1px solid var(--line);border-radius:4px;padding:8px 12px;margin:0;min-width:0}
+legend{font-weight:700;padding:0 4px}
+fieldset label{margin-right:14px;white-space:nowrap}
+.field{display:grid;gap:4px}
+.field label{font-weight:700;font-size:14px}
+textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;border:1px solid var(--line);background:var(--bg);color:var(--ink);width:100%;box-sizing:border-box}
+
+/* year report: inline, directly under the stage */
+.card{background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--ink);border-radius:6px;padding:16px;display:grid;gap:12px;min-width:0}
+.card > *{max-width:640px}
+.planhead{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px}
+.planhead h2{font-size:22px;font-stretch:112%;text-transform:uppercase}
+.planhead h2 b{color:var(--accent)}
+.btn:disabled{opacity:.5;cursor:wait}
+.card.big{border-top:6px solid var(--accent)}
+.card h2{font-size:24px;font-stretch:112%;text-transform:uppercase}
+.card p{margin:0}
+.ledger{width:100%;border-collapse:collapse;font-size:14px}
+.ledger td{padding:4px 0;border-bottom:1px solid var(--line)}
+.ledger td:last-child{text-align:right;font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.ledger tr.total td{font-weight:700;border-bottom:0;padding-top:8px}
+.neg{color:var(--bad)} .pos{color:var(--good)}
+.why{margin:0;padding-left:18px;display:grid;gap:4px;font-size:14px}
+.chip{display:inline-block;font:600 11px var(--f-mono);text-transform:uppercase;letter-spacing:.06em;padding:2px 6px;border-radius:3px;background:var(--line)}
+.chip.ok{background:color-mix(in srgb,var(--good) 22%,transparent);color:var(--good)}
+.chip.low{background:color-mix(in srgb,var(--bad) 18%,transparent);color:var(--bad)}
+
+/* results */
+.charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.charts svg{width:100%;height:auto;display:block}
+.cmp{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.cmp div{border:1px solid var(--line);border-radius:4px;padding:10px}
+.cmp b{display:block;font:600 22px var(--f-mono);font-variant-numeric:tabular-nums}
+.cmp span{font-size:13px;color:var(--muted)}
+.foot{font-size:13px;color:var(--muted);display:grid;gap:6px}
+.foot p{margin:0;max-width:80ch}
+.foot a{color:var(--ink)}
+
+@media (max-width:620px){
+  .zones{gap:4px}
+  .zone h3{font-size:13px}
+  .zone .crop{font-size:12px}
+  .step button{width:28px;height:30px;font-size:15px}
+  .step output{font-size:16px}
+  .step small{display:none}
+  .build{font-size:11px;padding:4px}
+  .hud{font-size:12px;gap:4px 10px;padding:6px 8px}
+  .forecast{font-size:12px;position:static;max-width:none;border-radius:0;border-width:1px 0 0}
+  canvas{aspect-ratio:16/12}
+  .hud{position:static}
+  .zones{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 12px}
+  .zone .crop,.zone .why,.zone .risk{overflow-wrap:anywhere}
+}
+@media (prefers-reduced-motion:reduce){.gfill{transition:none}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="mark">Frost <span class="amp">&amp;</span> Silver <span class="ag">1500 → 1600</span></div>
+    <div class="sub">Feed an Andean community through frost, drought and the Potosí silver mita. Six farming years, one question: can output rise while people go hungry?</div>
+  </header>
+
+  <section class="stage" aria-label="The mountainside">
+    <canvas id="cv" aria-hidden="true"></canvas>
+    <div class="hud" id="hud"></div>
+    <div class="forecast" id="forecast" hidden></div>
+  </section>
+
+  <section class="panel intro" id="p-intro">
+    <span class="eyebrow">Before you start</span>
+    <h2 style="font-size:26px;font-stretch:112%;text-transform:uppercase">You run an ayllu of about 1,000 people</h2>
+    <p>Your fields climb the mountain from a warm maize valley at 1,800 m to the frozen puna at 4,300 m. Higher fields freeze more often, so spreading crews across the zones is your insurance. Each year you send about 14 work crews (fewer if people die) to plant, build terraces, or freeze-dry potatoes into chuño for the storehouse.</p>
+    <p>Years 1–3 are under the Inca, around 1500. Years 4–6 come after 1573, when the Spanish colonial mita sends one man in seven from the communities of the mita region (yours is one) to the silver mines at Potosí. Your goal is to feed everyone 1,700 kcal a day.</p>
+    <div class="whybox">
+      <h3>Why farm the cold heights?</h3>
+      <div class="vert" id="vert" role="img" aria-label="Four altitude zones rising from left to right: Yunga at 1,800 m grows maize, frost rare; Quechua at 3,000 m grows potatoes, frost some years; Suni at 3,800 m grows bitter potatoes, frost often; Puna at 4,300 m is llama and alpaca pasture, frost most years."></div>
+      <p>Each height grows something the others can't, and one frost rarely hits every level at once. A community with fields at every height eats a mixed diet and keeps eating in a bad year. The anthropologist John Murra called this the <i>vertical archipelago</i>.</p>
+      <p>In the game, each zone has room for only 5 crews (more once you build terraces or raised fields). So feeding everyone means sending some crews uphill, where frost is more likely.</p>
+    </div>
+    <h3 style="font-size:17px;font-stretch:110%;text-transform:uppercase">Words in this game</h3>
+    <ul class="gloss" id="gloss-intro"></ul>
+    <div class="preds">
+      <fieldset><legend>After the mita, GDP per person will…</legend>
+        <label><input type="radio" name="pg" value="rise" id="pg-rise"> rise</label>
+        <label><input type="radio" name="pg" value="stay" id="pg-stay"> stay</label>
+        <label><input type="radio" name="pg" value="fall" id="pg-fall"> fall</label>
+      </fieldset>
+      <fieldset><legend>…and calories per person will…</legend>
+        <label><input type="radio" name="pk" value="rise" id="pk-rise"> rise</label>
+        <label><input type="radio" name="pk" value="stay" id="pk-stay"> stay</label>
+        <label><input type="radio" name="pk" value="fall" id="pk-fall"> fall</label>
+      </fieldset>
+    </div>
+    <div class="field"><label for="hyp">Why do you think so? (one or two sentences)</label>
+      <textarea id="hyp" rows="2" placeholder="e.g. Silver adds to output, but the mita takes the labour that grows food."></textarea></div>
+    <div class="field"><label for="who">Your name (goes on your report)</label>
+      <input type="text" id="who" autocomplete="name"></div>
+    <div class="actions"><span class="free" id="intro-msg">Pick both predictions to start.</span><button class="btn" id="start">Start year 1</button></div>
+  </section>
+
+  <section class="card" id="card" role="region" aria-live="polite" aria-labelledby="mt" hidden></section>
+
+  <section class="panel" id="p-plan" hidden>
+    <div class="planhead"><h2 id="planh"></h2><span class="eyebrow" id="plansub"></span></div>
+    <p class="notice" id="notice" role="status" hidden></p>
+    <div class="zones" id="zones"></div>
+    <div class="extras" id="extras"></div>
+    <div class="actions"><span class="free" id="free"></span><button class="btn" id="endyear">Harvest this year</button></div>
+    <details class="glossbox"><summary>Words in this game: ayllu, mita, Potosí, puna, chuño…</summary><ul class="gloss" id="gloss-plan"></ul></details>
+  </section>
+
+  <section class="panel" id="p-end" hidden></section>
+
+  <footer class="foot">
+    <p>Adapted from <a href="https://superlative-sprinkles-2653a1.netlify.app/" target="_blank" rel="noopener">“Week 2: Tahuantinsuyu Harvest &amp; Frost Defense”</a> by Amnuayvit Thitibordin, licensed <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a>. Changes: rebuilt as a turn-based game with a colonial second act, a new model and a new visual design. This adaptation is also licensed CC BY-NC-SA 4.0. Adapted by: <i>(add your name)</i>.</p>
+    <p>The game is a model, not a reconstruction. Anchors: GDP per person of 416 in 1500 and 438 in 1600 are Maddison's conjectural estimates for Latin America as a whole (1990 international dollars; not Andes-specific), and the game's GDP formula was tuned to start near 416. The fall from about 1,700 to about 1,200 kcal is the original game's teaching figure and has no source we could confirm. Here “kcal per person per day” means average food available across all ages, capped at 1,900. The household share assumes household food varies 30% around the average; it is a guess that illustrates the point Wernke &amp; Whitmore (2009, <i>Human Ecology</i> 37:421) make, that households can go short while a region has a surplus. Every other number is the game's own. For scale, adults in a modern multi-country sample that excluded manual labourers used about 2,190 (women) and 2,720 (men) kcal a day (Pontzer et al. 2016, <i>Nature</i> 533:390, Table 1); a community average that includes children is lower.</p>
+  </footer>
+</div>
+
+
+<script>
+(() => {
+const GOAL = 1700, COLONIAL = 1200, GDP_ANCHOR = 416, BASE_CREWS = 14, BASE_CAP = 5, CHUNO_CAP = 120;
+const ZONES = [
+  {key:'yunga', name:'Yunga', alt:'1,800 m', crop:'Coca, fruit & maize', y:178, hi:.6, lo:.2, build:'Build andenes', what:'terraces', cap:2, risk:'Frost: rare', why:'Warm valleys with little flat land.', c:'--z0'},
+  {key:'quechua', name:'Quechua', alt:'3,000 m', crop:'Maize & potatoes', y:175, hi:.6, lo:.2, build:'Build andenes', what:'terraces', cap:2, risk:'Frost: some years', why:'The heart of Inca maize farming.', c:'--z1'},
+  {key:'suni', name:'Suni', alt:'3,800 m', crop:'Bitter potatoes', y:157, hi:.6, lo:.2, build:'Build waru waru', what:'waru waru', cap:1, risk:'Frost: often', why:'Too cold for maize. Bitter potatoes survive frost and make the best chuño.', c:'--z2'},
+  {key:'puna', name:'Puna', alt:'4,300 m', crop:'Llamas & quinoa', y:117, hi:.3, lo:.3, build:null, risk:'Frost: most years; herds survive it', why:'Too cold for most crops. Pasture for llamas and alpacas.', c:'--z3'}
+];
+const TERMS = [
+  ['Ayllu', 'An Andean community of related families who hold land together and share work. Your village in this game.'],
+  ['Inca', 'The empire that ruled the Andes until the Spanish conquest of the 1530s. Its own name, Tawantinsuyu, means “the four parts together”.'],
+  ['Mita', 'Work done in turns. Under the Inca, communities sent workers to the state for set periods and were fed while they worked. Under Spain it became a forced draft for the silver mines.'],
+  ['Potosí', 'A mountain of silver, the Cerro Rico (“rich hill”), above the mining city of Potosí (about 4,000 m) in today’s Bolivia. Spaniards began mining it in 1545, and its silver was shipped across the world, as far as China.'],
+  ['Yunga, Quechua, Suni, Puna', 'Quechua-derived names for the altitude zones, from warm valley to cold high grassland, used by the geographer Javier Pulgar Vidal in 1941. The puna, above about 4,000 m, is too cold for most crops but good for herds.'],
+  ['Chuño', 'Potatoes frozen at night and dried by day until they keep for years. Food for bad harvests.'],
+  ['Qollqa', 'A storehouse. The Inca built thousands of them along roads and above towns.'],
+  ['Andenes', 'Stone terraces. They make flat fields on steep slopes, hold water and soil, and give some protection from frost.'],
+  ['Waru waru', 'Raised fields between water channels. The water soaks up heat by day and gives it back at night, softening frost.'],
+  ['Tribute', 'A tax the colonial government collected from Indigenous communities, in goods, silver or labour.'],
+  ['kcal per person per day', 'Food energy available on average to each person, children included. Adults working hard need more.']
+];
+// Icons: IconMCP outline set (16-unit grid), inner markup only; colour follows --c via currentColor.
+const ICONS = {
+  community:'<circle cx="8" cy="3.25" r="1.75"/><circle cx="3.5" cy="11" r="1.75"/><circle cx="12.5" cy="11" r="1.75"/><path d="M4.874 4.305 A5.5 5.5 0 0 0 2.684 7.83"/><path d="M11.137 4.313 A5.5 5.5 0 0 1 13.314 7.817"/><path d="M5.888 13.298 C7.388 13.948 8.6 13.952 10.1 13.302"/>',
+  sun:'<circle cx="8" cy="8" r="2.75"/><line x1="8" y1="3.25" x2="8" y2="2"/><line x1="11.36" y1="4.64" x2="12.24" y2="3.76"/><line x1="12.75" y1="8" x2="14" y2="8"/><line x1="11.36" y1="11.36" x2="12.24" y2="12.24"/><line x1="8" y1="12.75" x2="8" y2="14"/><line x1="4.64" y1="11.36" x2="3.76" y2="12.24"/><line x1="3.25" y1="8" x2="2" y2="8"/><line x1="4.64" y1="4.64" x2="3.76" y2="3.76"/>',
+  pickaxe:'<path d="M4.25 2.75 Q12.75 3.25 13.25 11.75"/><line x1="2.75" y1="13.25" x2="10.75" y2="5.25"/>',
+  coins:'<circle cx="6" cy="6" r="4.25"/><circle cx="6" cy="6" r="1.75"/><path d="M12.15 6.3 A4.25 4.25 0 1 1 6.3 12.15"/>',
+  mountains:'<path d="M2.385 11.821 L4.65 7.615 C4.928 7.098 5.651 7.047 5.999 7.521 L7.355 9.37 C7.675 9.806 8.325 9.806 8.645 9.37 L10.001 7.521 C10.349 7.047 11.072 7.098 11.35 7.615 L13.615 11.821 C13.902 12.354 13.516 13 12.911 13 L3.089 13 C2.484 13 2.098 12.354 2.385 11.821 Z"/><path d="M6.07 7.62 L7.262 4.767 C7.536 4.112 8.464 4.112 8.738 4.767 L9.93 7.62"/>',
+  potato:'<path d="M3.5 6 C4.75 3.5 9 2.75 11.75 4.25 C14 5.5 14.25 9 12.5 11.25 C10.75 13.5 6.25 13.75 4 12 C2.25 10.75 2.5 8 3.5 6 Z"/><circle cx="6.25" cy="6.75" r="0.66" fill="currentColor" stroke="none"/><circle cx="10.25" cy="7.25" r="0.66" fill="currentColor" stroke="none"/><circle cx="7.5" cy="10.5" r="0.66" fill="currentColor" stroke="none"/>',
+  store:'<path d="M2.25 13.75 L2.25 7.124 C2.25 6.426 2.614 5.779 3.21 5.416 L6.96 3.133 C7.599 2.744 8.401 2.744 9.04 3.133 L12.79 5.416 C13.386 5.779 13.75 6.426 13.75 7.124 L13.75 13.75"/><path d="M5 13.75 L5 9.8 C5 9.358 5.358 9 5.8 9 L10.2 9 C10.642 9 11 9.358 11 9.8 L11 13.75"/><line x1="5" y1="11.5" x2="11" y2="11.5"/>',
+  steps:'<path d="M2 13 L2 11 L4 11 C4.552 11 5 10.552 5 10 L5 8 L7 8 C7.552 8 8 7.552 8 7 L8 5 L10 5 C10.552 5 11 4.552 11 4 L11 2 L13 2 C13.552 2 14 2.448 14 3 L14 13 C14 13.552 13.552 14 13 14 L3 14 C2.448 14 2 13.552 2 13 Z"/>',
+  waves:'<path d="M2 4.75 Q3 3.75 4 4.75 T6 4.75 T8 4.75 T10 4.75 T12 4.75 T14 4.75"/><path d="M2 8 Q3 7 4 8 T6 8 T8 8 T10 8 T12 8 T14 8"/><path d="M2 11.25 Q3 10.25 4 11.25 T6 11.25 T8 11.25 T10 11.25 T12 11.25 T14 11.25"/>',
+  form:'<path d="M5.25 2 L9 2 L12.75 5.75 L12.75 12 C12.75 13.105 11.855 14 10.75 14 L5.25 14 C4.145 14 3.25 13.105 3.25 12 L3.25 4 C3.25 2.895 4.145 2 5.25 2 Z"/><path d="M9 2 L9 4.75 C9 5.302 9.448 5.75 10 5.75 L12.75 5.75"/><line x1="5.5" y1="5.25" x2="7" y2="5.25"/><circle cx="6.25" cy="8.5" r="0.66" fill="currentColor" stroke="none"/><circle cx="9.75" cy="12" r="0.66" fill="currentColor" stroke="none"/><line x1="10.25" y1="8" x2="5.75" y2="12.5"/>',
+  flame:'<path d="M8 14 C5.25 14 3.5 12 3.5 9.5 C3.5 6.5 6.25 5 6.5 2 C8.75 3.25 10 5.25 10 7.25 C10.75 6.75 11.25 6 11.25 5.25 C12.25 6.25 12.5 8 12.5 9.5 C12.5 12 10.75 14 8 14 Z"/><path d="M8 11.5 C7 11.5 6.5 10.85 6.5 10.1 C6.5 9.25 7.35 8.75 8 7.75 C8.65 8.75 9.5 9.25 9.5 10.1 C9.5 10.85 9 11.5 8 11.5 Z"/>'
+};
+ICONS.leaf = '<path d="M3.5 12.5 C3 6.5 6.75 2.75 13.25 2.75 C13.25 9.25 9.5 13 3.5 12.5 Z"/><line x1="2.25" y1="13.75" x2="3.5" y2="12.5"/><line x1="3.5" y1="12.5" x2="8.75" y2="7.25"/>';
+ICONS.corn ='<path d="M8 1.75 C9.75 1.75 10.5 4 10.5 6.5 L10.5 8.5 L8 10.5 L5.5 8.5 L5.5 6.5 C5.5 4 6.25 1.75 8 1.75 Z"/><line x1="7.125" y1="5" x2="8.875" y2="5"/><path d="M8 14.25 C4.75 13.5 3 10.5 3.25 6.5 C4.25 8 5.5 9 8 10.5 C10.5 9 11.75 8 12.75 6.5 C13 10.5 11.25 13.5 8 14.25 Z"/>';
+ICONS.snow = '<line x1="8" y1="1.75" x2="8" y2="14.25"/><line x1="2.6" y1="4.875" x2="13.4" y2="11.125"/><line x1="2.6" y1="11.125" x2="13.4" y2="4.875"/>';
+ICONS.llama = '<path d="M4.25 11.25 V5.75 H2.75 C2 5.75 1.75 5.25 1.75 4.75 C1.75 3.75 2.5 3.25 3.5 3.25 H4.5 L4.75 1.5 L6.25 3 C6.5 3.5 6.75 4 6.75 5 V7.75 H12.25 C13.25 7.75 13.75 8.5 13.75 9.5 V11.25 Z"/><line x1="5.25" y1="11.25" x2="5.25" y2="14"/><line x1="12.75" y1="11.25" x2="12.75" y2="14"/>';
+const svgI = (k, w) => `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="${w||1.1}" stroke-linecap="round" stroke-linejoin="round">${ICONS[k]}</svg>`;
+const VERT = [
+  {z:0, icon:'leaf', crop:'Coca, fruit, chili peppers and some maize.', frost:1, word:'rare'},
+  {z:1, icon:'corn', crop:'Maize and potatoes. Maize struggles above about 3,500 m.', frost:2, word:'some years'},
+  {z:2, icon:'potato', badge:true, crop:'Only frost-hardy bitter potatoes.', frost:3, word:'often'},
+  {z:3, icon:'llama', crop:'Llamas and alpacas: meat, wool, pack animals.', frost:4, word:'most years'}
+];
+function vertHTML(){
+  return VERT.map((v, i) => { const z = ZONES[v.z];
+    return `<div class="vcol" style="--c:var(${z.c})" aria-hidden="true"><div class="vtop">
+      <span class="gico">${svgI(v.icon)}${v.badge ? `<span class="badge">${svgI('snow', 1.4)}</span>` : ''}</span>
+      <span class="vname">${z.name}</span><span class="valt">${z.alt}</span>
+      <span class="vcrop">${v.crop}</span>
+      <span class="vfrost">${[1,2,3,4].map(k => `<i class="${k<=v.frost?'on':''}"></i>`).join('')}<span>Frost: ${v.word}</span></span>
+    </div><div class="vrock" style="--h:${14 + i*30}px"></div></div>`; }).join('');
+}
+// term → [icon, colour token]: people & state in red/gold, land in zone colours, food in gold/green
+const TERM_ICON = {'Ayllu':['community','--z1'],'Inca':['sun','--gold'],'Mita':['pickaxe','--accent'],'Potosí':['coins','--accent'],
+  'Yunga, Quechua, Suni, Puna':['mountains','--z2'],'Chuño':['potato','--z1'],'Qollqa':['store','--gold'],'Andenes':['steps','--z0'],
+  'Waru waru':['waves','--ice'],'Tribute':['form','--accent'],'kcal per person per day':['flame','--good']};
+const glossHTML = () => TERMS.map(([t, d]) => { const [ic, c] = TERM_ICON[t];
+  return `<li><span class="gico" style="--c:var(${c})" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">${ICONS[ic]}</svg></span><div><b>${t}</b><p>${d}</p></div></li>`; }).join('');
+const YEARS = ['c. 1500','c. 1501','c. 1502','c. 1574','c. 1575','c. 1576'];
+const $ = id => document.getElementById(id);
+const fmt = x => Math.round(x).toLocaleString('en-US');
+const erf = x => { const t = 1/(1+.3275911*Math.abs(x)); const y = 1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-.284496736)*t+.254829592)*t*Math.exp(-x*x); return x>=0?y:-y; };
+// Share of households below 1,700 if household food varies around the average with a 30% coefficient of variation (model).
+const shortShare = I => 0.5*(1+erf((GOAL - I)/(0.3*I)/Math.SQRT2));
+const act = y => y <= 3 ? 1 : 2;
+
+let S;
+function fresh(){
+  return {phase:'intro', year:1, pop:1000, store:150, built:{yunga:false,quechua:false,suni:false,puna:false},
+    building:{yunga:false,quechua:false,suni:false,puna:false},
+    alloc:{yunga:4,quechua:4,suni:3,puna:1}, chuno:2, wage:0, yr:null, hist:[], pred:{}, hyp:'', who:'', anim:null};
+}
+S = fresh();
+
+function rollYear(){
+  const r = Math.random();
+  const line = r < .15 ? 4 : r < .45 ? 3 : r < .80 ? 2 : r < .97 ? 1 : 0; // zones with index >= line freeze
+  const drought = Math.random() < .2;
+  const hazy = drought ? Math.random() < .75 : Math.random() < .25;
+  return {line, drought, hazy};
+}
+// Labour is continuous: L crews-worth per 1,000 people. The board shows whole crews; `strength` carries the
+// rounding so population changes do not change food per person, and carries the mita: one man in seven is
+// away, so every crew works at 6/7 strength. The draft therefore always costs one seventh of farm output.
+function crews(){
+  const L = BASE_CREWS * S.pop / 1000;
+  const base = Math.max(4, Math.round(L));
+  const a2 = act(S.year) === 2;
+  const mita = a2 ? L / 7 : 0;
+  return {base, mita, avail: base, strength: (L / base) * (a2 ? 6/7 : 1)};
+}
+function cap(z){ return BASE_CAP + (S.built[z.key] && z.cap ? z.cap : 0); }
+function used(){
+  let u = S.chuno + S.wage;
+  for (const z of ZONES) u += S.alloc[z.key] + (S.building[z.key] ? 2 : 0);
+  return u;
+}
+function clampAlloc(){
+  const {avail} = crews();
+  if (act(S.year) === 1) S.wage = 0;
+  for (const z of ZONES) S.alloc[z.key] = Math.min(S.alloc[z.key], cap(z));
+  const order = [() => S.wage > 0 && S.wage--, () => S.chuno > 0 && S.chuno--,
+    ...ZONES.slice().reverse().map(z => () => S.alloc[z.key] > 0 && S.alloc[z.key]--)];
+  let guard = 100;
+  while (used() > avail && guard--) { for (const f of order) { if (used() <= avail) break; if (f()) break; } }
+  for (const z of ZONES) if (S.building[z.key] && used() > avail) S.building[z.key] = false;
+}
+
+/* ---------- plan panel ---------- */
+function renderPlan(){
+  const {avail, mita} = crews();
+  const free = avail - used();
+  $('planh').innerHTML = `Year <b>${S.year}</b> of 6 · ${YEARS[S.year-1]}`;
+  $('plansub').textContent = `${act(S.year)===1 ? 'Inca' : 'Colonial'} · ${avail} crews to assign`;
+  const eb = $('endyear'); eb.disabled = false; eb.textContent = `Harvest year ${S.year}`;
+  $('zones').innerHTML = ZONES.map((z,i) => {
+    const n = S.alloc[z.key], c = cap(z);
+    let b = '';
+    if (z.build) {
+      if (S.built[z.key]) b = `<span class="done">✓ ${z.what} built</span>`;
+      else b = `<button class="build" data-b="${z.key}" aria-pressed="${S.building[z.key]}" ${(!S.building[z.key] && free < 2) ? 'disabled' : ''}>${S.building[z.key] ? `Building ${z.what} (2 crews) · ready next year` : `${z.build} · 2 crews`}</button>`;
+    } else b = `<span class="risk">No building here</span>`;
+    return `<div class="zone" style="--zc:var(${z.c})">
+      <h3>${z.name}</h3>
+      <div class="crop">${z.crop} · ${z.alt}</div>
+      <div class="why">${z.why}</div>
+      <div class="risk">${z.risk}</div>
+      <div class="step"><button data-z="${z.key}" data-d="-1" aria-label="One fewer crew in ${z.name}" ${n<=0?'disabled':''}>−</button>
+        <output aria-live="polite">${n}</output>
+        <button data-z="${z.key}" data-d="1" aria-label="One more crew in ${z.name}" ${(n>=c||free<=0)?'disabled':''}>+</button><small>of ${c}</small></div>
+      ${b}</div>`;
+  }).join('');
+  let ex = `<div class="extra"><span class="lbl">Chuño crews</span>
+    <div class="step"><button data-x="chuno" data-d="-1" aria-label="One fewer chuño crew" ${S.chuno<=0?'disabled':''}>−</button><output>${S.chuno}</output>
+    <button data-x="chuno" data-d="1" aria-label="One more chuño crew" ${free<=0?'disabled':''}>+</button></div>
+    <p>Freeze-dry surplus food into the qollqa, up to ${CHUNO_CAP} kcal per person per day per crew. Surplus nobody preserves spoils.</p></div>`;
+  if (act(S.year) === 2) {
+    ex += `<div class="extra mita"><span class="lbl">Colonial mita: every crew one-seventh short</span>
+      <p>Your ayllu lies inside the mita region, so one man in seven is away at Potosí each year. You cannot change this. Every crew here works at 6/7 strength. The game adds the silver they mine to your community's output figure.</p></div>
+      <div class="extra"><span class="lbl">Potosí wage crews</span>
+      <div class="step"><button data-x="wage" data-d="-1" aria-label="One fewer wage crew" ${S.wage<=0?'disabled':''}>−</button><output>${S.wage}</output>
+      <button data-x="wage" data-d="1" aria-label="One more wage crew" ${free<=0?'disabled':''}>+</button></div>
+      <p>Each crew earns silver: GDP goes up and tribute drops 4 points, but they grow no food.</p></div>`;
+  }
+  $('extras').innerHTML = ex;
+  const f = $('free');
+  f.textContent = free > 0 ? `${free} crew${free>1?'s':''} unassigned` : 'All crews assigned';
+  f.className = 'free' + (free > 0 ? ' warn' : '');
+  renderHUD(); renderForecast();
+}
+document.addEventListener('click', e => {
+  const t = e.target.closest('button'); if (!t || S.phase !== 'plan') return;
+  const free = crews().avail - used();
+  if (t.dataset.z) { const z = ZONES.find(q => q.key === t.dataset.z), d = +t.dataset.d;
+    if (d > 0 && (free <= 0 || S.alloc[z.key] >= cap(z))) return;
+    S.alloc[z.key] = Math.max(0, S.alloc[z.key] + d); renderPlan(); }
+  else if (t.dataset.x) { const k = t.dataset.x, d = +t.dataset.d; if (d > 0 && free <= 0) return;
+    S[k] = Math.max(0, S[k] + d); renderPlan(); }
+  else if (t.dataset.b) { const k = t.dataset.b;
+    if (!S.building[k] && free < 2) return; S.building[k] = !S.building[k]; renderPlan(); }
+});
+
+function renderHUD(){
+  const h = S.hist[S.hist.length-1];
+  const intake = h ? h.intake : null;
+  const gdp = h ? h.gdp : null;
+  const pct = v => Math.max(0, Math.min(100, v / 2200 * 100));
+  const days = S.store / GOAL * 365;
+  $('hud').innerHTML = `
+    <span class="yr">Year <b>${S.phase==='intro'?'–':Math.min(S.year,6)}</b> of 6 · ${YEARS[Math.min(S.year,6)-1]} · ${act(S.year)===1?'Inca':'Colonial'}</span>
+    <span class="gauge" title="Food available per person per day last year"><span class="stat"><span>kcal/day</span><b>${intake==null?'–':fmt(intake)}</b></span>
+      <span class="gbar"><span class="gfill" style="width:${intake==null?0:pct(intake)}%;background:var(${intake!=null&&intake<GOAL?'--bad':'--good'})"></span>
+      <span class="gmark" style="left:${pct(GOAL)}%" title="Goal 1,700 (course teaching figure, unsourced)"></span><span class="gmark col" style="left:${pct(COLONIAL)}%" title="1,200: course teaching figure for colonial years (unsourced)"></span></span></span>
+    <span class="stat"><span>GDP/person</span><b>${gdp==null?'–':'$'+fmt(gdp)}</b></span>
+    <span class="stat"><span>People</span><b>${fmt(S.pop)}</b></span>
+    <span class="stat"><span>Qollqa</span><b>${fmt(days)} days</b></span>`;
+}
+function renderForecast(){
+  const el = $('forecast');
+  if (S.phase !== 'plan') { el.hidden = true; return; }
+  el.hidden = false;
+  el.innerHTML = S.yr.hazy
+    ? `<b>June forecast</b> The Pleiades rose hazy and dim. Elders read this as a sign of poor rains. In this game, a hazy year turns out dry a bit under half the time.`
+    : `<b>June forecast</b> The Pleiades rose bright and clear. Elders expect normal rains. In this game they are right about nine times in ten.`;
+}
+
+/* ---------- year resolution ---------- */
+function harvest(){
+  const Y = S.yr, a2 = act(S.year) === 2, {mita, strength} = crews();
+  const per = 1000 / S.pop, storeBefore = S.store;
+  let H = 0, lost = 0, saved = 0; const zr = [];
+  ZONES.forEach((z,i) => {
+    const prot = S.built[z.key] && !!z.build;
+    const base = S.alloc[z.key] * strength * z.y * (prot ? 1.1 : 1) * (Y.drought ? .75 : 1) * per;
+    const froze = i >= Y.line;
+    const rate = froze ? (prot ? z.lo : z.hi) : 0;
+    const got = base * (1 - rate);
+    H += got; lost += base * rate;
+    if (froze && prot) saved += base * (z.hi - z.lo);
+    zr.push({got, loss: base*rate, froze});
+  });
+  const tRate = a2 ? Math.max(.04, .24 - .04 * S.wage) : 0;
+  const tribute = H * tRate;
+  let food = H - tribute, toStore = 0, spoiled = 0, draw = 0, intake;
+  if (food >= GOAL) {
+    const sur = food - GOAL;
+    toStore = Math.min(sur, S.chuno * CHUNO_CAP * per);
+    const extra = Math.min(sur - toStore, 200);
+    spoiled = sur - toStore - extra;
+    S.store += toStore; intake = GOAL + extra;
+  } else {
+    draw = Math.min(S.store, GOAL - food); S.store -= draw; intake = food + draw;
+  }
+  const avail = intake + spoiled; // food on hand before the 1,900 eating cap; used for the household estimate
+  const silver = a2 ? (mita + S.wage) * 12 * per : 0;
+  const gdp = 340 + .045 * H + silver;
+  // Same crews and weather without the colonial rules (no draft, no tribute, no silver), for the end screen.
+  let cf = null;
+  if (a2) {
+    const Hc = H / (6/7);
+    const cfIntake = Hc >= GOAL ? Math.min(GOAL + 200, Hc) : Hc + Math.min(storeBefore, GOAL - Hc);
+    cf = {intake: cfIntake, gdp: 340 + .045 * Hc, Hc};
+  }
+  const popBefore = S.pop;
+  if (intake < 1500) S.pop *= 1 - (1500 - intake) / 1500 * .2;
+  else if (intake >= 1800) S.pop *= 1.01;
+  S.store *= popBefore / S.pop; // the store is food per person; same food, different number of people
+  const builtNow = ZONES.filter(z => S.building[z.key]).map(z => z.what);
+  for (const z of ZONES) if (S.building[z.key]) { S.built[z.key] = true; S.building[z.key] = false; }
+  const rec = {year:S.year, act:act(S.year), H, lost, saved, tribute, tRate, toStore, spoiled, draw, intake, avail, gdp, silver, cf,
+    pop:S.pop, popBefore, mita, wage:S.wage, line:Y.line, drought:Y.drought, hazy:Y.hazy, zr, builtNow,
+    idle: 0, storeDays: S.store / GOAL * 365};
+  S.hist.push(rec);
+  return rec;
+}
+$('endyear').addEventListener('click', () => {
+  if (S.phase !== 'plan') return;
+  const idle = crews().avail - used();
+  const rec = harvest(); rec.idle = idle;
+  S.phase = 'anim';
+  S.anim = {t0: performance.now(), rec, dur: matchMedia('(prefers-reduced-motion: reduce)').matches ? 300 : 2400};
+  const b = $('endyear'); b.disabled = true; b.textContent = 'Harvesting…';
+  renderHUD(); renderForecast(); bringIntoView($('cv'));
+  setTimeout(() => { S.anim.done = true; showSummary(rec); }, S.anim.dur);
+});
+
+const lineName = l => l >= 4 ? null : ZONES[l].name;
+function whyList(r){
+  const out = [];
+  const zone = lineName(r.line);
+  if (r.line === 4) out.push('No frost reached your fields this year.');
+  else out.push(`Frost reached down to the ${zone} zone${r.line===3?'':' and everything above it'}, destroying ${fmt(r.lost)} kcal per person per day.`);
+  if (r.saved > 0) out.push(`Your terraces and raised fields saved ${fmt(r.saved)}.`);
+  else if (r.line < 3) out.push('In this game, terraces or waru waru in the frozen zones would have cut that loss by two thirds.');
+  if (r.drought) out.push(`A dry year (what we now link to El Niño) cut every harvest by a quarter.${r.hazy ? ' The hazy Pleiades warned you.' : ' The Pleiades gave no warning.'}`);
+  else if (r.hazy) out.push('The Pleiades looked hazy, but the rains came anyway.');
+  if (r.tribute > 0) out.push(`Colonial tribute took ${fmt(r.tribute)} (${Math.round(r.tRate*100)}% of the harvest).`);
+  if (r.mita) out.push(`One man in seven was away at Potosí on the mita, so every crew worked one-seventh short${r.wage?`, and ${r.wage} more crew${r.wage>1?'s':''} went for wages`:''}.`);
+  if (r.draw > 0) out.push(`The qollqa covered ${fmt(r.draw)} of the shortfall.`);
+  if (r.spoiled > 1) out.push(`${fmt(r.spoiled)} of surplus spoiled because no one freeze-dried it.`);
+  if (r.idle > 0) out.push(`${r.idle} crew${r.idle>1?'s':''} sat idle.`);
+  if (r.builtNow.length) out.push(`New ${r.builtNow.join(' and ')} will protect next year's crops.`);
+  return out;
+}
+function showSummary(r){
+  const ok = r.intake >= GOAL;
+  const dPop = r.pop - r.popBefore;
+  const rows = [
+    ['Grown (before frost)', `${fmt(r.H + r.lost)}`, ''],
+    r.lost > 0 ? ['Lost to frost', `−${fmt(r.lost)}`, 'neg'] : null,
+    r.tribute > 0 ? ['Colonial tribute', `−${fmt(r.tribute)}`, 'neg'] : null,
+    r.toStore > 0 ? ['Freeze-dried into the qollqa', `−${fmt(r.toStore)}`, ''] : null,
+    r.draw > 0 ? ['Taken from the qollqa', `+${fmt(r.draw)}`, 'pos'] : null,
+    r.spoiled > 1 ? ['Spoiled', `−${fmt(r.spoiled)}`, 'neg'] : null,
+  ].filter(Boolean);
+  openModal(`
+    <span class="eyebrow">Year ${r.year} · ${YEARS[r.year-1]} · harvest report</span>
+    <h2 id="mt">${ok ? 'Enough food on average' : 'Not enough food on average'} <span class="chip ${ok?'ok':'low'}">${fmt(r.intake)} kcal/day</span></h2>
+    <table class="ledger"><tbody>
+      ${rows.map(x => `<tr><td>${x[0]}</td><td class="${x[2]}">${x[1]}</td></tr>`).join('')}
+      <tr class="total"><td>Food available per person per day (goal 1,700)</td><td>${fmt(r.intake)}</td></tr>
+      <tr><td>Households below 1,700 kcal (model guess)</td><td class="${shortShare(r.avail)>.5?'neg':''}">${Math.round(shortShare(r.avail)*100)}%</td></tr>
+      <tr><td>GDP per person (model, 1990 Int$)</td><td>$${fmt(r.gdp)}${r.silver?` <span class="mono" style="color:var(--muted)">incl. $${fmt(r.silver)} silver</span>`:''}</td></tr>
+      <tr><td>People</td><td>${fmt(r.pop)} <span class="${dPop<-0.5?'neg':dPop>0.5?'pos':''}">(${dPop>=0?'+':'−'}${fmt(Math.abs(dPop))})</span></td></tr>
+      <tr><td>Qollqa holds</td><td>${fmt(r.storeDays)} days of food</td></tr>
+    </tbody></table>
+    <p class="eyebrow" style="margin-top:4px">All food figures are kcal per person per day</p>
+    <ul class="why">${whyList(r).map(s => `<li>${s}</li>`).join('')}</ul>
+    <button class="btn" id="next">${r.year === 3 ? 'Continue' : r.year === 6 ? 'See your results' : `Plan year ${r.year+1}`}</button>`);
+  $('next').onclick = () => { closeModal(); if (r.year === 3) showTransition(); else if (r.year === 6) showEnd(); else nextYear(); };
+}
+function nextYear(){
+  const prevBase = S.lastBase ?? BASE_CREWS, usedBefore = used();
+  S.year++; S.yr = rollYear(); S.phase = 'plan'; S.anim = null; clampAlloc();
+  const {base} = crews(), removed = usedBefore - used(), diff = base - prevBase;
+  S.lastBase = base;
+  const msgs = [];
+  if (diff < 0) msgs.push(`${-diff} fewer crew${diff < -1 ? 's' : ''} this year: hunger and disease cost lives.${removed > 0 ? ` The board took ${removed} off your plan, from chuño first, then the highest fields. Check your plan.` : ''}`);
+  else if (diff > 0) msgs.push(`${diff} more crew${diff > 1 ? 's' : ''} this year: the community grew. Assign ${diff > 1 ? 'them' : 'it'} below.`);
+  if (S.year === 4) msgs.push('From now on every crew works one-seventh short, because one man in seven is at Potosí.');
+  const n = $('notice'); n.textContent = msgs.join(' '); n.hidden = !msgs.length;
+  $('p-plan').hidden = false; renderPlan(); bringIntoView($('cv'));
+}
+
+function showTransition(){
+  S.phase = 'event';
+  openModal(`<span class="eyebrow">Seventy years pass</span>
+    <h2 id="mt">1573: the colonial mita</h2>
+    <p>In 1545 Spaniards began mining Potosí, a mountain of silver in today’s Bolivia. In the 1570s Viceroy Francisco de Toledo turned the old Inca labour duty, the mita, into a forced draft: each year one adult man in seven from the provinces of the mita region had to work the mines, often hundreds of kilometres from home.</p>
+    <p>Epidemics of smallpox and measles have also swept the Andes, and many Inca storehouses were emptied during the conquest and civil wars.</p>
+    <table class="ledger"><tbody>
+      <tr><td>People (the game uses a 12% loss; historians estimate the real fall from the 1520s to the 1570s at well over half)</td><td class="neg">${fmt(S.pop)} → ${fmt(S.pop*.88)}</td></tr>
+      <tr><td>Qollqa (half the food lost; shared among fewer people)</td><td class="neg">${fmt(S.store/GOAL*365)} → ${fmt(S.store*.5/.88/GOAL*365)} days</td></tr>
+      <tr><td>Men away at Potosí each year, so every crew works one-seventh short</td><td class="neg">1 in 7</td></tr>
+      <tr><td>Colonial tribute (game rule: 24% of the harvest; the real tribute was a fixed amount per adult man, paid in silver and goods)</td><td class="neg">24%</td></tr>
+    </tbody></table>
+    <p>Watch the two numbers at the top of the screen from now on.</p>
+    <button class="btn" id="go">Plan year 4 under colonial rule</button>`, true);
+  $('go').onclick = () => { S.pop *= .88; S.store *= .5 / .88; closeModal(); nextYear(); };
+}
+
+/* ---------- report card (inline, replaces the crew board while it is open) ---------- */
+function openModal(html, big){
+  $('p-plan').hidden = true;
+  const c = $('card'); c.className = 'card' + (big ? ' big' : ''); c.innerHTML = html; c.hidden = false;
+  const b = c.querySelector('.btn'); if (b) b.focus({preventScroll:true});
+  bringIntoView($('cv'));
+}
+function closeModal(){ $('card').hidden = true; }
+function bringIntoView(el){
+  try { el.scrollIntoView({block:'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}); } catch (e) {}
+}
+
+/* ---------- end screen ---------- */
+const avg = (arr, k) => arr.reduce((s,r) => s + r[k], 0) / arr.length;
+function chart(key, lo, hi, refs, color, label, unit){
+  const W = 320, H = 200, L = 44, R = 10, T = 18, B = 30;
+  const x = i => L + (W-L-R) * (i / 5), y = v => T + (H-T-B) * (1 - (Math.max(lo,Math.min(hi,v)) - lo) / (hi - lo));
+  const pts = S.hist.map((r,i) => [x(i), y(r[key])]);
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${label} by year"><text x="${L}" y="11" style="fill:var(--ink);font:700 11px var(--f-mono)">${label}</text>`;
+  const ticks = 4;
+  for (let k = 0; k <= ticks; k++) { const v = lo + (hi-lo)*k/ticks;
+    s += `<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" style="stroke:var(--line)"/><text x="${L-6}" y="${y(v)+4}" text-anchor="end" style="fill:var(--muted);font:10px var(--f-mono)">${unit}${fmt(v)}</text>`; }
+  const mid = (x(2)+x(3))/2;
+  s += `<rect x="${mid}" y="${T}" width="${W-R-mid}" height="${H-T-B}" style="fill:var(--accent);opacity:.07"/><line x1="${mid}" x2="${mid}" y1="${T}" y2="${H-B}" style="stroke:var(--accent);stroke-dasharray:3 3"/>`;
+  s += `<text x="${mid+4}" y="${T+11}" style="fill:var(--accent);font:600 10px var(--f-mono)">1573 mita</text>`;
+  // refs: {v, t, side: 'a1' | 'a2' | undefined (both)}; a dotted line marks a figure with no source
+  for (const r of refs) {
+    const x1 = r.side === 'a2' ? mid : L, x2 = r.side === 'a1' ? mid : W-R;
+    s += `<line x1="${x1}" x2="${x2}" y1="${y(r.v)}" y2="${y(r.v)}" style="stroke:var(--ink);stroke-dasharray:${r.weak ? '1.5 3' : '5 4'};opacity:.7"/><text x="${r.side === 'a2' ? x2-3 : x1+4}" y="${y(r.v)-4}" text-anchor="${r.side === 'a2' ? 'end' : 'start'}" style="fill:var(--ink);font:10px var(--f-body);opacity:.8">${r.t}</text>`;
+  }
+  for (let i = 0; i < 6; i++) s += `<text x="${x(i)}" y="${H-12}" text-anchor="middle" style="fill:var(--muted);font:10px var(--f-mono)">${i+1}</text>`;
+  s += `<text x="${mid}" y="${H-1}" text-anchor="middle" style="fill:var(--accent);font:10px var(--f-body)">~70 years</text>`;
+  s += `<text x="${L}" y="${H-1}" style="fill:var(--muted);font:10px var(--f-body)">year</text>`;
+  // the line breaks at the 70-year gap between year 3 and year 4
+  for (const seg of [pts.slice(0,3), pts.slice(3)]) if (seg.length > 1)
+    s += `<polyline points="${seg.map(p=>p.join(',')).join(' ')}" style="fill:none;stroke:var(${color});stroke-width:2.5"/>`;
+  pts.forEach((p,i) => { const v = S.hist[i][key], off = v < lo || v > hi;
+    s += `<circle cx="${p[0]}" cy="${p[1]}" r="${i===5?4.5:3.2}" style="fill:${off?'var(--surface)':`var(${color})`};stroke:${off?`var(${color})`:'var(--surface)'};stroke-width:1.5"><title>${unit}${fmt(v)}${off?' (off the scale)':''}</title></circle>`; });
+  if (S.hist.some(r => r[key] < lo || r[key] > hi)) s += `<text x="${W-R}" y="11" text-anchor="end" style="fill:var(--muted);font:10px var(--f-body)">hollow = off scale</text>`;
+  return s + '</svg>';
+}
+function dir(a, b, tol){ return b - a > tol ? 'rise' : a - b > tol ? 'fall' : 'stay'; }
+function showEnd(){
+  S.phase = 'end';
+  $('p-plan').hidden = true; renderForecast();
+  const a1 = S.hist.filter(r => r.act === 1), a2 = S.hist.filter(r => r.act === 2);
+  const k1 = avg(a1,'intake'), k2 = avg(a2,'intake'), g1 = avg(a1,'gdp'), g2 = avg(a2,'gdp');
+  const dg = dir(g1, g2, 5), dk = dir(k1, k2, 50);
+  const right = (p, d) => p === d ? '<span class="chip ok">your result matched</span>' : `<span class="chip low">your result: ${d}</span>`;
+  const both = g2 >= GDP_ANCHOR && k2 >= GOAL && dk !== 'fall';
+  const share = arr => Math.round(arr.reduce((s,r) => s + shortShare(r.avail), 0) / arr.length * 100);
+  const cfK = a2.reduce((s,r) => s + r.cf.intake, 0) / a2.length, cfG = a2.reduce((s,r) => s + r.cf.gdp, 0) / a2.length;
+  // Exact decomposition, averaged over years 4-6:
+  //   food:  grown without colonial rules (Hc) − mita (Hc − H) − tribute + storehouse/spoilage/cap (intake − (H − tribute)) = intake
+  //   GDP:   GDP without colonial rules − lost harvest value (.045·(Hc − H)) + silver = gdp
+  const am = f => a2.reduce((s,r) => s + f(r), 0) / a2.length;
+  const grownCf = am(r => r.cf.Hc), draftCost = am(r => r.cf.Hc - r.H), tribK = avg(a2,'tribute'), silv = avg(a2,'silver');
+  const storeEff = am(r => r.intake - (r.H - r.tribute)), lostVal = am(r => .045 * (r.cf.Hc - r.H));
+  const sgn = v => (v >= 0 ? '+' : '−') + fmt(Math.abs(v));
+  const p = $('p-end'); p.hidden = false;
+  p.innerHTML = `
+    <span class="eyebrow">Results</span>
+    <h2 style="font-size:28px;font-stretch:112%;text-transform:uppercase">${both ? 'You kept both' : dg === 'rise' && dk === 'fall' ? 'Output rose. People ate less.' : 'Six years on the mountain'}</h2>
+    <div class="cmp">
+      <div><span>Inca years, food available per person</span><b>${fmt(k1)} kcal</b></div>
+      <div><span>Colonial years, food available per person</span><b class="${k2<k1-50?'neg':''}">${fmt(k2)} kcal</b></div>
+      <div><span>Inca years, GDP per person</span><b>$${fmt(g1)}</b></div>
+      <div><span>Colonial years, GDP per person</span><b class="${g2>g1+5?'pos':''}">$${fmt(g2)}</b></div>
+      <div><span>Households below 1,700 kcal, Inca → colonial (model guess)</span><b>${share(a1)}% → ${share(a2)}%</b></div>
+    </div>
+    <div class="charts">
+      ${chart('intake', 800, 2000, [{v:GOAL,t:'1,700: course figure (unsourced)',side:'a1',weak:true},{v:COLONIAL,t:'1,200: course figure (unsourced)',side:'a2',weak:true}], '--good', 'Food available, kcal per person per day', '')}
+      ${chart('gdp', 360, 520, [{v:GDP_ANCHOR,t:'Maddison 1500: 416 (estimate)',side:'a1'},{v:438,t:'Maddison 1600: 438',side:'a2'}], '--gold', 'GDP per person, 1990 Int$ (model)', '$')}
+    </div>
+    <p class="eyebrow" style="margin:0">Dotted lines: figures with no confirmed source. Dashed: Maddison's estimates for Latin America as a whole. The game's GDP formula was tuned to start near 416.</p>
+    <div>
+      <h3 style="font-size:18px;margin-bottom:6px">What the colonial rules did to your years 4–6</h3>
+      <p style="margin:0 0 8px;max-width:65ch;font-size:14px">With the same crews and weather but no colonial rules, you would have had about <b>${fmt(cfK)} kcal</b> per person a day and <b>$${fmt(cfG)}</b> GDP per person. Here is where the difference went (averages over years 4–6):</p>
+      <div class="charts" style="gap:12px 24px">
+      <table class="ledger"><tbody>
+        <tr><td>Food grown, without colonial rules</td><td>${fmt(grownCf)}</td></tr>
+        <tr><td>Mita: every crew one-seventh short</td><td class="neg">−${fmt(draftCost)}</td></tr>
+        <tr><td>Tribute</td><td class="neg">−${fmt(tribK)}</td></tr>
+        <tr><td>Storehouse, spoilage and the eating cap</td><td class="${storeEff<0?'neg':'pos'}">${sgn(storeEff)}</td></tr>
+        <tr class="total"><td>Food available (kcal/day)</td><td>${fmt(k2)}</td></tr>
+      </tbody></table>
+      <table class="ledger"><tbody>
+        <tr><td>GDP per person, without colonial rules</td><td>$${fmt(cfG)}</td></tr>
+        <tr><td>Value of the harvest the mita cost</td><td class="neg">−$${fmt(lostVal)}</td></tr>
+        <tr><td>Silver from Potosí added to output</td><td class="pos">+$${fmt(silv)}</td></tr>
+        <tr class="total"><td>GDP per person</td><td>$${fmt(g2)}</td></tr>
+      </tbody></table>
+      </div>
+      <p style="margin:8px 0 0;max-width:65ch;font-size:14px;color:var(--muted)">These are the game's rules, not a finding: the model was built so the mita and tribute take food and silver adds output. Your choices change how big the gap is, not which way it goes. Rows may be off by 1 from rounding.</p>
+    </div>
+    <div>
+      <h3 style="font-size:18px;margin-bottom:6px">Your predictions</h3>
+      <ul class="why">
+        <li>GDP per person would <b>${S.pred.g}</b>. ${right(S.pred.g, dg)}</li>
+        <li>Calories per person would <b>${S.pred.k}</b>. ${right(S.pred.k, dk)}</li>
+        ${S.hyp ? `<li>Your reasoning: “${esc(S.hyp)}”</li>` : ''}
+      </ul>
+    </div>
+    <div>
+      <h3 style="font-size:18px;margin-bottom:6px">What the record suggests</h3>
+      <p style="margin:0;max-width:65ch">Maddison's estimates for Latin America as a whole have GDP per person rising slightly, from 416 in 1500 to 438 in 1600 (1990 Int$), even as total output and population fell. For this period they are informed guesses, not measurements. Silver is counted as output where it was mined; home-grown food counts too, but at low farm prices, so a fall in food can hide behind a rise in silver. The course benchmark of 1,700 falling to 1,200 kcal a day has no primary source we could confirm, so treat it as a teaching figure. What is well supported: colonial labour drafts pulled workers out of the farming cycle, populations collapsed, and village studies (Wernke &amp; Whitmore 2009) find many households short of food even where the community as a whole produced a surplus. GDP per person is an average of output. It says nothing about who eats.</p>
+    </div>
+    <div class="actions">
+      <span class="free" id="copymsg">Copy a text report to paste into your class page.</span>
+      <span style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn ghost" id="again">Play again</button><button class="btn" id="copy">Copy report</button></span>
+    </div>
+    <textarea id="report" rows="8" readonly hidden></textarea>`;
+  $('again').onclick = restart;
+  $('copy').onclick = () => {
+    const t = reportText(k1,k2,g1,g2,dg,dk), ta = $('report'); ta.value = t;
+    const ok = () => { $('copymsg').textContent = 'Copied.'; };
+    const fail = () => { ta.hidden = false; ta.focus(); ta.select(); $('copymsg').textContent = 'Select the text below and copy it.'; };
+    try { navigator.clipboard.writeText(t).then(ok, fail); } catch (e) { fail(); }
+  };
+  p.scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block:'start'});
+}
+function esc(s){ return s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function reportText(k1,k2,g1,g2,dg,dk){
+  const L = [`Frost and Silver: report${S.who?` by ${S.who}`:''}`, '',
+    `Prediction: after the mita, GDP per person would ${S.pred.g} and calories would ${S.pred.k}.`,
+    S.hyp ? `Reasoning: ${S.hyp}` : '', '',
+    'Year | food available kcal/day | GDP $ | people | frost reached | drought',
+    ...S.hist.map(r => `${r.year} ${YEARS[r.year-1]} | ${fmt(r.intake)} | ${fmt(r.gdp)} | ${fmt(r.pop)} | ${r.line===4?'none':ZONES[r.line].name} | ${r.drought?'yes':'no'}`), '',
+    `Inca years average: ${fmt(k1)} kcal, $${fmt(g1)}. Colonial years average: ${fmt(k2)} kcal, $${fmt(g2)}.`,
+    `Result: GDP ${dg}, calories ${dk}.`, '',
+    'Game adapted from "Week 2: Tahuantinsuyu Harvest & Frost Defense" by Amnuayvit Thitibordin, CC BY-NC-SA 4.0.'];
+  return L.filter((l,i,a) => !(l === '' && a[i-1] === '')).join('\n');
+}
+function restart(){
+  S = fresh(); $('p-end').hidden = true; $('p-plan').hidden = true; $('card').hidden = true; $('notice').hidden = true; $('p-intro').hidden = false;
+  renderHUD(); renderForecast(); window.scrollTo({top:0});
+}
+
+/* ---------- intro ---------- */
+$('start').addEventListener('click', () => {
+  const g = document.querySelector('input[name=pg]:checked'), k = document.querySelector('input[name=pk]:checked');
+  if (!g || !k) { $('intro-msg').textContent = 'Pick both predictions first.'; $('intro-msg').classList.add('warn'); return; }
+  S.pred = {g: g.value, k: k.value}; S.hyp = $('hyp').value.trim(); S.who = $('who').value.trim();
+  $('p-intro').hidden = true; $('p-plan').hidden = false;
+  S.year = 1; S.yr = rollYear(); S.phase = 'plan'; clampAlloc(); renderPlan();
+});
+
+/* ---------- canvas ---------- */
+const cv = $('cv'), ctx = cv.getContext('2d');
+let W = 0, Hh = 0, col = {};
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+function readColors(){ for (const n of ['--sky-top','--sky-bot','--far','--rock','--rock2','--soil','--snow','--ice','--ink','--muted','--accent','--gold','--good','--bad','--surface','--z0','--z1','--z2','--z3']) col[n] = css(n); }
+function resize(){
+  const r = cv.getBoundingClientRect(), d = Math.min(2, devicePixelRatio || 1);
+  W = r.width; Hh = r.height; cv.width = Math.round(W*d); cv.height = Math.round(Hh*d); ctx.setTransform(d,0,0,d,0,0);
+  hudOver = getComputedStyle($('hud')).position === 'absolute'; // on phones the HUD sits above the canvas instead
+}
+let hudOver = true;
+new ResizeObserver(resize).observe(cv);
+readColors();
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', readColors);
+new MutationObserver(readColors).observe(document.documentElement, {attributes:true, attributeFilter:['data-theme']});
+
+const ground = i => Math.min(Hh * (0.84 - i * 0.15), Hh - 40 - i * Hh * 0.15); // keep 40px under Yunga for its labels
+function shelf(i){ const zw = W/4; return [i*zw + zw*.16, (i+1)*zw - zw*.12]; }
+function seeded(n){ let s = n; return () => (s = (s*16807) % 2147483647) / 2147483647; }
+
+function draw(t){
+  if (!W) return;
+  const g = ctx.createLinearGradient(0,0,0,Hh); g.addColorStop(0,col['--sky-top']); g.addColorStop(1,col['--sky-bot']);
+  ctx.fillStyle = g; ctx.fillRect(0,0,W,Hh);
+  const hudH = hudOver ? Math.min(52, Hh*.2) : 0;
+  // far range
+  ctx.fillStyle = col['--far']; ctx.beginPath(); ctx.moveTo(0,Hh*.55);
+  const fr = seeded(7); for (let x=0;x<=W;x+=W/9) ctx.lineTo(x, Hh*(.28+fr()*.22)+hudH*.3); ctx.lineTo(W,Hh); ctx.lineTo(0,Hh); ctx.fill();
+  // Potosí in act 2
+  if (act(S.year) === 2 && S.phase !== 'intro') {
+    const px = W*.66, py = hudH + Hh*.1, pw = W*.14;
+    ctx.fillStyle = col['--accent']; ctx.globalAlpha = .55; ctx.beginPath(); ctx.moveTo(px-pw,Hh*.7); ctx.lineTo(px,py); ctx.lineTo(px+pw,Hh*.7); ctx.fill(); ctx.globalAlpha = 1;
+    ctx.fillStyle = col['--ink']; ctx.font = `600 ${Math.max(10,W/70)}px "IBM Plex Mono", monospace`; ctx.textAlign = 'center';
+    ctx.fillText('POTOSÍ', px, py - 6);
+    const {mita} = crews(); const n = mita + S.wage;
+    for (let k=0;k<n;k++){ figure(px - pw*.3 + k*W*.018, py + Hh*.16 + (k%2)*4, col['--accent'], .8); }
+  }
+  // main mountain profile
+  ctx.fillStyle = col['--rock']; ctx.beginPath(); ctx.moveTo(0,Hh); ctx.lineTo(0,ground(0));
+  for (let i=0;i<4;i++){ const [a,b] = shelf(i); ctx.lineTo(a,ground(i)); ctx.lineTo(b,ground(i)); }
+  ctx.lineTo(W,ground(3)-Hh*.04); ctx.lineTo(W,Hh); ctx.fill();
+  // shelves (soil)
+  for (let i=0;i<4;i++){
+    const z = ZONES[i], [a,b] = shelf(i), gy = ground(i);
+    ctx.fillStyle = col['--soil']; ctx.fillRect(a, gy, b-a, 6);
+    // terraces / waru
+    if (S.built[z.key] || S.building[z.key]) {
+      const done = S.built[z.key];
+      ctx.globalAlpha = done ? 1 : .45;
+      if (z.what === 'terraces') { // stepped walls on the slope below
+        ctx.strokeStyle = col['--rock2']; ctx.lineWidth = 2.5;
+        const x0 = i===0 ? a - W*.04 : shelf(i-1)[1], y0 = i===0 ? gy + Hh*.08 : ground(i-1);
+        for (let k=1;k<=4;k++){ const f=k/5; const x=x0+(a-x0)*f, y=y0+(gy-y0)*f; ctx.beginPath(); ctx.moveTo(x-6,y); ctx.lineTo(x+W*.035,y); ctx.stroke(); }
+      } else {
+        for (let x=a;x<b;x+=10){ ctx.fillStyle = col['--ice']; ctx.fillRect(x, gy, 4, 5); }
+      }
+      ctx.globalAlpha = 1;
+    }
+    // plants
+    const n = Math.min(21, S.alloc[z.key]*3), rnd = seeded(31+i);
+    for (let k=0;k<n;k++){
+      const x = a + 8 + (b-a-16)*((k+.5)/Math.max(n,1)), h = 8 + rnd()*6, sw = Math.sin(t/700 + k)*1.5;
+      ctx.strokeStyle = col['--good']; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(x,gy); ctx.lineTo(x+sw,gy-h); ctx.stroke();
+      ctx.fillStyle = col[z.c]; ctx.beginPath(); ctx.arc(x+sw, gy-h, 2.6, 0, 7); ctx.fill();
+    }
+    // crews
+    const nc = S.alloc[z.key];
+    for (let k=0;k<nc;k++) figure(a + 6 + k*9, gy - 2 - (k%2)*2, col['--ink'], .75);
+    // labels
+    // centred under the shelf, on the rock face
+    const fs = Math.max(10, Math.min(14, W/58)), cx = (a + b) / 2;
+    const y1 = Math.min(gy + 24, Hh - fs * 2 - 6), y2 = y1 + fs + 4;
+    ctx.textAlign = 'center';
+    // hierarchy: name is the brightest, heaviest mark; altitude is smaller and dimmer
+    ctx.fillStyle = col['--snow']; ctx.font = `900 ${fs+1}px "Archivo", sans-serif`; ctx.fillText(z.name.toUpperCase(), cx, y1);
+    ctx.globalAlpha = .62; ctx.font = `500 ${fs-2}px "IBM Plex Mono", monospace`;
+    ctx.fillText(z.alt, cx, y2); ctx.globalAlpha = 1;
+  }
+  // snow cap on the right
+  ctx.fillStyle = col['--snow']; ctx.beginPath(); ctx.moveTo(W*.94, ground(3)-Hh*.03); ctx.lineTo(W, ground(3)-Hh*.04); ctx.lineTo(W, ground(3)+4); ctx.lineTo(W*.95,ground(3)+2); ctx.fill();
+
+  // resolution animation
+  if (S.anim) {
+    const r = S.anim.rec, p = Math.min(1, (t - S.anim.t0) / S.anim.dur);
+    if (r.drought) { ctx.fillStyle = col['--gold']; ctx.globalAlpha = .18 * Math.min(1, p*3); ctx.fillRect(0,0,W,Hh); ctx.globalAlpha = 1; }
+    for (let i=0;i<4;i++){
+      if (!r.zr[i].froze) continue;
+      const x0 = i*W/4, gy = ground(i), fall = Math.min(1, p*2);
+      ctx.fillStyle = col['--ice']; ctx.globalAlpha = .28 * fall; ctx.fillRect(x0, hudH, W/4, gy - hudH + 8); ctx.globalAlpha = 1;
+      const rnd = seeded(97+i);
+      for (let k=0;k<26;k++){ const x = x0 + rnd()*W/4, y0 = hudH + rnd()*(gy-hudH); const y = hudH + ((y0 - hudH + p*(gy-hudH)*1.6) % (gy-hudH));
+        ctx.fillStyle = col['--snow']; ctx.fillRect(x, y, 2.4, 2.4); }
+    }
+    if (p > .45) {
+      const q = Math.min(1, (p - .45) / .4);
+      for (let i=0;i<4;i++){
+        const z = r.zr[i]; if (!S.hist.length) continue;
+        const [a,b] = shelf(i), gy = ground(i), x = (a+b)/2, y = gy - 26 - q*16;
+        ctx.globalAlpha = Math.min(1, q*2); ctx.textAlign = 'center';
+        ctx.font = `600 ${Math.max(11, W/60)}px "IBM Plex Mono", monospace`;
+        if (z.got > 0.5) { ctx.fillStyle = col['--good']; ctx.fillText('+' + fmt(z.got), x, y); }
+        if (z.loss > 0.5) { ctx.fillStyle = col['--bad']; ctx.fillText('−' + fmt(z.loss) + ' frost', x, y + 15); }
+        ctx.globalAlpha = 1;
+      }
+    }
+  }
+}
+function figure(x, y, c, s){
+  ctx.fillStyle = c; ctx.beginPath(); ctx.arc(x, y - 11*s, 2.6*s+.6, 0, 7); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(x-3*s, y); ctx.lineTo(x+3*s, y); ctx.lineTo(x+1.6*s, y-8*s); ctx.lineTo(x-1.6*s, y-8*s); ctx.fill();
+}
+function loop(t){ try { draw(t); } catch(e) {} requestAnimationFrame(loop); }
+requestAnimationFrame(loop);
+$('gloss-intro').innerHTML = glossHTML(); $('gloss-plan').innerHTML = glossHTML(); $('vert').innerHTML = vertHTML();
+renderHUD();
+})();
+</script>
