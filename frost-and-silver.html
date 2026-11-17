@@ -151,6 +151,7 @@ input[type=radio]{width:20px;height:20px;accent-color:var(--accent);vertical-ali
 .rtiles b{font:600 24px var(--f-mono);font-variant-numeric:tabular-nums}
 .rtiles b small{font-size:12px;color:var(--muted)}
 .rtiles > div > small{font-size:12px;color:var(--muted)}
+.rtiles > div > small.trend{font:600 12px var(--f-mono)}
 .success{border-left:4px solid var(--good);padding:6px 0 6px 12px;font-size:14px;max-width:70ch}
 .milestone{border:2px solid var(--gold);border-radius:6px;padding:12px 14px;display:grid;gap:4px;background:color-mix(in srgb,var(--gold) 10%,var(--surface));max-width:none!important;animation:msin .35s ease-out}
 .milestone b{font-family:var(--f-display);font-stretch:112%;text-transform:uppercase;font-size:20px}
@@ -956,6 +957,16 @@ function logHarvest(r){
 function showSummary(r){
   const ok = r.intake >= GOAL;
   const dPop = r.pop - r.popBefore;
+  // Change since the previous harvest, as a shape and a sign as well as a colour. GDP's arrow stays neutral on
+  // purpose: GDP going up is not the same as people being better off, which is what the game is about.
+  const prev = S.hist.length > 1 ? S.hist[S.hist.length - 2] : null;
+  const trend = (cur, old, show, colour) => {
+    if (old == null) return '';
+    const d = cur - old, since = `since ${YEARS[prev.year - 1]}`;
+    if (Math.abs(d) < 0.5) return `<small class="trend">● same as ${YEARS[prev.year - 1]}</small>`;
+    const up = d > 0, cls = colour ? (up ? 'pos' : 'neg') : '';
+    return `<small class="trend ${cls}" ${colour ? '' : 'title="GDP up is not the same as better off"'}>${up ? '▲' : '▼'} ${up ? '+' : '−'}${show(Math.abs(d))} ${since}</small>`;
+  };
   const rows = [
     ['Grown (before frost)', `${fmt(r.H + r.lost)}`, ''],
     r.lost > 0 ? ['Lost to frost', `−${fmt(r.lost)}`, 'neg'] : null,
@@ -972,10 +983,10 @@ function showSummary(r){
     </div>
     <button class="btn" id="next">${r.year === 3 ? 'Continue to 1573 →' : r.year === 6 ? 'See your results →' : r.year === 4 ? 'Plan harvest 5 (c. 1592) →' : r.year === 5 ? 'Plan harvest 6 (c. 1600) →' : `Plan harvest ${r.year+1} (next year) →`}</button></div>
     <div class="rtiles">
-      <div><span>Food per person</span><b>${fmt(r.intake)}<small> kcal/day</small></b><small>goal 1,700 (game)</small></div>
-      <div><span>GDP per person</span><b>${gi(r.gdp).toFixed(0)}<small> index</small></b><small>Maddison 1500 = 100${r.silver ? ` · ${gi(r.silver).toFixed(0)} points from silver` : ''}</small></div>
-      <div><span>Welfare (CWI)</span><b>${Math.round(r.cwi)}<small> / 100</small></b><small>food ${Math.round(r.cwiParts.cal)}/50 · stores ${Math.round(r.cwiParts.buf)}/30 · resilience ${Math.round(r.cwiParts.res)}/20</small></div>
-      <div><span>People</span><b>${fmt(r.pop)}</b><small class="${dPop<-0.5?'neg':dPop>0.5?'pos':''}">${Math.abs(dPop) < 0.5 ? 'no change' : `${dPop>0?'+':'−'}${fmt(Math.abs(dPop))} this harvest`}</small></div>
+      <div><span>Food per person</span><b>${fmt(r.intake)}<small> kcal/day</small></b>${trend(r.intake, prev && prev.intake, v => fmt(v), true)}<small>goal 1,700 (game)</small></div>
+      <div><span>GDP per person</span><b>${gi(r.gdp).toFixed(0)}<small> index</small></b>${trend(gi(r.gdp), prev && gi(prev.gdp), v => `${v.toFixed(0)} points`, false)}<small>Maddison 1500 = 100${r.silver ? ` · ${gi(r.silver).toFixed(0)} points from silver` : ''}</small></div>
+      <div><span>Welfare (CWI)</span><b>${Math.round(r.cwi)}<small> / 100</small></b>${trend(r.cwi, prev && prev.cwi, v => Math.round(v), true)}<small>food ${Math.round(r.cwiParts.cal)}/50 · stores ${Math.round(r.cwiParts.buf)}/30 · resilience ${Math.round(r.cwiParts.res)}/20</small></div>
+      <div><span>People</span><b>${fmt(r.pop)}</b>${prev ? trend(r.pop, prev.pop, v => fmt(v), true) : `<small class="${dPop<-0.5?'neg':dPop>0.5?'pos':''}">${Math.abs(dPop) < 0.5 ? 'no change' : `${dPop>0?'+':'−'}${fmt(Math.abs(dPop))} this harvest`}</small>`}</div>
     </div>
     <table class="ledger"><tbody>
       ${rows.map(x => `<tr><td>${x[0]}</td><td class="${x[2]}">${x[1]}</td></tr>`).join('')}
