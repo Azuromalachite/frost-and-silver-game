@@ -1531,9 +1531,11 @@ function draw(t){
   // Potosí in act 2
   if (act(S.year) === 2 && S.phase !== 'intro') drawPotosi(t, hudH);
   // a snow-capped summit behind the puna: the glaciers above the pasture (drawn before the slope, so the puna sits in front)
-  { const g3 = ground(3), sx = W * .9, sy = g3 - Hh * .24, l = W * .76, r = W * 1.04, base = g3 + 12;
+  // Its base starts at the puna shelf and sits low enough that the slope in front hides it; a wider base
+  // (it began at W*.76) poked a corner out into the sky beside the slope.
+  { const g3 = ground(3), sx = W * .9, sy = g3 - Hh * .24, l = shelf(3)[0], r = W * 1.04, base = g3 + Hh * .1;
     ctx.fillStyle = col['--rock2']; ctx.beginPath(); ctx.moveTo(l, base); ctx.lineTo(sx, sy); ctx.lineTo(r, base); ctx.closePath(); ctx.fill();
-    const t = .36, ly = sy + (base - sy) * t, lx = sx + (l - sx) * t, rx = sx + (r - sx) * t;
+    const t = .3, ly = sy + (base - sy) * t, lx = sx + (l - sx) * t, rx = sx + (r - sx) * t;
     ctx.fillStyle = col['--snow']; ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(rx, ly);
     ctx.lineTo(sx + (rx - sx) * .55, ly - 5); ctx.lineTo(sx + (rx - sx) * .15, ly + 3); ctx.lineTo(sx - (sx - lx) * .35, ly - 4); ctx.lineTo(lx, ly); ctx.closePath(); ctx.fill();
     ctx.strokeStyle = col['--rock']; ctx.globalAlpha = .45; ctx.lineWidth = 1; ctx.stroke(); ctx.globalAlpha = 1; }
@@ -1616,7 +1618,8 @@ function draw(t){
    the mouths, and more glints of silver as output rises after the 1570s. Its foot is hidden behind the farming
    slope, as a far mountain should be. */
 function drawPotosi(t, hudH){
-  const px = W * .66, top = hudH + Hh * .1, base = Hh * .72, pw = W * .15, H = base - top;
+  // the peak leaves room above it for the two label lines (on a short phone canvas they were cut off)
+  const lfs = Math.max(10, W / 70), px = W * .66, top = Math.max(hudH + Hh * .1, 2 * lfs + 16), base = Hh * .72, pw = W * .15, H = base - top;
   const halfAt = v => pw * Math.min(1, v * 1.08); // half-width of the cone a fraction v of the way down
   ctx.fillStyle = col['--potosi']; ctx.beginPath(); ctx.moveTo(px - pw, base);
   ctx.quadraticCurveTo(px - pw * .42, top + H * .22, px - pw * .07, top + 3);
