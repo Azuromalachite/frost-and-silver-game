@@ -210,6 +210,21 @@ sources:
     url: null
     locator: In Los Andes y los alimentos del futuro / 50 Andean Future Foods (CIP)
 
+  - key: trasmonte2008
+    title: "Frost risks in the Mantaro river basin"
+    author: G. Trasmonte; R. Chavez; B. Segura; J. L. Rosales
+    date: 2008
+    access: abstract_read
+    by: this project
+    when: 2026-11-18
+    url: https://doi.org/10.5194/adgeo-14-265-2008
+    locator: Advances in Geosciences 14, 265-270; abstract
+    notes: >
+      Ranks frost risk by altitude: critical above about 3,800 m, low below
+      2,500 m, moderate to high on the Mantaro valley floor (3,100-3,300 m). The
+      abstract says nothing about cold-air pooling or valley floors freezing while
+      slopes stay warm. Full text not read.
+
   - key: fao_chuno_blanco
     title: "Chuño blanco (Mountain Partnership Products Initiative)"
     author: FAO Mountain Partnership
