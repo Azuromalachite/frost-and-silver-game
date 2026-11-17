@@ -117,6 +117,10 @@ canvas{display:block;width:100%;aspect-ratio:16/7.2;max-width:100%}
 .ftag{color:var(--muted);font-weight:400}
 .transport{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;padding:8px 10px;border-top:1px solid var(--line);background:var(--surface);font-size:13px}
 .tbtn{font:700 13px var(--f-body);padding:6px 12px;border-radius:4px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+.tplay{min-width:6.5em}
+.tplay.on{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.dz.deal,.dx.deal{animation:dealflash .6s ease-out}
+@keyframes dealflash{from{background:color-mix(in srgb,var(--zc,var(--gold)) 30%,transparent)}to{background:transparent}}
 .tbtn[aria-pressed="true"]{background:var(--ink);color:var(--surface);border-color:var(--ink)}
 .seg{display:inline-flex}
 .seg .tbtn{border-radius:0;margin-left:-1px}
@@ -280,7 +284,7 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
     </div>
     <div class="transport" id="transport" hidden>
       <span class="seg" role="group" aria-label="Play mode">
-        <button class="tbtn" id="tauto" aria-pressed="false">▶ Play</button><button class="tbtn" id="tman" aria-pressed="true">❚❚ Pause</button><button class="tbtn" id="tstep">Next step ⏭</button>
+        <button class="tbtn tplay" id="tplay">▶ Play</button><button class="tbtn" id="tstep">Next step ⏭</button>
       </span>
       <span class="seg" role="group" aria-label="Speed">
         <button class="tbtn" data-speed="1" aria-pressed="true">1×</button><button class="tbtn" data-speed="2" aria-pressed="false">2×</button><button class="tbtn" data-speed="4" aria-pressed="false">4×</button>
@@ -587,8 +591,9 @@ function renderPlan(){
   }
   $('extras').innerHTML = ex;
   const f = $('free');
-  f.textContent = free > 0 ? `${free} crew${free>1?'s':''} unassigned` : 'All crews assigned';
-  f.className = 'free' + (free > 0 ? ' warn' : '');
+  const dealing = !!DEAL.t;
+  f.textContent = free > 0 ? `${free} crew${free>1?'s':''} ${dealing ? 'still to place' : 'unassigned'}` : 'All crews assigned';
+  f.className = 'free' + (free > 0 && !dealing ? ' warn' : '');
   $('dock').hidden = false;
   renderHUD(); renderForecast(); scheduleAuto();
 }
@@ -629,23 +634,73 @@ function tlDraw(t){
   [4,5,6].forEach(y => h += `<b style="left:${(y + .5) / TL_UNITS * 100}%">${y}</b>`);
   $('tl').insertAdjacentHTML('afterbegin', h);
 })();
-function stopAutoTimers(){ clearTimeout(autoT); clearInterval(cdT); autoT = cdT = null; }
+function stopAutoTimers(){ clearTimeout(autoT); clearInterval(cdT); autoT = cdT = null;
+  if (DEAL.t) { clearTimeout(DEAL.t); DEAL.t = null; applyDeal(DEAL.target); } }
+/* Auto-play deals the plan into the dock one crew at a time, so players see where the crews go. The plan is
+   the one already on the board (last year's, trimmed if crews were lost); crews it has no place for go to the
+   lowest field with room, then to chuño, so auto-play never leaves crews idle. Any click finishes the deal. */
+const DEAL = {t: null, target: null, order: [], i: 0};
+function applyDeal(t){ S.alloc = {...t.alloc}; S.building = {...t.building}; S.chuno = t.chuno; S.wage = t.wage; }
+function dealTarget(){
+  const t = {alloc: {...S.alloc}, building: {...S.building}, chuno: S.chuno, wage: S.wage};
+  let free = crews().avail - used();
+  for (const z of ZONES) while (free > 0 && t.alloc[z.key] < cap(z)) { t.alloc[z.key]++; free--; }
+  if (free > 0) t.chuno += free;
+  return t;
+}
+function dealLabel(kind, key){
+  if (kind === 'z') return `a crew to the ${ZONES.find(z => z.key === key).name.toLowerCase()}`;
+  if (kind === 'b') return `2 crews to build ${ZONES.find(z => z.key === key).what}`;
+  return key === 'chuno' ? 'a crew to freeze-dry chuño' : 'a crew to Potosí for wages';
+}
+function dealFlash(kind, key){
+  const b = kind === 'x' ? document.querySelector(`[data-x="${key}"]`) : document.querySelector(`[data-z="${key}"], [data-b="${key}"]`);
+  const box = b && b.closest('.dz, .dx'); if (box) box.classList.add('deal');
+}
+function startDeal(){
+  const t = dealTarget(), order = [];
+  for (const z of ZONES) { for (let k = 0; k < t.alloc[z.key]; k++) order.push(['z', z.key]); if (t.building[z.key]) order.push(['b', z.key]); }
+  for (let k = 0; k < t.chuno; k++) order.push(['x', 'chuno']);
+  for (let k = 0; k < t.wage; k++) order.push(['x', 'wage']);
+  S.dealt = S.year;
+  if (!order.length || matchMedia('(prefers-reduced-motion: reduce)').matches) { applyDeal(t); return false; }
+  for (const z of ZONES) { S.alloc[z.key] = 0; S.building[z.key] = false; }
+  S.chuno = 0; S.wage = 0;
+  const total = 3200 / PLAY.speed, ms = total / order.length, u = yearUnit(S.year);
+  Object.assign(DEAL, {target: t, order, i: 0});
+  tlSeg(u, u + TP * .4, total);
+  const step = () => {
+    const [kind, key] = order[DEAL.i++];
+    if (kind === 'z') S.alloc[key]++; else if (kind === 'b') S.building[key] = true; else S[key]++;
+    const last = DEAL.i >= order.length;
+    DEAL.t = last ? null : DEAL.t;
+    renderPlan(); // calls scheduleAuto, which waits while a deal is running and starts the countdown after the last crew
+    dealFlash(kind, key);
+    if (!last) { $('tstatus').textContent = `Auto-plan: ${dealLabel(kind, key)} (${DEAL.i} of ${order.length}). Click anything to take over.`; DEAL.t = setTimeout(step, ms); }
+  };
+  DEAL.t = setTimeout(step, ms);
+  renderPlan();
+  $('tstatus').textContent = `Auto-plan: dealing ${order.length} crews, the same plan as last year${S.year > 1 ? '' : ' (the starting plan)'}. Click anything to take over.`;
+  return true;
+}
+// a click anywhere finishes the deal first, so the click acts on the whole plan
+document.addEventListener('click', e => { if (DEAL.t && e.target.closest('button')) { stopAutoTimers(); renderPlan(); } }, true);
 function renderTransport(){
-  $('tman').setAttribute('aria-pressed', !PLAY.auto);
-  $('tauto').setAttribute('aria-pressed', PLAY.auto);
+  const tp = $('tplay'); tp.textContent = PLAY.auto ? '❚❚ Pause' : '▶ Play'; tp.classList.toggle('on', PLAY.auto);
   $('tstep').disabled = S.phase === 'anim' && !(S.anim && S.anim.done);
   document.querySelectorAll('[data-speed]').forEach(b => b.setAttribute('aria-pressed', +b.dataset.speed === PLAY.speed));
-  if (!PLAY.auto) $('tstatus').textContent = 'Paused. Set your crews above, then press Next step (or Bring in harvest). Press Play to let the harvests run on their own with your current plan.';
+  if (!PLAY.auto) $('tstatus').textContent = 'Paused. Set your crews above, then press Next step (or Bring in harvest). Press Play to let the harvests run on their own: you will see the plan dealt out crew by crew.';
 }
 // Auto-play advances one step after a delay that shrinks with speed; editing the plan restarts the countdown.
 function scheduleAuto(){
+  if (DEAL.t) { renderTransport(); return; } // dealing the plan: the deal restarts the countdown when it ends
   if (S.phase === 'end') { stopAutoTimers(); return; } // the finished game keeps its "See results" status
   stopAutoTimers(); renderTransport();
   if (S.phase !== 'anim' || (S.anim && S.anim.done)) { const s = tlStart(); tlSeg(s, s, 0); }
   if (!PLAY.auto) return;
   let ms, step, label, to;
   const u = yearUnit(S.year);
-  if (S.phase === 'plan') { ms = 6000; step = () => $('endyear').click(); label = 'Harvest'; to = u + TP; }
+  if (S.phase === 'plan') { if (S.dealt !== S.year && startDeal()) return; ms = 4000; step = () => $('endyear').click(); label = 'Harvest'; to = u + TP; }
   else if (S.phase === 'anim' && S.anim && S.anim.done && $('next')) { ms = 7000; step = () => $('next').click(); label = S.year === 6 ? 'Results' : S.year === 3 ? 'The 1573 transition' : `Harvest ${S.year + 1} planning`; to = u + 1; }
   else if (S.phase === 'event' && $('go')) { ms = 14000; step = () => $('go').click(); label = 'Harvest 4 planning'; to = 4; }
   else { $('tstatus').textContent = 'Harvesting…'; return; }
@@ -656,14 +711,13 @@ function scheduleAuto(){
   tick(); cdT = setInterval(tick, 250);
   autoT = setTimeout(() => { stopAutoTimers(); step(); }, ms);
 }
-$('tman').addEventListener('click', () => { PLAY.auto = false; scheduleAuto(); });
 // Next step: advance one step by hand, whatever the mode: harvest, then the next report, then past 1573.
 $('tstep').addEventListener('click', () => {
   if (S.phase === 'plan') $('endyear').click();
   else if (S.phase === 'anim' && S.anim && S.anim.done && $('next')) $('next').click();
   else if (S.phase === 'event' && $('go')) $('go').click();
 });
-$('tauto').addEventListener('click', () => { PLAY.auto = true; scheduleAuto(); });
+$('tplay').addEventListener('click', () => { PLAY.auto = !PLAY.auto; scheduleAuto(); });
 document.querySelectorAll('[data-speed]').forEach(b => b.addEventListener('click', () => { PLAY.speed = +b.dataset.speed; scheduleAuto(); }));
 document.addEventListener('click', e => {
   const t = e.target.closest('button'); if (!t || S.phase !== 'plan') return;

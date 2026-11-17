@@ -87,9 +87,11 @@ Each one cites what taught it.
    change (see 2).
 5. **The audience reads English fluently but is new to Andean history.** Every
    Quechua or Spanish term the game uses has a glossary entry.
-6. **Play is controllable.** Play, Pause and Next step always work, and
-   milestone pop-ups pause play. Players read each harvest before the next
-   one.
+6. **Play is controllable.** The Play/Pause toggle and Next step always work,
+   and milestone pop-ups pause play. Players read each harvest before the
+   next one. Auto-play deals the plan crew by crew where players set it by
+   hand, and any click takes over. Next step never deals, so the pinned run
+   does not depend on auto-play.
 
 ## Before you call a change done
 

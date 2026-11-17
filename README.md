@@ -19,7 +19,7 @@ Each year you:
 - freeze-dry surplus into chuño for the community stores;
 - in the colonial years, choose whether to send crews to Potosí for wages.
 
-Play, Pause and Next step control the pace, and milestones (everyone fed, growth without a better life, stores used up, hunger) pause play. A **field and climate log** under the controls keeps one line per event for the whole game: frost and what it cost, dry years, feasts, tribute, stores, deaths and new terraces.
+One Play/Pause button and Next step control the pace. On Play, each year's plan is dealt into the crew board one crew at a time, so players see where the crews go (the plan is last year's; any click takes over). Milestones (everyone fed, growth without a better life, stores used up, hunger) pause play. A **field and climate log** under the controls keeps one line per event for the whole game: frost and what it cost, dry years, feasts, tribute, stores, deaths and new terraces.
 
 Students **predict** before playing, **track** each harvest in a report (four tiles: food, GDP index, welfare index, people; where the food went; and the same numbers knotted as a quipu), and **compare**: "Replay with the same weather" lets them change one choice and see its effect side by side. The end screen compares Inca and colonial harvests on food, a Caloric Welfare Index (50 food, 30 stores, 20 resilience, from the original game) and GDP per person shown as an index (Maddison's 1500 level = 100), and produces a text report to paste into a class page.
 
