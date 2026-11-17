@@ -1264,9 +1264,11 @@ function simulatePlan(seed, st){
     return {k2: b.reduce((s, r) => s + r.intake, 0) / 3, w: S.hist.reduce((s, r) => s + r.cwi, 0) / 6, deaths: S.hist.reduce((s, r) => s + Math.max(0, r.popBefore - r.pop), 0)};
   } finally { S = keep; }
 }
+let compareGen = 0; // bumped by every new comparison, replay and new game; an older job stops when it sees a newer one
 function compareOnSameWeather(seed, mine, done){
-  const res = []; let i = 0;
+  const res = []; let i = 0, gen = ++compareGen;
   const batch = () => {
+    if (gen !== compareGen) return;
     const stop = Math.min(PLAN_GRID.length, i + 150);
     for (; i < stop; i++) res.push(simulatePlan(seed, PLAN_GRID[i]));
     if (i < PLAN_GRID.length) { setTimeout(batch, 0); return; }
@@ -1475,7 +1477,7 @@ function reportText(k1,k2,g1,g2,dg,dk){
 }
 function restart(){
   PLAY.auto = false; stopAutoTimers();
-  S = fresh(); renderLog(); $('p-end').hidden = true; $('p-plan').hidden = true; $('card').hidden = true; $('notice').hidden = true; $('p-intro').hidden = false;
+  compareGen++; S = fresh(); renderLog(); $('p-end').hidden = true; $('p-plan').hidden = true; $('card').hidden = true; $('notice').hidden = true; $('p-intro').hidden = false;
   $('dock').hidden = true; $('transport').hidden = true; $('stage').hidden = true; tlSeg(0, 0, 0);
   renderHUD(); renderForecast(); window.scrollTo({top:0});
 }
@@ -1483,6 +1485,7 @@ function restart(){
 /* ---------- intro ---------- */
 // Same predictions, same weather (seed); the player changes choices and the end screen compares the runs.
 function replaySame(){
+  compareGen++;
   const keep = {pred: S.pred, hyp: S.hyp, who: S.who, seed: S.seed};
   PLAY.auto = false; stopAutoTimers();
   S = fresh(); Object.assign(S, keep);
@@ -1744,15 +1747,32 @@ var AMBIENT_MS = 125, reduceMotionMQ = matchMedia('(prefers-reduced-motion: redu
 function animating(t){
   return !!(S.anim && t - S.anim.t0 < S.anim.dur + 100) || (TL.dur > 0 && t - TL.t0 < TL.dur + 100) || !!DEAL.t;
 }
+// A draw that throws used to be swallowed silently, and because needDraw was never cleared it was retried on every
+// frame. Now the first failure is reported in the console, the request is cleared, repeated failures stop the
+// automatic redraws (only a real change tries again), and after three the player sees a note under the mountain.
+var drawErrors = 0;
+function drawFailed(t, e){
+  drawErrors++; needDraw = false; lastDraw = t;
+  if (drawErrors === 1) console.error('Frost & Silver: the mountain could not be drawn.', e);
+  if (drawErrors === 3 && !$('drawfail')) {
+    const n = document.createElement('p'); n.id = 'drawfail'; n.className = 'notice'; n.setAttribute('role', 'status');
+    n.textContent = 'The mountain picture could not be drawn in this browser. The game still works: crews, harvests and reports are all below.';
+    cv.insertAdjacentElement('afterend', n);
+  }
+}
 function loop(t){
-  try {
-    const due = needDraw || (stageOnScreen && (animating(t) || (!reduceMotionMQ.matches && t - lastDraw >= AMBIENT_MS)));
-    if (due) { draw(t); tlDraw(t); lastDraw = t; needDraw = false; }
-  } catch(e) {}
+  const auto = drawErrors < 3 && stageOnScreen && (animating(t) || (!reduceMotionMQ.matches && t - lastDraw >= AMBIENT_MS));
+  if (needDraw || auto) {
+    try { draw(t); tlDraw(t); lastDraw = t; needDraw = false; if (drawErrors) { drawErrors = 0; const n = $('drawfail'); if (n) n.remove(); } }
+    catch (e) { drawFailed(t, e); }
+  }
   requestAnimationFrame(loop);
 }
 requestAnimationFrame(loop);
 if ('IntersectionObserver' in window) new IntersectionObserver(es => { stageOnScreen = es[0].isIntersecting; if (stageOnScreen) requestDraw(); }).observe($('stage'));
+// The mountain's labels are measured to keep them apart, which is wrong if a fallback font was in use: redraw when
+// the web fonts have loaded (and if any loads later).
+if (document.fonts) { document.fonts.ready.then(requestDraw); document.fonts.addEventListener && document.fonts.addEventListener('loadingdone', requestDraw); }
 $('gloss-intro').innerHTML = glossHTML(); $('gloss-plan').innerHTML = glossHTML(); $('vert').innerHTML = vertHTML();
 renderHUD();
 })();
