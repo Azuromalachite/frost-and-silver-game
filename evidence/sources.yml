@@ -154,11 +154,12 @@ sources:
     title: "Redistribution and Markets in Andean South America"
     author: Kenneth Hirth; Joanne Pillsbury
     date: 2013
-    access: not_read
-    by: null
-    when: null
+    access: sections_read
+    by: Codex research contribution
+    when: 2026-11-18
     url: https://doi.org/10.1086/673114
-    notes: The user holds a PDF; not read in this project. The claim rests on the reference collection's note.
+    locator: Current Anthropology 54(5), pp. 642-647; opening argument pp. 642-643
+    notes: Relevant argument read directly in supplied full text. Commercial and noncommercial exchange can coexist; does not establish ubiquitous frictionless markets.
 
   - key: murra1972
     title: "El control vertical de un máximo de pisos ecológicos en la economía de las sociedades andinas"
@@ -320,3 +321,114 @@ sources:
     when: 2026-11-17
     url: https://superlative-sprinkles-2653a1.netlify.app/
     notes: Source of the 1,700 → 1,200 kcal course figure. The figure itself has no source.
+
+  # --- research contribution, 2026-11-18 --------------------------------------
+  - key: valdez_bettcher2025
+    title: "Los sistemas de almacenamiento inka de Tambo Viejo"
+    author: Lidio M. Valdez; Katrina J. Bettcher
+    date: 2025
+    access: full_text_read
+    by: Codex research contribution
+    when: 2026-11-18
+    url: https://doi.org/10.18800/boletindearqueologiapucp.202501.001
+    locator: Boletin de Arqueologia PUCP 36, pp. 1-19; capacity estimates on pp. 6 and 11
+    notes: All 19 pages read. Coastal cists and vessels; estimated capacities are not measured inventories, processing rates, or household entitlements.
+
+  - key: valdez2026
+    title: "El almacenamiento inka de las hojas de coca en Tambo Viejo, Peru"
+    author: Lidio M. Valdez
+    date: 2026
+    access: full_text_read
+    by: Codex research contribution
+    when: 2026-11-18
+    url: https://doi.org/10.1017/laq.2025.10129
+    locator: Latin American Antiquity 37, pp. 127-133
+    notes: Supplied article text read. 2026 issue heading, 2025 copyright, update notice; check current publisher version. Separate from the 2025 systems article and Morris 1986.
+
+  - key: bruno2014
+    title: "Beyond Raised Fields: Exploring Farming Practices and Processes of Agricultural Change in the Ancient Lake Titicaca Basin of the Andes"
+    author: Maria C. Bruno
+    date: 2014
+    access: sections_read
+    by: Codex research contribution
+    when: 2026-11-18
+    url: https://doi.org/10.1111/aman.12066
+    locator: American Anthropologist 116(1), pp. 130-145; discussion and synthesis, especially pp. 139-141
+    notes: Relevant discussion and conclusions read directly in supplied text. Formative-period Taraco evidence, not a colonial yield calibration.
+
+  - key: zagalsky2023_book
+    title: "Obedecer, negociar y resistir: Tributo y mita indigena en Potosi, siglos XVI y XVII"
+    author: Paula C. Zagalsky
+    date: 2023
+    access: reference_work
+    by: Codex research contribution
+    when: 2026-11-18
+    url: https://fondoeditorial.iep.org.pe/producto/obedecer-negociar-y-resistir-tributo-y-mita-indigena-en-potosi-siglos-xvi-y-xvii/
+    locator: IEP/BCRP; publisher description and contents only; ISBN 978-612-326-214-3
+    notes: Book itself not obtained or read. The talk transcript is a distinct source.
+
+  - key: zagalsky_book_presentation
+    title: "Museo Central presentation of Obedecer, negociar y resistir"
+    author: Museo Central; commentators Fernando Jumar and Marco Curatola; Paula C. Zagalsky
+    date: null
+    access: full_text_read
+    by: Codex research contribution
+    when: 2026-11-18
+    url: https://www.youtube.com/watch?v=Z4qBcpoI4Zs
+    locator: Supplied timestamped transcript; especially 29:40-35:02
+    notes: Transcript read, not independently audio-verified. Substantive passages mainly by commentators. Does not establish full-text access to the book or quantitative effect sizes.
+
+  - key: mpd2023_dataset
+    title: "Maddison Project Database 2023"
+    author: Jutta Bolt; Jan Luiten van Zanden
+    date: 2024
+    access: figures_checked
+    by: Codex research contribution
+    when: 2026-11-18
+    url: https://doi.org/10.34894/INZBF2
+    locator: Official mpd2023_web.xlsx, Peru GDP-per-person entries, 1605-1635; 2011 international dollars
+    notes: Figures checked against the official workbook; country label does not erase the underlying colonial reconstruction's Peru/Bolivia scope. Cite underlying sources for a small country subset.
+
+  - key: urton_chu2015
+    title: "Accounting in the King's Storehouse: The Inkawasi Khipu Archive"
+    author: Gary Urton; Alejandro Chu
+    date: 2015
+    access: sections_read
+    by: Codex research contribution
+    when: 2026-11-18
+    url: https://doi.org/10.7183/1045-6635.26.4.512
+    locator: Latin American Antiquity 26(4), pp. 512-529; opening context and pp. 523-527
+    notes: Relevant numerical-accounting interpretation and conclusions read in supplied paper. Commodity identification and grid-based units remain inferences; not a unit-to-mass calibration.
+
+  - key: urton_chu2019
+    title: "The Invention of Taxation in the Inka Empire"
+    author: Gary Urton; Alejandro Chu
+    date: 2019
+    access: sections_read
+    by: Codex research contribution
+    when: 2026-11-18
+    url: https://doi.org/10.1017/laq.2018.64
+    locator: Latin American Antiquity 30(1), pp. 1-16; abstract and pp. 9-14
+    notes: Fixed-deduction interpretation, Tables 1-3, seed alternative, and conclusions read. Tax interpretation is a hypothesis; average-deposit percentages are not universal rates.
+
+  - key: klaus_tam2009
+    title: "Contact in the Andes: Bioarchaeology of Systemic Stress in Colonial Morrope, Peru"
+    author: Haagen D. Klaus; Manuel E. Tam
+    date: 2009
+    access: sections_read
+    by: Codex research contribution
+    when: 2026-11-18
+    url: https://doi.org/10.1002/ajpa.20944
+    locator: American Journal of Physical Anthropology 138, pp. 356-368; abstract, local context, and pp. 363-365
+    notes: Relevant discussion read in supplied paper. Online 2008, issue 2009. Coastal case with multifactorial health outcomes, not daily calorie estimates; distinct from the 2010 oral-health article.
+
+  - key: mccall2016
+    title: "Teaching History With Digital Historical Games: An Introduction to the Field and Best Practices"
+    author: Jeremiah McCall
+    date: 2016
+    access: sections_read
+    by: Codex research contribution
+    when: 2026-11-18
+    url: https://doi.org/10.1177/1046878116646693
+    locator: Simulation and Gaming 47(4), pp. 517-542; supplied advance-version PDF pp. 8-20
+    notes: Relevant theory and best practices read. The supplied PDF uses pagination 1-26. Full text now available, resolving the earlier access gap; does not validate learning outcomes of this game.

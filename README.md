@@ -100,6 +100,21 @@ The checker prints the current number of claims and sources, and how many histor
 
 Some of these were added from a reference collection's reading notes; the papers themselves have not all been re-read for this version.
 
+## Research contribution, 18 November 2026
+
+The [Codex-assisted research review](docs/research-review-2026-11-18.md) records
+reproducible model checks and remaining issues, including weather-dependent
+prediction grades and the distinction between a conditional harvest comparison
+and an alternative historical trajectory.
+
+See [literature notes](docs/literature-notes.md) for Tambo Viejo storage,
+tribute reassessment and mita, diversified farming, exchange, and MPD2023
+comparability; [BibTeX references](references/research.bib) and
+[access gaps](references/ACCESS.md) provide the source trail.
+These notes record proposed gameplay changes; they do not implement them.
+
+Its readings were checked by an adversarial review before merging: six papers read only in part are recorded as `sections_read`, so the claims resting on them are `partly_supported`, not `supported`.
+
 ## Credits and licence
 
 Adapted from [“Week 2: Tahuantinsuyu Harvest & Frost Defense”](https://superlative-sprinkles-2653a1.netlify.app/) by Amnuayvit Thitibordin, licensed [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).

@@ -81,7 +81,7 @@ CASES = {
         "a game claim must be stated in frost-and-silver.html",
         'if layer in GAME_LAYERS and GAME_FILE not in {p.get("path") for p in pages}:'),
     "anchor edited away from the game": (
-        G, "When people died, the quotas stayed the same.", "When people died, nothing changed.",
+        G, "When people died, the quotas were not cut to match.", "When people died, nothing changed.",
         "anchor not found in frost-and-silver.html",
         "elif norm(str(anchor)) not in text:"),
     "page missing": (
@@ -104,6 +104,16 @@ CASES = {
     "unknown claim mentioned in prose": (
         D, "## Open questions", "## Open questions\n\nSee claim.food.no_such_claim.",
         "mentions unknown claim claim.food.no_such_claim", "if m not in seen_ids:"),
+    # PR #1 review, H1: reading two pages of a paper must not unlock 'supported'
+    "supported on a source read only in sections": (
+        C, "status: partly_supported\n    sources: [mccall2016]",
+        "status: supported\n    sources: [mccall2016]",
+        "'supported' needs a source at",
+        'if status == "supported" and not access & SUPPORTING_ACCESS:'),
+    "sections read without saying which": (
+        S, "    locator: Simulation and Gaming 47(4), pp. 517-542; supplied advance-version PDF pp. 8-20\n", "",
+        "a sections_read source must name the pages read",
+        'if s.get("access") == "sections_read" and not str(s.get("locator") or "").strip():'),
 }
 
 

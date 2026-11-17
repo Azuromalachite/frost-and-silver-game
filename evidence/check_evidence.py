@@ -42,10 +42,12 @@ HISTORY_LAYERS = {"documented", "estimate", "interpretation"}
 GAME_LAYERS = {"game_assumption", "game_result"}
 LAYERS = HISTORY_LAYERS | GAME_LAYERS | {"unsourced"}
 HISTORY_STATUSES = {"supported", "partly_supported", "unverified", "unsupported", "open"}
-ACCESS = ["full_text_read", "figures_checked", "abstract_read", "reference_work",
+# sections_read: only some pages were read (named in `locator`). It can partly support a claim, never fully:
+# two pages of a paper do not show what the rest of it says (PR #1 review, finding H1).
+ACCESS = ["full_text_read", "figures_checked", "sections_read", "abstract_read", "reference_work",
           "from_notes", "not_read"]
 SUPPORTING_ACCESS = set(ACCESS[:2])
-PARTIAL_ACCESS = set(ACCESS[:4])
+PARTIAL_ACCESS = set(ACCESS[:5])
 GAME_FILE = "frost-and-silver.html"
 CLAIM_ID_RE = re.compile(r"^claim\.[a-z0-9_]+(\.[a-z0-9_]+)+$")
 CLAIM_MENTION_RE = re.compile(r"\bclaim\.[a-z0-9_]+(?:\.[a-z0-9_]+)+")
@@ -86,6 +88,8 @@ def check(root):
         source_by_key[key] = s
         if s.get("access") not in ACCESS:
             errors.append(f"{where}: access {s.get('access')!r} not in {ACCESS}")
+        if s.get("access") == "sections_read" and not str(s.get("locator") or "").strip():
+            errors.append(f"{where}: a sections_read source must name the pages read in its locator")
 
     used = set()
     seen_ids = set()
