@@ -77,7 +77,7 @@ CASES = {
         "code not found in frost-and-silver.html: 'TRIB_PP = 500'",
         "if str(snippet) not in game_code_live:"),
     "game claim not stated in the game": (
-        C, "      - path: frost-and-silver.html\n        anchor: The rest came mostly from the population collapse\n", "",
+        C, "      - path: frost-and-silver.html\n        anchor: In your game the change splits into two parts.\n", "",
         "a game claim must be stated in frost-and-silver.html",
         'if layer in GAME_LAYERS and GAME_FILE not in {p.get("path") for p in pages}:'),
     "anchor edited away from the game": (

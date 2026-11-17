@@ -97,7 +97,7 @@ claims:
     sources: [maddison2003]
     pages:
       - path: frost-and-silver.html
-        anchor: The rest came mostly from the population collapse
+        anchor: In your game the change splits into two parts.
       - path: docs/history-and-evidence.md
         anchor: In the game, GDP per person rises through silver and through the population collapse
     notes: >
@@ -133,7 +133,7 @@ claims:
 
   - id: claim.game.crew_trim_order
     statement: >
-      When crews fall (1573, and after the 1585-91 epidemics) the game asks the
+      When crews fall (1573, after the 1585-91 epidemics, and after hunger deaths) the game asks the
       player to re-plan: keep the plan's shares on fewer crews, put every crew on
       the best land first, or set them by hand; harvest and play wait for the
       choice. The choice decides much of the GDP rise, the GDP grade and colonial
@@ -402,7 +402,7 @@ claims:
     code: ["const line = r < .15 ? 4 : r < .45 ? 3 : r < .80 ? 2 : r < .97 ? 1 : 0;"]
     pages:
       - path: frost-and-silver.html
-        anchor: in the game the heights add room, not insurance
+        anchor: spreading crews uphill adds room, not insurance
       - path: docs/history-and-evidence.md
         anchor: In the game, frost always strikes from the top down
     notes: >
