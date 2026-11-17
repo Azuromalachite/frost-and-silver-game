@@ -23,7 +23,7 @@ shows from what the game assumes.
   number, for example `frost-and-silver.html?seed=12345` (the pinned run's seed,
   a typical year: about 1,410 kcal after 1573 with the default plan). Everyone
   then gets the same frosts, droughts and forecasts, so differences in results
-  come from choices, and the prediction grades are comparable. Without a seed
+  come from choices, and the graded food prediction is comparable. Without a seed
   each player gets different weather.
 - **Try your seed first.** Some are harsh: seed 2024 has droughts at both 1592
   and 1600, and the default plan averages about 550 kcal after 1573. A harsh seed
@@ -60,8 +60,9 @@ sweep](strategies-2026-11-18.md)). So reaching 1,700 is not the test. Success is
 
 The end screen says this and shows each student's own numbers. It also plays
 the 2,304 tested plans on the student's own weather and names the best one by
-welfare over the whole game, so luck with the weather does not count, and a
-student can replay to try it. It lists the turning points of their game
+welfare over the whole game. It is picked after the weather is known, so it is a
+hindsight benchmark, not a fair score (on about a third of seeds the hindsight
+best even reaches 1,700). A student can replay to try it. It lists the turning points of their game
 (milestones, with the harvest each happened in). Assess the explanation, not the
 outcome: two students with the same reasoning can get different results,
 because the weather differs between seeds.
@@ -69,14 +70,17 @@ because the weather differs between seeds.
 ## Discussion prompts
 
 - **Why did GDP per person rise?** In the game there are two causes, and which
-  counts as "the main one" depends on how you count: silver, and the collapse
-  (fewer people, re-planned onto their best land). Without silver GDP barely
-  rises; without the collapse it still rises. Ask students what each
-  counterfactual removes.
+  counts as "the main one" depends on how you count, and on the re-plan:
+  silver, and the collapse (fewer people, re-planned onto their best land).
+  With best land first, without silver GDP barely rises; without the collapse it
+  still rises. With the same shares the rules are most of a smaller rise. Ask
+  students what each counterfactual removes. The GDP prediction is not graded
+  for this reason; only the food prediction is.
 - **What did your re-plan at 1573 do?** Putting every crew on the best land
   raises output per person but leaves no chuño and nothing growing up high.
-  Keeping the same shares gives much less food. Compare students who chose
-  differently with the same seed.
+  In this game keeping the same shares never does better: less food, more
+  deaths and smaller stores on every test seed. Ask what the game leaves out
+  that might have made stores or variety worth keeping.
 - **Why doesn't spreading crews across heights help in this game?** Historians
   (Murra) argue that farming at several heights protected communities, because
   a bad year rarely hit every height. In the game it never pays: frost always
@@ -84,7 +88,7 @@ because the weather differs between seeds.
   students what the game would need to reward spreading, and what evidence
   would justify it. This turns a limit of the model into the lesson.
 - **What does a GDP number hide?** Silver shipped to Spain counts as output;
-  chuño made for the stores does not. Who ate?
+  in this game's formula chuño made for the stores does not. Who ate?
 
 ## Known limits to mention
 

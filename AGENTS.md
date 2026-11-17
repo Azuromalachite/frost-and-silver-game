@@ -55,8 +55,9 @@ states a claim more strongly than its registry entry allows is wrong.
   points and the mita's lost field labour takes about 6.5 back, while the
   population collapse adds about 6.5, mostly through the player's re-plan
   ("Best land first" drops chuño crews and high fields); more land per survivor is about
-  1.5 of that. Without silver GDP barely rises (+0.2); without the collapse it
-  still rises (+5.1). Name both, and re-measure (`tools/sweep.html`) before
+  1.5 of that. With best land first, without silver GDP barely rises (+0.07);
+  without the collapse it still rises (+5.47). With the same shares the rules
+  are most of a smaller rise (3.05 of 4.65). Name both, and re-measure (`tools/sweep.html`) before
   restating a number.
 - **Mix dollar series.** GDP is shown as an index (c. 1500 = 100) because
   Maddison (2003) uses 1990 dollars and the Maddison Project uses 2011
