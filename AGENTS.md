@@ -18,7 +18,7 @@ python -m unittest discover -s tests  # after changing the checker
 python -m http.server 8000            # then open localhost:8000/frost-and-silver.html?seed=12345
 ```
 
-There is no build step and no JavaScript test suite. **Load the page and read
+There is no build step and no JavaScript test suite (an optional Node harness, `tests/review_model.cjs`, is a dated snapshot; see `CONTRIBUTING.md`). **Load the page and read
 the console after every edit to the game.** A single unescaped apostrophe in
 a single-quoted string stops the whole script; the checker cannot see that.
 

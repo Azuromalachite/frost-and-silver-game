@@ -37,6 +37,7 @@ purpose: "the game uses 50%" is not the same as "the population fell by 50%".
 | **documented** | stated in a primary or standard secondary source, and checked during this project |
 | **estimate** | a scholarly reconstruction with wide uncertainty (population, GDP) |
 | **interpretation** | a reading of the evidence that historians argue about |
+| **sections read** | only some pages were read (named in the source's locator); enough to partly support a claim, never fully |
 | **from notes** | taken from a source's abstract or a reference collection's reading notes; the full text was not re-read here |
 | **game assumption** | a number or rule the game chose so the model can run; no source sets its size |
 | **unsourced** | circulates in the course material; no source found |
@@ -86,7 +87,7 @@ years in a row; harvests 4–6 are snapshots decades apart.
 | claim in the game | label | source and limits |
 | --- | --- | --- |
 | The Potosí mita drew one adult man in seven, from a defined mita region, not from every community | documented | Checked in this project (Dell 2010 uses that boundary). |
-| Mita and tribute quotas were fixed from census counts, so the burden per survivor rose as people died | documented | Checked in this project from a reference work on Toledo's mita and tribute. |
+| Mita and tribute quotas were set from census counts and not cut as people died, so the burden per survivor rose | documented (partly) | Checked in this project from a reference work on Toledo's mita and tribute. Only a new count (revisita) could lower quotas; tribute could be reassessed this way, and whether mita quotas were reset in practice is open (question 6). The game keeps both fixed, a labelled simplification. |
 | Potosí also ran on paid workers (mingas); women worked in ore sorting, refining and trade | documented, from notes | Gil Montero & Zagalsky (2016); Barragán Romano (2020). The game's wage crews stand in for paid work. |
 | Tribute is taken as food: 500 kcal per person per day at the 1573 count | game assumption | The real tribute was a fixed amount per adult man, paid in silver and goods. The size is chosen to calibrate the game. |
 | Resettlement into towns (reducciones) put many fields far from home | documented | Wernke (2010). |
@@ -154,6 +155,9 @@ years in a row; harvests 4–6 are snapshots decades apart.
 5. Is mean soil temperature in these zones below the air, as the original
    game assumes (claim.game.soil_temperature), or slightly above it, as is
    common for annual means? The original author may know.
+6. Were mita quotas reset by recounts (revisitas) in practice, as tribute
+   could be (claim.research.tribute_reassessment), and how long did a
+   recount take? Cole (1985) is the place to check. The game keeps both fixed.
 
 ## Sources
 
@@ -172,7 +176,7 @@ years in a row; harvests 4–6 are snapshots decades apart.
 | de la Puente Luna, J. C., & Perales Munguía, M. F. (2026). Villages at the crossroads. *Ethnohistory*. https://doi.org/10.1215/00141801-12105092 | local variation | from notes |
 | Cook, N. D. (1981). *Demographic Collapse: Indian Peru, 1520–1620*. Cambridge University Press. | population | no |
 | Morris, C. (1986). Storage, supply, and redistribution in the economy of the Inka state. In *Anthropological History of Andean Polities*, 59–68. | state and community stores | from notes |
-| Hirth, K., & Pillsbury, J. (2013). Redistribution and markets in Andean South America. *Current Anthropology*. https://doi.org/10.1086/673114 | exchange | PDF available, not re-read |
+| Hirth, K., & Pillsbury, J. (2013). Redistribution and markets in Andean South America. *Current Anthropology*. https://doi.org/10.1086/673114 | exchange | sections read (pp. 642–643) |
 | Murra, J. V. (1972). El control vertical de un máximo de pisos ecológicos en la economía de las sociedades andinas. | vertical archipelago | no |
 | Pulgar Vidal, J. (1941). *Las ocho regiones naturales del Perú*. | zone names | secondary sources |
 | Kolata, A. L., & Ortloff, C. (1989). Thermal analysis of Tiwanaku raised field systems. *Journal of Archaeological Science*. https://doi.org/10.1016/0305-4403(89)90004-6 | frost protection | from notes |
@@ -197,16 +201,18 @@ read the source.
 The [new literature notes](literature-notes.md) distinguish archaeological storage
 capacity from actual inventory and access, and distinguish negotiable tribute
 assessments from more rigid mining obligations. The table's general statement
-about permanently fixed mita and tribute should be read with that qualification:
-the current game holds both totals fixed as a simplification.
+about mita and tribute quotas now carries that qualification (see open question 6):
+the current game holds both totals fixed as a simplification, and says so.
 
-Hirth and Pillsbury's relevant argument has now been read directly; its exchange
-interpretation is no longer based only on a collection note. New source entries
+Hirth and Pillsbury's opening argument (pp. 642–643) has now been read; its exchange
+interpretation is no longer based only on a collection note, but two pages of the
+paper only partly support it. New source entries
 separately record the 2025 Tambo Viejo systems article, the 2026 coca article,
 Bruno's Formative-period farming discussion, the MPD2023 workbook checks, and
 the Zagalsky presentation versus the unread book.
 
 The [model review](research-review-2026-11-18.md) gives a specified seed sample and
 a reproducible counterexample to the assertion that weather cannot change a
-prediction grade. The historical and model limitations remain even when the
+prediction grade. The game's wording was corrected after it
+(claim.game.grading_weather). The historical and model limitations remain even when the
 registry checker passes.

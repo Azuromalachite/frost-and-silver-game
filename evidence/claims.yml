@@ -537,7 +537,7 @@ claims:
     statement: >
       Exchange and markets operated in the Andes alongside state redistribution.
     layer: interpretation
-    status: supported
+    status: partly_supported
     sources: [hirth_pillsbury2013]
     pages:
       - path: frost-and-silver.html
@@ -572,17 +572,25 @@ claims:
 
   - id: claim.colonial.fixed_quotas
     statement: >
-      Mita and tribute quotas were fixed from 1570s population counts, so the burden
-      per survivor rose as people died.
+      Mita and tribute quotas were set from 1570s population counts and were not
+      cut as people died; only a new count could lower them, so the burden per
+      survivor rose.
     layer: documented
     status: partly_supported
-    sources: [upenn_dia_mita, zagalsky_book_presentation]
+    sources: [upenn_dia_mita]
     pages:
       - path: frost-and-silver.html
-        anchor: When people died, the quotas stayed the same.
+        anchor: When people died, the quotas were not cut to match.
       - path: docs/history-and-evidence.md
-        anchor: Mita and tribute quotas were fixed from census counts
-    notes: Initial quota-setting is supported, but the permanent joint treatment is too broad. The presentation distinguishes tribute reassessment from more rigid mining obligations; see literature notes. The game's fixed totals remain a simplification pending revision.
+        anchor: Mita and tribute quotas were set from census counts
+    notes: >
+      Quota-setting from the 1570s counts is supported by a reference work. How
+      often recounts (revisitas) lowered them is not settled here: tribute could be
+      reassessed (claim.research.tribute_reassessment), and whether mita quotas
+      were reset in practice is an open question (Cole 1985 is where to check).
+      The game keeps both fixed; that is a simplification, labelled in the game.
+      The PR #1 review removed the book-presentation transcript from this claim's
+      sources, because it qualifies the claim rather than supporting it.
 
   - id: claim.colonial.paid_labour_and_women
     statement: >
@@ -768,7 +776,7 @@ claims:
       Bruno's Formative-period Taraco account considers diversified crops and
       herds and multiple cultivation practices beyond raised fields.
     layer: documented
-    status: supported
+    status: partly_supported
     sources: [bruno2014]
     pages:
       - path: docs/literature-notes.md
@@ -791,7 +799,7 @@ claims:
       Urton and Chu interpret linked and closely matching Inkawasi khipu records
       as evidence of accounting checks and reconciliation in a storage setting.
     layer: interpretation
-    status: supported
+    status: partly_supported
     sources: [urton_chu2015]
     pages:
       - path: docs/literature-notes.md
@@ -803,7 +811,7 @@ claims:
       Urton and Chu propose that recurring fixed deductions supported storehouse
       operations, while considering seed retention as an alternative explanation.
     layer: interpretation
-    status: supported
+    status: partly_supported
     sources: [urton_chu2019]
     pages:
       - path: docs/literature-notes.md
@@ -815,7 +823,7 @@ claims:
       Klaus and Tam's coastal Morrope study indicates increased postcontact
       systemic stress with multifactorial causes and unchanged terminal adult stature.
     layer: interpretation
-    status: supported
+    status: partly_supported
     sources: [klaus_tam2009]
     pages:
       - path: docs/literature-notes.md
@@ -827,7 +835,7 @@ claims:
       McCall recommends reflective play, source comparison, teacher facilitation,
       and debriefing when using historical games in class.
     layer: documented
-    status: supported
+    status: partly_supported
     sources: [mccall2016]
     pages:
       - path: docs/literature-notes.md

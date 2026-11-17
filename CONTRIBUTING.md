@@ -70,6 +70,13 @@ households below 1,700). A change that is meant to leave the model alone must
 reproduce this exactly. A change to the model will move it: recalibrate
 (60–80 games of default play), then record the new line here.
 
+## Optional: the Node model harness
+
+`tests/review_model.cjs` (from the 2026-11-18 research review) runs the game's model
+headless under Node.js. The Python tests do not run it, and its recorded output
+(`evidence/review-model-2026-11-18.json`) is a snapshot of commit `d0d9474`. Update
+its pinned values before trusting it again.
+
 ## Before you open a pull request
 
 ```bash

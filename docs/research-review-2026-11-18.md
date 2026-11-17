@@ -19,7 +19,7 @@ node tests/review_model.cjs
 
 The harness executes the script embedded in the actual game file, with a stub document and disabled animation timers. It drives six harvests through the model functions. It checks the pinned run, identical replay, preservation of weather after a choice change, and the welfare component sum. It does not test rendering, buttons, accessibility, mobile layout, or whether playback pauses correctly.
 
-The output is recorded in [review-model-2026-11-18.json](../evidence/review-model-2026-11-18.json).
+The output is recorded in [review-model-2026-11-18.json](../evidence/review-model-2026-11-18.json). It is a dated snapshot of the game at commit `d0d9474`, not a check that runs: the Python tests do not run this harness, and nothing re-checks the JSON. The game has changed since (Play/Pause and dealt plans, the corrected grading sentence, the chuño winter roll, which moved the pinned run), so re-running it needs its pinned values updated first.
 Default means use exactly seeds 1 through 80, with equal weights and the default plan.
 
 | Measure | Inca harvest mean | Colonial harvest mean |
