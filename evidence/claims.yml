@@ -113,6 +113,24 @@ claims:
       +5.14 (reproduced 2026-11-18). Depends on claim.game.gdp_formula,
       claim.game.reduccion_sizes and claim.game.crew_trim_order.
 
+  - id: claim.game.sampled_years
+    statement: >
+      Harvests 4-6 are snapshots of c. 1575, 1592 and 1600, not consecutive years.
+      Stores, buildings and people carry over between them as a teaching
+      simplification; the decades in between are not modelled.
+    layer: game_assumption
+    status: labelled
+    sources: [thitibordin_game]
+    code: ["const YEARS = ['c. 1500','c. 1501','c. 1502','c. 1575','c. 1592','c. 1600'];"]
+    pages:
+      - path: frost-and-silver.html
+        anchor: Stores carry over between them as a teaching simplification
+    notes: >
+      Raised by a classroom-readiness review (18 Nov 2026): students may read the
+      carried stores as a reconstruction of real reserves across decades. Two
+      remedies exist, treating each snapshot as its own scenario or modelling the
+      years between; the game labels the simplification instead.
+
   - id: claim.game.crew_trim_order
     statement: >
       When crews fall (1573, and after the 1585-91 epidemics) the game asks the

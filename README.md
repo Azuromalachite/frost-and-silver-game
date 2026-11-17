@@ -75,6 +75,7 @@ The text and model were checked by four independent reviews (claims and charts; 
 | [tests/test_check_evidence.py](tests/test_check_evidence.py) | plants one defect per rule and shows each rule can fail |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | the rules, and how to run the checks |
 | [AGENTS.md](AGENTS.md) | the short, binding rules for anyone changing the repository, human or AI |
+| [docs/teaching-guide.md](docs/teaching-guide.md) | for instructors: seeds, the session, what counts as success, discussion prompts, the smoke test |
 | [docs/design.md](docs/design.md) | the visual and writing style, for anyone building a similar game |
 
 The checker prints the current number of claims and sources, and how many history claims rest only on sources not yet read here, on every run.

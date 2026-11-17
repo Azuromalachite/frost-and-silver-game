@@ -1,0 +1,119 @@
+# Teaching guide
+
+For an instructor running Frost & Silver in a class of about 45–60 minutes. The
+game is ready for an **instructor-led pilot**. It is not yet meant as an
+unguided assignment: students need the framing below to tell what the evidence
+shows from what the game assumes.
+
+## What students should leave with
+
+- **GDP per person and food per person are different things**, and they can
+  move apart. In the game they do: GDP per person rises while food falls.
+- **The game is a model, not a reconstruction.** It produces a simulated result
+  from stated assumptions. It does not show that Andean families actually ate
+  1,700 or 1,200 kcal a day. The course figure of 1,700 → 1,200 has no source we
+  could find, and the game labels it so.
+- **Where the evidence ends and the designer's choices begin.** Every game
+  number is labelled in the game, and the evidence for each claim is in
+  [history-and-evidence.md](history-and-evidence.md).
+
+## Before class
+
+- **Use one seed for the whole class**: send the link with `?seed=` and a
+  number, for example `frost-and-silver.html?seed=12345` (the pinned run's seed,
+  a typical year: about 1,410 kcal after 1573 with the default plan). Everyone
+  then gets the same frosts, droughts and forecasts, so differences in results
+  come from choices, and the prediction grades are comparable. Without a seed
+  each player gets different weather.
+- **Try your seed first.** Some are harsh: seed 2024 has droughts at both 1592
+  and 1600, and the default plan averages about 550 kcal after 1573. A harsh seed
+  can be a deliberate lesson, but it should not be a surprise.
+- **Try it on the classroom browser and a phone** before the session; see the
+  smoke test below.
+- **Tell students how time works** (it is on the 1573 screen too): harvests 1–3
+  are three years in a row around 1500; harvests 4–6 are snapshots of c. 1575,
+  1592 and 1600. Food stores carry over between snapshots as a simplification;
+  the game does not play the decades in between.
+
+## Running the session
+
+1. **Predict** (5 min). Students read the briefing and predict whether the
+   colonial rules will make GDP per person and food per person rise, stay or
+   fall, with a sentence of reasoning.
+2. **Play** (20 min). Next step plays one step at a time; Play runs the
+   harvests on its own and deals each plan into the crew board crew by crew.
+   Milestones pause play.
+3. **Re-plan at 1573.** When the population falls, the game stops and asks the
+   student to re-plan: keep the plan's shares on fewer crews, put every crew on
+   the best land first, or set crews by hand. This choice matters a great deal
+   (see below), so ask students to write down why they chose it.
+4. **Debrief** (15 min) from the end screen.
+
+## What counts as success
+
+No plan we tested keeps colonial food at the 1,700 goal on average: the best of
+2,304 strategies averaged about 1,580 kcal a day after 1573 ([strategy
+sweep](strategies-2026-11-18.md)). So reaching 1,700 is not the test. Success is:
+
+- protecting the community: fewer hunger deaths, stores kept, food kept up;
+- explaining, with the end screen's numbers, why GDP rose while food fell.
+
+The end screen says this and shows each student's own numbers. Assess the
+explanation, not the outcome: two students with the same reasoning can get
+different results, because the weather differs between seeds.
+
+## Discussion prompts
+
+- **Why did GDP per person rise?** In the game there are two causes, and which
+  counts as "the main one" depends on how you count: silver, and the collapse
+  (fewer people, re-planned onto their best land). Without silver GDP barely
+  rises; without the collapse it still rises. Ask students what each
+  counterfactual removes.
+- **What did your re-plan at 1573 do?** Putting every crew on the best land
+  raises output per person but leaves no chuño and nothing growing up high.
+  Keeping the same shares gives much less food. Compare students who chose
+  differently with the same seed.
+- **Why doesn't spreading crews across heights help in this game?** Historians
+  (Murra) argue that farming at several heights protected communities, because
+  a bad year rarely hit every height. In the game it never pays: frost always
+  strikes the highest fields first, so a higher field is never safer. Ask
+  students what the game would need to reward spreading, and what evidence
+  would justify it. This turns a limit of the model into the lesson.
+- **What does a GDP number hide?** Silver shipped to Spain counts as output;
+  chuño made for the stores does not. Who ate?
+
+## Known limits to mention
+
+- The colonial dates are sampled snapshots; stores carry over between them.
+- Spreading crews never pays, because the game's frost has no pattern that
+  spares lower ground.
+- "Households below 1,700 kcal" comes from an assumed spread around the
+  average, a model guess, not a measurement.
+- Quotas stay fixed after 1573. Historically tribute could be lowered by a slow
+  recount; whether mita quotas were is an open question in the evidence notes.
+- A community can grow a little in good years, but not enough to gain a crew.
+
+## If your course materials use other numbers
+
+Lecture slides may use other examples: a wage's purchasing power, a GDP series
+for one country in other dollars, or a welfare index from a different classroom
+model. They answer different questions from the game's food-availability
+simulation. Say so before students compare them, for example with one slide
+headed "Two models, different questions".
+
+## Smoke test
+
+Before a class, play once on the classroom browser, and once at phone width,
+with a fixed seed:
+
+- [ ] the briefing loads; the predictions and Start the game work;
+- [ ] change crews by hand; build terraces; the field log records each harvest;
+- [ ] Play runs, Pause stops it, Next step advances one step;
+- [ ] a milestone pauses play and Keep playing resumes it;
+- [ ] at 1573 the re-plan box appears and the harvest waits for a choice;
+- [ ] the end screen shows the success box, the charts and the grades;
+- [ ] Replay with the same weather gives the same frosts, and the comparison table appears;
+- [ ] Copy report copies the text report;
+- [ ] in dark mode, everything is readable.
+
+A run of this list is recorded in [smoke-test-2026-11-18.md](smoke-test-2026-11-18.md).
