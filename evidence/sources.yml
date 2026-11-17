@@ -1,0 +1,267 @@
+# Sources behind the game and docs/history-and-evidence.md.
+#
+# access: the deepest level reached for this source in this project, ordered:
+#   full_text_read   the relevant part of the work itself was read
+#   figures_checked  the specific numbers used were checked against the work or its tables
+#   abstract_read    only the abstract (or publisher summary) was read
+#   reference_work   only a reference or teaching page describing it was read
+#   from_notes       cited from a reading note or literature review written by someone else
+#   not_read         cited by title only
+#
+# by / when: who reached that level, and when. "review agent" means one of the
+# independent reviews run on 2026-11-17 (claims and charts; model logic).
+#
+# url: DOI or page someone else can open to re-find the work. null means not
+# recorded, never "not applicable".
+
+version: 0.1
+
+sources:
+  - key: maddison2003
+    title: "The World Economy: Historical Statistics"
+    author: Angus Maddison
+    date: 2003
+    access: figures_checked
+    by: review agent (claims and charts)
+    when: 2026-11-17
+    url: null
+    locator: Latin America GDP per capita, 1500 and 1600, 1990 international (Geary-Khamis) dollars
+    notes: Values 416 (1500) and 438 (1600) for Latin America as a whole; conjectural for this period.
+
+  - key: bolt_vanzanden2025
+    title: "Maddison-style estimates of the evolution of the world economy: A new 2023 update"
+    author: Jutta Bolt; Jan Luiten van Zanden
+    date: 2025
+    access: from_notes
+    by: reference collection index
+    when: 2026-11-17
+    url: https://doi.org/10.1111/joes.12618
+    notes: Newer benchmarks use different dollars from Maddison 2003; do not mix them.
+
+  - key: arroyoabad_vanzanden2016
+    title: "Growth under Extractive Institutions? Latin American Per Capita GDP in Colonial Times"
+    author: Leticia Arroyo Abad; Jan Luiten van Zanden
+    date: 2016
+    access: from_notes
+    by: literature review supplied by the user
+    when: 2026-11-17
+    url: https://doi.org/10.1017/S0022050716000954
+
+  - key: arroyoabad_etal2012
+    title: "Between Conquest and Independence: Real Wages and Demographic Change in Spanish America, 1530–1820"
+    author: Leticia Arroyo Abad; Elwyn Davies; Jan Luiten van Zanden
+    date: 2012
+    access: from_notes
+    by: literature review supplied by the user
+    when: 2026-11-17
+    url: null
+
+  - key: dell2010
+    title: "The Persistent Effects of Peru's Mining Mita"
+    author: Melissa Dell
+    date: 2010
+    access: abstract_read
+    by: review agent (claims and charts)
+    when: 2026-11-17
+    url: https://doi.org/10.3982/ECTA8121
+    notes: The mita drew from a defined catchment; Dell's design uses that boundary. Modern consumption and stunting estimates are not sixteenth-century calorie figures.
+
+  - key: upenn_dia_mita
+    title: Mita and Tributo entries, Digital Archive (University of Pennsylvania)
+    author: University of Pennsylvania
+    date: null
+    access: reference_work
+    by: review agent (model construction)
+    when: 2026-11-17
+    url: https://dia.upenn.edu/en/content/TL005Mita/
+    notes: Toledo fixed mita and tribute quotas from 1570s counts; communities stayed liable at those levels. A teaching reference, not a primary source.
+
+  - key: gilmontero_zagalsky2016
+    title: "Colonial Organization of Mine Labour in Charcas (Present-Day Bolivia) and Its Consequences"
+    author: Raquel Gil Montero; Paula C. Zagalsky
+    date: 2016
+    access: from_notes
+    by: reference collection index
+    when: 2026-11-17
+    url: https://doi.org/10.1017/S0020859016000456
+
+  - key: barragan2020
+    title: "Women in the Silver Mines of Potosí: Rethinking the History of “Informality” and “Precarity”"
+    author: Rossana Barragán Romano
+    date: 2020
+    access: from_notes
+    by: reference collection index
+    when: 2026-11-17
+    url: https://doi.org/10.1017/S0020859019000555
+
+  - key: wernke_whitmore2009
+    title: "Agriculture and Inequality in the Colonial Andes: A Simulation of Production and Consumption Using Administrative Documents"
+    author: Steven A. Wernke; Thomas M. Whitmore
+    date: 2009
+    access: abstract_read
+    by: review agent (claims and charts)
+    when: 2026-11-17
+    url: https://doi.org/10.1007/s10745-009-9261-2
+    notes: Household figures not read; the abstract supports hardship despite a regional surplus.
+
+  - key: wernke2010
+    title: "A Reduced Landscape: Toward a Multi-Causal Understanding of Historic Period Agricultural Deintensification in Highland Peru"
+    author: Steven A. Wernke
+    date: 2010
+    access: from_notes
+    by: literature review supplied by the user
+    when: 2026-11-17
+    url: null
+
+  - key: hunter2025
+    title: "The structural transformation of Ollantaytambo's Inka ecology under Spanish rule"
+    author: R. Alexander Hunter
+    date: 2025
+    access: from_notes
+    by: reference collection index
+    when: 2026-11-17
+    url: https://doi.org/10.15184/aqy.2024.200
+
+  - key: delapuente_perales2026
+    title: "Villages at the Crossroads: Inka and Spanish Imperialism, Local Negotiation, and Emerging Reducción Landscapes in Early Colonial Jauja, Peru"
+    author: José Carlos de la Puente Luna; Manuel F. Perales Munguía
+    date: 2026
+    access: from_notes
+    by: reference collection index
+    when: 2026-11-17
+    url: https://doi.org/10.1215/00141801-12105092
+
+  - key: cook1981
+    title: "Demographic Collapse: Indian Peru, 1520–1620"
+    author: Noble David Cook
+    date: 1981
+    access: from_notes
+    by: review agent (claims and charts), via secondary descriptions
+    when: 2026-11-17
+    url: null
+
+  - key: morris1986
+    title: "Storage, supply, and redistribution in the economy of the Inka state"
+    author: Craig Morris
+    date: 1986
+    access: from_notes
+    by: reference collection index
+    when: 2026-11-17
+    url: null
+    locator: In Anthropological History of Andean Polities, pp. 59–68
+
+  - key: hirth_pillsbury2013
+    title: "Redistribution and Markets in Andean South America"
+    author: Kenneth Hirth; Joanne Pillsbury
+    date: 2013
+    access: not_read
+    by: null
+    when: null
+    url: https://doi.org/10.1086/673114
+    notes: The user holds a PDF; not read in this project. The claim rests on the reference collection's note.
+
+  - key: murra1972
+    title: "El control vertical de un máximo de pisos ecológicos en la economía de las sociedades andinas"
+    author: John V. Murra
+    date: 1972
+    access: from_notes
+    by: reference collection index
+    when: 2026-11-17
+    url: null
+    notes: Murra describes an archipelago of access rights, not contiguous zones.
+
+  - key: pulgarvidal1941
+    title: "Las ocho regiones naturales del Perú"
+    author: Javier Pulgar Vidal
+    date: 1941
+    access: reference_work
+    by: review agent (claims and charts)
+    when: 2026-11-17
+    url: null
+    notes: Checked through secondary sources only.
+
+  - key: kolata_ortloff1989
+    title: "Thermal analysis of Tiwanaku raised field systems in the Lake Titicaca Basin of Bolivia"
+    author: Alan L. Kolata; Charles Ortloff
+    date: 1989
+    access: from_notes
+    by: reference collection index
+    when: 2026-11-17
+    url: https://doi.org/10.1016/0305-4403(89)90004-6
+
+  - key: orlove2000
+    title: "Forecasting Andean rainfall and crop yield from the influence of El Niño on Pleiades visibility"
+    author: Benjamin S. Orlove; John C. H. Chiang; Mark A. Cane
+    date: 2000
+    access: abstract_read
+    by: review agent (claims and charts)
+    when: 2026-11-17
+    url: https://doi.org/10.1038/47456
+    notes: Reports a correlation, not a hit rate. Modern practice; use around 1500 is not established.
+
+  - key: fonseca_dehaan2021
+    title: "Traditional freeze-drying: chuño, kaya, chullqi"
+    author: Cristina Fonseca; Stef de Haan
+    date: 2021
+    access: from_notes
+    by: reference collection index
+    when: 2026-11-17
+    url: null
+    locator: In Los Andes y los alimentos del futuro / 50 Andean Future Foods (CIP)
+
+  - key: robins_hagan2012
+    title: "Mercury Production and Use in Colonial Andean Silver Production: Emissions and Health Implications"
+    author: Nicholas A. Robins; Nicole A. Hagan
+    date: 2012
+    access: from_notes
+    by: reference collection index
+    when: 2026-11-17
+    url: https://doi.org/10.1289/ehp.1104192
+
+  - key: klaus_tam2010
+    title: "Oral Health and the Postcontact Adaptive Transition: A Contextual Reconstruction of Diet in Mórrope, Peru"
+    author: Haagen D. Klaus; Manuel E. Tam
+    date: 2010
+    access: from_notes
+    by: literature review supplied by the user
+    when: 2026-11-17
+    url: null
+
+  - key: tessone2025
+    title: "Isotopes and bioarchaeology in the Andes: Diet, life histories, and ritual"
+    author: Augusto Tessone; Ramiro Barberena; Kelly J. Knudson
+    date: 2025
+    access: from_notes
+    by: reference collection index
+    when: 2026-11-17
+    url: https://doi.org/10.1111/arcm.12989
+
+  - key: covey_quave2017
+    title: "The Economic Transformation of the Inca Heartland (Cuzco, Peru) in the Late Sixteenth Century"
+    author: R. Alan Covey; Kylie E. Quave
+    date: 2017
+    access: from_notes
+    by: literature review supplied by the user
+    when: 2026-11-17
+    url: null
+
+  - key: pontzer2016
+    title: "Metabolic acceleration and the evolution of human brain size and life history"
+    author: Herman Pontzer et al.
+    date: 2016
+    access: full_text_read
+    by: this project
+    when: 2026-11-17
+    url: https://doi.org/10.1038/nature17654
+    locator: Table 1, TEE for Homo
+    notes: The human sample excluded people employed in manual labour.
+
+  - key: thitibordin_game
+    title: "Week 2: Tahuantinsuyu Harvest & Frost Defense (Interactive Game), and its author's description"
+    author: Amnuayvit Thitibordin
+    date: 2026
+    access: full_text_read
+    by: this project
+    when: 2026-11-17
+    url: https://superlative-sprinkles-2653a1.netlify.app/
+    notes: Source of the 1,700 → 1,200 kcal course figure. The figure itself has no source.

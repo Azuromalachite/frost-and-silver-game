@@ -56,6 +56,18 @@ Everything else (yields, frost and drought odds, protection, chuño, community s
 
 The text and model were checked by four independent reviews (claims and charts; model logic; model construction; parameters and sensitivity), and their findings are addressed in this version.
 
+### Evidence and checks
+
+| file | what it is |
+| --- | --- |
+| [evidence/claims.yml](evidence/claims.yml) | every load-bearing claim, with its kind (documented, estimate, interpretation, game assumption, game result, unsourced), status, sources and the pages that state it |
+| [evidence/sources.yml](evidence/sources.yml) | every source, with how far it has actually been read here |
+| [evidence/check_evidence.py](evidence/check_evidence.py) | checks the registry against the pages and the game's code; a changed constant fails until its claim is updated |
+| [tests/test_check_evidence.py](tests/test_check_evidence.py) | plants one defect per rule and shows each rule can fail |
+| [CONTRIBUTING.md](CONTRIBUTING.md) | the rules, and how to run the checks |
+
+At this version: 37 claims and 26 sources; 17 history claims rest only on sources not yet read in this project, and the checker reports that number on every run.
+
 **[docs/history-and-evidence.md](docs/history-and-evidence.md)** goes claim by claim: what the game says about the Andes between 1500 and 1600, what kind of evidence supports each statement (documented, estimate, interpretation, game assumption, unsourced), and what the game leaves out.
 
 ## Sources

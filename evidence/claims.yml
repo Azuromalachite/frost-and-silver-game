@@ -1,0 +1,492 @@
+# Load-bearing claims in the game and its documents.
+#
+# Rules and vocabulary: CONTRIBUTING.md. Checked by evidence/check_evidence.py.
+#
+#   id          stable, never reused or renumbered
+#   statement   the claim, as narrowly as it can be stated
+#   layer       documented | estimate | interpretation        (about history)
+#               | game_assumption | game_result               (about the model)
+#               | unsourced                                    (circulating, no source found)
+#   status      for history layers: supported | partly_supported | unverified | unsupported | open
+#               for game layers:    labelled  (the game tells the player it is an assumption or a model result)
+#               for unsourced:      unsupported
+#               'supported' needs a source at full_text_read or figures_checked;
+#               'partly_supported' needs at least abstract_read or reference_work.
+#   sources     keys in sources.yml
+#   code        game_assumption only: the exact code that sets the number(s); must
+#               appear in frost-and-silver.html, so changing a constant forces an update here
+#   searched    unsourced only: what was searched without finding a source
+#   pages       where the claim is stated, each with an anchor phrase that must appear
+#               on that page (whitespace, case and HTML entities ignored)
+#   notes       scope, caveats
+
+version: 0.1
+
+claims:
+  # --- output (GDP) ---------------------------------------------------------
+  - id: claim.gdp.maddison_1500_1600
+    statement: >
+      Maddison's GDP per person for Latin America as a whole is 416 in 1500 and
+      438 in 1600, in 1990 international dollars.
+    layer: estimate
+    status: supported
+    sources: [maddison2003]
+    pages:
+      - path: docs/history-and-evidence.md
+        anchor: Maddison's figures for Latin America as a whole go from 416
+      - path: frost-and-silver.html
+        anchor: from 416 in 1500 to 438 in 1600
+    notes: Conjectures for a whole continent, not Andes-specific measurements.
+
+  - id: claim.gdp.total_fell_per_person_rose
+    statement: >
+      In Maddison's estimates, total output and population fell between 1500 and
+      1600 while output per person rose.
+    layer: estimate
+    status: supported
+    sources: [maddison2003]
+    pages:
+      - path: docs/history-and-evidence.md
+        anchor: Total output and population fell while output per person rose
+      - path: frost-and-silver.html
+        anchor: even as total output and population fell
+
+  - id: claim.gdp.units_not_mixed
+    statement: >
+      Newer Maddison Project benchmarks use different dollars from Maddison
+      (2003) and should not be mixed with the 1990 figures.
+    layer: documented
+    status: unverified
+    sources: [bolt_vanzanden2025]
+    pages:
+      - path: docs/history-and-evidence.md
+        anchor: Newer Maddison Project figures use different dollars
+
+  - id: claim.gdp.colonial_growth_mining
+    statement: >
+      Colonial Peru and Mexico saw economic growth from about 1550, driven partly
+      by mining.
+    layer: interpretation
+    status: unverified
+    sources: [arroyoabad_vanzanden2016]
+    pages:
+      - path: docs/history-and-evidence.md
+        anchor: Colonial Peru and Mexico saw economic growth from about 1550
+
+  - id: claim.gdp.silver_or_land
+    statement: >
+      How much of the rise in output per person came from silver and how much
+      from more land per survivor after the population collapse is open.
+    layer: interpretation
+    status: open
+    sources: [arroyoabad_etal2012, arroyoabad_vanzanden2016]
+    pages:
+      - path: docs/history-and-evidence.md
+        anchor: How much of the rise in GDP per person was silver
+
+  - id: claim.game.gdp_rise_from_land
+    statement: >
+      In the game, GDP per person rises over time mainly because the population
+      collapse left more land per survivor, while the colonial rules roughly
+      break even on output.
+    layer: game_result
+    status: labelled
+    sources: [maddison2003]
+    pages:
+      - path: frost-and-silver.html
+        anchor: The rest came from the population collapse
+      - path: docs/history-and-evidence.md
+        anchor: In the game, GDP per person rises mainly through more land per survivor
+    notes: Depends on claim.game.gdp_formula and claim.game.reduccion_sizes.
+
+  - id: claim.game.gdp_formula
+    statement: >
+      GDP per person in the game is 340 + 0.045 × field output + silver, with each
+      mita or wage crew adding silver.
+    layer: game_assumption
+    status: labelled
+    sources: [maddison2003]
+    code: ["SILVER = 14", "G0 = 340, P = 0.045"]
+    pages:
+      - path: frost-and-silver.html
+        anchor: Teaching assumptions, tuned so the Inca years start near Maddison's 416
+
+  # --- food -------------------------------------------------------------------
+  - id: claim.food.kcal_1700_to_1200
+    statement: >
+      Indigenous Andean food intake fell from about 1,700 to about 1,200 kcal a
+      day after the colonial mita.
+    layer: unsourced
+    status: unsupported
+    sources: [thitibordin_game]
+    searched: >
+      Maddison (2003); the literature review supplied on 2026-11-17; the 23-work
+      reference collection's index notes; web searches by the review agents on
+      2026-11-17. None gives these figures.
+    pages:
+      - path: frost-and-silver.html
+        anchor: "1,700: course figure (unsourced)"
+      - path: docs/history-and-evidence.md
+        anchor: Food per person fell from about 1,700 to about 1,200 kcal a day
+
+  - id: claim.food.household_shortfall
+    statement: >
+      Households could go short of food even where the community or region
+      produced a surplus.
+    layer: documented
+    status: partly_supported
+    sources: [wernke_whitmore2009]
+    pages:
+      - path: docs/history-and-evidence.md
+        anchor: Households can go short even when a region produces a surplus
+      - path: frost-and-silver.html
+        anchor: households can go short while a region has a surplus
+
+  - id: claim.game.household_spread
+    statement: >
+      The game's share of households below 1,700 kcal assumes household food
+      varies 30% around the community average.
+    layer: game_assumption
+    status: labelled
+    sources: [wernke_whitmore2009]
+    code: ["(0.3*I)"]
+    pages:
+      - path: frost-and-silver.html
+        anchor: Households below 1,700 kcal (model guess)
+
+  - id: claim.food.adult_energy_use
+    statement: >
+      In a modern multi-country sample that excluded manual labourers, adults used
+      about 2,190 (women) and 2,720 (men) kcal a day.
+    layer: documented
+    status: supported
+    sources: [pontzer2016]
+    pages:
+      - path: frost-and-silver.html
+        anchor: used about 2,190 (women) and 2,720 (men) kcal a day
+      - path: docs/history-and-evidence.md
+        anchor: Adults use about 2,190 (women) and 2,720 (men) kcal a day
+    notes: Used for scale only; not Andean, not historical.
+
+  - id: claim.food.diet_changed_no_kcal
+    statement: >
+      Skeletal and isotope evidence shows diet changed after contact, but it does
+      not give kcal a day.
+    layer: documented
+    status: unverified
+    sources: [klaus_tam2010, tessone2025]
+    pages:
+      - path: docs/history-and-evidence.md
+        anchor: Skeletons and isotopes show diet changed after contact
+
+  # --- land and farming -------------------------------------------------------
+  - id: claim.land.vertical_archipelago
+    statement: >
+      Andean communities held land at several altitudes, so one frost or drought
+      rarely ruined everything.
+    layer: interpretation
+    status: unverified
+    sources: [murra1972]
+    pages:
+      - path: frost-and-silver.html
+        anchor: The anthropologist John Murra called this the
+      - path: docs/history-and-evidence.md
+        anchor: 'Murra (1972), the "vertical archipelago"'
+    notes: Murra described access rights to separate islands of land; the game draws one slope.
+
+  - id: claim.land.zone_names
+    statement: >
+      Yunga, Quechua, Suni and Puna are names for altitude zones from Pulgar
+      Vidal (1941), not Inca terms.
+    layer: documented
+    status: partly_supported
+    sources: [pulgarvidal1941]
+    pages:
+      - path: frost-and-silver.html
+        anchor: used by the geographer Javier Pulgar Vidal in 1941
+      - path: docs/history-and-evidence.md
+        anchor: The four zone names (Yunga, Quechua, Suni, Puna)
+
+  - id: claim.land.quechua_maize
+    statement: >
+      The Quechua zone (about 2,300–3,500 m) is the main maize zone; higher up only
+      frost-hardy bitter potatoes grow, and the puna is mainly pasture.
+    layer: documented
+    status: partly_supported
+    sources: [pulgarvidal1941]
+    pages:
+      - path: frost-and-silver.html
+        anchor: The heart of Inca maize farming.
+      - path: docs/history-and-evidence.md
+        anchor: Maize is the heart of the Quechua zone
+
+  - id: claim.land.chuno_keeps
+    statement: Chuño, freeze-dried potato, keeps for years.
+    layer: documented
+    status: unverified
+    sources: [fonseca_dehaan2021]
+    pages:
+      - path: frost-and-silver.html
+        anchor: dried by day until they keep for years
+      - path: docs/history-and-evidence.md
+        anchor: Chuño keeps for years
+
+  - id: claim.land.raised_field_frost
+    statement: >
+      Raised fields soften frost through their water and shape, and how much
+      depends on the field.
+    layer: documented
+    status: unverified
+    sources: [kolata_ortloff1989]
+    pages:
+      - path: frost-and-silver.html
+        anchor: softening frost; how well it works depends on the field
+      - path: docs/history-and-evidence.md
+        anchor: Raised fields (waru waru) soften frost
+
+  - id: claim.game.frost_losses
+    statement: >
+      Frost destroys 60% of an unprotected crop, 40% with terraces and 20% with
+      waru waru.
+    layer: game_assumption
+    status: labelled
+    sources: [kolata_ortloff1989]
+    code: ["y:182, hi:.6, lo:.4", "y:163, hi:.6, lo:.2"]
+    pages:
+      - path: frost-and-silver.html
+        anchor: so the game gives waru waru more frost protection than terraces
+
+  - id: claim.land.pleiades_forecast
+    statement: >
+      Andean farmers judge the coming rains from how clearly the Pleiades rise in
+      June, a practice documented in modern communities.
+    layer: documented
+    status: partly_supported
+    sources: [orlove2000]
+    pages:
+      - path: frost-and-silver.html
+        anchor: Elders read this as a sign of poor rains
+      - path: docs/history-and-evidence.md
+        anchor: Andean elders forecast rain from how clearly the Pleiades rise in June
+    notes: Use around 1500 is not established. The game's forecast accuracy is a play value.
+
+  # --- the Inca system --------------------------------------------------------
+  - id: claim.inca.labour_duty
+    statement: >
+      Under the Inca, communities owed labour to the state in turns (mit'a) and
+      worked state and temple fields.
+    layer: documented
+    status: unverified
+    sources: [morris1986, murra1972]
+    pages:
+      - path: frost-and-silver.html
+        anchor: Under the Inca, communities sent workers to the state for set periods
+      - path: docs/history-and-evidence.md
+        anchor: Communities owed labour to the state (mit'a)
+
+  - id: claim.game.inca_levy
+    statement: >
+      One man in ten works the state fields, and half of that harvest comes back as
+      feasts and rations.
+    layer: game_assumption
+    status: labelled
+    sources: [morris1986]
+    code: ["INCA_LEVY = 0.10, INCA_RETURN = 0.5"]
+    pages:
+      - path: frost-and-silver.html
+        anchor: Teaching assumption; how much came back is debated
+
+  - id: claim.inca.state_and_community_stores
+    statement: >
+      The qollqa were state storehouses; households and communities kept their own
+      stores as well.
+    layer: documented
+    status: unverified
+    sources: [morris1986]
+    pages:
+      - path: frost-and-silver.html
+        anchor: Households and communities kept their own stores too
+      - path: docs/history-and-evidence.md
+        anchor: The qollqa were state storehouses
+
+  - id: claim.inca.exchange
+    statement: >
+      Exchange and markets operated in the Andes alongside state redistribution.
+    layer: interpretation
+    status: unverified
+    sources: [hirth_pillsbury2013]
+    pages:
+      - path: frost-and-silver.html
+        anchor: Real communities also traded, which the game leaves out.
+      - path: docs/history-and-evidence.md
+        anchor: argue exchange and markets also mattered
+
+  # --- the colonial system ----------------------------------------------------
+  - id: claim.colonial.potosi_1545
+    statement: Spaniards began mining the Cerro Rico at Potosí in 1545.
+    layer: documented
+    status: partly_supported
+    sources: [upenn_dia_mita, dell2010]
+    pages:
+      - path: frost-and-silver.html
+        anchor: In 1545 Spaniards began mining Potosí
+      - path: docs/history-and-evidence.md
+        anchor: Spaniards begin mining the Cerro Rico at Potosí
+
+  - id: claim.colonial.mita_one_in_seven
+    statement: >
+      Toledo's Potosí mita drew one adult man in seven each year from the provinces
+      of a defined mita region, not from every community.
+    layer: documented
+    status: partly_supported
+    sources: [dell2010, upenn_dia_mita]
+    pages:
+      - path: frost-and-silver.html
+        anchor: one adult man in seven from the provinces of the mita region
+      - path: docs/history-and-evidence.md
+        anchor: The Potosí mita drew one adult man in seven
+
+  - id: claim.colonial.fixed_quotas
+    statement: >
+      Mita and tribute quotas were fixed from 1570s population counts, so the burden
+      per survivor rose as people died.
+    layer: documented
+    status: partly_supported
+    sources: [upenn_dia_mita]
+    pages:
+      - path: frost-and-silver.html
+        anchor: When people died, the quotas stayed the same.
+      - path: docs/history-and-evidence.md
+        anchor: Mita and tribute quotas were fixed from census counts
+
+  - id: claim.colonial.paid_labour_and_women
+    statement: >
+      Potosí also used paid workers (mingas), and women worked in ore sorting,
+      refining and trade.
+    layer: documented
+    status: unverified
+    sources: [gilmontero_zagalsky2016, barragan2020]
+    pages:
+      - path: frost-and-silver.html
+        anchor: Potosí also ran on paid workers (mingas)
+      - path: docs/history-and-evidence.md
+        anchor: Potosí also ran on paid workers (mingas)
+
+  - id: claim.game.tribute_in_food
+    statement: >
+      Tribute is taken as food: a fixed total of 500 kcal per person per day at the
+      1573 count.
+    layer: game_assumption
+    status: labelled
+    sources: [upenn_dia_mita]
+    code: ["TRIB_PP = 500"]
+    pages:
+      - path: frost-and-silver.html
+        anchor: the real tribute was paid in silver and goods
+    notes: The real tribute was a fixed amount per adult man, paid in silver and goods.
+
+  - id: claim.colonial.reducciones
+    statement: >
+      Toledo's reducciones resettled families into nucleated towns, often far from
+      their fields.
+    layer: documented
+    status: unverified
+    sources: [wernke2010]
+    pages:
+      - path: frost-and-silver.html
+        anchor: Toledo's reducciones moved families into new towns
+      - path: docs/history-and-evidence.md
+        anchor: Resettlement into towns (reducciones) put many fields far from home
+
+  - id: claim.colonial.reducciones_gradual
+    statement: >
+      The effects of resettlement on fields and terraces built up gradually and
+      varied from place to place.
+    layer: interpretation
+    status: unverified
+    sources: [hunter2025, delapuente_perales2026]
+    pages:
+      - path: frost-and-silver.html
+        anchor: the loss grows as distant fields are given up
+      - path: docs/history-and-evidence.md
+        anchor: the change was gradual and varied from place to place
+
+  - id: claim.game.reduccion_sizes
+    statement: >
+      Resettlement lowers colonial yields by 7% (c. 1575), 12% (c. 1592) and 15%
+      (c. 1600).
+    layer: game_assumption
+    status: labelled
+    sources: [wernke2010, hunter2025]
+    code: ["REDUC_BY_HARVEST = {4: 0.93, 5: 0.88, 6: 0.85}"]
+    pages:
+      - path: frost-and-silver.html
+        anchor: The game lowers colonial yields by 7% at c. 1575
+
+  - id: claim.colonial.markets_drew_food
+    statement: >
+      In the late sixteenth century, colonial land reorganisation redirected farm
+      output towards markets, including those supplying Potosí.
+    layer: interpretation
+    status: unverified
+    sources: [covey_quave2017]
+    pages:
+      - path: docs/history-and-evidence.md
+        anchor: drew farm output towards Potosí
+
+  - id: claim.colonial.mercury
+    statement: >
+      Silver refining at Potosí used mercury, with emissions and health costs the
+      GDP figures do not show.
+    layer: documented
+    status: unverified
+    sources: [robins_hagan2012]
+    pages:
+      - path: docs/history-and-evidence.md
+        anchor: including mercury used in refining
+
+  # --- population -------------------------------------------------------------
+  - id: claim.population.collapse_large
+    statement: >
+      The Andean population fell by well over half between the 1520s and the
+      1570s; estimates vary widely.
+    layer: estimate
+    status: unverified
+    sources: [cook1981]
+    pages:
+      - path: frost-and-silver.html
+        anchor: but are well over half
+      - path: docs/history-and-evidence.md
+        anchor: Cook (1981) estimates a very large fall with wide uncertainty
+
+  - id: claim.population.epidemics_1585
+    statement: A new wave of epidemics struck the Andes in 1585–91.
+    layer: documented
+    status: unverified
+    sources: [cook1981]
+    pages:
+      - path: frost-and-silver.html
+        anchor: "1585–91: new epidemics killed about 15% of your people (game figure)"
+
+  - id: claim.game.population_figures
+    statement: >
+      The game's population falls by 50% before 1573 and by 15% more in 1585–91.
+    layer: game_assumption
+    status: labelled
+    sources: [cook1981]
+    code: ["COLLAPSE = 0.5, LATE_EPIDEMIC = 0.15"]
+    pages:
+      - path: frost-and-silver.html
+        anchor: the game uses 50%
+
+  - id: claim.game.land_exponent
+    statement: >
+      Output in a zone grows with labour to the power 0.9, so survivors each farm a
+      little more land.
+    layer: game_assumption
+    status: labelled
+    sources: [wernke2010]
+    code: ["ALPHA = 0.9"]
+    pages:
+      - path: frost-and-silver.html
+        anchor: output in a zone grows with labour to the power

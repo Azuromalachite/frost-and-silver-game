@@ -1,0 +1,74 @@
+# Contributing
+
+Corrections to the history, better sources and classroom reports are the most
+useful contributions. Open an issue or a pull request.
+
+## The evidence registry
+
+Everything the game says about the Andes is registered in
+[`evidence/claims.yml`](evidence/claims.yml), and every work it relies on in
+[`evidence/sources.yml`](evidence/sources.yml). The readable version is
+[`docs/history-and-evidence.md`](docs/history-and-evidence.md).
+
+A claim has two independent axes:
+
+- **`layer`**: what kind of statement it is.
+  - About history: `documented` (a source says it), `estimate` (a scholarly
+    reconstruction with wide uncertainty), `interpretation` (a reading
+    historians argue about).
+  - About the model: `game_assumption` (a number or rule the game chose),
+    `game_result` (what the model produces from its assumptions).
+  - `unsourced`: circulates in course material, but no source was found.
+- **`status`**: what the evidence currently says.
+  - History claims: `supported`, `partly_supported`, `unverified`,
+    `unsupported`, `open`.
+  - Game claims: always `labelled`, meaning the game tells the player it is an
+    assumption or a model result.
+  - Unsourced claims: always `unsupported`.
+
+A source records how far anyone in this project has read it (`access`):
+`full_text_read`, `figures_checked`, `abstract_read`, `reference_work`,
+`from_notes` (cited from someone else's reading notes or review) or `not_read`.
+
+## Rules the checker enforces
+
+- `supported` needs a source at `full_text_read` or `figures_checked`;
+  `partly_supported` needs at least `abstract_read` or `reference_work`.
+- An `unsourced` claim records what was `searched`.
+- A `game_assumption` names the `code` that sets it, and that code must still
+  be in `frost-and-silver.html`. **If you change a constant in the game, the
+  checker fails until you update the claim.** That is deliberate: a changed
+  number has to be re-labelled where people read it.
+- A game claim must be stated in the game itself, so players see the label.
+- Every page anchor is still on its page; every claim ID mentioned in a
+  markdown file exists; every source is used.
+
+## Rules a person has to check
+
+- **Claim strength does not exceed the source.** A source read only through
+  someone else's notes stays `unverified` however good it sounds.
+- **A game number is not a historical number.** "The game uses 50%" belongs in
+  a `game_assumption`, never in a `documented` claim.
+- **Calibrated is not confirmed.** The game was tuned to land near Maddison's
+  416 and 438; matching them is a design choice, not evidence.
+- **After any change to the model, recalibrate** (60–80 games of default play)
+  and update the numbers in the README and the evidence document.
+
+## Before you open a pull request
+
+```bash
+python evidence/check_evidence.py
+python -m unittest discover -s tests     # if you touched the checker
+```
+
+The checker needs PyYAML (`python -m pip install pyyaml`).
+
+**Read the exit status directly.** A wrapper can print success over a
+failure. Before trusting a harness, run `python -c "import sys; sys.exit(3)"`
+through it and confirm it reports 3. (On Windows, `wsl bash -c '…'` from Git
+Bash loses its quoting and reports the wrong status; call `wsl --cd <repo>
+python3 …` directly.)
+
+## Licence
+
+Contributions are accepted under the repository's CC BY-NC-SA 4.0 licence.
