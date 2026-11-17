@@ -99,6 +99,26 @@ claims:
         anchor: In the game, GDP per person rises mainly through more land per survivor
     notes: Depends on claim.game.gdp_formula and claim.game.reduccion_sizes.
 
+  - id: claim.game.grading_weather
+    statement: >
+      Predictions are graded against the same people and weather under Inca
+      rules. The weather still nudges the GDP grade, because silver ignores the
+      weather while the farm output the mita removes does not: with the default
+      plan, seeds 1-80 give "rise" in 6 runs and "stay" in 74, each "rise" just
+      past the 3-point line.
+    layer: game_result
+    status: labelled
+    sources: [maddison2003]
+    pages:
+      - path: frost-and-silver.html
+        anchor: which removes most of the weather's effect, but not all of it
+    notes: >
+      Measured 2026-11-18 at commit cea920d (default plan, Next step, seeds 1-80);
+      the same 74/6 split was reported in PR #1. The earlier text said a bad
+      frost could not make a correct prediction look wrong, which was false.
+      Re-measured after the chuño winter roll was added: still 74 "stay", 6 "rise"
+      (same seeds). Re-measure after any model change.
+
   - id: claim.game.gdp_formula
     statement: >
       GDP per person in the game is 340 + 0.045 × field output + silver, with each
@@ -386,13 +406,54 @@ claims:
   - id: claim.land.chuno_keeps
     statement: Chuño, freeze-dried potato, keeps for years.
     layer: documented
-    status: unverified
-    sources: [fonseca_dehaan2021]
+    status: supported
+    sources: [fonseca_dehaan2021, fao_chuno_blanco]
     pages:
       - path: frost-and-silver.html
         anchor: dried by day until they keep for years
       - path: docs/history-and-evidence.md
         anchor: Chuño keeps for years
+    notes: >
+      Supported for modern chuño by the FAO page (read 2026-11-18). That chuño kept
+      as long in 1500 is assumed, not shown.
+
+  - id: claim.land.chuno_process
+    statement: >
+      Chuño is made by leaving potatoes out to freeze at night and in the sun by
+      day; white chuño is then soaked for weeks and sun-dried again.
+    layer: documented
+    status: supported
+    sources: [fao_chuno_blanco]
+    pages:
+      - path: frost-and-silver.html
+        anchor: Chuño is made after the harvest, when potatoes freeze at night and dry in the sun by day
+      - path: docs/history-and-evidence.md
+        anchor: Chuño is made by freezing potatoes at night and drying them in the sun by day
+    notes: >
+      A modern description of the process, not a record of colonial practice or
+      rates. The source does not name the season; that chuño is made in the
+      dry-season winter after the harvest is common knowledge here, not sourced.
+
+  - id: claim.game.chuno_winter
+    statement: >
+      Each harvest is followed by a winter that is hard (1 in 4), normal (1 in 2)
+      or mild (1 in 4). A chuño crew can freeze-dry 130%, 100% or 70% of its
+      normal 120 kcal per person per day. The multipliers average 1, the winter
+      is unknown when crews are planned, and it comes from the same seed as the
+      rest of the weather without changing the earlier draws.
+    layer: game_assumption
+    status: labelled
+    sources: [fao_chuno_blanco]
+    code: ["const WINTER_CHUNO = {hard: 1.3, normal: 1, mild: 0.7};", "winter = w < .25 ? 'hard' : w < .75 ? 'normal' : 'mild'"]
+    pages:
+      - path: frost-and-silver.html
+        anchor: a hard, clear winter lets each crew make more
+      - path: docs/history-and-evidence.md
+        anchor: The winter after each harvest is a game assumption
+    notes: >
+      Proposed as "a processing-season condition separate from growing-season
+      frost". The source describes the process, not how the weather changes its
+      pace or yield, so the size and odds are play values.
 
   - id: claim.land.raised_field_frost
     statement: >

@@ -59,7 +59,11 @@ A source records how far anyone in this project has read it (`access`):
 Open the game with `?seed=12345`, predict anything, and play the default plan
 with Next step only. The results tiles must read, in order:
 
-`1,740 kcal | 1,401 kcal | 80 → 54 | 103 | 108 | 47% → 71%`
+`1,764 kcal | 1,371 kcal | 80 → 53 | 103 | 108 | 46% → 73%`
+
+(Since the chuño winter roll, 2026-11-18. Seed 12345 draws three mild Inca winters, so
+its chuño stores are smaller than before; it read `1,740 | 1,401 | 80 → 54 | 103 | 108 |
+47% → 71%` until then.)
 
 (Inca food, colonial food, welfare index, GDP index Inca, GDP index colonial,
 households below 1,700). A change that is meant to leave the model alone must

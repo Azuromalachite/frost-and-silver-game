@@ -38,6 +38,10 @@ h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.1
 .mark .amp{color:var(--accent)}
 .mark .ag{color:var(--muted);font-stretch:62%;font-weight:600;white-space:nowrap}
 .sub{color:var(--muted);font-size:14px;max-width:46ch}
+.srclinks{color:var(--muted);font-size:12px;font-family:var(--f-mono)}
+.srclinks a{color:inherit;text-decoration:underline;text-underline-offset:2px}
+.srclinks a:hover{color:var(--ink)}
+.top .srclinks{display:block;margin-top:6px}
 .eyebrow{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 .mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
 
@@ -117,6 +121,10 @@ canvas{display:block;width:100%;aspect-ratio:16/7.2;max-width:100%}
 .ftag{color:var(--muted);font-weight:400}
 .transport{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;padding:8px 10px;border-top:1px solid var(--line);background:var(--surface);font-size:13px}
 .tbtn{font:700 13px var(--f-body);padding:6px 12px;border-radius:4px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+.tplay{min-width:6.5em}
+.tplay.on{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.dz.deal,.dx.deal{animation:dealflash .6s ease-out}
+@keyframes dealflash{from{background:color-mix(in srgb,var(--zc,var(--gold)) 30%,transparent)}to{background:transparent}}
 .tbtn[aria-pressed="true"]{background:var(--ink);color:var(--surface);border-color:var(--ink)}
 .seg{display:inline-flex}
 .seg .tbtn{border-radius:0;margin-left:-1px}
@@ -262,7 +270,8 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
 <div class="wrap">
   <header class="top">
     <div class="mark">Frost <span class="amp">&amp;</span> Silver <span class="ag">1500 → 1600</span></div>
-    <div class="sub">Economic historians estimate that GDP per person in Latin America rose a little across the 1500s. Did life get better? Play six harvests across the century and find out.</div>
+    <div class="sub">Economic historians estimate that GDP per person in Latin America rose a little across the 1500s. Did life get better? Play six harvests across the century and find out.
+      <span class="srclinks" id="srclinks-top">How we know: <a href="https://github.com/Azuromalachite/frost-and-silver-game/blob/main/docs/history-and-evidence.md" target="_blank" rel="noopener">sources and evidence</a> · <a href="https://github.com/Azuromalachite/frost-and-silver-game" target="_blank" rel="noopener">Code on GitHub</a></span></div>
   </header>
 
   <section class="stage" id="stage" aria-label="The mountainside" hidden>
@@ -280,7 +289,7 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
     </div>
     <div class="transport" id="transport" hidden>
       <span class="seg" role="group" aria-label="Play mode">
-        <button class="tbtn" id="tauto" aria-pressed="false">▶ Play</button><button class="tbtn" id="tman" aria-pressed="true">❚❚ Pause</button><button class="tbtn" id="tstep">Next step ⏭</button>
+        <button class="tbtn tplay" id="tplay">▶ Play</button><button class="tbtn" id="tstep">Next step ⏭</button>
       </span>
       <span class="seg" role="group" aria-label="Speed">
         <button class="tbtn" data-speed="1" aria-pressed="true">1×</button><button class="tbtn" data-speed="2" aria-pressed="false">2×</button><button class="tbtn" data-speed="4" aria-pressed="false">4×</button>
@@ -351,6 +360,7 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
     <h4>Only for play (they change single years, not the lesson)</h4>
     <ul>
       <li>Zone yields, frost odds and frost losses, drought odds and size, the Pleiades forecast's accuracy (the forecasting practice itself is real: Orlove, Chiang &amp; Cane 2000).</li>
+      <li>The winter after each harvest: hard (1 in 4), normal or mild (1 in 4), letting each chuño crew make 130%, 100% or 70% of its usual amount. Chuño really is made with night frost and daytime sun (FAO Mountain Partnership); how much the weather changes the pace is a play value. Over 80 seeds it leaves the averages unchanged but moves single runs by up to about 100 kcal a day.</li>
       <li>Terrace and raised-field effects. Raised fields protect against frost through their water and shape, and how much depends on the field (Kolata &amp; Ortloff 1989), so the game gives waru waru more frost protection than terraces; the sizes are play values. Also room per zone, chuño capacity, the starting community stores, the 1,900 kcal eating cap and spoilage.</li>
       <li>Deaths from hunger, the wage crews' tribute relief, and the 30% household spread behind "households below 1,700".</li>
     </ul>
@@ -372,6 +382,10 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
 <script>
 (() => {
 const GOAL = 1700, COLONIAL = 1200, GDP_ANCHOR = 416, BASE_CREWS = 14, BASE_CAP = 5, CHUNO_CAP = 120;
+// Chuño is made in the dry-season winter after the harvest: potatoes freeze at night and dry in the sun by day.
+// How much a crew can freeze-dry depends on that winter's nights (game assumption; the multipliers average 1).
+const WINTER_CHUNO = {hard: 1.3, normal: 1, mild: 0.7};
+const WINTER_WORD = {hard: 'Hard, clear freezing nights', normal: 'Normal freezing nights', mild: 'A mild, cloudy winter'};
 const ZONES = [
   // Four schematic zones; real ranges overlap and vary with local conditions. Internal keys are kept from earlier versions.
   {key:'yunga', name:'Valley', qname:'Quechua', altM:3000, alt:'2,500–3,500 m', crop:'Maize', y:185, hi:.6, lo:.4, build:'Build andenes', what:'terraces', cap:2, risk:'Frost: rare', why:'Irrigated or rain-fed maize on valley floors and terraces.', c:'--z0'},
@@ -474,7 +488,9 @@ function rollYear(){
   const line = r < .15 ? 4 : r < .45 ? 3 : r < .80 ? 2 : r < .97 ? 1 : 0; // zones with index >= line freeze
   const drought = rnd() < .2;
   const hazy = drought ? rnd() < .75 : rnd() < .25;
-  return {line, drought, hazy};
+  // drawn last, so the frosts, droughts and forecasts of every seed are unchanged
+  const w = rnd(), winter = w < .25 ? 'hard' : w < .75 ? 'normal' : 'mild';
+  return {line, drought, hazy, winter};
 }
 /* ---------- model core ----------
    Claim-carrying assumptions (each labelled in the game's model notes):
@@ -574,7 +590,7 @@ function renderPlan(){
       <div class="risk">${z.risk}</div>
       <div class="state">${!z.build ? 'No building here' : S.built[z.key] ? `✓ ${z.what} built: frost loss ${Math.round(z.lo*100)}% instead of ${Math.round(z.hi*100)}%, +10% yield, room for ${cap(z)} crews` : `${z.build} with 2 crews; ready next year`}</div></div>`).join('');
   let ex = `<div class="extra"><span class="lbl">Chuño crews</span>
-    <p>Freeze-dry surplus food into your community stores, up to ${CHUNO_CAP} kcal per person per day per crew. Surplus nobody preserves spoils.</p></div>`;
+    <p>Freeze-dry surplus food into your community stores, about ${CHUNO_CAP} kcal per person per day per crew in a normal winter. Chuño is made after the harvest, when potatoes freeze at night and dry in the sun by day: a hard, clear winter lets each crew make more (${Math.round(WINTER_CHUNO.hard*CHUNO_CAP)}), a mild one less (${Math.round(WINTER_CHUNO.mild*CHUNO_CAP)}). Nobody knows the winter when planting. Surplus nobody preserves spoils.</p></div>`;
   if (act(S.year) === 2) {
     const dd = crews().d;
     ex += `<div class="extra mita"><span class="lbl">Colonial mita: ${(dd*7).toFixed(1)} men in 7 away</span>
@@ -587,8 +603,9 @@ function renderPlan(){
   }
   $('extras').innerHTML = ex;
   const f = $('free');
-  f.textContent = free > 0 ? `${free} crew${free>1?'s':''} unassigned` : 'All crews assigned';
-  f.className = 'free' + (free > 0 ? ' warn' : '');
+  const dealing = !!DEAL.t;
+  f.textContent = free > 0 ? `${free} crew${free>1?'s':''} ${dealing ? 'still to place' : 'unassigned'}` : 'All crews assigned';
+  f.className = 'free' + (free > 0 && !dealing ? ' warn' : '');
   $('dock').hidden = false;
   renderHUD(); renderForecast(); scheduleAuto();
 }
@@ -629,23 +646,73 @@ function tlDraw(t){
   [4,5,6].forEach(y => h += `<b style="left:${(y + .5) / TL_UNITS * 100}%">${y}</b>`);
   $('tl').insertAdjacentHTML('afterbegin', h);
 })();
-function stopAutoTimers(){ clearTimeout(autoT); clearInterval(cdT); autoT = cdT = null; }
+function stopAutoTimers(){ clearTimeout(autoT); clearInterval(cdT); autoT = cdT = null;
+  if (DEAL.t) { clearTimeout(DEAL.t); DEAL.t = null; applyDeal(DEAL.target); } }
+/* Auto-play deals the plan into the dock one crew at a time, so players see where the crews go. The plan is
+   the one already on the board (last year's, trimmed if crews were lost); crews it has no place for go to the
+   lowest field with room, then to chuño, so auto-play never leaves crews idle. Any click finishes the deal. */
+const DEAL = {t: null, target: null, order: [], i: 0};
+function applyDeal(t){ S.alloc = {...t.alloc}; S.building = {...t.building}; S.chuno = t.chuno; S.wage = t.wage; }
+function dealTarget(){
+  const t = {alloc: {...S.alloc}, building: {...S.building}, chuno: S.chuno, wage: S.wage};
+  let free = crews().avail - used();
+  for (const z of ZONES) while (free > 0 && t.alloc[z.key] < cap(z)) { t.alloc[z.key]++; free--; }
+  if (free > 0) t.chuno += free;
+  return t;
+}
+function dealLabel(kind, key){
+  if (kind === 'z') return `a crew to the ${ZONES.find(z => z.key === key).name.toLowerCase()}`;
+  if (kind === 'b') return `2 crews to build ${ZONES.find(z => z.key === key).what}`;
+  return key === 'chuno' ? 'a crew to freeze-dry chuño' : 'a crew to Potosí for wages';
+}
+function dealFlash(kind, key){
+  const b = kind === 'x' ? document.querySelector(`[data-x="${key}"]`) : document.querySelector(`[data-z="${key}"], [data-b="${key}"]`);
+  const box = b && b.closest('.dz, .dx'); if (box) box.classList.add('deal');
+}
+function startDeal(){
+  const t = dealTarget(), order = [];
+  for (const z of ZONES) { for (let k = 0; k < t.alloc[z.key]; k++) order.push(['z', z.key]); if (t.building[z.key]) order.push(['b', z.key]); }
+  for (let k = 0; k < t.chuno; k++) order.push(['x', 'chuno']);
+  for (let k = 0; k < t.wage; k++) order.push(['x', 'wage']);
+  S.dealt = S.year;
+  if (!order.length || matchMedia('(prefers-reduced-motion: reduce)').matches) { applyDeal(t); return false; }
+  for (const z of ZONES) { S.alloc[z.key] = 0; S.building[z.key] = false; }
+  S.chuno = 0; S.wage = 0;
+  const total = 3200 / PLAY.speed, ms = total / order.length, u = yearUnit(S.year);
+  Object.assign(DEAL, {target: t, order, i: 0});
+  tlSeg(u, u + TP * .4, total);
+  const step = () => {
+    const [kind, key] = order[DEAL.i++];
+    if (kind === 'z') S.alloc[key]++; else if (kind === 'b') S.building[key] = true; else S[key]++;
+    const last = DEAL.i >= order.length;
+    DEAL.t = last ? null : DEAL.t;
+    renderPlan(); // calls scheduleAuto, which waits while a deal is running and starts the countdown after the last crew
+    dealFlash(kind, key);
+    if (!last) { $('tstatus').textContent = `Auto-plan: ${dealLabel(kind, key)} (${DEAL.i} of ${order.length}). Click anything to take over.`; DEAL.t = setTimeout(step, ms); }
+  };
+  DEAL.t = setTimeout(step, ms);
+  renderPlan();
+  $('tstatus').textContent = `Auto-plan: dealing ${order.length} crews, the same plan as last year${S.year > 1 ? '' : ' (the starting plan)'}. Click anything to take over.`;
+  return true;
+}
+// a click anywhere finishes the deal first, so the click acts on the whole plan
+document.addEventListener('click', e => { if (DEAL.t && e.target.closest('button')) { stopAutoTimers(); renderPlan(); } }, true);
 function renderTransport(){
-  $('tman').setAttribute('aria-pressed', !PLAY.auto);
-  $('tauto').setAttribute('aria-pressed', PLAY.auto);
+  const tp = $('tplay'); tp.textContent = PLAY.auto ? '❚❚ Pause' : '▶ Play'; tp.classList.toggle('on', PLAY.auto);
   $('tstep').disabled = S.phase === 'anim' && !(S.anim && S.anim.done);
   document.querySelectorAll('[data-speed]').forEach(b => b.setAttribute('aria-pressed', +b.dataset.speed === PLAY.speed));
-  if (!PLAY.auto) $('tstatus').textContent = 'Paused. Set your crews above, then press Next step (or Bring in harvest). Press Play to let the harvests run on their own with your current plan.';
+  if (!PLAY.auto) $('tstatus').textContent = 'Paused. Set your crews above, then press Next step (or Bring in harvest). Press Play to let the harvests run on their own: you will see the plan dealt out crew by crew.';
 }
 // Auto-play advances one step after a delay that shrinks with speed; editing the plan restarts the countdown.
 function scheduleAuto(){
+  if (DEAL.t) { renderTransport(); return; } // dealing the plan: the deal restarts the countdown when it ends
   if (S.phase === 'end') { stopAutoTimers(); return; } // the finished game keeps its "See results" status
   stopAutoTimers(); renderTransport();
   if (S.phase !== 'anim' || (S.anim && S.anim.done)) { const s = tlStart(); tlSeg(s, s, 0); }
   if (!PLAY.auto) return;
   let ms, step, label, to;
   const u = yearUnit(S.year);
-  if (S.phase === 'plan') { ms = 6000; step = () => $('endyear').click(); label = 'Harvest'; to = u + TP; }
+  if (S.phase === 'plan') { if (S.dealt !== S.year && startDeal()) return; ms = 4000; step = () => $('endyear').click(); label = 'Harvest'; to = u + TP; }
   else if (S.phase === 'anim' && S.anim && S.anim.done && $('next')) { ms = 7000; step = () => $('next').click(); label = S.year === 6 ? 'Results' : S.year === 3 ? 'The 1573 transition' : `Harvest ${S.year + 1} planning`; to = u + 1; }
   else if (S.phase === 'event' && $('go')) { ms = 14000; step = () => $('go').click(); label = 'Harvest 4 planning'; to = 4; }
   else { $('tstatus').textContent = 'Harvesting…'; return; }
@@ -656,14 +723,13 @@ function scheduleAuto(){
   tick(); cdT = setInterval(tick, 250);
   autoT = setTimeout(() => { stopAutoTimers(); step(); }, ms);
 }
-$('tman').addEventListener('click', () => { PLAY.auto = false; scheduleAuto(); });
 // Next step: advance one step by hand, whatever the mode: harvest, then the next report, then past 1573.
 $('tstep').addEventListener('click', () => {
   if (S.phase === 'plan') $('endyear').click();
   else if (S.phase === 'anim' && S.anim && S.anim.done && $('next')) $('next').click();
   else if (S.phase === 'event' && $('go')) $('go').click();
 });
-$('tauto').addEventListener('click', () => { PLAY.auto = true; scheduleAuto(); });
+$('tplay').addEventListener('click', () => { PLAY.auto = !PLAY.auto; scheduleAuto(); });
 document.querySelectorAll('[data-speed]').forEach(b => b.addEventListener('click', () => { PLAY.speed = +b.dataset.speed; scheduleAuto(); }));
 document.addEventListener('click', e => {
   const t = e.target.closest('button'); if (!t || S.phase !== 'plan') return;
@@ -705,11 +771,11 @@ function renderForecast(){
 
 /* ---------- year resolution ---------- */
 // What the same food does once it is grown: chuño, the storehouse, the eating cap. Pure: returns the new store.
-function settle(food, store, chuno, per){
+function settle(food, store, chuno, per, wmult = 1){
   let toStore = 0, spoiled = 0, draw = 0, intake;
   if (food >= GOAL) {
     const sur = food - GOAL;
-    toStore = Math.min(sur, chuno * CHUNO_CAP * per);
+    toStore = Math.min(sur, chuno * CHUNO_CAP * wmult * per);
     const extra = Math.min(sur - toStore, 200);
     spoiled = sur - toStore - extra; intake = GOAL + extra; store += toStore;
   } else { draw = Math.min(store, GOAL - food); store -= draw; intake = food + draw; }
@@ -726,7 +792,8 @@ function harvest(){
   const tribute = a2 ? Math.min(0.6 * H, Math.max(0, (S.tribTotal - WAGE_TRIB * S.wage * 1000) / S.pop)) : 0;
   const tRate = H > 0 ? tribute / H : 0;
   const food = H + ret - tribute;
-  const st = settle(food, S.store, S.chuno, per);
+  const wm = WINTER_CHUNO[Y.winter];
+  const st = settle(food, S.store, S.chuno, per, wm);
   const {toStore, spoiled, draw, intake} = st; S.store = st.store;
   const avail = intake + spoiled; // food on hand before the 1,900 eating cap; used for the household estimate
   const silver = a2 ? (mita + S.wage) * silverNow() * per : 0;
@@ -738,7 +805,7 @@ function harvest(){
     const allocC = {...S.alloc}; let w = S.wage;
     for (const z of ZONES) while (w > 0 && allocC[z.key] < cap(z)) { allocC[z.key]++; w--; }
     const full = grow(s0, allocC).H, Hc = grow(s0 * (1 - INCA_LEVY), allocC).H, retC = INCA_RETURN * (full - Hc);
-    cf = {Hc, ret: retC, full, intake: settle(Hc + retC, storeBefore, S.chuno, per).intake, gdp: G0 + P * full};
+    cf = {Hc, ret: retC, full, intake: settle(Hc + retC, storeBefore, S.chuno, per, wm).intake, gdp: G0 + P * full};
   }
   const popBefore = S.pop;
   if (intake < 1500) S.pop *= 1 - (1500 - intake) / 1500 * .2;
@@ -755,7 +822,7 @@ function harvest(){
     res: 20 * Math.min(1, 0.7 * protShare + 0.3 * spread)};
   const cwi = cwiParts.cal + cwiParts.buf + cwiParts.res;
   const rec = {year:S.year, act:act(S.year), cwi, cwiParts, alloc: {...S.alloc}, chuno: S.chuno, gidx: gdp / 416 * 100, H, lost, saved, tribute, tRate, ret, stateOut, d, rf: a2 ? reducNow() : 1, toStore, spoiled, draw, intake, avail, gdp, silver, cf,
-    pop:S.pop, popBefore, mita, wage:S.wage, line:Y.line, drought:Y.drought, hazy:Y.hazy, zr, builtNow,
+    pop:S.pop, popBefore, mita, wage:S.wage, line:Y.line, drought:Y.drought, hazy:Y.hazy, winter:Y.winter, chunoRoom: S.chuno * CHUNO_CAP * wm * per, zr, builtNow,
     idle: 0, storeDays: S.store / GOAL * 365};
   S.hist.push(rec);
   return rec;
@@ -827,7 +894,8 @@ function whyList(r){
   if (r.tribute > 0) out.push(`Colonial tribute took ${fmt(r.tribute)}, ${Math.round(r.tRate*100)}% of the harvest. The total was fixed at the 1573 count, so it weighs more when there are fewer people.`);
   if (r.mita) out.push(`${(r.d*7).toFixed(1)} men in seven were away at Potosí on the 1573 quota, so every crew worked that much short${r.wage?`, and ${r.wage} more crew${r.wage>1?'s':''} went for wages`:''}.`);
   if (r.draw > 0) out.push(`Your community stores covered ${fmt(r.draw)} of the shortfall.`);
-  if (r.spoiled > 1) out.push(`${fmt(r.spoiled)} of surplus spoiled because no one freeze-dried it.`);
+  if (r.chuno > 0 && r.winter !== 'normal') out.push(`${WINTER_WORD[r.winter]} after the harvest: each chuño crew could freeze-dry ${r.winter === 'hard' ? 'more' : 'less'} than usual (${fmt(WINTER_CHUNO[r.winter] * CHUNO_CAP)} instead of ${CHUNO_CAP}; game figure).`);
+  if (r.spoiled > 1) out.push(`${fmt(r.spoiled)} of surplus spoiled because no one freeze-dried it${r.chuno > 0 && r.winter === 'mild' ? ' (the mild winter slowed the chuño crews)' : ''}.`);
   if (r.idle > 0) out.push(`${r.idle} crew${r.idle>1?'s':''} sat idle.`);
   if (r.builtNow.length) out.push(`New ${r.builtNow.join(' and ')} will protect next year's crops.`);
   return out;
@@ -851,6 +919,7 @@ function logHarvest(r){
   else if (r.hazy) logAdd(tag, 'Hazy Pleiades, but the rains came.');
   if (r.ret > 0) logAdd(tag, `Inca feasts and rations +${fmt(r.ret)}.`, 'pos');
   if (r.tribute > 0) logAdd(tag, `Tribute −${fmt(r.tribute)} (${Math.round(r.tRate*100)}% of the harvest).`, 'neg');
+  if (r.chuno > 0) logAdd(tag, `${WINTER_WORD[r.winter]}: chuño crews could freeze-dry up to ${fmt(r.chunoRoom)}.`, r.winter === 'hard' ? 'pos' : r.winter === 'mild' ? 'neg' : '');
   if (r.toStore > 0) logAdd(tag, `${fmt(r.toStore)} freeze-dried into chuño stores.`, 'pos');
   if (r.draw > 0) logAdd(tag, `Stores covered ${fmt(r.draw)} of the shortfall.`);
   if (r.spoiled > 1) logAdd(tag, `${fmt(r.spoiled)} of surplus spoiled.`);
@@ -1050,7 +1119,8 @@ function showEnd(){
   const k1 = avg(a1,'intake'), k2 = avg(a2,'intake'), g1 = avg(a1,'gdp'), g2 = avg(a2,'gdp');
   const am = f => a2.reduce((s,r) => s + f(r), 0) / a2.length;
   // Over time (what an observer sees, weather included) versus caused by the colonial rules (same people, same
-  // weather, Inca rules instead). Predictions are graded on the second: weather cannot flip it.
+  // weather, Inca rules instead). Predictions are graded on the second. Weather can still nudge the GDP grade:
+  // silver ignores the weather but the farm output the mita removes does not (default plan, seeds 1-80: 6 "rise", 74 "stay").
   const dg = dir(g1, g2, 5), dk = dir(k1, k2, 50);
   const ck = am(r => r.intake - r.cf.intake), cg = am(r => r.gdp - r.cf.gdp);
   const dgC = dir(0, cg, 12.5), dkC = dir(0, ck, 50); // GDP tolerance: 12.5 $ = 3 index points
@@ -1149,7 +1219,7 @@ function showEnd(){
         <li>…and food per person <b>${S.pred.k}</b>. ${right(S.pred.k, dkC)} <span style="color:var(--muted)">(${sgn(ck)} kcal against Inca rules. Over time: ${pastTense(dk)})</span></li>
         ${S.hyp ? `<li>Your reasoning: “${esc(S.hyp)}”</li>` : ''}
       </ul>
-      <p style="margin:6px 0 0;font-size:13px;color:var(--muted);max-width:65ch">Predictions are checked against what the colonial rules did, with the people and weather held fixed, so a bad frost cannot make a correct prediction look wrong.</p>
+      <p style="margin:6px 0 0;font-size:13px;color:var(--muted);max-width:65ch">Predictions are checked against the same people with the same weather under Inca rules, which removes most of the weather's effect, but not all of it. Silver does not depend on the weather, while the farm work the mita takes away does, so in a frosty run the colonial rules look a little better for GDP. With the same plan every time, the weather alone turns the GDP answer from "stay" to "rise" in about 1 run in 13, always just past the 3-point line.</p>
     </div>
     <div class="rev">
       <h3 style="font-size:18px;margin-bottom:6px">What would have to be true for this to reverse?</h3>
@@ -1169,6 +1239,7 @@ function showEnd(){
     <div class="actions">
       <span class="free" id="copymsg">Copy a text report to paste into your class page.</span>
       <span style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn ghost" id="again">New game</button><button class="btn ghost" id="copy">Copy report</button><button class="btn" id="replay">Replay with the same weather</button></span>
+      <span class="srclinks">How we know: <a href="https://github.com/Azuromalachite/frost-and-silver-game/blob/main/docs/history-and-evidence.md" target="_blank" rel="noopener">sources and evidence</a> · <a href="https://github.com/Azuromalachite/frost-and-silver-game" target="_blank" rel="noopener">Code on GitHub</a></span>
     </div>
     <p style="margin:0;font-size:14px;color:var(--muted);max-width:65ch"><b style="color:var(--ink)">Predict, track, compare.</b> Change one choice, such as building terraces earlier, storing more chuño or sending fewer crews for wages, and replay with the same weather. The game will set the two runs side by side so you can explain what that one choice changed.</p>
     <textarea id="report" rows="8" readonly hidden></textarea>`;
@@ -1257,7 +1328,9 @@ readColors();
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change', readColors);
 new MutationObserver(readColors).observe(document.documentElement, {attributes:true, attributeFilter:['data-theme']});
 
-const ground = i => Math.min(Hh * (0.84 - i * 0.15), Hh - 40 - i * Hh * 0.15); // keep 40px under Yunga for its labels
+// keep room under the valley shelf for its three label lines (name; Quechua name; temperatures)
+const labelRoom = () => W < 600 ? 50 : 64;
+const ground = i => Math.min(Hh * (0.84 - i * 0.15), Hh - labelRoom() - i * Hh * 0.15);
 function shelf(i){ const zw = W/4; return [i*zw + zw*.16, (i+1)*zw - zw*.12]; }
 function seeded(n){ let s = n; return () => (s = (s*16807) % 2147483647) / 2147483647; }
 
@@ -1327,7 +1400,8 @@ function draw(t){
     ctx.font = `500 ${sf}px "IBM Plex Mono", monospace`;
     const half = Math.max(...small.map(s => ctx.measureText(s).width)) / 2 + 3;
     const cx = Math.min(W - half, Math.max(half, (a + b) / 2));
-    const y1 = Math.min(gy + 24, Hh - (fs + 4) - 2 * (sf + 3) - 4), y2 = y1 + fs + 4, y3 = y2 + sf + 3;
+    // y1 is the name's baseline; the last line's baseline (y3) stays 6px above the canvas bottom
+    const y1 = Math.min(gy + (narrow ? fs + 8 : 24), Hh - (fs + 4) - (sf + 3) - 6), y2 = y1 + fs + 4, y3 = y2 + sf + 3;
     ctx.textAlign = 'center';
     // hierarchy: name is the brightest, heaviest mark; Quechua name, altitude and temperatures smaller and dimmer
     ctx.fillStyle = col['--snow']; ctx.font = `900 ${fs+1}px "Archivo", sans-serif`; ctx.fillText(z.name.toUpperCase(), cx, y1);

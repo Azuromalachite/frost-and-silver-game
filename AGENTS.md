@@ -75,7 +75,7 @@ Each one cites what taught it.
    stalled. **Test the Pages copy, not only a local or artifact copy.**
 2. **The pinned run reproduces exactly.** With `?seed=12345`, the default plan
    and Next step only, the results read
-   `1,740 kcal | 1,401 kcal | 80 → 54 | 103 | 108 | 47% → 71%`. A change that
+   `1,764 kcal | 1,371 kcal | 80 → 53 | 103 | 108 | 46% → 73%`. A change that
    is meant to leave the model alone must reproduce this. A change to the
    model recalibrates (60–80 games of default play), then updates this line
    and the numbers in `README.md` and the evidence document.
@@ -87,9 +87,11 @@ Each one cites what taught it.
    change (see 2).
 5. **The audience reads English fluently but is new to Andean history.** Every
    Quechua or Spanish term the game uses has a glossary entry.
-6. **Play is controllable.** Play, Pause and Next step always work, and
-   milestone pop-ups pause play. Players read each harvest before the next
-   one.
+6. **Play is controllable.** The Play/Pause toggle and Next step always work,
+   and milestone pop-ups pause play. Players read each harvest before the
+   next one. Auto-play deals the plan crew by crew where players set it by
+   hand, and any click takes over. Next step never deals, so the pinned run
+   does not depend on auto-play.
 
 ## Before you call a change done
 
