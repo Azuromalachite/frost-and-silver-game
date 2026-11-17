@@ -25,28 +25,28 @@ The game is a teaching model, not a reconstruction. Default play (80 simulated g
 
 | | Inca years | Colonial years |
 |---|---|---|
-| Food available per person per day | ~1,650 kcal | ~1,280 kcal |
-| GDP per person (1990 Int$) | ~$420 | ~$452 |
+| Food available per person per day | ~1,640 kcal | ~1,330 kcal |
+| GDP per person (1990 Int$) | ~$419 | ~$454 |
 
 The end screen separates two things:
 
 - **Over time** (what an observer would see): food falls and GDP per person rises in nearly every game.
-- **What the colonial rules did** (same people, same weather, Inca rules instead): food about −600 kcal; GDP roughly unchanged (+$2), because silver about offsets the field labour lost. Over time, GDP per person rises mainly because the population collapse left more land per survivor. Predictions are graded on this comparison, so weather cannot flip a correct prediction.
+- **What the colonial rules did** (same people, same weather, Inca rules instead): food about −530 kcal; GDP roughly unchanged (about +$6), because silver about offsets the field labour lost. Over time, GDP per person rises mainly because the population collapse left more land per survivor. Predictions are graded on this comparison, so weather cannot flip a correct prediction.
 
 ### Mechanisms that carry the result
 
 | Mechanism | In the game | Status |
 |---|---|---|
 | Colonial quotas fixed at the 1573 count | mita = one man in seven of the 1573 population; tribute a fixed total (500 kcal per person at 1573, taken in food), so the burden per survivor rises | structure follows Toledo's system; tribute size is a game figure |
-| Inca labour duty | one man in ten on state and temple fields; half that harvest returned as feasts and rations | teaching assumption |
+| Inca labour duty | one man in ten on state and temple fields (into the state qollqa); half that harvest returned as feasts and rations | teaching assumption; the game leaves out exchange and markets (Hirth & Pillsbury 2013) |
 | Land per person | zone output ∝ labour^0.9, so survivors farm more land each, but terraces need hands | teaching assumption (cf. Wernke 2010) |
-| Reducciones | colonial yields 15% lower: families resettled into towns far from fields | mechanism from Wernke 2010; size is a teaching assumption |
+| Reducciones | colonial yields 7% lower at c. 1575, 12% at c. 1592, 15% at c. 1600: families resettled into towns far from fields, with the loss building up | mechanism from Wernke 2010; gradual and locally varied (Hunter 2025; de la Puente Luna & Perales 2026); sizes are teaching assumptions |
 | Population | −50% before 1573, −15% more in the 1585–91 epidemics | round game figures; estimates vary widely |
 | GDP | 340 + 0.045 × field output + silver | teaching assumptions, tuned to start near Maddison's 416 |
 
 A "What would have to be true for this to reverse?" panel lets students change the Inca duty, colonial tribute, population fall and the value of mine work against farm work, and shows the thresholds where food would rise or GDP would fall.
 
-Everything else (yields, frost and drought odds, protection, chuño, storage, eating cap, hunger deaths, wage relief, household spread) is a play mechanic; the in-game "How the model works" section lists them.
+Everything else (yields, frost and drought odds, protection, chuño, community stores, eating cap, hunger deaths, wage relief, household spread) is a play mechanic; the in-game "How the model works" section lists them. Waru waru protect against frost more than terraces do, because raised fields work through their water and shape (Kolata & Ortloff 1989); the sizes are play values. The community's chuño goes into community stores; "qollqa" is kept for Inca state storehouses (Morris 1986).
 
 ### Anchors and their status
 
@@ -65,7 +65,16 @@ The text and model were checked by four independent reviews (claims and charts; 
 - Wernke, S. A. (2010). A reduced landscape: toward a multi-causal understanding of historic period agricultural deintensification in highland Peru. *Journal of Latin American Geography*, 9(3), 51–83.
 - Orlove, B. S., Chiang, J. C. H., & Cane, M. A. (2000). Forecasting Andean rainfall and crop yield from the influence of El Niño on Pleiades visibility. *Nature*, 403.
 - Pontzer, H., et al. (2016). Metabolic acceleration and the evolution of human brain size and life history. *Nature*, 533, 390–392.
-- Murra, J. V., on the "vertical archipelago"; Pulgar Vidal, J. (1941), on the altitude zones.
+- Murra, J. V. (1972). El control vertical de un máximo de pisos ecológicos en la economía de las sociedades andinas. Pulgar Vidal, J. (1941), on the altitude zones.
+- Morris, C. (1986). Storage, supply, and redistribution in the economy of the Inka state. In *Anthropological History of Andean Polities*, 59–68. Cambridge University Press.
+- Hirth, K., & Pillsbury, J. (2013). Redistribution and markets in Andean South America. *Current Anthropology*. https://doi.org/10.1086/673114
+- Kolata, A. L., & Ortloff, C. (1989). Thermal analysis of Tiwanaku raised field systems in the Lake Titicaca Basin of Bolivia. *Journal of Archaeological Science*. https://doi.org/10.1016/0305-4403(89)90004-6
+- Hunter, R. A. (2025). The structural transformation of Ollantaytambo's Inka ecology under Spanish rule. *Antiquity*. https://doi.org/10.15184/aqy.2024.200
+- de la Puente Luna, J. C., & Perales Munguía, M. F. (2026). Villages at the crossroads: Inka and Spanish imperialism, local negotiation, and emerging reducción landscapes in early colonial Jauja, Peru. *Ethnohistory*. https://doi.org/10.1215/00141801-12105092
+- Gil Montero, R., & Zagalsky, P. C. (2016). Colonial organization of mine labour in Charcas (present-day Bolivia) and its consequences. *International Review of Social History*. https://doi.org/10.1017/S0020859016000456
+- Barragán Romano, R. (2020). Women in the silver mines of Potosí. *International Review of Social History*. https://doi.org/10.1017/S0020859019000555
+
+Some of these were added from a reference collection's reading notes; the papers themselves have not all been re-read for this version.
 
 ## Credits and licence
 

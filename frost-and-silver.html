@@ -252,7 +252,7 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
   <section class="panel intro" id="p-intro">
     <span class="eyebrow">Before you start</span>
     <h2 style="font-size:26px;font-stretch:112%;text-transform:uppercase">You run an ayllu of about 1,000 people</h2>
-    <p>Your fields climb the mountain from a warm maize valley at 1,800 m to the frozen puna at 4,300 m. Higher fields freeze more often, so spreading crews across the zones is your insurance. Each year you send about 14 work crews (fewer if people die) to plant, build terraces, or freeze-dry potatoes into chuño for the storehouse.</p>
+    <p>Your fields climb the mountain from a warm maize valley at 1,800 m to the frozen puna at 4,300 m. Higher fields freeze more often, so spreading crews across the zones is your insurance. Each year you send about 14 work crews (fewer if people die) to plant, build terraces, or freeze-dry potatoes into chuño for your community stores.</p>
     <p>You play six harvests, each one farming year. Harvests 1–3 are three years in a row under the Inca, around 1500. Harvests 4–6 are sample years from c. 1575, c. 1592 and c. 1600, after the Spanish colonial mita began sending one man in seven from the communities of the mita region (yours is one) to the silver mines at Potosí. Between them, decades pass. Your goal is to feed everyone 1,700 kcal a day.</p>
     <div class="whybox">
       <h3>Why farm the cold heights?</h3>
@@ -298,16 +298,16 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
     <h4>Carry the lesson (change these and the result can change)</h4>
     <ul>
       <li><b>Colonial quotas fixed at the 1573 count.</b> The mita takes one man in seven of the 1573 population and tribute is a fixed total, so the burden per person rises as people die. This follows Toledo's system; the size of the tribute (500 kcal per person per day at the 1573 count, taken in food) is a game figure.</li>
-      <li><b>Inca labour duty:</b> one man in ten on state and temple fields, half of that harvest returned as feasts and rations. Teaching assumption; how much came back is debated.</li>
+      <li><b>Inca labour duty:</b> one man in ten on state and temple fields, half of that harvest returned as feasts and rations. Teaching assumption; how much came back is debated. The game also leaves out exchange: Andean communities traded and used markets as well as relying on redistribution (Hirth &amp; Pillsbury 2013), so the Inca years here are simpler than the real economy.</li>
       <li><b>Land per person:</b> output in a zone grows with labour to the power 0.85, so survivors of an epidemic each farm a little more land. The exponent is close to 1 because terraces need labour to keep up (Wernke 2010 describes terraces abandoned as people were lost). Teaching assumption.</li>
-      <li><b>Resettlement:</b> Toledo's reducciones moved families into nucleated towns, often far from their fields (Wernke 2010). The game lowers colonial yields by 15%; the size is a teaching assumption.</li>
+      <li><b>Resettlement:</b> Toledo's reducciones moved families into nucleated towns, often far from their fields (Wernke 2010). The change came gradually as distant fields and terraces were given up, and it varied from place to place, with some communities negotiating to keep their land (Hunter 2025; de la Puente Luna &amp; Perales 2026). The game lowers colonial yields by 7% at c. 1575, 12% at c. 1592 and 15% at c. 1600; the sizes are teaching assumptions.</li>
       <li><b>Population:</b> a 50% fall before 1573 and 15% more in the 1585–91 epidemics. Historians' estimates vary widely; these are round game figures.</li>
       <li><b>Silver versus food in GDP:</b> GDP per person = 340 + 0.045 × field output + silver. A mine worker's silver counts somewhat more than a farm worker's output. Teaching assumptions, tuned so the Inca years start near Maddison's 416; the "reverse" panel shows what happens if they are different.</li>
     </ul>
     <h4>Only for play (they change single years, not the lesson)</h4>
     <ul>
       <li>Zone yields, frost odds and frost losses, drought odds and size, the Pleiades forecast's accuracy (the forecasting practice itself is real: Orlove, Chiang &amp; Cane 2000).</li>
-      <li>Terrace and raised-field effects, room per zone, chuño capacity, the starting storehouse, the 1,900 kcal eating cap and spoilage.</li>
+      <li>Terrace and raised-field effects. Raised fields protect against frost through their water and shape, and how much depends on the field (Kolata &amp; Ortloff 1989), so the game gives waru waru more frost protection than terraces; the sizes are play values. Also room per zone, chuño capacity, the starting community stores, the 1,900 kcal eating cap and spoilage.</li>
       <li>Deaths from hunger, the wage crews' tribute relief, and the 30% household spread behind "households below 1,700".</li>
     </ul>
   </details>
@@ -323,21 +323,21 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
 (() => {
 const GOAL = 1700, COLONIAL = 1200, GDP_ANCHOR = 416, BASE_CREWS = 14, BASE_CAP = 5, CHUNO_CAP = 120;
 const ZONES = [
-  {key:'yunga', name:'Yunga', alt:'1,800 m', crop:'Coca, fruit & maize', y:185, hi:.6, lo:.2, build:'Build andenes', what:'terraces', cap:2, risk:'Frost: rare', why:'Warm valleys with little flat land.', c:'--z0'},
-  {key:'quechua', name:'Quechua', alt:'3,000 m', crop:'Maize & potatoes', y:182, hi:.6, lo:.2, build:'Build andenes', what:'terraces', cap:2, risk:'Frost: some years', why:'The heart of Inca maize farming.', c:'--z1'},
+  {key:'yunga', name:'Yunga', alt:'1,800 m', crop:'Coca, fruit & maize', y:185, hi:.6, lo:.4, build:'Build andenes', what:'terraces', cap:2, risk:'Frost: rare', why:'Warm valleys with little flat land.', c:'--z0'},
+  {key:'quechua', name:'Quechua', alt:'3,000 m', crop:'Maize & potatoes', y:182, hi:.6, lo:.4, build:'Build andenes', what:'terraces', cap:2, risk:'Frost: some years', why:'The heart of Inca maize farming.', c:'--z1'},
   {key:'suni', name:'Suni', alt:'3,800 m', crop:'Bitter potatoes', y:163, hi:.6, lo:.2, build:'Build waru waru', what:'waru waru', cap:1, risk:'Frost: often', why:'Too cold for maize. Bitter potatoes survive frost and make the best chuño.', c:'--z2'},
   {key:'puna', name:'Puna', alt:'4,300 m', crop:'Llamas & quinoa', y:122, hi:.3, lo:.3, build:null, risk:'Frost: most years; herds survive it', why:'Too cold for most crops. Pasture for llamas and alpacas.', c:'--z3'}
 ];
 const TERMS = [
   ['Ayllu', 'An Andean community of related families who hold land together and share work. Your village in this game.'],
   ['Inca', 'The empire that ruled the Andes until the Spanish conquest of the 1530s. Its own name, Tawantinsuyu, means “the four parts together”.'],
-  ['Mita', 'Work done in turns. Under the Inca, communities sent workers to the state for set periods and were fed while they worked. Under Spain it became a forced draft for the silver mines.'],
+  ['Mita', 'Work done in turns. Under the Inca, communities sent workers to the state for set periods and were fed while they worked. Under Spain it became a forced draft for the silver mines. Potosí also ran on paid workers (mingas), and the line between drafted and paid work was often blurred (Gil Montero & Zagalsky 2016). Women worked there too, in ore sorting, refining and trade (Barragán Romano 2020).'],
   ['Potosí', 'A mountain of silver, the Cerro Rico (“rich hill”), above the mining city of Potosí (about 4,000 m) in today’s Bolivia. Spaniards began mining it in 1545, and its silver was shipped across the world, as far as China.'],
   ['Yunga, Quechua, Suni, Puna', 'Quechua-derived names for the altitude zones, from warm valley to cold high grassland, used by the geographer Javier Pulgar Vidal in 1941. The puna, above about 4,000 m, is too cold for most crops but good for herds.'],
   ['Chuño', 'Potatoes frozen at night and dried by day until they keep for years. Food for bad harvests.'],
-  ['Qollqa', 'A storehouse. The Inca built thousands of them along roads and above towns.'],
+  ['Qollqa', 'A state storehouse. The Inca built thousands of them along roads and above towns, filled from the state fields. Households and communities kept their own stores too; in the game, your chuño goes into those community stores (Morris 1986).'],
   ['Andenes', 'Stone terraces. They make flat fields on steep slopes, hold water and soil, and give some protection from frost.'],
-  ['Waru waru', 'Raised fields between water channels. The water soaks up heat by day and gives it back at night, softening frost.'],
+  ['Waru waru', 'Raised fields between water channels. The water soaks up heat by day and gives it back at night, softening frost; how well it works depends on the field\'s shape and water (Kolata & Ortloff 1989).'],
   ['Tribute', 'A tax the colonial government collected from Indigenous communities, in goods, silver or labour.'],
   ['kcal per person per day', 'Food energy available on average to each person, children included. Adults working hard need more.']
 ];
@@ -419,8 +419,11 @@ function rollYear(){
 const ALPHA = 0.9, INCA_LEVY = 0.10, INCA_RETURN = 0.5, COLLAPSE = 0.5, LATE_EPIDEMIC = 0.15;
 const TRIB_PP = 500, SILVER = 14, WAGE_TRIB = 60, G0 = 340, P = 0.045;
 // Toledo's reducciones moved families into nucleated towns, far from many of their fields (Wernke 2010):
-// colonial-era fields yield REDUCCION of what they would (teaching assumption).
-const REDUCCION = 0.85;
+// colonial-era fields yield less. The effect builds up as distant fields and terraces are given up, and it varied
+// from place to place (Hunter 2025; de la Puente Luna & Perales 2026), so the game phases it in (teaching assumption).
+const REDUC_BY_HARVEST = {4: 0.93, 5: 0.88, 6: 0.85};
+const REDUC_MEAN = (0.93 + 0.88 + 0.85) / 3;
+const reducNow = () => REDUC_BY_HARVEST[S.year] || 1;
 function crews(){
   const L = BASE_CREWS * S.pop / 1000;
   const base = Math.max(4, Math.round(L));
@@ -430,7 +433,7 @@ function crews(){
 }
 // Food grown per person (kcal/day) with a given crew strength and allocation, under this year's weather.
 function grow(strength, alloc, colonial){
-  const Y = S.yr, per = (1000 / S.pop) * (colonial ? REDUCCION : 1);
+  const Y = S.yr, per = (1000 / S.pop) * (colonial ? reducNow() : 1);
   let H = 0, lost = 0, saved = 0; const zr = [];
   ZONES.forEach((z,i) => {
     const prot = S.built[z.key] && !!z.build;
@@ -492,18 +495,18 @@ function renderPlan(){
       <div class="crop">${z.crop} · ${z.alt}</div>
       <div class="why">${z.why}</div>
       <div class="risk">${z.risk}</div>
-      <div class="state">${!z.build ? 'No building here' : S.built[z.key] ? `✓ ${z.what} built: frost loss 20%, +10% yield, room for ${cap(z)} crews` : `${z.build} with 2 crews; ready next year`}</div></div>`).join('');
+      <div class="state">${!z.build ? 'No building here' : S.built[z.key] ? `✓ ${z.what} built: frost loss ${Math.round(z.lo*100)}% instead of ${Math.round(z.hi*100)}%, +10% yield, room for ${cap(z)} crews` : `${z.build} with 2 crews; ready next year`}</div></div>`).join('');
   let ex = `<div class="extra"><span class="lbl">Chuño crews</span>
-    <p>Freeze-dry surplus food into the qollqa, up to ${CHUNO_CAP} kcal per person per day per crew. Surplus nobody preserves spoils.</p></div>`;
+    <p>Freeze-dry surplus food into your community stores, up to ${CHUNO_CAP} kcal per person per day per crew. Surplus nobody preserves spoils.</p></div>`;
   if (act(S.year) === 2) {
     const dd = crews().d;
     ex += `<div class="extra mita"><span class="lbl">Colonial mita: ${(dd*7).toFixed(1)} men in 7 away</span>
       <p>Your ayllu lies inside the mita region. Its quota was fixed at the 1573 count, so as people die the same number of men must still go. You cannot change this. Every crew here works ${Math.round(dd*100)}% short. The game adds the silver they mine to your community's output figure.</p></div>
       <div class="extra"><span class="lbl">Potosí wage crews</span>
-      <p>Each crew earns silver: GDP goes up and part of the tribute is paid in silver instead of food, but they grow no food.</p></div>`;
+      <p>Paid work at Potosí (mingas). Each crew earns silver: GDP goes up and part of the tribute is paid in silver instead of food, but they grow no food.</p></div>`;
   } else {
     ex += `<div class="extra"><span class="lbl">Inca labour duty</span>
-      <p>One man in ten works the state and temple fields, so every crew here works 10% short. Half of that harvest comes back as feasts and rations (a game assumption; how much came back is debated).</p></div>`;
+      <p>One man in ten works the state and temple fields, so every crew here works 10% short. That harvest fills the state qollqa; half of it comes back as feasts and rations (a game assumption; how much came back is debated). Real communities also traded, which the game leaves out.</p></div>`;
   }
   $('extras').innerHTML = ex;
   const f = $('free');
@@ -603,7 +606,7 @@ function renderHUD(){
       <span class="gmark" style="left:${pct(GOAL)}%" title="Goal 1,700 (course teaching figure, unsourced)"></span><span class="gmark col" style="left:${pct(COLONIAL)}%" title="1,200: course teaching figure for colonial years (unsourced)"></span></span></span>
     <span class="stat"><span>GDP/person</span><b>${gdp==null?'–':'$'+fmt(gdp)}</b></span>
     <span class="stat"><span>People</span><b>${fmt(S.pop)}</b></span>
-    <span class="stat"><span>Qollqa</span><b>${fmt(days)} days</b></span>`;
+    <span class="stat"><span>Stores</span><b>${fmt(days)} days</b></span>`;
 }
 function renderForecast(){
   const el = $('forecast');
@@ -657,7 +660,7 @@ function harvest(){
   S.store *= popBefore / S.pop; // the store is food per person; same food, different number of people
   const builtNow = ZONES.filter(z => S.building[z.key]).map(z => z.what);
   for (const z of ZONES) if (S.building[z.key]) { S.built[z.key] = true; S.building[z.key] = false; }
-  const rec = {year:S.year, act:act(S.year), H, lost, saved, tribute, tRate, ret, stateOut, d, toStore, spoiled, draw, intake, avail, gdp, silver, cf,
+  const rec = {year:S.year, act:act(S.year), H, lost, saved, tribute, tRate, ret, stateOut, d, rf: a2 ? reducNow() : 1, toStore, spoiled, draw, intake, avail, gdp, silver, cf,
     pop:S.pop, popBefore, mita, wage:S.wage, line:Y.line, drought:Y.drought, hazy:Y.hazy, zr, builtNow,
     idle: 0, storeDays: S.store / GOAL * 365};
   S.hist.push(rec);
@@ -683,14 +686,14 @@ function whyList(r){
   else if (r.lost < 1) out.push(`Frost reached down to the ${zone} zone${r.line===3?'':' and everything above it'}, but you had no crops there.`);
   else out.push(`Frost reached down to the ${zone} zone${r.line===3?'':' and everything above it'}, destroying ${fmt(r.lost)} kcal per person per day.`);
   if (r.saved > 0) out.push(`Your terraces and raised fields saved ${fmt(r.saved)}.`);
-  else if (r.line < 3) out.push('In this game, terraces or waru waru in the frozen zones would have cut that loss by two thirds.');
+  else if (r.line < 3) out.push('In this game, waru waru would have cut the frost loss by two thirds and terraces by a third.');
   if (r.drought) out.push(`A dry year (what we now link to El Niño) cut every harvest by a quarter.${r.hazy ? ' The hazy Pleiades warned you.' : ' The Pleiades gave no warning.'}`);
   else if (r.hazy) out.push('The Pleiades looked hazy, but the rains came anyway.');
   if (r.act === 1) out.push(`One man in ten worked the state and temple fields under the Inca labour duty; ${fmt(r.ret)} came back as feasts and rations (game assumption: half the state harvest).`);
-  if (r.act === 2) out.push('Resettlement into towns (the reducciones) left many fields far from home: yields are 15% lower (game figure).');
+  if (r.act === 2) out.push(`Resettlement into towns (the reducciones) left many fields far from home: yields are ${Math.round((1 - r.rf) * 100)}% lower this harvest (game figure; the loss grows as distant fields are given up, and varied from place to place).`);
   if (r.tribute > 0) out.push(`Colonial tribute took ${fmt(r.tribute)}, ${Math.round(r.tRate*100)}% of the harvest. The total was fixed at the 1573 count, so it weighs more when there are fewer people.`);
   if (r.mita) out.push(`${(r.d*7).toFixed(1)} men in seven were away at Potosí on the 1573 quota, so every crew worked that much short${r.wage?`, and ${r.wage} more crew${r.wage>1?'s':''} went for wages`:''}.`);
-  if (r.draw > 0) out.push(`The qollqa covered ${fmt(r.draw)} of the shortfall.`);
+  if (r.draw > 0) out.push(`Your community stores covered ${fmt(r.draw)} of the shortfall.`);
   if (r.spoiled > 1) out.push(`${fmt(r.spoiled)} of surplus spoiled because no one freeze-dried it.`);
   if (r.idle > 0) out.push(`${r.idle} crew${r.idle>1?'s':''} sat idle.`);
   if (r.builtNow.length) out.push(`New ${r.builtNow.join(' and ')} will protect next year's crops.`);
@@ -704,8 +707,8 @@ function showSummary(r){
     r.lost > 0 ? ['Lost to frost', `−${fmt(r.lost)}`, 'neg'] : null,
     r.ret > 0 ? ['Inca feasts and rations from the state fields', `+${fmt(r.ret)}`, 'pos'] : null,
     r.tribute > 0 ? ['Colonial tribute', `−${fmt(r.tribute)}`, 'neg'] : null,
-    r.toStore > 0 ? ['Freeze-dried into the qollqa', `−${fmt(r.toStore)}`, ''] : null,
-    r.draw > 0 ? ['Taken from the qollqa', `+${fmt(r.draw)}`, 'pos'] : null,
+    r.toStore > 0 ? ['Freeze-dried into community stores', `−${fmt(r.toStore)}`, ''] : null,
+    r.draw > 0 ? ['Taken from community stores', `+${fmt(r.draw)}`, 'pos'] : null,
     r.spoiled > 1 ? ['Spoiled', `−${fmt(r.spoiled)}`, 'neg'] : null,
   ].filter(Boolean);
   openModal(`
@@ -720,7 +723,7 @@ function showSummary(r){
       <tr><td>Households below 1,700 kcal (model guess)</td><td class="${shortShare(r.avail)>.5?'neg':''}">${Math.round(shortShare(r.avail)*100)}%</td></tr>
       <tr><td>GDP per person (model, 1990 Int$)</td><td>$${fmt(r.gdp)}${r.silver?` <span class="mono" style="color:var(--muted)">incl. $${fmt(r.silver)} silver</span>`:''}</td></tr>
       <tr><td>People</td><td>${fmt(r.pop)} <span class="${dPop<-0.5?'neg':dPop>0.5?'pos':''}">(${dPop>=0?'+':'−'}${fmt(Math.abs(dPop))})</span></td></tr>
-      <tr><td>Qollqa holds</td><td>${fmt(r.storeDays)} days of food</td></tr>
+      <tr><td>Community stores hold</td><td>${fmt(r.storeDays)} days of food</td></tr>
     </tbody></table>
     <p class="eyebrow" style="margin-top:4px">All food figures are kcal per person per day</p>
     <ul class="why">${whyList(r).map(s => `<li>${s}</li>`).join('')}</ul>`);
@@ -754,8 +757,8 @@ function showTransition(){
     <table class="ledger"><tbody>
       <tr><td>People (estimates of the fall from the 1520s to the 1570s vary widely but are well over half; the game uses 50%)</td><td class="neg">${fmt(S.pop)} → ${fmt(S.pop*(1-COLLAPSE))}</td></tr>
       <tr><td>Each survivor farms more land, but terraces need hands, so the gain is small (game assumption)</td><td>small gain</td></tr>
-      <tr><td>Toledo's reducciones moved families into new towns, far from many fields (game figure: 15% lower yields)</td><td class="neg">−15%</td></tr>
-      <tr><td>Qollqa (half the food lost, shared among half the people)</td><td>${fmt(S.store/GOAL*365)} days per person</td></tr>
+      <tr><td>Toledo's reducciones moved families into new towns, far from many fields. Yields fall as distant fields are given up (game figure: 7% at first, 15% by 1600)</td><td class="neg">−7% → −15%</td></tr>
+      <tr><td>Community stores (half the food lost, shared among half the people)</td><td>${fmt(S.store/GOAL*365)} days per person</td></tr>
       <tr><td>Mita quota: one man in seven at the 1573 count</td><td class="neg">fixed</td></tr>
       <tr><td>Tribute: a fixed total from the 1573 count (game rule, taken in food; the real tribute was paid in silver and goods)</td><td class="neg">fixed</td></tr>
     </tbody></table>
@@ -835,7 +838,7 @@ function showEnd(){
   //   food: Inca-rules food grown (Hc + ret) − labour lost (Hc − H) − feasts lost (ret) − tribute + store effects = intake
   //   GDP:  Inca-rules GDP − field output lost P·(full − H) + silver = gdp
   const grownCf = am(r => r.cf.Hc + r.cf.ret), feastLost = am(r => r.cf.ret);
-  const reducCost = am(r => r.H / REDUCCION - r.H), labourCost = am(r => r.cf.Hc - r.H / REDUCCION);
+  const reducCost = am(r => r.H / r.rf - r.H), labourCost = am(r => r.cf.Hc - r.H / r.rf);
   const tribK = avg(a2,'tribute'), silv = avg(a2,'silver');
   const storeEff = am(r => r.intake - (r.H - r.tribute)), lostVal = am(r => P * (r.cf.full - r.H));
   const sgn = v => (v >= 0 ? '+' : '−') + fmt(Math.abs(v));
@@ -879,7 +882,7 @@ function showEnd(){
       </tbody></table>
       </div>
       <p style="margin:10px 0 0;max-width:65ch;font-size:15px"><b>So why did GDP per person ${dg === 'rise' ? 'rise' : 'change'} over time (${sgn(g2-g1)} $)?</b> The colonial rules themselves ${Math.abs(cg) <= 5 ? 'roughly broke even on output: silver came in, field labour went out' : cg > 0 ? `added ${sgn(cg)} $: silver outweighed the field labour lost` : `cost ${sgn(cg)} $: the field labour lost outweighed the silver`}. The rest came from the population collapse: fewer people shared the same land, so output per person ${dg === 'rise' ? 'rose' : 'changed'} while the rules took the food.</p>
-      <p style="margin:8px 0 0;max-width:65ch;font-size:14px;color:var(--muted)">This comparison holds the people and the weather fixed, so it shows what the rules did. The harvest-by-harvest charts above also include frost, drought and the population collapse, which is what an observer at the time would have seen. Rows may be off by 1 from rounding.</p>
+      <p style="margin:8px 0 0;max-width:65ch;font-size:14px;color:var(--muted)">This comparison holds the people and the weather fixed, so it shows what the rules did. The harvest-by-harvest charts above also include frost, drought and the population collapse, which is what an observer at the time would have seen. Rows may be off by 1 or 2 from rounding.</p>
     </div>
     <div>
       <h3 style="font-size:18px;margin-bottom:6px">Your predictions</h3>
@@ -892,7 +895,7 @@ function showEnd(){
     </div>
     <div class="rev">
       <h3 style="font-size:18px;margin-bottom:6px">What would have to be true for this to reverse?</h3>
-      <p style="margin:0 0 10px;font-size:14px;max-width:65ch">This uses the game's core model without weather or storehouse: food per person from the share of labour in the fields and the land each person farms; GDP from field output plus silver. Move the sliders; the starting values are the game's.</p>
+      <p style="margin:0 0 10px;font-size:14px;max-width:65ch">This uses the game's core model without weather or stores: food per person from the share of labour in the fields and the land each person farms; GDP from field output plus silver. Move the sliders; the starting values are the game's.</p>
       <div class="sliders">
         <label for="sl-m">Inca labour duty <output id="o-m"></output></label><input type="range" id="sl-m" min="0" max="30" step="1" value="${INCA_LEVY*100}">
         <label for="sl-t">Colonial tribute, share of harvest <output id="o-t"></output></label><input type="range" id="sl-t" min="0" max="50" step="1" value="${Math.round(tauObs*100)}">
@@ -919,14 +922,14 @@ function showEnd(){
     $('o-m').textContent = Math.round(m*100) + '%'; $('o-t').textContent = Math.round(tau*100) + '%';
     $('o-c').textContent = Math.round(c*100) + '%'; $('o-r').textContent = rho.toFixed(1) + '×';
     const fI = Math.pow(1-m, ALPHA) + INCA_RETURN * (1 - Math.pow(1-m, ALPHA));
-    const YC = Math.pow(1/(1-c), 1-ALPHA) * Math.pow(1-d, ALPHA) * REDUCCION;
+    const YC = Math.pow(1/(1-c), 1-ALPHA) * Math.pow(1-d, ALPHA) * REDUC_MEAN;
     const dF = YC*(1-tau)/fI - 1, dG = V*(YC-1) + rho*V*d;
     const tauStar = Math.max(0, 1 - fI/YC), rhoStar = Math.max(0, (1-YC)/d);
     const tag = (v, up, down) => v > 0.005 ? `<span class="chip ok">${up}</span>` : v < -0.005 ? `<span class="chip low">${down}</span>` : '<span class="chip">about the same</span>';
     $('revout').innerHTML = `
       <p><b>Food per person:</b> ${dF>=0?'+':'−'}${Math.abs(Math.round(dF*100))}% ${tag(dF,'rises','falls')} · ${tauStar > 0.005 ? `it would rise if colonial tribute were below <b>${Math.round(tauStar*100)}%</b> of the harvest.` : 'it would fall even with no tribute: the mita, resettlement and lost feasts outweigh the extra land per survivor.'}</p>
       <p><b>GDP per person:</b> ${dG>=0?'+':'−'}$${fmt(Math.abs(dG))} ${tag(dG,'rises','falls')} · it would fall if a mine worker's silver were worth less than <b>${rhoStar.toFixed(1)}×</b> a farm worker's output${rhoStar<=0?' (never, at this population fall: more land per survivor already raises output)':''}.</p>
-      <p style="color:var(--muted);font-size:13px">Land per person rises as people die, but only a little (α = ${ALPHA}): terraces need hands to keep them up. Resettlement into towns costs 15% of yields; the Inca feasts are lost. The core model ignores which zones you farm: in the game, survivors also move to the best land, so food falls less there than here.</p>`;
+      <p style="color:var(--muted);font-size:13px">Land per person rises as people die, but only a little (α = ${ALPHA}): terraces need hands to keep them up. Resettlement into towns costs about 11% of yields on average over the three colonial harvests; the Inca feasts are lost. The core model ignores which zones you farm: in the game, survivors also move to the best land, so food falls less there than here.</p>`;
   };
   ['sl-m','sl-t','sl-c','sl-r'].forEach(id => $(id).addEventListener('input', revUpdate)); revUpdate();
   $('again').onclick = restart;
