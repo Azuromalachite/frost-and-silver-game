@@ -189,3 +189,22 @@ years in a row; harvests 4–6 are snapshots decades apart.
 "From notes" means the source was cited from a reference collection's reading
 notes or a literature review. Before quoting any of those claims elsewhere,
 read the source.
+
+## Research addendum, 18 November 2026
+
+The [new literature notes](literature-notes.md) distinguish archaeological storage
+capacity from actual inventory and access, and distinguish negotiable tribute
+assessments from more rigid mining obligations. The table's general statement
+about permanently fixed mita and tribute should be read with that qualification:
+the current game holds both totals fixed as a simplification.
+
+Hirth and Pillsbury's relevant argument has now been read directly; its exchange
+interpretation is no longer based only on a collection note. New source entries
+separately record the 2025 Tambo Viejo systems article, the 2026 coca article,
+Bruno's Formative-period farming discussion, the MPD2023 workbook checks, and
+the Zagalsky presentation versus the unread book.
+
+The [model review](research-review-2026-11-18.md) gives a specified seed sample and
+a reproducible counterexample to the assertion that weather cannot change a
+prediction grade. The historical and model limitations remain even when the
+registry checker passes.

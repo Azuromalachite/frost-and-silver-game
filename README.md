@@ -103,3 +103,16 @@ Adapted from [“Week 2: Tahuantinsuyu Harvest & Frost Defense”](https://super
 Adapted by Thanakrit Wongsatit. Changes: rebuilt as a turn-based game with a colonial second act, a new model, and a new visual design. Icons from the IconMCP library.
 
 This adaptation is licensed under **CC BY-NC-SA 4.0** as well (see `LICENSE.md`): you may share and adapt it for non-commercial purposes, with attribution, under the same licence.
+
+## Research contribution, 18 November 2026
+
+The [independent research review](docs/research-review-2026-11-18.md) records
+reproducible model checks and remaining issues, including weather-dependent
+prediction grades and the distinction between a conditional harvest comparison
+and an alternative historical trajectory.
+
+See [literature notes](docs/literature-notes.md) for Tambo Viejo storage,
+tribute reassessment and mita, diversified farming, exchange, and MPD2023
+comparability; [BibTeX references](references/research.bib) and
+[access gaps](references/ACCESS.md) provide the source trail.
+These notes record proposed gameplay changes; they do not implement them.

@@ -476,7 +476,7 @@ claims:
     statement: >
       Exchange and markets operated in the Andes alongside state redistribution.
     layer: interpretation
-    status: unverified
+    status: supported
     sources: [hirth_pillsbury2013]
     pages:
       - path: frost-and-silver.html
@@ -515,12 +515,13 @@ claims:
       per survivor rose as people died.
     layer: documented
     status: partly_supported
-    sources: [upenn_dia_mita]
+    sources: [upenn_dia_mita, zagalsky_book_presentation]
     pages:
       - path: frost-and-silver.html
         anchor: When people died, the quotas stayed the same.
       - path: docs/history-and-evidence.md
         anchor: Mita and tribute quotas were fixed from census counts
+    notes: Initial quota-setting is supported, but the permanent joint treatment is too broad. The presentation distinguishes tribute reassessment from more rigid mining obligations; see literature notes. The game's fixed totals remain a simplification pending revision.
 
   - id: claim.colonial.paid_labour_and_women
     statement: >
@@ -653,3 +654,121 @@ claims:
     pages:
       - path: frost-and-silver.html
         anchor: output in a zone grows with labour to the power 0.9,
+
+  # --- additional research evidence; not new gameplay rules -------------------
+  - id: claim.research.tambo_architecture
+    statement: >
+      Valdez and Bettcher document semisubterranean cists and storage vessels at
+      coastal Tambo Viejo, including maize and coca evidence; not all storage
+      followed the large highland qollqa pattern.
+    layer: documented
+    status: supported
+    sources: [valdez_bettcher2025]
+    pages:
+      - path: docs/literature-notes.md
+        anchor: The study documents six semisubterranean cists
+
+  - id: claim.research.tambo_capacity
+    statement: >
+      The reported Tambo Viejo volume-to-mass conversions are estimated capacities,
+      not measurements of filled inventory, annual throughput, or household access.
+    layer: estimate
+    status: supported
+    sources: [valdez_bettcher2025]
+    pages:
+      - path: docs/literature-notes.md
+        anchor: These estimates describe physical capacity rather than annual food throughput.
+
+  - id: claim.research.coca_storage
+    statement: >
+      Valdez's separate coca article reports leaves and seeds associated with
+      clean sand in a small semisubterranean structure at Tambo Viejo.
+    layer: documented
+    status: supported
+    sources: [valdez2026]
+    pages:
+      - path: docs/literature-notes.md
+        anchor: This narrower report concerns coca leaves and seeds associated with clean sand
+
+  - id: claim.research.tribute_reassessment
+    statement: >
+      The book presentation describes tribute reassessment through revisitas
+      alongside more rigid mining obligations in its Visisa/Qaraqara discussion.
+    layer: interpretation
+    status: partly_supported
+    sources: [zagalsky_book_presentation, zagalsky2023_book]
+    pages:
+      - path: docs/literature-notes.md
+        anchor: Revisitas could reduce tribute assessments while mining obligations were more rigid
+    notes: Mediated through a presentation transcript, mainly commentators, plus publisher summary and contents; not verified against book pages. No general probability or effect size follows.
+
+  - id: claim.research.taraco_practices
+    statement: >
+      Bruno's Formative-period Taraco account considers diversified crops and
+      herds and multiple cultivation practices beyond raised fields.
+    layer: documented
+    status: supported
+    sources: [bruno2014]
+    pages:
+      - path: docs/literature-notes.md
+        anchor: The account includes crop and herd diversification, tillage, weeding, fertilization
+
+  - id: claim.research.mpd_peru_entries
+    statement: >
+      MPD2023's Peru GDP-per-person entries run from 910 in 1605 to 1202 in 1635,
+      in 2011 international dollars; these are reconstructed estimates.
+    layer: estimate
+    status: supported
+    sources: [mpd2023_dataset]
+    pages:
+      - path: docs/literature-notes.md
+        anchor: The locally retrieved official workbook's Peru GDP-per-person entries were checked
+    notes: Seven workbook entries are tabulated in the notes. Not a validation of the game's 1500-1600 trajectory.
+
+  - id: claim.research.inkawasi_accounts
+    statement: >
+      Urton and Chu interpret linked and closely matching Inkawasi khipu records
+      as evidence of accounting checks and reconciliation in a storage setting.
+    layer: interpretation
+    status: supported
+    sources: [urton_chu2015]
+    pages:
+      - path: docs/literature-notes.md
+        anchor: Linked pairs and closely matching numbers are interpreted as checking and reconciling accounts.
+    notes: Specific accounting context, not validation of the game's chosen cord layout or calorie units.
+
+  - id: claim.research.inkawasi_deductions
+    statement: >
+      Urton and Chu propose that recurring fixed deductions supported storehouse
+      operations, while considering seed retention as an alternative explanation.
+    layer: interpretation
+    status: supported
+    sources: [urton_chu2019]
+    pages:
+      - path: docs/literature-notes.md
+        anchor: They also discuss seed retention as an alternative explanation
+    notes: Supported as an interpretation advanced in the paper, not established universal taxation. Values are accounting units and percentages refer to average deposit sizes.
+
+  - id: claim.research.morrope_stress
+    statement: >
+      Klaus and Tam's coastal Morrope study indicates increased postcontact
+      systemic stress with multifactorial causes and unchanged terminal adult stature.
+    layer: interpretation
+    status: supported
+    sources: [klaus_tam2009]
+    pages:
+      - path: docs/literature-notes.md
+        anchor: The coastal Mórrope comparison indicates elevated postcontact stress
+    notes: Local skeletal and demographic proxies; no exact daily calorie or annual game mortality estimate.
+
+  - id: claim.research.reflective_play
+    statement: >
+      McCall recommends reflective play, source comparison, teacher facilitation,
+      and debriefing when using historical games in class.
+    layer: documented
+    status: supported
+    sources: [mccall2016]
+    pages:
+      - path: docs/literature-notes.md
+        anchor: The practical recommendations emphasize reflective play logs
+    notes: Pedagogical recommendations, not measured educational effectiveness of Frost and Silver.
