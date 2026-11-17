@@ -53,7 +53,7 @@ canvas{display:block;width:100%;aspect-ratio:16/7.2;max-width:100%}
 .stat{display:flex;gap:4px;align-items:baseline;white-space:nowrap}
 .stat span{color:var(--muted);font-size:11px;font-family:var(--f-mono);text-transform:uppercase;letter-spacing:.06em}
 .stat b{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
-.forecast{position:absolute;left:10px;bottom:10px;right:10px;max-width:520px;padding:6px 10px;border-radius:4px;background:color-mix(in srgb,var(--surface) 88%,transparent);border:1px solid var(--line);font-size:13px}
+.forecast{font-size:13px;color:var(--muted)}
 .forecast b{font-family:var(--f-mono);font-size:12px}
 
 /* panels */
@@ -95,6 +95,26 @@ canvas{display:block;width:100%;aspect-ratio:16/7.2;max-width:100%}
 .glossbox summary{cursor:pointer;font-weight:700;font-size:14px}
 .glossbox[open] summary{margin-bottom:10px}
 .zone .why{font-size:12px;line-height:1.35}
+/* controls docked directly under the mountain, one column per zone */
+.view{position:relative}
+.dock{border-top:1px solid var(--line);background:var(--surface);padding:10px;display:grid;gap:10px}
+.dzones{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.dz{display:grid;gap:6px;justify-items:start;align-content:start;border-top:3px solid var(--zc);padding-top:6px;min-width:0}
+.dzn{font-family:var(--f-display);font-weight:800;font-stretch:110%;text-transform:uppercase;font-size:12px}
+.dz .build{font-size:12px;padding:4px 6px}
+.drow{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:10px}
+.dxs{display:flex;flex-wrap:wrap;gap:8px 18px}
+.dx{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700}
+.dgo{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin-left:auto}
+.transport{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;padding:8px 10px;border-top:1px solid var(--line);background:var(--surface);font-size:13px}
+.tbtn{font:700 13px var(--f-body);padding:6px 12px;border-radius:4px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+.tbtn[aria-pressed="true"]{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.seg{display:inline-flex}
+.seg .tbtn{border-radius:0;margin-left:-1px}
+.seg .tbtn:first-child{border-radius:4px 0 0 4px;margin-left:0}
+.seg .tbtn:last-child{border-radius:0 4px 4px 0}
+#tstatus{color:var(--muted);font-family:var(--f-mono);font-size:12px}
+.zone .state{font-size:12px;font-family:var(--f-mono);color:var(--muted)}
 .notice{margin:0;padding:8px 12px;border-left:3px solid var(--gold);background:color-mix(in srgb,var(--gold) 10%,transparent);font-size:14px;border-radius:0 4px 4px 0}
 /* vertical archipelago: four steps rising left to right */
 .vert{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;align-items:end;margin-top:4px}
@@ -163,10 +183,15 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
   .step small{display:none}
   .build{font-size:11px;padding:4px}
   .hud{font-size:12px;gap:4px 10px;padding:6px 8px}
-  .forecast{font-size:12px;position:static;max-width:none;border-radius:0;border-width:1px 0 0}
+  .forecast{font-size:12px}
   canvas{aspect-ratio:16/12}
   .hud{position:static}
   .zones{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 12px}
+  .dock{padding:8px}
+  .dzones{gap:4px}
+  .dzn{font-size:11px}
+  .dz .build{font-size:10px;padding:3px 4px}
+  .tbtn{padding:6px 10px}
   .zone .crop,.zone .why,.zone .risk{overflow-wrap:anywhere}
 }
 @media (prefers-reduced-motion:reduce){.gfill{transition:none}}
@@ -179,9 +204,25 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
   </header>
 
   <section class="stage" aria-label="The mountainside">
-    <canvas id="cv" aria-hidden="true"></canvas>
-    <div class="hud" id="hud"></div>
-    <div class="forecast" id="forecast" hidden></div>
+    <div class="view">
+      <canvas id="cv" aria-hidden="true"></canvas>
+      <div class="hud" id="hud"></div>
+    </div>
+    <div class="dock" id="dock" hidden>
+      <div class="dzones" id="dzones"></div>
+      <div class="drow">
+        <div class="dxs" id="dextras"></div>
+        <div class="dgo"><span class="free" id="free"></span><button class="btn" id="endyear">Harvest this year</button></div>
+      </div>
+      <div class="forecast" id="forecast" hidden></div>
+    </div>
+    <div class="transport" id="transport" hidden>
+      <button class="tbtn" id="tplay" aria-pressed="false">▶ Auto-play</button>
+      <span class="seg" role="group" aria-label="Speed">
+        <button class="tbtn" data-speed="1" aria-pressed="true">1×</button><button class="tbtn" data-speed="2" aria-pressed="false">2×</button><button class="tbtn" data-speed="4" aria-pressed="false">4×</button>
+      </span>
+      <span id="tstatus">Paused. Press Auto-play to run the years with your current plan.</span>
+    </div>
   </section>
 
   <section class="panel intro" id="p-intro">
@@ -223,7 +264,6 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
     <p class="notice" id="notice" role="status" hidden></p>
     <div class="zones" id="zones"></div>
     <div class="extras" id="extras"></div>
-    <div class="actions"><span class="free" id="free"></span><button class="btn" id="endyear">Harvest this year</button></div>
     <details class="glossbox"><summary>Words in this game: ayllu, mita, Potosí, puna, chuño…</summary><ul class="gloss" id="gloss-plan"></ul></details>
   </section>
 
@@ -355,41 +395,74 @@ function renderPlan(){
   $('planh').innerHTML = `Year <b>${S.year}</b> of 6 · ${YEARS[S.year-1]}`;
   $('plansub').textContent = `${act(S.year)===1 ? 'Inca' : 'Colonial'} · ${avail} crews to assign`;
   const eb = $('endyear'); eb.disabled = false; eb.textContent = `Harvest year ${S.year}`;
-  $('zones').innerHTML = ZONES.map((z,i) => {
+  const stepper = (attr, key, n, canDec, canInc, label) =>
+    `<div class="step"><button ${attr}="${key}" data-d="-1" aria-label="One fewer crew: ${label}" ${canDec?'':'disabled'}>−</button>
+      <output aria-live="polite">${n}</output>
+      <button ${attr}="${key}" data-d="1" aria-label="One more crew: ${label}" ${canInc?'':'disabled'}>+</button></div>`;
+  // controls: docked under the mountain, one column per zone
+  $('dzones').innerHTML = ZONES.map(z => {
     const n = S.alloc[z.key], c = cap(z);
     let b = '';
     if (z.build) {
-      if (S.built[z.key]) b = `<span class="done">✓ ${z.what} built</span>`;
-      else b = `<button class="build" data-b="${z.key}" aria-pressed="${S.building[z.key]}" ${(!S.building[z.key] && free < 2) ? 'disabled' : ''}>${S.building[z.key] ? `Building ${z.what} (2 crews) · ready next year` : `${z.build} · 2 crews`}</button>`;
-    } else b = `<span class="risk">No building here</span>`;
-    return `<div class="zone" style="--zc:var(${z.c})">
+      if (S.built[z.key]) b = `<span class="done">✓ ${z.what}</span>`;
+      else b = `<button class="build" data-b="${z.key}" aria-pressed="${S.building[z.key]}" ${(!S.building[z.key] && free < 2) ? 'disabled' : ''}>${S.building[z.key] ? `Building ${z.what} · 2` : `+ ${z.what} · 2 crews`}</button>`;
+    }
+    return `<div class="dz" style="--zc:var(${z.c})"><span class="dzn">${z.name} <small class="mono" style="font-weight:500;color:var(--muted)">${n}/${c}</small></span>
+      ${stepper('data-z', z.key, n, n > 0, n < c && free > 0, z.name)}${b}</div>`;
+  }).join('');
+  let dx = `<div class="dx">Chuño ${stepper('data-x', 'chuno', S.chuno, S.chuno > 0, free > 0, 'chuño')}</div>`;
+  if (act(S.year) === 2) dx += `<div class="dx">Potosí wages ${stepper('data-x', 'wage', S.wage, S.wage > 0, free > 0, 'Potosí wages')}</div>`;
+  $('dextras').innerHTML = dx;
+  // descriptions: in the panel below
+  $('zones').innerHTML = ZONES.map(z => `<div class="zone" style="--zc:var(${z.c})">
       <h3>${z.name}</h3>
       <div class="crop">${z.crop} · ${z.alt}</div>
       <div class="why">${z.why}</div>
       <div class="risk">${z.risk}</div>
-      <div class="step"><button data-z="${z.key}" data-d="-1" aria-label="One fewer crew in ${z.name}" ${n<=0?'disabled':''}>−</button>
-        <output aria-live="polite">${n}</output>
-        <button data-z="${z.key}" data-d="1" aria-label="One more crew in ${z.name}" ${(n>=c||free<=0)?'disabled':''}>+</button><small>of ${c}</small></div>
-      ${b}</div>`;
-  }).join('');
+      <div class="state">${!z.build ? 'No building here' : S.built[z.key] ? `✓ ${z.what} built: frost loss 20%, +10% yield, room for ${cap(z)} crews` : `${z.build} with 2 crews; ready next year`}</div></div>`).join('');
   let ex = `<div class="extra"><span class="lbl">Chuño crews</span>
-    <div class="step"><button data-x="chuno" data-d="-1" aria-label="One fewer chuño crew" ${S.chuno<=0?'disabled':''}>−</button><output>${S.chuno}</output>
-    <button data-x="chuno" data-d="1" aria-label="One more chuño crew" ${free<=0?'disabled':''}>+</button></div>
     <p>Freeze-dry surplus food into the qollqa, up to ${CHUNO_CAP} kcal per person per day per crew. Surplus nobody preserves spoils.</p></div>`;
   if (act(S.year) === 2) {
     ex += `<div class="extra mita"><span class="lbl">Colonial mita: every crew one-seventh short</span>
       <p>Your ayllu lies inside the mita region, so one man in seven is away at Potosí each year. You cannot change this. Every crew here works at 6/7 strength. The game adds the silver they mine to your community's output figure.</p></div>
       <div class="extra"><span class="lbl">Potosí wage crews</span>
-      <div class="step"><button data-x="wage" data-d="-1" aria-label="One fewer wage crew" ${S.wage<=0?'disabled':''}>−</button><output>${S.wage}</output>
-      <button data-x="wage" data-d="1" aria-label="One more wage crew" ${free<=0?'disabled':''}>+</button></div>
       <p>Each crew earns silver: GDP goes up and tribute drops 4 points, but they grow no food.</p></div>`;
   }
   $('extras').innerHTML = ex;
   const f = $('free');
   f.textContent = free > 0 ? `${free} crew${free>1?'s':''} unassigned` : 'All crews assigned';
   f.className = 'free' + (free > 0 ? ' warn' : '');
-  renderHUD(); renderForecast();
+  $('dock').hidden = false;
+  renderHUD(); renderForecast(); scheduleAuto();
 }
+
+/* ---------- playback: auto-play, pause, speed ---------- */
+const PLAY = {auto: false, speed: 1};
+let autoT = null, cdT = null;
+function stopAutoTimers(){ clearTimeout(autoT); clearInterval(cdT); autoT = cdT = null; }
+function renderTransport(){
+  $('tplay').textContent = PLAY.auto ? '❚❚ Pause' : '▶ Auto-play';
+  $('tplay').setAttribute('aria-pressed', PLAY.auto);
+  document.querySelectorAll('[data-speed]').forEach(b => b.setAttribute('aria-pressed', +b.dataset.speed === PLAY.speed));
+  if (!PLAY.auto) $('tstatus').textContent = 'Paused. Auto-play runs the years with your current plan; change the plan at any time.';
+}
+// Auto-play advances one step after a delay that shrinks with speed; editing the plan restarts the countdown.
+function scheduleAuto(){
+  stopAutoTimers(); renderTransport();
+  if (!PLAY.auto) return;
+  let ms, step, label;
+  if (S.phase === 'plan') { ms = 6000; step = () => $('endyear').click(); label = 'Harvest'; }
+  else if (S.phase === 'anim' && S.anim && S.anim.done && $('next')) { ms = 9000; step = () => $('next').click(); label = 'Next'; }
+  else if (S.phase === 'event' && $('go')) { ms = 14000; step = () => $('go').click(); label = 'Continue'; }
+  else { $('tstatus').textContent = 'Harvesting…'; return; }
+  ms /= PLAY.speed;
+  const until = performance.now() + ms;
+  const tick = () => { $('tstatus').textContent = `${label} in ${Math.max(0, Math.ceil((until - performance.now()) / 1000))} s · Pause to stop`; };
+  tick(); cdT = setInterval(tick, 250);
+  autoT = setTimeout(() => { stopAutoTimers(); step(); }, ms);
+}
+$('tplay').addEventListener('click', () => { PLAY.auto = !PLAY.auto; scheduleAuto(); });
+document.querySelectorAll('[data-speed]').forEach(b => b.addEventListener('click', () => { PLAY.speed = +b.dataset.speed; scheduleAuto(); }));
 document.addEventListener('click', e => {
   const t = e.target.closest('button'); if (!t || S.phase !== 'plan') return;
   const free = crews().avail - used();
@@ -480,9 +553,9 @@ $('endyear').addEventListener('click', () => {
   const idle = crews().avail - used();
   const rec = harvest(); rec.idle = idle;
   S.phase = 'anim';
-  S.anim = {t0: performance.now(), rec, dur: matchMedia('(prefers-reduced-motion: reduce)').matches ? 300 : 2400};
+  S.anim = {t0: performance.now(), rec, dur: matchMedia('(prefers-reduced-motion: reduce)').matches ? 300 : 2400 / PLAY.speed};
   const b = $('endyear'); b.disabled = true; b.textContent = 'Harvesting…';
-  renderHUD(); renderForecast(); bringIntoView($('cv'));
+  renderHUD(); renderForecast(); scheduleAuto(); bringIntoView($('cv'));
   setTimeout(() => { S.anim.done = true; showSummary(rec); }, S.anim.dur);
 });
 
@@ -563,10 +636,10 @@ function showTransition(){
 
 /* ---------- report card (inline, replaces the crew board while it is open) ---------- */
 function openModal(html, big){
-  $('p-plan').hidden = true;
+  $('p-plan').hidden = true; $('dock').hidden = true;
   const c = $('card'); c.className = 'card' + (big ? ' big' : ''); c.innerHTML = html; c.hidden = false;
   const b = c.querySelector('.btn'); if (b) b.focus({preventScroll:true});
-  bringIntoView($('cv'));
+  scheduleAuto(); bringIntoView($('cv'));
 }
 function closeModal(){ $('card').hidden = true; }
 function bringIntoView(el){
@@ -605,7 +678,8 @@ function chart(key, lo, hi, refs, color, label, unit){
 function dir(a, b, tol){ return b - a > tol ? 'rise' : a - b > tol ? 'fall' : 'stay'; }
 function showEnd(){
   S.phase = 'end';
-  $('p-plan').hidden = true; renderForecast();
+  PLAY.auto = false; stopAutoTimers();
+  $('p-plan').hidden = true; $('dock').hidden = true; $('transport').hidden = true; renderForecast();
   const a1 = S.hist.filter(r => r.act === 1), a2 = S.hist.filter(r => r.act === 2);
   const k1 = avg(a1,'intake'), k2 = avg(a2,'intake'), g1 = avg(a1,'gdp'), g2 = avg(a2,'gdp');
   const dg = dir(g1, g2, 5), dk = dir(k1, k2, 50);
@@ -695,7 +769,9 @@ function reportText(k1,k2,g1,g2,dg,dk){
   return L.filter((l,i,a) => !(l === '' && a[i-1] === '')).join('\n');
 }
 function restart(){
+  PLAY.auto = false; stopAutoTimers();
   S = fresh(); $('p-end').hidden = true; $('p-plan').hidden = true; $('card').hidden = true; $('notice').hidden = true; $('p-intro').hidden = false;
+  $('dock').hidden = true; $('transport').hidden = true;
   renderHUD(); renderForecast(); window.scrollTo({top:0});
 }
 
@@ -704,8 +780,8 @@ $('start').addEventListener('click', () => {
   const g = document.querySelector('input[name=pg]:checked'), k = document.querySelector('input[name=pk]:checked');
   if (!g || !k) { $('intro-msg').textContent = 'Pick both predictions first.'; $('intro-msg').classList.add('warn'); return; }
   S.pred = {g: g.value, k: k.value}; S.hyp = $('hyp').value.trim(); S.who = $('who').value.trim();
-  $('p-intro').hidden = true; $('p-plan').hidden = false;
-  S.year = 1; S.yr = rollYear(); S.phase = 'plan'; clampAlloc(); renderPlan();
+  $('p-intro').hidden = true; $('p-plan').hidden = false; $('transport').hidden = false;
+  S.year = 1; S.yr = rollYear(); S.phase = 'plan'; clampAlloc(); renderPlan(); bringIntoView($('cv'));
 });
 
 /* ---------- canvas ---------- */
