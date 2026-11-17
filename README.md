@@ -56,6 +56,8 @@ Everything else (yields, frost and drought odds, protection, chuño, community s
 
 The text and model were checked by four independent reviews (claims and charts; model logic; model construction; parameters and sensitivity), and their findings are addressed in this version.
 
+**[docs/history-and-evidence.md](docs/history-and-evidence.md)** goes claim by claim: what the game says about the Andes between 1500 and 1600, what kind of evidence supports each statement (documented, estimate, interpretation, game assumption, unsourced), and what the game leaves out.
+
 ## Sources
 
 - Maddison, A. (2003). *The World Economy: Historical Statistics.* OECD.

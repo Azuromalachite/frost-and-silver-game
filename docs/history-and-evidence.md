@@ -1,0 +1,151 @@
+# Frost & Silver: the history behind the game, and how far to trust it
+
+What the game says about the Andes between 1500 and 1600, what each statement
+rests on, and what is the game's own invention. Written 2026-11-17 for the
+version at commit `3ac65ac`.
+
+## Short answers
+
+- **GDP per person rose a little across the sixteenth century, as far as anyone
+  can estimate.** Maddison's figures for Latin America as a whole go from 416
+  (1500) to 438 (1600), in 1990 international dollars. These are conjectures for
+  a whole continent, not measurements for the Andes.
+- **Food per person probably fell for many Andean families, but no source gives
+  the size.** The course figure of 1,700 falling to 1,200 kcal a day has no
+  source we could find. The game keeps it only as a labelled teaching figure.
+- **The game's central claim is a model result, not a finding.** In the game,
+  GDP per person rises mainly because the population collapse left more land
+  per survivor, while the colonial rules take the food. That is a defensible
+  reading of the estimates, but it depends on numbers the game chose.
+
+## How to read this document
+
+Each claim is labelled by the kind of support it has. These are kept apart on
+purpose: "the game uses 50%" is not the same as "the population fell by 50%".
+
+| label | meaning |
+| --- | --- |
+| **documented** | stated in a primary or standard secondary source, and checked during this project |
+| **estimate** | a scholarly reconstruction with wide uncertainty (population, GDP) |
+| **interpretation** | a reading of the evidence that historians argue about |
+| **from notes** | taken from a source's abstract or a reference collection's reading notes; the full text was not re-read here |
+| **game assumption** | a number or rule the game chose so the model can run; no source sets its size |
+| **unsourced** | circulates in the course material; no source found |
+
+## Chronology used by the game
+
+| date | event | label |
+| --- | --- | --- |
+| c. 1500 | Inca rule over the Andes (Tawantinsuyu). Harvests 1–3 are set here. | documented |
+| 1520s onward | Epidemics of smallpox and measles reach the Andes ahead of and alongside the conquest. | documented |
+| 1532 onward | Spanish conquest, then civil wars among the conquerors; many state storehouses emptied. | documented (general); the storehouse detail is from notes |
+| 1545 | Spaniards begin mining the Cerro Rico at Potosí. | documented |
+| 1570s | Viceroy Francisco de Toledo's reforms: a general count of the population, resettlement into towns (reducciones), fixed tribute, and the Potosí mita drawing one adult man in seven from a defined mita region. Harvest 4 (c. 1575) is set here. | documented |
+| 1585–91 | A new wave of epidemics. Harvest 5 (c. 1592) follows it. | documented as a period of epidemics; the game's 15% loss is a game assumption |
+| c. 1600 | Harvest 6. Maddison's 1600 estimate is the comparison point. | estimate |
+
+The game plays six harvests, each one farming year. Harvests 1–3 are three
+years in a row; harvests 4–6 are snapshots decades apart.
+
+## Claims the game makes
+
+### Land and farming
+
+| claim in the game | label | source and limits |
+| --- | --- | --- |
+| Andean communities held fields at several altitudes so that one frost or drought rarely ruined everything | interpretation (widely accepted) | Murra (1972), the "vertical archipelago". Murra described access rights to separate "islands" of land, often far apart; the game draws one contiguous slope, which is a simplification. |
+| The four zone names (Yunga, Quechua, Suni, Puna) and their altitudes | documented | Pulgar Vidal (1941). These are a twentieth-century geographer's names for altitude zones, not Inca terms. |
+| Maize is the heart of the Quechua zone; frost-hardy bitter potatoes grow higher; the puna is mainly pasture | documented (general agronomy) | Checked against secondary sources only. |
+| Chuño keeps for years | documented | Fonseca & de Haan (2021), from notes. |
+| Raised fields (waru waru) soften frost; terraces protect less | documented for raised fields; the comparison is a game assumption | Kolata & Ortloff (1989) model raised-field frost protection and show it depends on the field's shape and water. The game's frost losses (20% with waru waru, 40% with terraces, 60% without) are play values. |
+| Andean elders forecast rain from how clearly the Pleiades rise in June | documented (modern practice) | Orlove, Chiang & Cane (2000), checked from the abstract. That this was done around 1500 is not established. The game's forecast accuracy is a play value. |
+
+### The Inca system
+
+| claim in the game | label | source and limits |
+| --- | --- | --- |
+| Communities owed labour to the state (mit'a) and worked state and temple fields | documented | Standard. |
+| One man in ten worked the state fields; half of that harvest came back as feasts and rations | game assumption | How much labour went to the state and how much returned is debated. |
+| The qollqa were state storehouses; households and communities kept their own stores | documented | Morris (1986), from notes. The game puts the community's chuño in community stores and keeps "qollqa" for state stores. |
+| The Inca economy ran on redistribution | interpretation; the game simplifies | Hirth & Pillsbury (2013) argue exchange and markets also mattered. The game leaves exchange out and says so. |
+
+### The colonial system
+
+| claim in the game | label | source and limits |
+| --- | --- | --- |
+| The Potosí mita drew one adult man in seven, from a defined mita region, not from every community | documented | Checked in this project (Dell 2010 uses that boundary). |
+| Mita and tribute quotas were fixed from census counts, so the burden per survivor rose as people died | documented | Checked in this project from a reference work on Toledo's mita and tribute. |
+| Potosí also ran on paid workers (mingas); women worked in ore sorting, refining and trade | documented, from notes | Gil Montero & Zagalsky (2016); Barragán Romano (2020). The game's wage crews stand in for paid work. |
+| Tribute is taken as food: 500 kcal per person per day at the 1573 count | game assumption | The real tribute was a fixed amount per adult man, paid in silver and goods. The size is chosen to calibrate the game. |
+| Resettlement into towns (reducciones) put many fields far from home | documented | Wernke (2010). |
+| Resettlement cut yields by 7% (c. 1575), 12% (c. 1592) and 15% (c. 1600) | game assumption | Hunter (2025) and de la Puente Luna & Perales (2026), from notes: the change was gradual and varied from place to place. The sizes are invented. |
+| The epidemics cut the population by half before 1573 and by 15% more in 1585–91 | estimate (direction); game assumption (sizes) | Cook (1981) estimates a very large fall with wide uncertainty. The game's round figures are not his. |
+
+### Food and output
+
+| claim in the game | label | source and limits |
+| --- | --- | --- |
+| GDP per person: 416 in 1500, 438 in 1600 (1990 international dollars) | estimate | Maddison (2003), checked: Latin America as a whole. Not Andes-specific. Newer Maddison Project figures use different dollars and must not be mixed in (Bolt & van Zanden 2025, from notes). |
+| Total output and population fell while output per person rose | estimate | Maddison (2003). |
+| Colonial Peru and Mexico saw economic growth from about 1550, driven partly by mining | interpretation | Arroyo Abad & van Zanden (2016), cited from a literature review, not re-read. |
+| In the game, GDP per person rises mainly through more land per survivor; the colonial rules roughly break even on output | game result | Depends on the game's assumed value of silver against farm output and the size of the resettlement loss. The end screen's sliders show where it reverses. |
+| Food per person fell from about 1,700 to about 1,200 kcal a day | unsourced | The original game's figure. Not found in any source. Shown in the game as a dotted, labelled line. |
+| Households can go short even when a region produces a surplus | documented | Wernke & Whitmore (2009), checked from the abstract. The game's "households below 1,700 kcal" share comes from an assumed 30% spread, not from their figures. |
+| Adults use about 2,190 (women) and 2,720 (men) kcal a day | documented, modern | Pontzer et al. (2016), Table 1, read. A modern multi-country sample that excluded manual labourers; used only for scale. |
+| Skeletons and isotopes show diet changed after contact | documented, from notes | Klaus & Tam (2010); Tessone et al. (2025). Neither gives kcal a day. |
+
+## What the game leaves out
+
+- Markets, trade and money inside the community.
+- Differences between households; the community is one average.
+- Food quality as distinct from quantity.
+- The health costs of silver, including mercury used in refining (Robins &
+  Hagan 2012, from notes).
+- Haciendas, Spanish towns and the colonial market for food, which drew farm
+  output towards Potosí (Covey & Quave 2017, cited from a literature review).
+- Local variation: one community stands for many very different ones.
+
+## Open questions
+
+1. Where does the 1,700 → 1,200 kcal figure come from? The original game's
+   author may know.
+2. How much of the rise in GDP per person was silver and how much was more
+   land per survivor? Arroyo Abad, Davies & van Zanden (2012) and Arroyo Abad
+   & van Zanden (2016) should be read for this; this document has not yet
+   done so.
+3. How large was the Inca labour duty, and how much came back?
+4. How quickly did resettlement and the abandonment of terraces cut yields,
+   and where?
+
+## Sources
+
+| source | used for | read here? |
+| --- | --- | --- |
+| Maddison, A. (2003). *The World Economy: Historical Statistics*. OECD. | GDP estimates | figures checked |
+| Arroyo Abad, L., & van Zanden, J. L. (2016). Growth under extractive institutions? *Journal of Economic History*, 76(4), 1182–1215. https://doi.org/10.1017/S0022050716000954 | colonial growth | no |
+| Arroyo Abad, L., Davies, E., & van Zanden, J. L. (2012). Between conquest and independence: real wages and demographic change in Spanish America, 1530–1820. *Explorations in Economic History*, 49(2), 149–166. | wages and depopulation | no |
+| Bolt, J., & van Zanden, J. L. (2025). Maddison-style estimates of the evolution of the world economy: a new 2023 update. *Journal of Economic Surveys*. https://doi.org/10.1111/joes.12618 | dollar units | from notes |
+| Dell, M. (2010). The persistent effects of Peru's mining mita. *Econometrica*, 78(6), 1863–1903. https://doi.org/10.3982/ECTA8121 | mita region | boundary checked |
+| Gil Montero, R., & Zagalsky, P. C. (2016). Colonial organization of mine labour in Charcas. *International Review of Social History*. https://doi.org/10.1017/S0020859016000456 | mita and paid labour | from notes |
+| Barragán Romano, R. (2020). Women in the silver mines of Potosí. *International Review of Social History*. https://doi.org/10.1017/S0020859019000555 | women's work | from notes |
+| Wernke, S. A., & Whitmore, T. M. (2009). Agriculture and inequality in the colonial Andes. *Human Ecology*, 37, 421–440. https://doi.org/10.1007/s10745-009-9261-2 | household shortfalls | abstract |
+| Wernke, S. A. (2010). A reduced landscape. *Journal of Latin American Geography*, 9(3), 51–83. | reducciones, terraces | no |
+| Hunter, R. A. (2025). The structural transformation of Ollantaytambo's Inka ecology under Spanish rule. *Antiquity*. https://doi.org/10.15184/aqy.2024.200 | gradual change | from notes |
+| de la Puente Luna, J. C., & Perales Munguía, M. F. (2026). Villages at the crossroads. *Ethnohistory*. https://doi.org/10.1215/00141801-12105092 | local variation | from notes |
+| Cook, N. D. (1981). *Demographic Collapse: Indian Peru, 1520–1620*. Cambridge University Press. | population | no |
+| Morris, C. (1986). Storage, supply, and redistribution in the economy of the Inka state. In *Anthropological History of Andean Polities*, 59–68. | state and community stores | from notes |
+| Hirth, K., & Pillsbury, J. (2013). Redistribution and markets in Andean South America. *Current Anthropology*. https://doi.org/10.1086/673114 | exchange | PDF available, not re-read |
+| Murra, J. V. (1972). El control vertical de un máximo de pisos ecológicos en la economía de las sociedades andinas. | vertical archipelago | no |
+| Pulgar Vidal, J. (1941). *Las ocho regiones naturales del Perú*. | zone names | secondary sources |
+| Kolata, A. L., & Ortloff, C. (1989). Thermal analysis of Tiwanaku raised field systems. *Journal of Archaeological Science*. https://doi.org/10.1016/0305-4403(89)90004-6 | frost protection | from notes |
+| Orlove, B. S., Chiang, J. C. H., & Cane, M. A. (2000). Forecasting Andean rainfall and crop yield from the influence of El Niño on Pleiades visibility. *Nature*, 403. https://doi.org/10.1038/47456 | Pleiades forecast | abstract |
+| Fonseca, C., & de Haan, S. (2021). Traditional freeze-drying: chuño, kaya, chullqi. In *50 Andean Future Foods*. CIP. | chuño | from notes |
+| Robins, N. A., & Hagan, N. A. (2012). Mercury production and use in colonial Andean silver production. *Environmental Health Perspectives*. https://doi.org/10.1289/ehp.1104192 | health costs | from notes |
+| Klaus, H. D., & Tam, M. E. (2010). Oral health and the postcontact adaptive transition. *American Journal of Physical Anthropology*, 141(4), 594–609. | diet change | from notes |
+| Tessone, A., Barberena, R., & Knudson, K. J. (2025). Isotopes and bioarchaeology in the Andes. *Archaeometry*. https://doi.org/10.1111/arcm.12989 | isotopes | from notes |
+| Covey, R. A., & Quave, K. E. (2017). The economic transformation of the Inca heartland (Cuzco, Peru) in the late sixteenth century. *Comparative Studies in Society and History*, 59(2), 277–309. | colonial markets | no |
+| Pontzer, H., et al. (2016). Metabolic acceleration and the evolution of human brain size and life history. *Nature*, 533, 390–392. https://doi.org/10.1038/nature17654 | energy use for scale | read |
+
+"From notes" means the source was cited from a reference collection's reading
+notes or a literature review. Before quoting any of those claims elsewhere,
+read the source.
