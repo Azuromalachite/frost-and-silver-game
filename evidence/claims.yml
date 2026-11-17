@@ -381,7 +381,7 @@ claims:
     layer: game_assumption
     status: labelled
     sources: [trasmonte2008]
-    code: ["// zones with index >= line freeze"]
+    code: ["const line = r < .15 ? 4 : r < .45 ? 3 : r < .80 ? 2 : r < .97 ? 1 : 0;"]
     pages:
       - path: frost-and-silver.html
         anchor: in the game the heights add room, not insurance

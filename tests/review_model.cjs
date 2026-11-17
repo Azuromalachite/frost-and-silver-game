@@ -29,7 +29,7 @@ const REPLAN = 'best';
 function load(html) {
   const m = html.match(/<script>\s*([\s\S]*?)<\/script>/);
   assert.ok(m, 'no inline <script> in the game file');
-  const code = m[1].replace(/\}\)\(\);\s*$/, `globalThis.game={get state(){return S}, fresh,rollYear,clampAlloc,harvest,nextYear,showTransition,showEnd,replaySame,settle,shortShare,gi,dir,reportText,PLAY,replanTo};})();`);
+  const code = m[1].replace(/\}\)\(\);\s*$/, `globalThis.game={get state(){return S}, fresh,rollYear,clampAlloc,harvest,nextYear,showTransition,showEnd,replaySame,settle,shortShare,gi,dir,reportText,PLAY,replanTo,GDP_TOL};})();`);
   assert.notEqual(code, m[1], 'the game script no longer ends in })(); so the harness cannot reach the model');
   return code;
 }
@@ -98,7 +98,7 @@ function check(html) {
   for (let seed = 1; seed <= 80; seed++) runs.push(finish(make(code, seed)));
   const grades = runs.map((t, i) => { const a = t.history.slice(3);
     const cg = a.reduce((s, r) => s + r.gdp - r.cf.gdp, 0) / 3, ck = a.reduce((s, r) => s + r.intake - r.cf.intake, 0) / 3;
-    return {seed:i + 1, cg_index:cg / 416 * 100, g:g.dir(0, cg, 12.5), ck, k:g.dir(0, ck, 50)}; });
+    return {seed:i + 1, cg_index:cg / 416 * 100, g:g.dir(0, cg, g.GDP_TOL), ck, k:g.dir(0, ck, 50)}; });
   const counts = {}; for (const x of grades) counts[x.g] = (counts[x.g] || 0) + 1;
   assert.deepEqual(counts, GRADES_1_80, 'GDP grading split over seeds 1-80 moved: update claim.game.grading_weather, the end-screen sentence and GRADES_1_80 together');
   const mean = k => [0, 1].map(i => runs.reduce((s, t) => s + t[k][i], 0) / runs.length);
@@ -108,6 +108,15 @@ function check(html) {
     food_effect_grades_1_80:grades.reduce((o, x) => (o[x.k] = (o[x.k] || 0) + 1, o), {})};
 }
 
+// The pinned line is quoted in CONTRIBUTING.md and AGENTS.md; it must match PINNED, or the docs describe another game.
+const fmtK = n => n.toLocaleString('en-US');
+const pinnedLine = p => `${fmtK(p[0])} kcal | ${fmtK(p[1])} kcal | ${p[2]} → ${p[3]} | ${p[4]} | ${p[5]} | ${p[6]}% → ${p[7]}%`;
+function checkDocs(pinned, texts) {
+  for (const [name, text] of Object.entries(texts))
+    assert.ok(text.includes('`' + pinnedLine(pinned) + '`'), `${name} does not quote the pinned run ${pinnedLine(pinned)}`);
+}
+const docTexts = () => Object.fromEntries(['CONTRIBUTING.md', 'AGENTS.md'].map(f => [f, fs.readFileSync(path.join(__dirname, '..', f), 'utf8')]));
+
 // Each planted change must make check() fail, and fail on the assertion named.
 const PLANTS = [
   ['tribute raised (a model constant)', 'TRIB_PP = 500', 'TRIB_PP = 520', /pinned run/],
@@ -115,6 +124,8 @@ const PLANTS = [
   // which seed 12345 happens never to draw, so it tested nothing.)
   ['frost odds changed (the weather)', 'const line = r < .15 ? 4', 'const line = r < .95 ? 4', /pinned run/],
   ['winter roll removed', "winter = w < .25 ? 'hard' : w < .75 ? 'normal' : 'mild'", "winter = 'normal'", /pinned run/],
+  // the grade's tolerance moves only the grading split, so this plant tests that assertion, not the pinned run
+  ['GDP tolerance changed', 'const GDP_TOL = 12.5;', 'const GDP_TOL = 2.5;', /grading split/],
 ];
 function selfTest(html) {
   check(html); // the unplanted game must pass first, or a failure below proves nothing
@@ -126,11 +137,15 @@ function selfTest(html) {
     assert.match(String(err.message), expect, `self-test: ${name} failed for another reason: ${err.message}`);
     console.log(`caught: ${name}`);
   }
-  console.log(`confirmed: all ${PLANTS.length} planted model changes are rejected`);
+  let docErr = null;
+  try { checkDocs(PINNED.map((v, i) => i === 1 ? v + 1 : v), docTexts()); } catch (e) { docErr = e; }
+  assert.ok(docErr && /does not quote the pinned run/.test(docErr.message), 'self-test: a pinned line that differs from the docs was not caught');
+  console.log('caught: docs quoting a different pinned run');
+  console.log(`confirmed: all ${PLANTS.length} planted model changes and the docs mismatch are rejected`);
 }
 
 const args = process.argv.slice(2);
 const file = args.find(a => !a.startsWith('--')) || path.join(__dirname, '..', 'frost-and-silver.html');
 const html = fs.readFileSync(file, 'utf8');
 if (args.includes('--self-test')) selfTest(html);
-else console.log(JSON.stringify({commit:process.env.GITHUB_SHA || 'local', ...check(html)}, null, 2));
+else { checkDocs(PINNED, docTexts()); console.log(JSON.stringify({commit:process.env.GITHUB_SHA || 'local', ...check(html)}, null, 2)); }

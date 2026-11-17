@@ -54,6 +54,21 @@ CLAIM_MENTION_RE = re.compile(r"\bclaim\.[a-z0-9_]+(?:\.[a-z0-9_]+)+")
 SKIP_DIRS = {".git", "__pycache__", "tests"}
 
 
+SCRIPT_RE = re.compile(r"(<script\b[^>]*>)(.*?)(</script>)", re.S | re.I)
+BLOCK_COMMENT_RE = re.compile(r"/\*.*?\*/", re.S)
+# a line comment starts at the line start or after whitespace or punctuation, so "https://" in a string survives
+LINE_COMMENT_RE = re.compile(r"(^|[\s;{}(),])//[^\n]*", re.M)
+
+
+def strip_js_comments(html_text):
+    """The game file with comments removed from its scripts, so a claim anchored only in a comment fails.
+    (PR #1 review round 2, item 11: anchors that sat only in JavaScript comments still passed.)"""
+    def clean(m):
+        body = LINE_COMMENT_RE.sub(lambda c: c.group(1), BLOCK_COMMENT_RE.sub("", m.group(2)))
+        return m.group(1) + body + m.group(3)
+    return SCRIPT_RE.sub(clean, html_text)
+
+
 def norm(text):
     return re.sub(r"\s+", " ", html.unescape(text)).strip().casefold()
 
@@ -73,6 +88,7 @@ def check(root):
     claims = load(ev / "claims.yml", errors).get("claims") or []
     game_path = root / GAME_FILE
     game_code = game_path.read_text(encoding="utf-8") if game_path.is_file() else ""
+    game_code_live = strip_js_comments(game_code)
     if not game_code:
         errors.append(f"{GAME_FILE} not found")
 
@@ -138,7 +154,7 @@ def check(root):
         if layer == "game_assumption" and not codes:
             errors.append(f"{where}: a game assumption must name the code that sets it")
         for snippet in codes:
-            if str(snippet) not in game_code:
+            if str(snippet) not in game_code_live:
                 errors.append(f"{where}: code not found in {GAME_FILE}: {snippet!r}")
 
         pages = c.get("pages") or []
@@ -153,8 +169,9 @@ def check(root):
                 continue
             target = root / path
             if path not in page_cache:
-                page_cache[path] = (norm(target.read_text(encoding="utf-8"))
-                                    if target.is_file() else None)
+                raw = target.read_text(encoding="utf-8") if target.is_file() else None
+                if raw is not None and path == GAME_FILE: raw = strip_js_comments(raw)
+                page_cache[path] = norm(raw) if raw is not None else None
             text = page_cache[path]
             if text is None:
                 errors.append(f"{where}: page {path} does not exist")
