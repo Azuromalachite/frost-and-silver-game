@@ -6,7 +6,9 @@ The question the game puts to students: **can output per person rise while peopl
 
 ## Play
 
-Open `frost-and-silver.html` in a browser. It is one self-contained file; the only outside resources are Google Fonts.
+Play online: **https://azuromalachite.github.io/frost-and-silver-game/**
+
+Or download `frost-and-silver.html` and open it in a browser. It is one self-contained file; the only outside resources are Google Fonts.
 
 Each year you:
 
