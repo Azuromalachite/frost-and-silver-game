@@ -70,6 +70,7 @@ The text and model were checked by four independent reviews (claims and charts; 
 | [evidence/check_evidence.py](evidence/check_evidence.py) | checks the registry against the pages and the game's code; a changed constant fails until its claim is updated |
 | [tests/test_check_evidence.py](tests/test_check_evidence.py) | plants one defect per rule and shows each rule can fail |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | the rules, and how to run the checks |
+| [AGENTS.md](AGENTS.md) | the short, binding rules for anyone changing the repository, human or AI |
 
 The checker prints the current number of claims and sources, and how many history claims rest only on sources not yet read here, on every run.
 
