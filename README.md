@@ -14,12 +14,14 @@ Or download `frost-and-silver.html` and open it in a browser. It is one self-con
 
 Each year you:
 
-- assign work crews to four altitude zones (valley maize, upper fields of potatoes and tubers, high grain such as kañiwa, and puna pasture);
+- assign work crews to four altitude zones (valley maize, upper fields of potatoes and tubers, high grain such as kañiwa, and puna pasture). Each zone shows the nearest Quechua-derived zone name (Pulgar Vidal 1941) and a rough air and soil temperature, for orientation only;
 - build terraces (andenes) or raised fields (waru waru) against frost;
 - freeze-dry surplus into chuño for the community stores;
 - in the colonial years, choose whether to send crews to Potosí for wages.
 
-Students **predict** before playing, **track** each harvest in a report drawn as a quipu, and **compare**: "Replay with the same weather" lets them change one choice and see its effect side by side. The end screen compares Inca and colonial harvests on food, a Caloric Welfare Index (50 food, 30 stores, 20 resilience, from the original game) and GDP per person shown as an index (Maddison's 1500 level = 100), and produces a text report to paste into a class page.
+Play, Pause and Next step control the pace, and milestones (everyone fed, growth without a better life, stores used up, hunger) pause play. A **field and climate log** under the controls keeps one line per event for the whole game: frost and what it cost, dry years, feasts, tribute, stores, deaths and new terraces.
+
+Students **predict** before playing, **track** each harvest in a report (four tiles: food, GDP index, welfare index, people; where the food went; and the same numbers knotted as a quipu), and **compare**: "Replay with the same weather" lets them change one choice and see its effect side by side. The end screen compares Inca and colonial harvests on food, a Caloric Welfare Index (50 food, 30 stores, 20 resilience, from the original game) and GDP per person shown as an index (Maddison's 1500 level = 100), and produces a text report to paste into a class page.
 
 ## What the model is, and is not
 

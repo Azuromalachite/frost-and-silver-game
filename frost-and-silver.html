@@ -1257,7 +1257,9 @@ readColors();
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change', readColors);
 new MutationObserver(readColors).observe(document.documentElement, {attributes:true, attributeFilter:['data-theme']});
 
-const ground = i => Math.min(Hh * (0.84 - i * 0.15), Hh - 40 - i * Hh * 0.15); // keep 40px under Yunga for its labels
+// keep room under the valley shelf for its three label lines (name; Quechua name; temperatures)
+const labelRoom = () => W < 600 ? 50 : 64;
+const ground = i => Math.min(Hh * (0.84 - i * 0.15), Hh - labelRoom() - i * Hh * 0.15);
 function shelf(i){ const zw = W/4; return [i*zw + zw*.16, (i+1)*zw - zw*.12]; }
 function seeded(n){ let s = n; return () => (s = (s*16807) % 2147483647) / 2147483647; }
 
@@ -1327,7 +1329,8 @@ function draw(t){
     ctx.font = `500 ${sf}px "IBM Plex Mono", monospace`;
     const half = Math.max(...small.map(s => ctx.measureText(s).width)) / 2 + 3;
     const cx = Math.min(W - half, Math.max(half, (a + b) / 2));
-    const y1 = Math.min(gy + 24, Hh - (fs + 4) - 2 * (sf + 3) - 4), y2 = y1 + fs + 4, y3 = y2 + sf + 3;
+    // y1 is the name's baseline; the last line's baseline (y3) stays 6px above the canvas bottom
+    const y1 = Math.min(gy + (narrow ? fs + 8 : 24), Hh - (fs + 4) - (sf + 3) - 6), y2 = y1 + fs + 4, y3 = y2 + sf + 3;
     ctx.textAlign = 'center';
     // hierarchy: name is the brightest, heaviest mark; Quechua name, altitude and temperatures smaller and dimmer
     ctx.fillStyle = col['--snow']; ctx.font = `900 ${fs+1}px "Archivo", sans-serif`; ctx.fillText(z.name.toUpperCase(), cx, y1);
