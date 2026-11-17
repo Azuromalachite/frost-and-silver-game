@@ -79,10 +79,19 @@ its pinned values before trusting it again.
 
 ## Before you open a pull request
 
+Every change to `main` goes through a pull request; direct pushes, force-pushes
+and deleting `main` are blocked. A PR can merge once the `checks` workflow
+passes. It runs the same commands you can run locally:
+
 ```bash
 python evidence/check_evidence.py
-python -m unittest discover -s tests     # if you touched the checker
+python -m unittest discover -s tests
+python tools/extract_game_script.py frost-and-silver.html game.js && node --check game.js
 ```
+
+The last line catches syntax errors in the game's script (an unescaped
+apostrophe once stopped the whole game). It cannot tell whether the game plays:
+load the page, and run the pinned game, yourself.
 
 The checker needs PyYAML (`python -m pip install pyyaml`).
 

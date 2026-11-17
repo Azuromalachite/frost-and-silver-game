@@ -1,0 +1,71 @@
+name: checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    # "checks" is the required status check on main: renaming this job
+    # silently un-requires it, so change the ruleset in the same PR.
+    name: checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install PyYAML (the checker's only dependency, pinned)
+        run: python -m pip install "pyyaml==6.0.2"
+
+      - name: Evidence registry check
+        # Claim vocabulary, source access levels, anchors still on their pages,
+        # and every game constant a claim names still in the game file.
+        run: python -I -X utf8 evidence/check_evidence.py
+
+      - name: Checker can-fail tests
+        # Each rule gets a planted defect that must fail for that rule's
+        # reason, and the same defect must pass with the rule disabled.
+        run: python -I -X utf8 -m unittest discover -s tests -v
+
+      - name: Game script parses
+        # The game is one HTML file with no build step. An unescaped
+        # apostrophe in a single-quoted string once stopped the whole game,
+        # and the evidence checker cannot see that. Syntax only: this does
+        # not show that the game plays.
+        run: |
+          python -I -X utf8 tools/extract_game_script.py frost-and-silver.html "$RUNNER_TEMP/game.js"
+          node --check "$RUNNER_TEMP/game.js"
+
+      - name: The syntax check must be able to fail
+        # Plants the historical defect and requires node --check to reject it,
+        # and requires the extractor to refuse a file with no script rather
+        # than pass by checking nothing.
+        run: |
+          python -I -X utf8 - "$RUNNER_TEMP" <<'PY'
+          import pathlib, sys
+          out = pathlib.Path(sys.argv[1])
+          s = pathlib.Path("frost-and-silver.html").read_text(encoding="utf-8")
+          i = s.rindex("</script>")
+          (out / "planted.html").write_text(s[:i] + "\nconst planted = 'the game's';\n" + s[i:], encoding="utf-8")
+          PY
+          python -I -X utf8 tools/extract_game_script.py "$RUNNER_TEMP/planted.html" "$RUNNER_TEMP/planted.js"
+          if node --check "$RUNNER_TEMP/planted.js" 2>/dev/null; then
+            echo "::error::node --check passed a planted unescaped apostrophe"; exit 1
+          fi
+          if python -I -X utf8 tools/extract_game_script.py README.md "$RUNNER_TEMP/none.js"; then
+            echo "::error::the extractor passed a file with no script"; exit 1
+          fi
+          echo "confirmed: both planted defects are rejected"
