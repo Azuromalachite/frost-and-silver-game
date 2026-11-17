@@ -41,6 +41,7 @@ is what makes dark mode work.
 | `--good` / `--bad` | `#2c7a4c` / `#b3261e` | `#5cc48a` / `#ff7a66` | better / worse, always with a word |
 | `--z0` … `--z3` | `#3c8d47` `#b07f1e` `#7462a6` `#7f8f9c` | `#4fae5b` `#d4a43c` `#9d8dd2` `#a0b0bd` | the four zones, low to high |
 | `--sky-*`, `--far`, `--rock*`, `--soil`, `--snow` | | | the drawn scene only |
+| `--potosi`, `--potosi2`, `--mine` | `#a2563a` `#d08a5c` `#2b1d17` | `#8e4a33` `#c98257` `#0b0706` | Cerro Rico: its red rock, ore veins and mine mouths |
 
 Dark mode is declared twice on purpose: once under
 `@media (prefers-color-scheme: dark)` guarded by `:root:not([data-theme="light"])`,
@@ -133,6 +134,18 @@ The mountain is drawn on a `<canvas>` from flat shapes, redrawn each frame:
   to whole degrees so they do not collide;
 - harvest results float above the shelves ("+1,272", "−402 frost") during the
   harvest animation, then fade;
+- improvements are drawn where they are: terraces as stone retaining walls
+  stepping up the slope below a shelf, each topped with a strip in the zone's
+  colour; waru waru as raised beds between water channels across the shelf.
+  While being built they are drawn faint;
+- in the colonial years Potosí's Cerro Rico stands behind the slope: a rounded red
+  cone with pale ore veins, a dark mine mouth for each crew sent there, mita
+  workers in crimson and wage workers in gold, labelled in words as well
+  ("mita 1 · wage 2"), and more silver glints as output rises. Its foot is hidden
+  behind the slope, as a far mountain's should be;
+- the scene is drawn on demand: at full speed only while something animates, at
+  once after a change, a few times a second for the crops' sway (never with
+  reduced motion), and not at all while off screen;
 - with `prefers-reduced-motion`, animations shorten to almost nothing.
 
 The scene's job is to make the zones physical: higher is colder, and you can see
