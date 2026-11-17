@@ -86,9 +86,10 @@ claims:
 
   - id: claim.game.gdp_rise_from_land
     statement: >
-      In the game, GDP per person rises over time mainly because the population
-      collapse left more land per survivor, while the colonial rules roughly
-      break even on output.
+      In the game, GDP per person rises over time mainly because of the
+      population collapse, chiefly because survivors drop chuño crews and their
+      highest fields and farm only their best land; more land per survivor adds
+      about a quarter. The colonial rules roughly break even on output.
     layer: game_result
     status: labelled
     sources: [maddison2003]
@@ -96,8 +97,16 @@ claims:
       - path: frost-and-silver.html
         anchor: The rest came mostly from the population collapse
       - path: docs/history-and-evidence.md
-        anchor: In the game, GDP per person rises mainly through more land per survivor
-    notes: Depends on claim.game.gdp_formula and claim.game.reduccion_sizes.
+        anchor: In the game, GDP per person rises mainly because survivors farm only their best land
+    notes: >
+      Measured 2026-11-18 (docs/sensitivity-2026-11-18.md), default plan, seeds
+      1-80: of about 6.5 index points not caused by the rules, about 3.0 come
+      from chuño crews moved to the fields, 2.0 from retreating to the best
+      zones, 1.5 from the land exponent (0 at exponent 1). The first two follow
+      from clampAlloc's trim order, a play rule, not a historical claim. Until
+      2026-11-18 this claim said "more land per survivor", which the sweep
+      showed to be about a quarter of the effect. Depends on
+      claim.game.gdp_formula and claim.game.reduccion_sizes.
 
   - id: claim.game.grading_weather
     statement: >

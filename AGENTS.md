@@ -50,9 +50,12 @@ states a claim more strongly than its registry entry allows is wrong.
   `game_assumption`s. They are labelled as such in the game and the registry.
 - **Treat calibration as confirmation.** The model was tuned to land near
   Maddison's 416 and 438; matching them is a design choice, not evidence.
-- **Credit silver for the colonial GDP rise.** In the model it comes mostly
-  from the population collapse (more land per survivor). The game says so;
-  keep it that way unless the model changes.
+- **Credit silver for the colonial GDP rise, or "more land per survivor".**
+  At the game's settings silver about offsets the field labour the mita
+  removes, and the rise comes mostly from the population collapse: survivors
+  drop chuño crews and their highest fields and farm only their best land.
+  More land per survivor is about a quarter of it
+  (`docs/sensitivity-2026-11-18.md`). Re-measure before restating it.
 - **Mix dollar series.** GDP is shown as an index (c. 1500 = 100) because
   Maddison (2003) uses 1990 dollars and the Maddison Project uses 2011
   dollars.
