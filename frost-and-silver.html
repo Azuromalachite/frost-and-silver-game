@@ -111,7 +111,8 @@ input[type=radio]{width:20px;height:20px;accent-color:var(--accent);vertical-ali
 .dz .build{font-size:12px;padding:4px 6px}
 .drow{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:10px}
 .dxs{display:flex;flex-wrap:wrap;gap:8px 18px}
-.dx{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700}
+.dx{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:14px;font-weight:700}
+.dxhint{flex:1 1 220px;max-width:44ch;font:400 12px/1.35 var(--f-body);color:var(--muted)}
 .dgo{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin-left:auto}
 .flog{border-top:1px solid var(--line);background:var(--surface);padding:6px 10px 8px}
 .flog summary{font:800 12px var(--f-display);text-transform:uppercase;letter-spacing:.08em;cursor:pointer;color:var(--ink)}
@@ -587,8 +588,9 @@ function renderPlan(){
     return `<div class="dz" style="--zc:var(${z.c})"><span class="dzn">${z.name} <small class="mono" style="font-weight:500;color:var(--muted)">${n}/${c}</small></span>
       ${stepper('data-z', z.key, n, n > 0, n < c && free > 0, z.name)}${b}</div>`;
   }).join('');
-  let dx = `<div class="dx">Chuño ${stepper('data-x', 'chuno', S.chuno, S.chuno > 0, free > 0, 'chuño')}</div>`;
-  if (act(S.year) === 2) dx += `<div class="dx">Potosí wages ${stepper('data-x', 'wage', S.wage, S.wage > 0, free > 0, 'Potosí wages')}</div>`;
+  // one line beside each stepper saying what that crew does (the mechanism, not the best number)
+  let dx = `<div class="dx">Chuño ${stepper('data-x', 'chuno', S.chuno, S.chuno > 0, free > 0, 'chuño')}<span class="dxhint">Grows no food. Freeze-dries this harvest's surplus into stores for a bad year: about ${CHUNO_CAP} kcal per crew, more in a hard winter. No surplus, nothing to dry.</span></div>`;
+  if (act(S.year) === 2) dx += `<div class="dx">Potosí wages ${stepper('data-x', 'wage', S.wage, S.wage > 0, free > 0, 'Potosí wages')}<span class="dxhint">Grows no food. Earns silver, which counts as output (GDP), and pays part of the tribute.</span></div>`;
   $('dextras').innerHTML = dx;
   // descriptions: in the panel below
   $('zones').innerHTML = ZONES.map(z => `<div class="zone" style="--zc:var(${z.c})">
