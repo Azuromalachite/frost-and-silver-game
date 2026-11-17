@@ -113,7 +113,13 @@ canvas{display:block;width:100%;aspect-ratio:16/7.2;max-width:100%}
 .seg .tbtn{border-radius:0;margin-left:-1px}
 .seg .tbtn:first-child{border-radius:4px 0 0 4px;margin-left:0}
 .seg .tbtn:last-child{border-radius:0 4px 4px 0}
-#tstatus{color:var(--muted);font-family:var(--f-mono);font-size:12px}
+#tstatus{color:var(--muted);font-family:var(--f-mono);font-size:12px;flex-basis:100%}
+.tl{position:relative;flex:1 1 200px;min-width:140px;height:10px;margin:8px 0 14px;background:var(--line);border-radius:5px}
+.tlfill{position:absolute;inset:0 auto 0 0;width:0;background:var(--accent);border-radius:5px}
+.tl i{position:absolute;top:-3px;bottom:-3px;width:2px;margin-left:-1px;background:var(--surface)}
+.tl i.gap{background:var(--ink);width:2px}
+.tl b{position:absolute;top:13px;transform:translateX(-50%);font:500 10px var(--f-mono);color:var(--muted);white-space:nowrap}
+.tl b.gap{color:var(--accent);font-weight:700}
 .zone .state{font-size:12px;font-family:var(--f-mono);color:var(--muted)}
 .rev{border:1px solid var(--line);border-radius:6px;padding:14px;background:var(--bg)}
 .sliders{display:grid;grid-template-columns:minmax(0,1fr) minmax(140px,220px);gap:8px 16px;align-items:center;max-width:720px}
@@ -232,6 +238,7 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
       <span class="seg" role="group" aria-label="Speed">
         <button class="tbtn" data-speed="1" aria-pressed="true">1×</button><button class="tbtn" data-speed="2" aria-pressed="false">2×</button><button class="tbtn" data-speed="4" aria-pressed="false">4×</button>
       </span>
+      <div class="tl" id="tl" role="progressbar" aria-label="Progress through the six years" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="tlfill" id="tlfill"></div></div>
       <span id="tstatus">Paused. Press Auto-play to run the years with your current plan.</span>
     </div>
   </section>
@@ -503,6 +510,39 @@ function renderPlan(){
 /* ---------- playback: auto-play, pause, speed ---------- */
 const PLAY = {auto: false, speed: 1};
 let autoT = null, cdT = null;
+/* Timeline: 7 units = years 1-3, the 1573 transition, years 4-6. Inside a year the parts are sized to
+   their auto-play times (planning 6 s, harvest 2.4 s, report 9 s) so the fill moves at an even pace:
+   planning 0-TP, harvest TP-TA, report TA-1. While a step is timed (auto-play countdown or harvest
+   animation) the fill moves smoothly from `from` to `to`; otherwise it holds at `from`. */
+const TL_UNITS = 7, TP = 0.35, TA = 0.48, TL = {from: 0, to: 0, t0: 0, dur: 0};
+const yearUnit = y => y <= 3 ? y - 1 : y;
+function tlSeg(from, to, dur){ TL.from = from; TL.to = to; TL.dur = dur || 0; TL.t0 = performance.now(); }
+function tlHere(){ // where the game stands now, with no timer running
+  if (S.phase === 'event') return 3;
+  if (S.phase === 'end') return TL_UNITS;
+  if (S.phase === 'plan') return yearUnit(S.year);
+  return yearUnit(S.year) + TA; // harvest done, report open
+}
+function tlNow(t = performance.now()){
+  const f = TL.dur > 0 ? Math.min(1, (t - TL.t0) / TL.dur) : 0;
+  return TL.from + (TL.to - TL.from) * f;
+}
+// Hold where the bar already is if that is within the current step (pausing mid-countdown never jumps back).
+function tlStart(){ const here = tlHere(), now = tlNow(); return now > here && now < Math.floor(here) + 1 ? now : here; }
+function tlDraw(t){
+  const pos = tlNow(t);
+  const pct = Math.max(0, Math.min(100, pos / TL_UNITS * 100));
+  $('tlfill').style.width = pct + '%';
+  $('tl').setAttribute('aria-valuenow', Math.round(pct));
+}
+(function tlTicks(){
+  let h = '';
+  for (let u = 1; u < TL_UNITS; u++) h += `<i class="${u === 3 || u === 4 ? 'gap' : ''}" style="left:${u / TL_UNITS * 100}%"></i>`;
+  [1,2,3].forEach(y => h += `<b style="left:${(y - .5) / TL_UNITS * 100}%">${y}</b>`);
+  h += `<b class="gap" style="left:${3.5 / TL_UNITS * 100}%">1573</b>`;
+  [4,5,6].forEach(y => h += `<b style="left:${(y + .5) / TL_UNITS * 100}%">${y}</b>`);
+  $('tl').insertAdjacentHTML('afterbegin', h);
+})();
 function stopAutoTimers(){ clearTimeout(autoT); clearInterval(cdT); autoT = cdT = null; }
 function renderTransport(){
   $('tplay').textContent = PLAY.auto ? '❚❚ Pause' : '▶ Auto-play';
@@ -513,13 +553,16 @@ function renderTransport(){
 // Auto-play advances one step after a delay that shrinks with speed; editing the plan restarts the countdown.
 function scheduleAuto(){
   stopAutoTimers(); renderTransport();
+  if (S.phase !== 'anim' || (S.anim && S.anim.done)) { const s = tlStart(); tlSeg(s, s, 0); }
   if (!PLAY.auto) return;
-  let ms, step, label;
-  if (S.phase === 'plan') { ms = 6000; step = () => $('endyear').click(); label = 'Harvest'; }
-  else if (S.phase === 'anim' && S.anim && S.anim.done && $('next')) { ms = 9000; step = () => $('next').click(); label = 'Next'; }
-  else if (S.phase === 'event' && $('go')) { ms = 14000; step = () => $('go').click(); label = 'Continue'; }
+  let ms, step, label, to;
+  const u = yearUnit(S.year);
+  if (S.phase === 'plan') { ms = 6000; step = () => $('endyear').click(); label = 'Harvest'; to = u + TP; }
+  else if (S.phase === 'anim' && S.anim && S.anim.done && $('next')) { ms = 9000; step = () => $('next').click(); label = 'Next'; to = u + 1; }
+  else if (S.phase === 'event' && $('go')) { ms = 14000; step = () => $('go').click(); label = 'Continue'; to = 4; }
   else { $('tstatus').textContent = 'Harvesting…'; return; }
   ms /= PLAY.speed;
+  tlSeg(TL.from, to, ms);
   const until = performance.now() + ms;
   const tick = () => { $('tstatus').textContent = `${label} in ${Math.max(0, Math.ceil((until - performance.now()) / 1000))} s · Pause to stop`; };
   tick(); cdT = setInterval(tick, 250);
@@ -619,6 +662,7 @@ $('endyear').addEventListener('click', () => {
   S.phase = 'anim';
   S.anim = {t0: performance.now(), rec, dur: matchMedia('(prefers-reduced-motion: reduce)').matches ? 300 : 2400 / PLAY.speed};
   const b = $('endyear'); b.disabled = true; b.textContent = 'Harvesting…';
+  tlSeg(yearUnit(S.year) + TP, yearUnit(S.year) + TA, S.anim.dur);
   renderHUD(); renderForecast(); scheduleAuto(); bringIntoView($('cv'));
   setTimeout(() => { S.anim.done = true; showSummary(rec); }, S.anim.dur);
 });
@@ -1017,7 +1061,7 @@ function figure(x, y, c, s){
   ctx.fillStyle = c; ctx.beginPath(); ctx.arc(x, y - 11*s, 2.6*s+.6, 0, 7); ctx.fill();
   ctx.beginPath(); ctx.moveTo(x-3*s, y); ctx.lineTo(x+3*s, y); ctx.lineTo(x+1.6*s, y-8*s); ctx.lineTo(x-1.6*s, y-8*s); ctx.fill();
 }
-function loop(t){ try { draw(t); } catch(e) {} requestAnimationFrame(loop); }
+function loop(t){ try { draw(t); tlDraw(t); } catch(e) {} requestAnimationFrame(loop); }
 requestAnimationFrame(loop);
 $('gloss-intro').innerHTML = glossHTML(); $('gloss-plan').innerHTML = glossHTML(); $('vert').innerHTML = vertHTML();
 renderHUD();
