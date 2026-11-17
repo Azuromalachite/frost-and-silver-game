@@ -108,6 +108,13 @@ canvas{display:block;width:100%;aspect-ratio:16/7.2;max-width:100%}
 .dxs{display:flex;flex-wrap:wrap;gap:8px 18px}
 .dx{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700}
 .dgo{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin-left:auto}
+.flog{border-top:1px solid var(--line);background:var(--surface);padding:6px 10px 8px}
+.flog summary{font:800 12px var(--f-display);text-transform:uppercase;letter-spacing:.08em;cursor:pointer;color:var(--ink)}
+.flog summary small{font:500 11px var(--f-mono);text-transform:none;letter-spacing:0;color:var(--muted);margin-left:6px}
+.flog ol{list-style:none;margin:6px 0 0;padding:8px 10px;max-height:170px;overflow-y:auto;background:var(--bg);border:1px solid var(--line);border-radius:4px;font:12px/1.55 var(--f-mono)}
+.flog li.neg{color:var(--bad)} .flog li.pos{color:var(--good)}
+.flog li.sum{font-weight:600;border-bottom:1px dashed var(--line);padding-bottom:4px;margin-bottom:4px}
+.ftag{color:var(--muted);font-weight:400}
 .transport{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;padding:8px 10px;border-top:1px solid var(--line);background:var(--surface);font-size:13px}
 .tbtn{font:700 13px var(--f-body);padding:6px 12px;border-radius:4px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
 .tbtn[aria-pressed="true"]{background:var(--ink);color:var(--surface);border-color:var(--ink)}
@@ -127,6 +134,8 @@ canvas{display:block;width:100%;aspect-ratio:16/7.2;max-width:100%}
 .quipu svg{width:100%;max-width:560px;height:auto;display:block}
 .quipu figcaption{font-size:13px;color:var(--muted);max-width:60ch}
 .rtiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (min-width:760px){.rtiles{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.rtiles > div > small.neg{color:var(--bad)} .rtiles > div > small.pos{color:var(--good)}
 .rtiles div{border:1px solid var(--line);border-radius:4px;padding:10px;display:grid;gap:2px}
 .rtiles span{font:600 11px var(--f-mono);text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
 .rtiles b{font:600 24px var(--f-mono);font-variant-numeric:tabular-nums}
@@ -279,6 +288,7 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
       <div class="tl" id="tl" role="progressbar" aria-label="Progress through the six harvests" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="tlfill" id="tlfill"></div></div>
       <span id="tstatus">Paused. Set your crews above, then press Next step (or Bring in harvest). Press Play to let the harvests run.</span>
     </div>
+    <details class="flog" id="flog" open hidden><summary>Field &amp; climate log <small>food in kcal per person per day</small></summary><ol id="flog-list" aria-live="off"></ol></details>
   </section>
 
   <section class="panel intro" id="p-intro">
@@ -449,7 +459,7 @@ function fresh(){
   return {phase:'intro', year:1, pop:1000, store:150, built:{yunga:false,quechua:false,suni:false,puna:false},
     building:{yunga:false,quechua:false,suni:false,puna:false},
     alloc:{yunga:4,quechua:4,suni:3,puna:1}, chuno:2, wage:0, yr:null, hist:[], pred:{}, hyp:'', who:'', anim:null,
-    N1573:0, mitaCrews:0, tribTotal:0, seed: URL_SEED || Math.floor(Math.random() * 2147483646) + 1, seen: {}};
+    N1573:0, mitaCrews:0, tribTotal:0, seed: URL_SEED || Math.floor(Math.random() * 2147483646) + 1, seen: {}, log: []};
 }
 S = fresh();
 let LAST = null; // summary of the previous finished run, for "replay with the same weather"
@@ -767,7 +777,7 @@ $('endyear').addEventListener('click', () => {
    turns as the digit, except 1, which is a figure-eight knot; zero is an empty place. */
 function quipuSVG(cords){
   // levels 50 apart, knots 4.4 apart: a full cluster of 9 spans 35, so each place keeps a visible gap
-  const W = 66, top = 16, levels = [42, 92, 142, 196], H = 262, LEFT = 56, width = cords.length * W + LEFT + 8;
+  const W = 66, top = 16, levels = [42, 92, 142, 196], H = 262, LEFT = 66, width = cords.length * W + LEFT + 8;
   let s = `<svg viewBox="0 0 ${width} ${H}" role="img" aria-label="Quipu: ${cords.map(c => `${c.label} ${fmt(c.value)}`).join(', ')}">`;
   // place-value key: light bands with labels on the left, so students can read each cord against them
   ['thousands', 'hundreds', 'tens', 'units'].forEach((name, p) => {
@@ -822,6 +832,34 @@ function whyList(r){
   if (r.builtNow.length) out.push(`New ${r.builtNow.join(' and ')} will protect next year's crops.`);
   return out;
 }
+/* Field & climate log: a running record of the whole game, one short line per event (the original game kept one).
+   It only reports what harvest() already computed; nothing here feeds back into the model. */
+function logAdd(tag, text, cls){ S.log.push({tag, text, cls: cls || ''}); renderLog(); }
+function renderLog(){
+  const box = $('flog'), list = $('flog-list');
+  box.hidden = !S.log.length;
+  list.innerHTML = S.log.map(e => `<li class="${e.cls}"><span class="ftag">[${e.tag}]</span> ${e.text}</li>`).join('');
+  list.scrollTop = list.scrollHeight;
+}
+const logTag = y => `H${y} · ${YEARS[y-1]}`;
+function logHarvest(r){
+  const tag = logTag(r.year), zone = lineName(r.line);
+  if (r.line === 4) logAdd(tag, 'No frost.');
+  else if (r.lost < 1) logAdd(tag, `Frost down to the ${zone} zone; no crops there.`);
+  else logAdd(tag, `Frost down to the ${zone} zone: −${fmt(r.lost)}${r.saved > 0 ? `; terraces and raised fields saved ${fmt(r.saved)}` : ''}.`, 'neg');
+  if (r.drought) logAdd(tag, `Dry year (what we now link to El Niño): every zone −25%. ${r.hazy ? 'The hazy Pleiades warned of it.' : 'No warning from the Pleiades.'}`, 'neg');
+  else if (r.hazy) logAdd(tag, 'Hazy Pleiades, but the rains came.');
+  if (r.ret > 0) logAdd(tag, `Inca feasts and rations +${fmt(r.ret)}.`, 'pos');
+  if (r.tribute > 0) logAdd(tag, `Tribute −${fmt(r.tribute)} (${Math.round(r.tRate*100)}% of the harvest).`, 'neg');
+  if (r.toStore > 0) logAdd(tag, `${fmt(r.toStore)} freeze-dried into chuño stores.`, 'pos');
+  if (r.draw > 0) logAdd(tag, `Stores covered ${fmt(r.draw)} of the shortfall.`);
+  if (r.spoiled > 1) logAdd(tag, `${fmt(r.spoiled)} of surplus spoiled.`);
+  if (r.builtNow.length) logAdd(tag, `New ${r.builtNow.join(' and ')} finished: less frost loss from next year.`, 'pos');
+  const dp = r.pop - r.popBefore;
+  if (dp <= -0.5) logAdd(tag, `Hunger: ${fmt(-dp)} people died.`, 'neg');
+  else if (dp >= 0.5) logAdd(tag, `Well fed: ${fmt(dp)} more people.`, 'pos');
+  logAdd(tag, `Food ${fmt(r.intake)} · GDP index ${gi(r.gdp).toFixed(0)} · CWI ${Math.round(r.cwi)}/100 · stores ${fmt(r.storeDays)} days.`, 'sum');
+}
 function showSummary(r){
   const ok = r.intake >= GOAL;
   const dPop = r.pop - r.popBefore;
@@ -843,13 +881,13 @@ function showSummary(r){
     <div class="rtiles">
       <div><span>Food per person</span><b>${fmt(r.intake)}<small> kcal/day</small></b><small>goal 1,700 (game)</small></div>
       <div><span>GDP per person</span><b>${gi(r.gdp).toFixed(0)}<small> index</small></b><small>Maddison 1500 = 100${r.silver ? ` · ${gi(r.silver).toFixed(0)} points from silver` : ''}</small></div>
+      <div><span>Welfare (CWI)</span><b>${Math.round(r.cwi)}<small> / 100</small></b><small>food ${Math.round(r.cwiParts.cal)}/50 · stores ${Math.round(r.cwiParts.buf)}/30 · resilience ${Math.round(r.cwiParts.res)}/20</small></div>
+      <div><span>People</span><b>${fmt(r.pop)}</b><small class="${dPop<-0.5?'neg':dPop>0.5?'pos':''}">${Math.abs(dPop) < 0.5 ? 'no change' : `${dPop>0?'+':'−'}${fmt(Math.abs(dPop))} this harvest`}</small></div>
     </div>
     <table class="ledger"><tbody>
       ${rows.map(x => `<tr><td>${x[0]}</td><td class="${x[2]}">${x[1]}</td></tr>`).join('')}
       <tr class="total"><td>Food available per person per day (goal 1,700)</td><td>${fmt(r.intake)}</td></tr>
       <tr><td>Households below 1,700 kcal (model guess)</td><td class="${shortShare(r.avail)>.5?'neg':''}">${Math.round(shortShare(r.avail)*100)}%</td></tr>
-      <tr><td>Caloric Welfare Index (classroom model)</td><td>${Math.round(r.cwi)} / 100<br><span class="mono" style="color:var(--muted);font-size:12px">food ${Math.round(r.cwiParts.cal)}/50 · stores ${Math.round(r.cwiParts.buf)}/30 · resilience ${Math.round(r.cwiParts.res)}/20</span></td></tr>
-      <tr><td>People</td><td>${fmt(r.pop)} <span class="${dPop<-0.5?'neg':dPop>0.5?'pos':''}">(${dPop>=0?'+':'−'}${fmt(Math.abs(dPop))})</span></td></tr>
       <tr><td>Community stores hold</td><td>${fmt(r.storeDays)} days of food</td></tr>
     </tbody></table>
     <p class="eyebrow" style="margin-top:4px">All food figures are kcal per person per day</p>
@@ -865,6 +903,7 @@ function showSummary(r){
     </figure>
     <ul class="why">${whyList(r).map(s => `<li>${s}</li>`).join('')}</ul>`);
   $('next').onclick = () => { closeModal(); if (r.year === 3) showTransition(); else if (r.year === 6) showEnd(); else nextYear(); };
+  logHarvest(r);
   showMilestone(r);
 }
 
@@ -893,6 +932,7 @@ function showMilestone(r){
   const m = milestoneFor(r);
   if (!m) return;
   S.seen[m.key] = true;
+  logAdd(logTag(r.year), `Milestone: ${m.title}.`);
   const wasAuto = PLAY.auto;
   if (wasAuto) { PLAY.auto = false; stopAutoTimers(); renderTransport(); $('tstatus').textContent = `Paused at a milestone: ${m.title}. Press Keep playing or Play to continue.`; }
   const box = document.createElement('div');
@@ -916,6 +956,8 @@ function nextYear(){
   if (diff < 0) msgs.push(`${-diff} fewer crew${diff < -1 ? 's' : ''} this year: hunger and disease cost lives.${removed > 0 ? ` The board took ${removed} off your plan, from chuño first, then the highest fields. Check your plan.` : ''}`);
   else if (diff > 0) msgs.push(`${diff} more crew${diff > 1 ? 's' : ''} this year: the community grew. Assign ${diff > 1 ? 'them' : 'it'} below.`);
   if (S.year === 4) msgs.push('From now on one man in seven is at Potosí, so every crew works one-seventh short, and tribute is due.');
+  if (diff) logAdd(logTag(S.year), diff < 0 ? `${-diff} fewer crew${diff < -1 ? 's' : ''}: hunger and disease cost lives.` : `${diff} more crew${diff > 1 ? 's' : ''}: the community grew.`, diff < 0 ? 'neg' : 'pos');
+  if (late) logAdd(logTag(S.year), 'Epidemics, 1585–91: about 15% of people died (game figure). Quotas stay on the 1573 count.', 'neg');
   if (late) msgs.push(`1585–91: new epidemics killed about 15% of your people (game figure). Your mita and tribute quotas still use the 1573 count, so each survivor now carries more: ${(crews().d * 7).toFixed(1)} men in seven are at Potosí.`);
   const n = $('notice'); n.textContent = msgs.join(' '); n.hidden = !msgs.length;
   $('p-plan').hidden = false; renderPlan(); bringIntoView($('cv'));
@@ -939,8 +981,10 @@ function showTransition(){
     </tbody></table>
     <p>Watch the two numbers at the top of the screen from now on.</p>`, true);
   $('go').onclick = () => {
+    const popPre = S.pop;
     S.pop *= (1 - COLLAPSE); // store is per person: half the food lost, shared among half the people
     S.N1573 = S.pop; S.mitaCrews = BASE_CREWS * S.pop / 1000 / 7; S.tribTotal = TRIB_PP * S.pop;
+    logAdd(logTag(4), `1573: the colonial mita and tribute begin. People ${fmt(popPre)} → ${fmt(S.pop)} after conquest and epidemics (game figure: −50%).`, 'neg');
     closeModal(); nextYear();
   };
 }
@@ -1171,7 +1215,7 @@ function reportText(k1,k2,g1,g2,dg,dk){
 }
 function restart(){
   PLAY.auto = false; stopAutoTimers();
-  S = fresh(); $('p-end').hidden = true; $('p-plan').hidden = true; $('card').hidden = true; $('notice').hidden = true; $('p-intro').hidden = false;
+  S = fresh(); renderLog(); $('p-end').hidden = true; $('p-plan').hidden = true; $('card').hidden = true; $('notice').hidden = true; $('p-intro').hidden = false;
   $('dock').hidden = true; $('transport').hidden = true; $('stage').hidden = true; tlSeg(0, 0, 0);
   renderHUD(); renderForecast(); window.scrollTo({top:0});
 }
@@ -1185,6 +1229,7 @@ function replaySame(){
   $('p-end').hidden = true; $('card').hidden = true; $('notice').hidden = true; $('p-intro').hidden = true;
   $('stage').hidden = false; $('p-plan').hidden = false; $('transport').hidden = false; tlSeg(0, 0, 0);
   S.year = 1; S.yr = rollYear(); S.phase = 'plan'; clampAlloc(); renderPlan(); bringIntoView($('cv'));
+  logAdd(logTag(1), `Replay with the same weather: ${fmt(S.pop)} people, ${crews().avail} crews.`);
   const n = $('notice'); n.textContent = 'Replay: the weather will be the same as your last run. Change one choice and see what it does.'; n.hidden = false;
 }
 $('start').addEventListener('click', () => {
@@ -1193,6 +1238,7 @@ $('start').addEventListener('click', () => {
   S.pred = {g: g.value, k: k.value}; S.hyp = $('hyp').value.trim(); S.who = $('who').value.trim();
   $('p-intro').hidden = true; $('stage').hidden = false; $('p-plan').hidden = false; $('transport').hidden = false;
   S.year = 1; S.yr = rollYear(); S.phase = 'plan'; clampAlloc(); renderPlan(); bringIntoView($('cv'));
+  logAdd(logTag(1), `Started: ${fmt(S.pop)} people, ${crews().avail} crews, community stores ${fmt(S.store / GOAL * 365)} days.`);
 });
 
 /* ---------- canvas ---------- */
