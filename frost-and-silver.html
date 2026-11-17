@@ -38,6 +38,10 @@ h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.1
 .mark .amp{color:var(--accent)}
 .mark .ag{color:var(--muted);font-stretch:62%;font-weight:600;white-space:nowrap}
 .sub{color:var(--muted);font-size:14px;max-width:46ch}
+.srclinks{color:var(--muted);font-size:12px;font-family:var(--f-mono)}
+.srclinks a{color:inherit;text-decoration:underline;text-underline-offset:2px}
+.srclinks a:hover{color:var(--ink)}
+.top .srclinks{display:block;margin-top:6px}
 .eyebrow{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 .mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
 
@@ -266,7 +270,8 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
 <div class="wrap">
   <header class="top">
     <div class="mark">Frost <span class="amp">&amp;</span> Silver <span class="ag">1500 → 1600</span></div>
-    <div class="sub">Economic historians estimate that GDP per person in Latin America rose a little across the 1500s. Did life get better? Play six harvests across the century and find out.</div>
+    <div class="sub">Economic historians estimate that GDP per person in Latin America rose a little across the 1500s. Did life get better? Play six harvests across the century and find out.
+      <span class="srclinks" id="srclinks-top">How we know: <a href="https://github.com/Azuromalachite/frost-and-silver-game/blob/main/docs/history-and-evidence.md" target="_blank" rel="noopener">sources and evidence</a> · <a href="https://github.com/Azuromalachite/frost-and-silver-game" target="_blank" rel="noopener">Code on GitHub</a></span></div>
   </header>
 
   <section class="stage" id="stage" aria-label="The mountainside" hidden>
@@ -1223,6 +1228,7 @@ function showEnd(){
     <div class="actions">
       <span class="free" id="copymsg">Copy a text report to paste into your class page.</span>
       <span style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn ghost" id="again">New game</button><button class="btn ghost" id="copy">Copy report</button><button class="btn" id="replay">Replay with the same weather</button></span>
+      <span class="srclinks">How we know: <a href="https://github.com/Azuromalachite/frost-and-silver-game/blob/main/docs/history-and-evidence.md" target="_blank" rel="noopener">sources and evidence</a> · <a href="https://github.com/Azuromalachite/frost-and-silver-game" target="_blank" rel="noopener">Code on GitHub</a></span>
     </div>
     <p style="margin:0;font-size:14px;color:var(--muted);max-width:65ch"><b style="color:var(--ink)">Predict, track, compare.</b> Change one choice, such as building terraces earlier, storing more chuño or sending fewer crews for wages, and replay with the same weather. The game will set the two runs side by side so you can explain what that one choice changed.</p>
     <textarea id="report" rows="8" readonly hidden></textarea>`;
