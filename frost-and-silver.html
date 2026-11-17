@@ -28,6 +28,8 @@
   --sky-top:#08102a; --sky-bot:#26355c; --far:#2b3656; --rock:#4a4153; --rock2:#5d5367; --soil:#3c2d29; --snow:#c9d4e6;
   --z0:#4fae5b; --z1:#d4a43c; --z2:#9d8dd2; --z3:#a0b0bd; color-scheme:dark}
 html,body{background:var(--bg);color:var(--ink)}
+/* The artifact viewer supplies this; GitHub Pages does not. Without it, .panel{display:grid} overrides [hidden]. */
+[hidden]{display:none!important}
 body{font-family:var(--f-body);font-size:16px;line-height:1.5;margin:0}
 .wrap{max-width:980px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 40px;display:grid;gap:16px}
 h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.1}
@@ -163,6 +165,8 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
 /* year report: inline, directly under the stage */
 .card{background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--ink);border-radius:6px;padding:16px;display:grid;gap:12px;min-width:0}
 .card > *{max-width:640px}
+.card > .rhead{max-width:none;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:10px 20px}
+.rhead .btn{flex:none}
 .planhead{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px}
 .planhead h2{font-size:22px;font-stretch:112%;text-transform:uppercase}
 .planhead h2 b{color:var(--accent)}
@@ -217,7 +221,7 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
 <div class="wrap">
   <header class="top">
     <div class="mark">Frost <span class="amp">&amp;</span> Silver <span class="ag">1500 → 1600</span></div>
-    <div class="sub">Feed an Andean community through frost, drought and the Potosí silver mita. Six farming years, one question: can output rise while people go hungry?</div>
+    <div class="sub">Feed an Andean community through frost, drought and the Potosí silver mita. Six harvests across a century, one question: can output rise while people go hungry?</div>
   </header>
 
   <section class="stage" id="stage" aria-label="The mountainside" hidden>
@@ -234,12 +238,14 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
       <div class="forecast" id="forecast" hidden></div>
     </div>
     <div class="transport" id="transport" hidden>
-      <button class="tbtn" id="tplay" aria-pressed="false">▶ Auto-play</button>
+      <span class="seg" role="group" aria-label="Play mode">
+        <button class="tbtn" id="tman" aria-pressed="true">Manual</button><button class="tbtn" id="tauto" aria-pressed="false">▶ Auto</button>
+      </span>
       <span class="seg" role="group" aria-label="Speed">
         <button class="tbtn" data-speed="1" aria-pressed="true">1×</button><button class="tbtn" data-speed="2" aria-pressed="false">2×</button><button class="tbtn" data-speed="4" aria-pressed="false">4×</button>
       </span>
-      <div class="tl" id="tl" role="progressbar" aria-label="Progress through the six years" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="tlfill" id="tlfill"></div></div>
-      <span id="tstatus">Paused. Press Auto-play to run the years with your current plan.</span>
+      <div class="tl" id="tl" role="progressbar" aria-label="Progress through the six harvests" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="tlfill" id="tlfill"></div></div>
+      <span id="tstatus">Manual: set your crews above, then press Bring in harvest.</span>
     </div>
   </section>
 
@@ -247,7 +253,7 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
     <span class="eyebrow">Before you start</span>
     <h2 style="font-size:26px;font-stretch:112%;text-transform:uppercase">You run an ayllu of about 1,000 people</h2>
     <p>Your fields climb the mountain from a warm maize valley at 1,800 m to the frozen puna at 4,300 m. Higher fields freeze more often, so spreading crews across the zones is your insurance. Each year you send about 14 work crews (fewer if people die) to plant, build terraces, or freeze-dry potatoes into chuño for the storehouse.</p>
-    <p>Years 1–3 are under the Inca, around 1500. Years 4–6 come after 1573, when the Spanish colonial mita sends one man in seven from the communities of the mita region (yours is one) to the silver mines at Potosí. Your goal is to feed everyone 1,700 kcal a day.</p>
+    <p>You play six harvests, each one farming year. Harvests 1–3 are three years in a row under the Inca, around 1500. Harvests 4–6 are sample years from c. 1575, c. 1592 and c. 1600, after the Spanish colonial mita began sending one man in seven from the communities of the mita region (yours is one) to the silver mines at Potosí. Between them, decades pass. Your goal is to feed everyone 1,700 kcal a day.</p>
     <div class="whybox">
       <h3>Why farm the cold heights?</h3>
       <div class="vert" id="vert" role="img" aria-label="Four altitude zones rising from left to right: Yunga at 1,800 m grows maize, frost rare; Quechua at 3,000 m grows potatoes, frost some years; Suni at 3,800 m grows bitter potatoes, frost often; Puna at 4,300 m is llama and alpaca pasture, frost most years."></div>
@@ -459,9 +465,9 @@ function clampAlloc(){
 function renderPlan(){
   const {avail, mita} = crews();
   const free = avail - used();
-  $('planh').innerHTML = `Year <b>${S.year}</b> of 6 · ${YEARS[S.year-1]}`;
+  $('planh').innerHTML = `Harvest <b>${S.year}</b> of 6 · ${YEARS[S.year-1]}`;
   $('plansub').textContent = `${act(S.year)===1 ? 'Inca' : 'Colonial'} · ${avail} crews to assign`;
-  const eb = $('endyear'); eb.disabled = false; eb.textContent = `Harvest year ${S.year}`;
+  const eb = $('endyear'); eb.disabled = false; eb.textContent = `Bring in harvest ${S.year}`;
   const stepper = (attr, key, n, canDec, canInc, label) =>
     `<div class="step"><button ${attr}="${key}" data-d="-1" aria-label="One fewer crew: ${label}" ${canDec?'':'disabled'}>−</button>
       <output aria-live="polite">${n}</output>
@@ -511,10 +517,10 @@ function renderPlan(){
 const PLAY = {auto: false, speed: 1};
 let autoT = null, cdT = null;
 /* Timeline: 7 units = years 1-3, the 1573 transition, years 4-6. Inside a year the parts are sized to
-   their auto-play times (planning 6 s, harvest 2.4 s, report 9 s) so the fill moves at an even pace:
+   their auto-play times (planning 6 s, harvest 2.4 s, report 7 s) so the fill moves at an even pace:
    planning 0-TP, harvest TP-TA, report TA-1. While a step is timed (auto-play countdown or harvest
    animation) the fill moves smoothly from `from` to `to`; otherwise it holds at `from`. */
-const TL_UNITS = 7, TP = 0.35, TA = 0.48, TL = {from: 0, to: 0, t0: 0, dur: 0};
+const TL_UNITS = 7, TP = 0.39, TA = 0.545, TL = {from: 0, to: 0, t0: 0, dur: 0};
 const yearUnit = y => y <= 3 ? y - 1 : y;
 function tlSeg(from, to, dur){ TL.from = from; TL.to = to; TL.dur = dur || 0; TL.t0 = performance.now(); }
 function tlHere(){ // where the game stands now, with no timer running
@@ -545,30 +551,32 @@ function tlDraw(t){
 })();
 function stopAutoTimers(){ clearTimeout(autoT); clearInterval(cdT); autoT = cdT = null; }
 function renderTransport(){
-  $('tplay').textContent = PLAY.auto ? '❚❚ Pause' : '▶ Auto-play';
-  $('tplay').setAttribute('aria-pressed', PLAY.auto);
+  $('tman').setAttribute('aria-pressed', !PLAY.auto);
+  $('tauto').setAttribute('aria-pressed', PLAY.auto);
   document.querySelectorAll('[data-speed]').forEach(b => b.setAttribute('aria-pressed', +b.dataset.speed === PLAY.speed));
-  if (!PLAY.auto) $('tstatus').textContent = 'Paused. Auto-play runs the years with your current plan; change the plan at any time.';
+  if (!PLAY.auto) $('tstatus').textContent = 'Manual: set your crews above, then press Bring in harvest. Auto runs the harvests on their own with your current plan.';
 }
 // Auto-play advances one step after a delay that shrinks with speed; editing the plan restarts the countdown.
 function scheduleAuto(){
+  if (S.phase === 'end') { stopAutoTimers(); return; } // the finished game keeps its "See results" status
   stopAutoTimers(); renderTransport();
   if (S.phase !== 'anim' || (S.anim && S.anim.done)) { const s = tlStart(); tlSeg(s, s, 0); }
   if (!PLAY.auto) return;
   let ms, step, label, to;
   const u = yearUnit(S.year);
   if (S.phase === 'plan') { ms = 6000; step = () => $('endyear').click(); label = 'Harvest'; to = u + TP; }
-  else if (S.phase === 'anim' && S.anim && S.anim.done && $('next')) { ms = 9000; step = () => $('next').click(); label = 'Next'; to = u + 1; }
-  else if (S.phase === 'event' && $('go')) { ms = 14000; step = () => $('go').click(); label = 'Continue'; to = 4; }
+  else if (S.phase === 'anim' && S.anim && S.anim.done && $('next')) { ms = 7000; step = () => $('next').click(); label = S.year === 6 ? 'Results' : S.year === 3 ? 'The 1573 transition' : `Harvest ${S.year + 1} planning`; to = u + 1; }
+  else if (S.phase === 'event' && $('go')) { ms = 14000; step = () => $('go').click(); label = 'Harvest 4 planning'; to = 4; }
   else { $('tstatus').textContent = 'Harvesting…'; return; }
   ms /= PLAY.speed;
   tlSeg(TL.from, to, ms);
   const until = performance.now() + ms;
-  const tick = () => { $('tstatus').textContent = `${label} in ${Math.max(0, Math.ceil((until - performance.now()) / 1000))} s · Pause to stop`; };
+  const tick = () => { $('tstatus').textContent = `Auto: ${label.charAt(0).toLowerCase() + label.slice(1)} in ${Math.max(0, Math.ceil((until - performance.now()) / 1000))} s. Change crews any time (the countdown restarts), or press Manual to stop.`; };
   tick(); cdT = setInterval(tick, 250);
   autoT = setTimeout(() => { stopAutoTimers(); step(); }, ms);
 }
-$('tplay').addEventListener('click', () => { PLAY.auto = !PLAY.auto; scheduleAuto(); });
+$('tman').addEventListener('click', () => { PLAY.auto = false; scheduleAuto(); });
+$('tauto').addEventListener('click', () => { PLAY.auto = true; scheduleAuto(); });
 document.querySelectorAll('[data-speed]').forEach(b => b.addEventListener('click', () => { PLAY.speed = +b.dataset.speed; scheduleAuto(); }));
 document.addEventListener('click', e => {
   const t = e.target.closest('button'); if (!t || S.phase !== 'plan') return;
@@ -589,7 +597,7 @@ function renderHUD(){
   const pct = v => Math.max(0, Math.min(100, v / 2200 * 100));
   const days = S.store / GOAL * 365;
   $('hud').innerHTML = `
-    <span class="yr">Year <b>${S.phase==='intro'?'–':Math.min(S.year,6)}</b> of 6 · ${YEARS[Math.min(S.year,6)-1]} · ${act(S.year)===1?'Inca':'Colonial'}</span>
+    <span class="yr">Harvest <b>${S.phase==='intro'?'–':Math.min(S.year,6)}</b> of 6 · ${YEARS[Math.min(S.year,6)-1]} · ${act(S.year)===1?'Inca':'Colonial'}</span>
     <span class="gauge" title="Food available per person per day last year"><span class="stat"><span>kcal/day</span><b>${intake==null?'–':fmt(intake)}</b></span>
       <span class="gbar"><span class="gfill" style="width:${intake==null?0:pct(intake)}%;background:var(${intake!=null&&intake<GOAL?'--bad':'--good'})"></span>
       <span class="gmark" style="left:${pct(GOAL)}%" title="Goal 1,700 (course teaching figure, unsourced)"></span><span class="gmark col" style="left:${pct(COLONIAL)}%" title="1,200: course teaching figure for colonial years (unsourced)"></span></span></span>
@@ -701,8 +709,11 @@ function showSummary(r){
     r.spoiled > 1 ? ['Spoiled', `−${fmt(r.spoiled)}`, 'neg'] : null,
   ].filter(Boolean);
   openModal(`
-    <span class="eyebrow">Year ${r.year} · ${YEARS[r.year-1]} · harvest report</span>
-    <h2 id="mt">${ok ? 'Enough food on average' : 'Not enough food on average'} <span class="chip ${ok?'ok':'low'}">${fmt(r.intake)} kcal/day</span></h2>
+    <div class="rhead"><div>
+      <span class="eyebrow">Harvest ${r.year} of 6 · ${YEARS[r.year-1]} · report</span>
+      <h2 id="mt">${ok ? 'Enough food on average' : 'Not enough food on average'} <span class="chip ${ok?'ok':'low'}">${fmt(r.intake)} kcal/day</span></h2>
+    </div>
+    <button class="btn" id="next">${r.year === 3 ? 'Continue to 1573 →' : r.year === 6 ? 'See your results →' : r.year === 4 ? 'Plan harvest 5 (c. 1592) →' : r.year === 5 ? 'Plan harvest 6 (c. 1600) →' : `Plan harvest ${r.year+1} (next year) →`}</button></div>
     <table class="ledger"><tbody>
       ${rows.map(x => `<tr><td>${x[0]}</td><td class="${x[2]}">${x[1]}</td></tr>`).join('')}
       <tr class="total"><td>Food available per person per day (goal 1,700)</td><td>${fmt(r.intake)}</td></tr>
@@ -712,8 +723,7 @@ function showSummary(r){
       <tr><td>Qollqa holds</td><td>${fmt(r.storeDays)} days of food</td></tr>
     </tbody></table>
     <p class="eyebrow" style="margin-top:4px">All food figures are kcal per person per day</p>
-    <ul class="why">${whyList(r).map(s => `<li>${s}</li>`).join('')}</ul>
-    <button class="btn" id="next">${r.year === 3 ? 'Continue' : r.year === 6 ? 'See your results' : `Plan year ${r.year+1}`}</button>`);
+    <ul class="why">${whyList(r).map(s => `<li>${s}</li>`).join('')}</ul>`);
   $('next').onclick = () => { closeModal(); if (r.year === 3) showTransition(); else if (r.year === 6) showEnd(); else nextYear(); };
 }
 function nextYear(){
@@ -735,8 +745,9 @@ function nextYear(){
 
 function showTransition(){
   S.phase = 'event';
-  openModal(`<span class="eyebrow">Seventy years pass</span>
-    <h2 id="mt">1573: the colonial mita</h2>
+  openModal(`<div class="rhead"><div><span class="eyebrow">Seventy years pass</span>
+    <h2 id="mt">1573: the colonial mita</h2></div>
+    <button class="btn" id="go">Plan harvest 4 (c. 1575) →</button></div>
     <p>In 1545 Spaniards began mining Potosí, a mountain of silver in today’s Bolivia. In the 1570s Viceroy Francisco de Toledo turned the old Inca labour duty, the mita, into a forced draft: each year one adult man in seven from the provinces of the mita region had to work the mines, often hundreds of kilometres from home.</p>
     <p>Epidemics of smallpox and measles have swept the Andes, and many Inca storehouses were emptied during the conquest and civil wars. The Inca labour duty and its feasts are gone.</p>
     <p>Toledo's officials counted the people in the 1570s and fixed each community's quotas from that count: a set number of men for the mita and a set amount of tribute. When people died, the quotas stayed the same.</p>
@@ -748,8 +759,7 @@ function showTransition(){
       <tr><td>Mita quota: one man in seven at the 1573 count</td><td class="neg">fixed</td></tr>
       <tr><td>Tribute: a fixed total from the 1573 count (game rule, taken in food; the real tribute was paid in silver and goods)</td><td class="neg">fixed</td></tr>
     </tbody></table>
-    <p>Watch the two numbers at the top of the screen from now on.</p>
-    <button class="btn" id="go">Plan year 4 under colonial rule</button>`, true);
+    <p>Watch the two numbers at the top of the screen from now on.</p>`, true);
   $('go').onclick = () => {
     S.pop *= (1 - COLLAPSE); // store is per person: half the food lost, shared among half the people
     S.N1573 = S.pop; S.mitaCrews = BASE_CREWS * S.pop / 1000 / 7; S.tribTotal = TRIB_PP * S.pop;
@@ -762,11 +772,13 @@ function openModal(html, big){
   $('p-plan').hidden = true; $('dock').hidden = true;
   const c = $('card'); c.className = 'card' + (big ? ' big' : ''); c.innerHTML = html; c.hidden = false;
   const b = c.querySelector('.btn'); if (b) b.focus({preventScroll:true});
-  scheduleAuto(); bringIntoView($('cv'));
+  scheduleAuto();
+  // bring the report's headline and button into view with the least scrolling
+  try { c.scrollIntoView({block: 'nearest', behavior: 'instant'}); } catch (e) { try { c.scrollIntoView(false); } catch (e2) {} }
 }
 function closeModal(){ $('card').hidden = true; }
 function bringIntoView(el){
-  try { el.scrollIntoView({block:'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}); } catch (e) {}
+  try { el.scrollIntoView({block:'start', behavior:'instant'}); } catch (e) { try { el.scrollIntoView(true); } catch (e2) {} }
 }
 
 /* ---------- end screen ---------- */
@@ -775,7 +787,7 @@ function chart(key, lo, hi, refs, color, label, unit){
   const W = 320, H = 200, L = 44, R = 10, T = 18, B = 30;
   const x = i => L + (W-L-R) * (i / 5), y = v => T + (H-T-B) * (1 - (Math.max(lo,Math.min(hi,v)) - lo) / (hi - lo));
   const pts = S.hist.map((r,i) => [x(i), y(r[key])]);
-  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${label} by year"><text x="${L}" y="11" style="fill:var(--ink);font:700 11px var(--f-mono)">${label}</text>`;
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${label} by harvest"><text x="${L}" y="11" style="fill:var(--ink);font:700 11px var(--f-mono)">${label}</text>`;
   const ticks = 4;
   for (let k = 0; k <= ticks; k++) { const v = lo + (hi-lo)*k/ticks;
     s += `<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" style="stroke:var(--line)"/><text x="${L-6}" y="${y(v)+4}" text-anchor="end" style="fill:var(--muted);font:10px var(--f-mono)">${unit}${fmt(v)}</text>`; }
@@ -789,7 +801,7 @@ function chart(key, lo, hi, refs, color, label, unit){
   }
   for (let i = 0; i < 6; i++) s += `<text x="${x(i)}" y="${H-12}" text-anchor="middle" style="fill:var(--muted);font:10px var(--f-mono)">${i+1}</text>`;
   s += `<text x="${mid}" y="${H-1}" text-anchor="middle" style="fill:var(--accent);font:10px var(--f-body)">~70 years</text>`;
-  s += `<text x="${L}" y="${H-1}" style="fill:var(--muted);font:10px var(--f-body)">year</text>`;
+  s += `<text x="${L}" y="${H-1}" style="fill:var(--muted);font:10px var(--f-body)">harvest</text>`;
   // the line breaks at the 70-year gap between year 3 and year 4
   for (const seg of [pts.slice(0,3), pts.slice(3)]) if (seg.length > 1)
     s += `<polyline points="${seg.map(p=>p.join(',')).join(' ')}" style="fill:none;stroke:var(${color});stroke-width:2.5"/>`;
@@ -802,7 +814,11 @@ function dir(a, b, tol){ return b - a > tol ? 'rise' : a - b > tol ? 'fall' : 's
 function showEnd(){
   S.phase = 'end';
   PLAY.auto = false; stopAutoTimers();
-  $('p-plan').hidden = true; $('dock').hidden = true; $('transport').hidden = true; renderForecast();
+  $('p-plan').hidden = true; $('dock').hidden = true; renderForecast();
+  // Keep the playback bar: show the game as finished and point to the results below.
+  tlSeg(TL_UNITS, TL_UNITS, 0); renderTransport();
+  $('tstatus').innerHTML = 'Finished: all six harvests are in. <button class="tbtn" id="toresults">See results ↓</button>';
+  $('toresults').onclick = () => $('p-end').scrollIntoView({behavior: 'smooth', block: 'start'});
   const a1 = S.hist.filter(r => r.act === 1), a2 = S.hist.filter(r => r.act === 2);
   const k1 = avg(a1,'intake'), k2 = avg(a2,'intake'), g1 = avg(a1,'gdp'), g2 = avg(a2,'gdp');
   const am = f => a2.reduce((s,r) => s + f(r), 0) / a2.length;
@@ -829,7 +845,7 @@ function showEnd(){
   const p = $('p-end'); p.hidden = false;
   p.innerHTML = `
     <span class="eyebrow">Results</span>
-    <h2 style="font-size:28px;font-stretch:112%;text-transform:uppercase">${dg === 'rise' && dk === 'fall' ? 'Output rose. People ate less.' : dk !== 'fall' ? 'You kept people fed' : 'Six years on the mountain'}</h2>
+    <h2 style="font-size:28px;font-stretch:112%;text-transform:uppercase">${dg === 'rise' && dk === 'fall' ? 'Output rose. People ate less.' : dk !== 'fall' ? 'You kept people fed' : 'Six harvests on the mountain'}</h2>
     <div class="cmp">
       <div><span>Inca years, food available per person</span><b>${fmt(k1)} kcal</b></div>
       <div><span>Colonial years, food available per person</span><b class="${k2<k1-50?'neg':''}">${fmt(k2)} kcal</b></div>
@@ -843,8 +859,8 @@ function showEnd(){
     </div>
     <p class="eyebrow" style="margin:0">Dotted lines: figures with no confirmed source. Dashed: Maddison's estimates for Latin America as a whole. The game's GDP formula was tuned to start near 416.</p>
     <div>
-      <h3 style="font-size:18px;margin-bottom:6px">What the colonial rules did to your years 4–6</h3>
-      <p style="margin:0 0 8px;max-width:65ch;font-size:14px">The same people with the same weather, under Inca rules instead (labour duty and feasts, no mita, tribute or silver), would have had about <b>${fmt(cfK)} kcal</b> per person a day and <b>$${fmt(cfG)}</b> GDP per person. Here is where the difference went (averages over years 4–6):</p>
+      <h3 style="font-size:18px;margin-bottom:6px">What the colonial rules did to your harvests 4–6</h3>
+      <p style="margin:0 0 8px;max-width:65ch;font-size:14px">The same people with the same weather, under Inca rules instead (labour duty and feasts, no mita, tribute or silver), would have had about <b>${fmt(cfK)} kcal</b> per person a day and <b>$${fmt(cfG)}</b> GDP per person. Here is where the difference went (averages over harvests 4–6):</p>
       <div class="charts" style="gap:12px 24px">
       <table class="ledger"><tbody>
         <tr><td>Food under Inca rules (same people, same weather)</td><td>${fmt(grownCf)}</td></tr>
@@ -863,7 +879,7 @@ function showEnd(){
       </tbody></table>
       </div>
       <p style="margin:10px 0 0;max-width:65ch;font-size:15px"><b>So why did GDP per person ${dg === 'rise' ? 'rise' : 'change'} over time (${sgn(g2-g1)} $)?</b> The colonial rules themselves ${Math.abs(cg) <= 5 ? 'roughly broke even on output: silver came in, field labour went out' : cg > 0 ? `added ${sgn(cg)} $: silver outweighed the field labour lost` : `cost ${sgn(cg)} $: the field labour lost outweighed the silver`}. The rest came from the population collapse: fewer people shared the same land, so output per person ${dg === 'rise' ? 'rose' : 'changed'} while the rules took the food.</p>
-      <p style="margin:8px 0 0;max-width:65ch;font-size:14px;color:var(--muted)">This comparison holds the people and the weather fixed, so it shows what the rules did. The year-by-year charts above also include frost, drought and the population collapse, which is what an observer at the time would have seen. Rows may be off by 1 from rounding.</p>
+      <p style="margin:8px 0 0;max-width:65ch;font-size:14px;color:var(--muted)">This comparison holds the people and the weather fixed, so it shows what the rules did. The harvest-by-harvest charts above also include frost, drought and the population collapse, which is what an observer at the time would have seen. Rows may be off by 1 from rounding.</p>
     </div>
     <div>
       <h3 style="font-size:18px;margin-bottom:6px">Your predictions</h3>
@@ -927,7 +943,7 @@ function reportText(k1,k2,g1,g2,dg,dk){
   const L = [`Frost and Silver: report${S.who?` by ${S.who}`:''}`, '',
     `Prediction: after the mita, GDP per person would ${S.pred.g} and calories would ${S.pred.k}.`,
     S.hyp ? `Reasoning: ${S.hyp}` : '', '',
-    'Year | food available kcal/day | GDP $ | people | frost reached | drought',
+    'Harvest, year | food available kcal/day | GDP $ | people | frost reached | drought',
     ...S.hist.map(r => `${r.year} ${YEARS[r.year-1]} | ${fmt(r.intake)} | ${fmt(r.gdp)} | ${fmt(r.pop)} | ${r.line===4?'none':ZONES[r.line].name} | ${r.drought?'yes':'no'}`), '',
     `Inca years average: ${fmt(k1)} kcal, $${fmt(g1)}. Colonial years average: ${fmt(k2)} kcal, $${fmt(g2)}.`,
     `Effect of the colonial rules (same people and weather, against Inca rules): GDP ${dg}, calories ${dk}.`, '',
@@ -937,7 +953,7 @@ function reportText(k1,k2,g1,g2,dg,dk){
 function restart(){
   PLAY.auto = false; stopAutoTimers();
   S = fresh(); $('p-end').hidden = true; $('p-plan').hidden = true; $('card').hidden = true; $('notice').hidden = true; $('p-intro').hidden = false;
-  $('dock').hidden = true; $('transport').hidden = true; $('stage').hidden = true;
+  $('dock').hidden = true; $('transport').hidden = true; $('stage').hidden = true; tlSeg(0, 0, 0);
   renderHUD(); renderForecast(); window.scrollTo({top:0});
 }
 
