@@ -317,15 +317,57 @@ claims:
     statement: >
       Geographers name the Andean altitude zones with Quechua-derived terms (Pulgar
       Vidal 1941); the game uses plain descriptive names for four schematic zones
-      whose real ranges overlap.
+      whose real ranges overlap, and shows the nearest Pulgar Vidal name under each
+      (Quechua, Suni, Suni–Puna, Puna).
     layer: documented
     status: partly_supported
     sources: [pulgarvidal1941]
     pages:
       - path: frost-and-silver.html
-        anchor: Geographers also use Quechua-derived names for these zones (Pulgar Vidal 1941)
+        anchor: the game shows the nearest one under each zone
       - path: docs/history-and-evidence.md
         anchor: The game's four zones (valley, upper fields, high grain, puna)
+    notes: >
+      The lecture's zones sit higher than Pulgar Vidal's (maize up to 3,500 m), so
+      Valley maps to his Quechua region and Upper fields to Suni; his low Yunga
+      region, which the original game used, is not one of the lecture's zones.
+
+  - id: claim.game.air_temperature
+    statement: >
+      Each zone's air temperature is an annual mean falling 6.5 °C per 1,000 m,
+      anchored at about 12 °C at about 3,400 m (Cusco), at a representative
+      altitude per zone. Display only; the frost model does not use it.
+    layer: game_assumption
+    status: labelled
+    sources: [thitibordin_game]
+    code: ["AIR_ANCHOR_C = 12, AIR_ANCHOR_M = 3400, LAPSE_C_PER_KM = 6.5"]
+    pages:
+      - path: frost-and-silver.html
+        anchor: The air temperatures are rough annual means
+      - path: docs/history-and-evidence.md
+        anchor: Air 6.5 °C colder per 1,000 m
+    notes: >
+      The lapse rate is the original game's. The original anchored it at about
+      24 °C at sea level, which put maize land near 6 °C; the Cusco anchor was
+      chosen instead and has not been checked against station data.
+
+  - id: claim.game.soil_temperature
+    statement: >
+      Soil temperature is 4.2 °C below the air, plus 0.8 °C with terraces or
+      1.6 °C with waru waru. Display only; the frost model does not use it.
+    layer: game_assumption
+    status: labelled
+    sources: [thitibordin_game]
+    code: ["SOIL_BELOW_AIR = 4.2, SOIL_WARM = {terraces:0.8, 'waru waru':1.6}"]
+    pages:
+      - path: frost-and-silver.html
+        anchor: that rule is a game assumption, not a measurement
+      - path: docs/history-and-evidence.md
+        anchor: Soil 4.2 °C below the air
+    notes: >
+      Kept from the original game. Measured mean soil temperature is often
+      slightly warmer than mean air temperature, so the sign of the offset is
+      worth checking with the original author.
 
   - id: claim.land.quechua_maize
     statement: >

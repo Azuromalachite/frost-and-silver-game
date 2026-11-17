@@ -63,7 +63,8 @@ years in a row; harvests 4–6 are snapshots decades apart.
 | claim in the game | label | source and limits |
 | --- | --- | --- |
 | Andean communities held fields at several altitudes so that one frost or drought rarely ruined everything | interpretation (widely accepted) | Murra (1972), the "vertical archipelago". Murra described access rights to separate "islands" of land, often far apart; the game draws one contiguous slope, which is a simplification. |
-| The game's four zones (valley, upper fields, high grain, puna) are schematic; real altitude ranges overlap and vary | documented | Geographers also use Quechua-derived names for these zones (Pulgar Vidal 1941); the game uses plain descriptive names. |
+| The game's four zones (valley, upper fields, high grain, puna) are schematic; real altitude ranges overlap and vary | documented | Geographers also use Quechua-derived names for these zones (Pulgar Vidal 1941); the game uses plain descriptive names and shows the nearest of his names under each: Quechua, Suni, Suni–Puna, Puna. The lecture's zones sit higher than his, so his low Yunga region, used by the original game, has no counterpart. |
+| Each zone's air and soil temperature | game assumption (claim.game.air_temperature, claim.game.soil_temperature) | Air 6.5 °C colder per 1,000 m (the original game's lapse rate), anchored at about 12 °C at Cusco (about 3,400 m); not checked against station data. Soil 4.2 °C below the air, warmed 0.8 °C by terraces and 1.6 °C by waru waru: the original game's rule. Shown for orientation only; frost losses do not depend on them. |
 | Maize grows in the warmer valleys below about 3,500 m; potatoes and other tubers higher; cold-tolerant kañiwa higher still; the puna is mainly pasture | documented (general agronomy) | Checked against secondary sources only. |
 | Chuño keeps for years | documented | Fonseca & de Haan (2021), from notes. |
 | Raised fields (waru waru) soften frost; terraces protect less | documented for raised fields; the comparison is a game assumption | Kolata & Ortloff (1989) model raised-field frost protection and show it depends on the field's shape and water. The game's frost losses (20% with waru waru, 40% with terraces, 60% without, 45% for cold-tolerant kañiwa) are play values. |
@@ -148,6 +149,9 @@ years in a row; harvests 4–6 are snapshots decades apart.
 3. How large was the Inca labour duty, and how much came back?
 4. How quickly did resettlement and the abandonment of terraces cut yields,
    and where?
+5. Is mean soil temperature in these zones below the air, as the original
+   game assumes (claim.game.soil_temperature), or slightly above it, as is
+   common for annual means? The original author may know.
 
 ## Sources
 

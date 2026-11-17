@@ -364,17 +364,24 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
 const GOAL = 1700, COLONIAL = 1200, GDP_ANCHOR = 416, BASE_CREWS = 14, BASE_CAP = 5, CHUNO_CAP = 120;
 const ZONES = [
   // Four schematic zones; real ranges overlap and vary with local conditions. Internal keys are kept from earlier versions.
-  {key:'yunga', name:'Valley', alt:'2,500–3,500 m', crop:'Maize', y:185, hi:.6, lo:.4, build:'Build andenes', what:'terraces', cap:2, risk:'Frost: rare', why:'Irrigated or rain-fed maize on valley floors and terraces.', c:'--z0'},
-  {key:'quechua', name:'Upper fields', alt:'3,500–3,900 m', crop:'Potatoes & other tubers', y:182, hi:.6, lo:.4, build:'Build andenes', what:'terraces', cap:2, risk:'Frost: some years', why:'Too cold for maize. Potatoes, oca and other tubers; the potatoes become chuño.', c:'--z1'},
-  {key:'suni', name:'High grain', alt:'3,800–4,200 m', crop:'Kañiwa', y:163, hi:.45, lo:.2, build:'Build waru waru', what:'waru waru', cap:1, risk:'Frost: often; kañiwa tolerates cold', why:'Cold-tolerant kañiwa, a small grain related to quinoa.', c:'--z2'},
-  {key:'puna', name:'Puna', alt:'4,000–4,500 m', crop:'Llamas & alpacas', y:122, hi:.3, lo:.3, build:null, risk:'Frost: most years; herds survive it', why:'Too cold for most crops. Pasture for llamas and alpacas.', c:'--z3'}
+  {key:'yunga', name:'Valley', qname:'Quechua', altM:3000, alt:'2,500–3,500 m', crop:'Maize', y:185, hi:.6, lo:.4, build:'Build andenes', what:'terraces', cap:2, risk:'Frost: rare', why:'Irrigated or rain-fed maize on valley floors and terraces.', c:'--z0'},
+  {key:'quechua', name:'Upper fields', qname:'Suni', altM:3700, alt:'3,500–3,900 m', crop:'Potatoes & other tubers', y:182, hi:.6, lo:.4, build:'Build andenes', what:'terraces', cap:2, risk:'Frost: some years', why:'Too cold for maize. Potatoes, oca and other tubers; the potatoes become chuño.', c:'--z1'},
+  {key:'suni', name:'High grain', qname:'Suni–Puna', altM:4000, alt:'3,800–4,200 m', crop:'Kañiwa', y:163, hi:.45, lo:.2, build:'Build waru waru', what:'waru waru', cap:1, risk:'Frost: often; kañiwa tolerates cold', why:'Cold-tolerant kañiwa, a small grain related to quinoa.', c:'--z2'},
+  {key:'puna', name:'Puna', qname:'Puna', altM:4250, alt:'4,000–4,500 m', crop:'Llamas & alpacas', y:122, hi:.3, lo:.3, build:null, risk:'Frost: most years; herds survive it', why:'Too cold for most crops. Pasture for llamas and alpacas.', c:'--z3'}
 ];
+// Temperatures (estimates, not station data). Air: annual mean falling 6.5 °C per 1,000 m (the original
+// game's lapse rate), anchored at Cusco, about 12 °C at about 3,400 m. Soil: the original game's rule,
+// 4.2 °C below air, warmed 0.8 °C by terraces and 1.6 °C by waru waru.
+const AIR_ANCHOR_C = 12, AIR_ANCHOR_M = 3400, LAPSE_C_PER_KM = 6.5, SOIL_BELOW_AIR = 4.2, SOIL_WARM = {terraces:0.8, 'waru waru':1.6};
+const airT = z => AIR_ANCHOR_C - LAPSE_C_PER_KM * (z.altM - AIR_ANCHOR_M) / 1000;
+const soilT = z => airT(z) - SOIL_BELOW_AIR + (z.build && S.built[z.key] ? SOIL_WARM[z.what] : 0);
+const degC = v => `${v.toFixed(1)}°C`;
 const TERMS = [
   ['Ayllu', 'An Andean community of related families who hold land together and share work. Your village in this game.'],
   ['Inca', 'The empire that ruled the Andes until the Spanish conquest of the 1530s. Its own name, Tawantinsuyu, means “the four parts together”.'],
   ['Mita', 'Work done in turns. Under the Inca, communities sent workers to the state for set periods and were fed while they worked. Under Spain it became a forced draft for the silver mines. Potosí also ran on paid workers (mingas), and the line between drafted and paid work was often blurred (Gil Montero & Zagalsky 2016). Women worked there too, in ore sorting, refining and trade (Barragán Romano 2020).'],
   ['Potosí', 'A mountain of silver, the Cerro Rico (“rich hill”), above the mining city of Potosí (about 4,000 m) in today’s Bolivia. Spaniards began mining it in 1545, and its silver was shipped across the world, as far as China.'],
-  ['Valley, upper fields, high grain, puna', 'The game\'s four farming zones, from warm valley to cold grassland: maize in the valleys and on terraces, potatoes and other tubers higher up, cold-tolerant grains such as kañiwa above them, and llama and alpaca pasture on the puna, above about 4,000 m. The altitudes are rough; real ranges overlap and vary from valley to valley. Geographers also use Quechua-derived names for these zones (Pulgar Vidal 1941).'],
+  ['Valley, upper fields, high grain, puna', 'The game\'s four farming zones, from warm valley to cold grassland: maize in the valleys and on terraces, potatoes and other tubers higher up, cold-tolerant grains such as kañiwa above them, and llama and alpaca pasture on the puna, above about 4,000 m. The altitudes are rough; real ranges overlap and vary from valley to valley. Geographers also use Quechua-derived names for these zones (Pulgar Vidal 1941); the game shows the nearest one under each zone. The air temperatures are rough annual means: 6.5 °C colder per 1,000 m, anchored at about 12 °C at Cusco. The soil temperatures follow the rule used in the original game, 4.2 °C below the air, warmed slightly by terraces and waru waru; that rule is a game assumption, not a measurement. The temperatures are shown for orientation only; frost losses in the game do not depend on them.'],
   ['Kañiwa', 'A small, cold-tolerant grain related to quinoa, grown high in the Andes.'],
   ['Chuño', 'Potatoes frozen at night and dried by day until they keep for years. Food for bad harvests.'],
   ['Qollqa', 'A state storehouse. The Inca built thousands of them along roads and above towns, filled from the state fields. Households and communities kept their own stores too; in the game, your chuño goes into those community stores (Morris 1986).'],
@@ -414,7 +421,7 @@ function vertHTML(){
   return VERT.map((v, i) => { const z = ZONES[v.z];
     return `<div class="vcol" style="--c:var(${z.c})" aria-hidden="true"><div class="vtop">
       <span class="gico">${svgI(v.icon)}${v.badge ? `<span class="badge">${svgI('snow', 1.4)}</span>` : ''}</span>
-      <span class="vname">${z.name}</span><span class="valt">${z.alt}</span>
+      <span class="vname">${z.name}</span><span class="valt">${z.qname} · ${z.alt}</span><span class="valt">Air ${degC(airT(z))}</span>
       <span class="vcrop">${v.crop}</span>
       <span class="vfrost">${[1,2,3,4].map(k => `<i class="${k<=v.frost?'on':''}"></i>`).join('')}<span>Frost: ${v.word}</span></span>
     </div><div class="vrock" style="--h:${14 + i*30}px"></div></div>`; }).join('');
@@ -550,8 +557,9 @@ function renderPlan(){
   $('dextras').innerHTML = dx;
   // descriptions: in the panel below
   $('zones').innerHTML = ZONES.map(z => `<div class="zone" style="--zc:var(${z.c})">
-      <h3>${z.name}</h3>
+      <h3>${z.name} <small class="mono" style="font-weight:500;color:var(--muted)">${z.qname}</small></h3>
       <div class="crop">${z.crop} · ${z.alt}</div>
+      <div class="crop mono">Air ${degC(airT(z))} · Soil ${degC(soilT(z))}${z.build && S.built[z.key] ? ` (${z.what} warm it)` : ''}</div>
       <div class="why">${z.why}</div>
       <div class="risk">${z.risk}</div>
       <div class="state">${!z.build ? 'No building here' : S.built[z.key] ? `✓ ${z.what} built: frost loss ${Math.round(z.lo*100)}% instead of ${Math.round(z.hi*100)}%, +10% yield, room for ${cap(z)} crews` : `${z.build} with 2 crews; ready next year`}</div></div>`).join('');
@@ -1265,13 +1273,20 @@ function draw(t){
     for (let k=0;k<nc;k++) figure(a + 6 + k*9, gy - 2 - (k%2)*2, col['--ink'], .75);
     // labels
     // centred under the shelf, on the rock face
-    const fs = Math.max(10, Math.min(14, W/58)), cx = (a + b) / 2;
-    const y1 = Math.min(gy + 24, Hh - fs * 2 - 6), y2 = y1 + fs + 4;
+    // narrow screens: no altitude (it is in the zone cards) and whole degrees, so labels do not collide
+    const narrow = W < 600, fs = Math.max(10, Math.min(14, W/58)), sf = narrow ? 9 : fs - 2;
+    const air = airT(z), soil = soilT(z);
+    const small = narrow ? [z.qname, `Air ${Math.round(air)}° · Soil ${Math.round(soil)}°C`]
+                         : [`${z.qname} · ${z.alt}`, `Air ${degC(air)} · Soil ${degC(soil)}`];
+    ctx.font = `500 ${sf}px "IBM Plex Mono", monospace`;
+    const half = Math.max(...small.map(s => ctx.measureText(s).width)) / 2 + 3;
+    const cx = Math.min(W - half, Math.max(half, (a + b) / 2));
+    const y1 = Math.min(gy + 24, Hh - (fs + 4) - 2 * (sf + 3) - 4), y2 = y1 + fs + 4, y3 = y2 + sf + 3;
     ctx.textAlign = 'center';
-    // hierarchy: name is the brightest, heaviest mark; altitude is smaller and dimmer
+    // hierarchy: name is the brightest, heaviest mark; Quechua name, altitude and temperatures smaller and dimmer
     ctx.fillStyle = col['--snow']; ctx.font = `900 ${fs+1}px "Archivo", sans-serif`; ctx.fillText(z.name.toUpperCase(), cx, y1);
-    ctx.globalAlpha = .62; ctx.font = `500 ${fs-2}px "IBM Plex Mono", monospace`;
-    ctx.fillText(z.alt, cx, y2); ctx.globalAlpha = 1;
+    ctx.globalAlpha = .62; ctx.font = `500 ${sf}px "IBM Plex Mono", monospace`;
+    ctx.fillText(small[0], cx, y2); ctx.fillText(small[1], cx, y3); ctx.globalAlpha = 1;
   }
 
   // resolution animation
