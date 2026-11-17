@@ -25,20 +25,22 @@ Students **predict** before playing, **track** each harvest in a report (four ti
 
 ## What the model is, and is not
 
-The game is a teaching model, not a reconstruction. Default play (80 simulated games) gives about:
+The game is a teaching model, not a reconstruction. The default plan, played with Next step on seeds 1–80 (measured 2026-11-18), gives on average:
 
 | | Inca years | Colonial years |
 |---|---|---|
-| Food available per person per day | ~1,660 kcal | ~1,330 kcal |
-| Caloric Welfare Index (out of 100) | ~69 | ~47 |
-| GDP per person (index, Maddison 1500 = 100) | ~101 | ~109 |
+| Food available per person per day | ~1,670 kcal | ~1,390 kcal |
+| Caloric Welfare Index (out of 100) | ~70 | ~49 |
+| GDP per person (index, Maddison 1500 = 100) | ~101 | ~110 |
+
+Each harvest is followed by a winter that sets how much chuño a crew can freeze-dry (hard, normal or mild; a game assumption). It leaves these averages almost unchanged but moves single runs: colonial food differs by up to about 100 kcal a day, mostly because mild Inca winters leave smaller stores to carry past 1573.
 
 GDP is shown as an index because the historical series come in different dollars (Maddison 2003 in 1990 dollars; the Maddison Project Database in 2011 dollars); an index can be compared with either without mixing units. Maddison's estimate for all of Latin America rises about 5% from 1500 to 1600; the game rises a little more.
 
 The end screen separates two things:
 
 - **Over time** (what an observer would see): food falls and GDP per person rises in nearly every game.
-- **What the colonial rules did** (same people, same weather, Inca rules instead): food about −530 kcal; GDP roughly unchanged (about +2 index points), because silver about offsets the field labour lost. Over time, GDP per person rises mainly because the population collapse left more land per survivor. Predictions are graded on this comparison, which removes most of the weather's effect but not all: silver ignores the weather while the farm output the mita removes does not, so with the same plan the GDP grade reads "rise" instead of "stay" in 6 of 80 seeds.
+- **What the colonial rules did** (same people, same weather, Inca rules instead): food about −480 kcal; GDP roughly unchanged (about +2 index points), because silver about offsets the field labour lost. Over time, GDP per person rises mainly because the population collapse left more land per survivor. Predictions are graded on this comparison, which removes most of the weather's effect but not all: silver ignores the weather while the farm output the mita removes does not, so with the same plan the GDP grade reads "rise" instead of "stay" in 6 of 80 seeds.
 
 ### Mechanisms that carry the result
 

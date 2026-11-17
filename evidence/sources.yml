@@ -209,6 +209,22 @@ sources:
     url: null
     locator: In Los Andes y los alimentos del futuro / 50 Andean Future Foods (CIP)
 
+  - key: fao_chuno_blanco
+    title: "Chuño blanco (Mountain Partnership Products Initiative)"
+    author: FAO Mountain Partnership
+    date: 2023
+    access: full_text_read
+    by: this project
+    when: 2026-11-18
+    url: https://www.fao.org/mountain-partnership/projects/mountain-partnership-products-initiative/chu%C3%B1o-blanco/en
+    locator: section "Process"
+    notes: >
+      A short product page about one modern producer near 4,000 m in Junín.
+      Describes the process (night freezing, daytime sun, 20-30 days soaking for
+      white chuño, 5-8 days sun-drying) and says chuño stores for years. It gives
+      no rates and does not say how the weather changes the time or the yield;
+      that link is the game's assumption.
+
   - key: robins_hagan2012
     title: "Mercury Production and Use in Colonial Andean Silver Production: Emissions and Health Implications"
     author: Nicholas A. Robins; Nicole A. Hagan

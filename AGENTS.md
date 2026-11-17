@@ -75,7 +75,7 @@ Each one cites what taught it.
    stalled. **Test the Pages copy, not only a local or artifact copy.**
 2. **The pinned run reproduces exactly.** With `?seed=12345`, the default plan
    and Next step only, the results read
-   `1,740 kcal | 1,401 kcal | 80 → 54 | 103 | 108 | 47% → 71%`. A change that
+   `1,764 kcal | 1,371 kcal | 80 → 53 | 103 | 108 | 46% → 73%`. A change that
    is meant to leave the model alone must reproduce this. A change to the
    model recalibrates (60–80 games of default play), then updates this line
    and the numbers in `README.md` and the evidence document.
