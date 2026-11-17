@@ -99,6 +99,25 @@ claims:
         anchor: In the game, GDP per person rises mainly through more land per survivor
     notes: Depends on claim.game.gdp_formula and claim.game.reduccion_sizes.
 
+  - id: claim.game.grading_weather
+    statement: >
+      Predictions are graded against the same people and weather under Inca
+      rules. The weather still nudges the GDP grade, because silver ignores the
+      weather while the farm output the mita removes does not: with the default
+      plan, seeds 1-80 give "rise" in 6 runs and "stay" in 74, each "rise" just
+      past the 3-point line.
+    layer: game_result
+    status: labelled
+    sources: [maddison2003]
+    pages:
+      - path: frost-and-silver.html
+        anchor: which removes most of the weather's effect, but not all of it
+    notes: >
+      Measured 2026-11-18 at commit cea920d (default plan, Next step, seeds 1-80);
+      the same 74/6 split was reported in PR #1. The earlier text said a bad
+      frost could not make a correct prediction look wrong, which was false.
+      Re-measure after any model change.
+
   - id: claim.game.gdp_formula
     statement: >
       GDP per person in the game is 340 + 0.045 × field output + silver, with each

@@ -38,7 +38,7 @@ GDP is shown as an index because the historical series come in different dollars
 The end screen separates two things:
 
 - **Over time** (what an observer would see): food falls and GDP per person rises in nearly every game.
-- **What the colonial rules did** (same people, same weather, Inca rules instead): food about −530 kcal; GDP roughly unchanged (about +2 index points), because silver about offsets the field labour lost. Over time, GDP per person rises mainly because the population collapse left more land per survivor. Predictions are graded on this comparison, so weather cannot flip a correct prediction.
+- **What the colonial rules did** (same people, same weather, Inca rules instead): food about −530 kcal; GDP roughly unchanged (about +2 index points), because silver about offsets the field labour lost. Over time, GDP per person rises mainly because the population collapse left more land per survivor. Predictions are graded on this comparison, which removes most of the weather's effect but not all: silver ignores the weather while the farm output the mita removes does not, so with the same plan the GDP grade reads "rise" instead of "stay" in 6 of 80 seeds.
 
 ### Mechanisms that carry the result
 

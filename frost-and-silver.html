@@ -1109,7 +1109,8 @@ function showEnd(){
   const k1 = avg(a1,'intake'), k2 = avg(a2,'intake'), g1 = avg(a1,'gdp'), g2 = avg(a2,'gdp');
   const am = f => a2.reduce((s,r) => s + f(r), 0) / a2.length;
   // Over time (what an observer sees, weather included) versus caused by the colonial rules (same people, same
-  // weather, Inca rules instead). Predictions are graded on the second: weather cannot flip it.
+  // weather, Inca rules instead). Predictions are graded on the second. Weather can still nudge the GDP grade:
+  // silver ignores the weather but the farm output the mita removes does not (default plan, seeds 1-80: 6 "rise", 74 "stay").
   const dg = dir(g1, g2, 5), dk = dir(k1, k2, 50);
   const ck = am(r => r.intake - r.cf.intake), cg = am(r => r.gdp - r.cf.gdp);
   const dgC = dir(0, cg, 12.5), dkC = dir(0, ck, 50); // GDP tolerance: 12.5 $ = 3 index points
@@ -1208,7 +1209,7 @@ function showEnd(){
         <li>…and food per person <b>${S.pred.k}</b>. ${right(S.pred.k, dkC)} <span style="color:var(--muted)">(${sgn(ck)} kcal against Inca rules. Over time: ${pastTense(dk)})</span></li>
         ${S.hyp ? `<li>Your reasoning: “${esc(S.hyp)}”</li>` : ''}
       </ul>
-      <p style="margin:6px 0 0;font-size:13px;color:var(--muted);max-width:65ch">Predictions are checked against what the colonial rules did, with the people and weather held fixed, so a bad frost cannot make a correct prediction look wrong.</p>
+      <p style="margin:6px 0 0;font-size:13px;color:var(--muted);max-width:65ch">Predictions are checked against the same people with the same weather under Inca rules, which removes most of the weather's effect, but not all of it. Silver does not depend on the weather, while the farm work the mita takes away does, so in a frosty run the colonial rules look a little better for GDP. With the same plan every time, the weather alone turns the GDP answer from "stay" to "rise" in about 1 run in 13, always just past the 3-point line.</p>
     </div>
     <div class="rev">
       <h3 style="font-size:18px;margin-bottom:6px">What would have to be true for this to reverse?</h3>
