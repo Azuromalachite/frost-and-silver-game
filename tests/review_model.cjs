@@ -110,7 +110,9 @@ function check(html) {
 
 // The pinned line is quoted in CONTRIBUTING.md and AGENTS.md; it must match PINNED, or the docs describe another game.
 const fmtK = n => n.toLocaleString('en-US');
-const pinnedLine = p => `${fmtK(p[0])} kcal | ${fmtK(p[1])} kcal | ${p[2]} → ${p[3]} | ${p[4]} | ${p[5]} | ${p[6]}% → ${p[7]}%`;
+// as the end screen shows it: food to the nearest 10 kcal, household shares to the nearest 5%
+const r10 = v => Math.round(v / 10) * 10, r5 = v => Math.round(v / 5) * 5;
+const pinnedLine = p => `${fmtK(r10(p[0]))} kcal | ${fmtK(r10(p[1]))} kcal | ${p[2]} → ${p[3]} | ${p[4]} | ${p[5]} | ${r5(p[6])}% → ${r5(p[7])}%`;
 function checkDocs(pinned, texts) {
   for (const [name, text] of Object.entries(texts))
     assert.ok(text.includes('`' + pinnedLine(pinned) + '`'), `${name} does not quote the pinned run ${pinnedLine(pinned)}`);
@@ -138,7 +140,8 @@ function selfTest(html) {
     console.log(`caught: ${name}`);
   }
   let docErr = null;
-  try { checkDocs(PINNED.map((v, i) => i === 1 ? v + 1 : v), docTexts()); } catch (e) { docErr = e; }
+  // +10 kcal: the docs quote food to the nearest 10, so a 1-kcal plant would round away and test nothing
+  try { checkDocs(PINNED.map((v, i) => i === 1 ? v + 10 : v), docTexts()); } catch (e) { docErr = e; }
   assert.ok(docErr && /does not quote the pinned run/.test(docErr.message), 'self-test: a pinned line that differs from the docs was not caught');
   console.log('caught: docs quoting a different pinned run');
   console.log(`confirmed: all ${PLANTS.length} planted model changes and the docs mismatch are rejected`);

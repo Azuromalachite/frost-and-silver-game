@@ -88,7 +88,7 @@ Each one cites what taught it.
    stalled. **Test the Pages copy, not only a local or artifact copy.**
 2. **The pinned run reproduces exactly.** With `?seed=12345`, the default plan
    and Next step only, the results read
-   `1,764 kcal | 1,411 kcal | 80 → 55 | 103 | 109 | 46% → 73%`, choosing "Best land first" at each re-plan. A change that
+   `1,760 kcal | 1,410 kcal | 80 → 55 | 103 | 109 | 45% → 75%`, choosing "Best land first" at each re-plan. A change that
    is meant to leave the model alone must reproduce this. A change to the
    model recalibrates (60–80 games of default play), then updates this line,
    `PINNED` in `tests/review_model.cjs`, and the numbers in `README.md` and the
