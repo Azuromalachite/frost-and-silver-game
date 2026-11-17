@@ -391,6 +391,8 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
 
 <script>
 (() => {
+// GDP_TOL: a GDP change smaller than this ($, = 3 index points) grades as "stay"
+const GDP_TOL = 12.5;
 const GOAL = 1700, COLONIAL = 1200, GDP_ANCHOR = 416, BASE_CREWS = 14, BASE_CAP = 5, CHUNO_CAP = 120;
 // Chuño is made in the dry-season winter after the harvest: potatoes freeze at night and dry in the sun by day.
 // How much a crew can freeze-dry depends on that winter's nights (game assumption; the multipliers average 1).
@@ -1211,7 +1213,7 @@ function showEnd(){
   // silver ignores the weather but the farm output the mita removes does not (default plan with best land first at each re-plan, seeds 1-80: 5 "rise", 75 "stay").
   const dg = dir(g1, g2, 5), dk = dir(k1, k2, 50);
   const ck = am(r => r.intake - r.cf.intake), cg = am(r => r.gdp - r.cf.gdp);
-  const dgC = dir(0, cg, 12.5), dkC = dir(0, ck, 50); // GDP tolerance: 12.5 $ = 3 index points
+  const dgC = dir(0, cg, GDP_TOL), dkC = dir(0, ck, 50);
   const right = (p, d) => p === d ? '<span class="chip ok">matches the colonial rules’ effect</span>' : `<span class="chip low">colonial rules’ effect: ${d}</span>`;
   const both = dgC !== 'fall' && dkC !== 'fall';
   const share = arr => Math.round(arr.reduce((s,r) => s + shortShare(r.avail), 0) / arr.length * 100);
@@ -1298,7 +1300,7 @@ function showEnd(){
         <tr class="total"><td>GDP index</td><td>${gi(g2).toFixed(0)}</td></tr>
       </tbody></table>
       </div>
-      <p style="margin:10px 0 0;max-width:65ch;font-size:15px"><b>So why did GDP per person ${dg === 'rise' ? 'rise' : 'change'} over time (${sgn1(gi(g2-g1))} points)?</b> The colonial rules themselves ${Math.abs(cg) <= 12.5 ? 'roughly broke even on output: silver came in, field labour went out' : cg > 0 ? `added ${sgn1(gi(cg))} points: silver outweighed the field labour lost` : `cost ${sgn1(gi(cg))} points: the field labour lost outweighed the silver`}. The rest came mostly from the population collapse (plus this run's weather and choices). How you re-planned your fewer crews mattered: putting every crew on the best land raises output per person, while keeping chuño crews and the high fields keeps stores and variety but grows less. Each survivor also has a little more land. Output per person ${dg === 'rise' ? 'rose' : 'changed'} while the rules took the food. Which cause matters more depends on what you take away: in this game, without silver GDP per person would barely have risen, and without the collapse it would still have risen, by less. GDP also moves less than food because most of it, a fixed 340 for everything else produced, is held constant in the game.</p>
+      <p style="margin:10px 0 0;max-width:65ch;font-size:15px"><b>So why did GDP per person ${dg === 'rise' ? 'rise' : 'change'} over time (${sgn1(gi(g2-g1))} points)?</b> The colonial rules themselves ${Math.abs(cg) <= GDP_TOL ? 'roughly broke even on output: silver came in, field labour went out' : cg > 0 ? `added ${sgn1(gi(cg))} points: silver outweighed the field labour lost` : `cost ${sgn1(gi(cg))} points: the field labour lost outweighed the silver`}. The rest came mostly from the population collapse (plus this run's weather and choices). How you re-planned your fewer crews mattered: putting every crew on the best land raises output per person, while keeping chuño crews and the high fields keeps stores and variety but grows less. Each survivor also has a little more land. Output per person ${dg === 'rise' ? 'rose' : 'changed'} while the rules took the food. Which cause matters more depends on what you take away: in this game, without silver GDP per person would barely have risen, and without the collapse it would still have risen, by less. GDP also moves less than food because most of it, a fixed 340 for everything else produced, is held constant in the game.</p>
       <p style="margin:8px 0 0;max-width:65ch;font-size:14px;color:var(--muted)">This comparison holds the people and the weather fixed, so it shows what the rules did. The harvest-by-harvest charts above also include frost, drought and the population collapse, which is what an observer at the time would have seen. Rows may be off by 1 or 2 from rounding.</p>
     </div>
     <div>

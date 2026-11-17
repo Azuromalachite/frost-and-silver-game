@@ -75,7 +75,7 @@ CASES = {
     "constant changed in the game but not the registry": (
         G, "TRIB_PP = 500", "TRIB_PP = 450",
         "code not found in frost-and-silver.html: 'TRIB_PP = 500'",
-        "if str(snippet) not in game_code:"),
+        "if str(snippet) not in game_code_live:"),
     "game claim not stated in the game": (
         C, "      - path: frost-and-silver.html\n        anchor: The rest came mostly from the population collapse\n", "",
         "a game claim must be stated in frost-and-silver.html",
@@ -104,6 +104,15 @@ CASES = {
     "unknown claim mentioned in prose": (
         D, "## Open questions", "## Open questions\n\nSee claim.food.no_such_claim.",
         "mentions unknown claim claim.food.no_such_claim", "if m not in seen_ids:"),
+    # Review round 2, item 11: a phrase that sits only in a JavaScript comment is not stated in the game
+    "anchor only in a code comment": (
+        C, "        anchor: When people died, the quotas were not cut to match.\n", "        anchor: same food, fewer people\n",
+        "anchor not found in frost-and-silver.html",
+        "if raw is not None and path == GAME_FILE:"),
+    "code snippet only in a code comment": (
+        C, '    code: ["ALPHA = 0.9"]\n', '    code: ["same food, fewer people"]\n',
+        "code not found in frost-and-silver.html",
+        "if str(snippet) not in game_code_live:"),
     # PR #1 review, H1: reading two pages of a paper must not unlock 'supported'
     "supported on a source read only in sections": (
         C, "status: partly_supported\n    sources: [mccall2016]",

@@ -36,7 +36,7 @@ function buildCode(p) {
   rep('const REDUC_BY_HARVEST = {4: 0.93, 5: 0.88, 6: 0.85};', `const REDUC_BY_HARVEST = {4: ${1-0.07*r}, 5: ${1-0.12*r}, 6: ${1-0.15*r}};`);
   rep('CHUNO_CAP = 120;', `CHUNO_CAP = ${p.CHUNO_CAP};`);
   const m = h.match(/<script>\s*([\s\S]*?)<\/script>/);
-  const code = m[1].replace(/\}\)\(\);\s*$/, `globalThis.game={get state(){return S}, reset(seed){S=fresh(); S.seed=seed; S.pred={g:'stay',k:'stay'};}, rollYear,clampAlloc,harvest,nextYear,showTransition,gi,dir,shortShare,crews,replanTo};})();`);
+  const code = m[1].replace(/\}\)\(\);\s*$/, `globalThis.game={get state(){return S}, reset(seed){S=fresh(); S.seed=seed; S.pred={g:'stay',k:'stay'};}, rollYear,clampAlloc,harvest,nextYear,showTransition,gi,dir,shortShare,crews,replanTo,GDP_TOL};})();`);
   if (code === m[1]) throw new Error('the game script no longer ends in })();');
   return code;
 }
@@ -81,7 +81,7 @@ function play(G, seed, mode = 'trim') {
   const cg = b.reduce((s, r) => s + r.gdp - r.cf.gdp, 0) / 3;
   return {k1:avg(a,'intake'), k2:avg(b,'intake'), w1:avg(a,'cwi'), w2:avg(b,'cwi'), g1:g.gi(avg(a,'gdp')), g2:g.gi(avg(b,'gdp')),
     s1:a.reduce((s, r) => s + g.shortShare(r.avail), 0) / 3 * 100, s2:b.reduce((s, r) => s + g.shortShare(r.avail), 0) / 3 * 100,
-    cg:cg / 416 * 100, ck:b.reduce((s, r) => s + r.intake - r.cf.intake, 0) / 3, grade:g.dir(0, cg, 12.5)};
+    cg:cg / 416 * 100, ck:b.reduce((s, r) => s + r.intake - r.cf.intake, 0) / 3, grade:g.dir(0, cg, g.GDP_TOL)};
 }
 // Mean over seeds 1..n. "Holds" = GDP up at least 3 index points and food down at least 50 kcal over time.
 function summarize(p, n = 80, mode = 'trim') {
