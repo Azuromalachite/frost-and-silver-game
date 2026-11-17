@@ -13,6 +13,7 @@
   --accent:#ad1240; --on-accent:#ffffff; --gold:#b97f00; --ice:#2f86c0; --good:#2c7a4c; --bad:#b3261e;
   --sky-top:#9cc1df; --sky-bot:#e8eef4; --far:#b9c6d3; --rock:#7b6a5a; --rock2:#9d8873; --soil:#694a35; --snow:#ffffff;
   --z0:#3c8d47; --z1:#b07f1e; --z2:#7462a6; --z3:#7f8f9c;
+  --potosi:#a2563a; --potosi2:#d08a5c; --mine:#2b1d17;
   --f-display:"Archivo","Arial Narrow",system-ui,sans-serif;
   --f-body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;
   --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
@@ -21,12 +22,12 @@
   --bg:#0d1221; --surface:#151c30; --ink:#e6eaf4; --muted:#9aa5bd; --line:#28314a;
   --accent:#ff5c84; --on-accent:#0d1221; --gold:#f0b432; --ice:#7cc5f1; --good:#5cc48a; --bad:#ff7a66;
   --sky-top:#08102a; --sky-bot:#26355c; --far:#2b3656; --rock:#4a4153; --rock2:#5d5367; --soil:#3c2d29; --snow:#c9d4e6;
-  --z0:#4fae5b; --z1:#d4a43c; --z2:#9d8dd2; --z3:#a0b0bd; color-scheme:dark}}
+  --z0:#4fae5b; --z1:#d4a43c; --z2:#9d8dd2; --z3:#a0b0bd; --potosi:#8e4a33; --potosi2:#c98257; --mine:#0b0706; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#0d1221; --surface:#151c30; --ink:#e6eaf4; --muted:#9aa5bd; --line:#28314a;
   --accent:#ff5c84; --on-accent:#0d1221; --gold:#f0b432; --ice:#7cc5f1; --good:#5cc48a; --bad:#ff7a66;
   --sky-top:#08102a; --sky-bot:#26355c; --far:#2b3656; --rock:#4a4153; --rock2:#5d5367; --soil:#3c2d29; --snow:#c9d4e6;
-  --z0:#4fae5b; --z1:#d4a43c; --z2:#9d8dd2; --z3:#a0b0bd; color-scheme:dark}
+  --z0:#4fae5b; --z1:#d4a43c; --z2:#9d8dd2; --z3:#a0b0bd; --potosi:#8e4a33; --potosi2:#c98257; --mine:#0b0706; color-scheme:dark}
 html,body{background:var(--bg);color:var(--ink)}
 /* The artifact viewer supplies this; GitHub Pages does not. Without it, .panel{display:grid} overrides [hidden]. */
 [hidden]{display:none!important}
@@ -1500,7 +1501,7 @@ $('start').addEventListener('click', () => {
 const cv = $('cv'), ctx = cv.getContext('2d');
 let W = 0, Hh = 0, col = {};
 const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
-function readColors(){ for (const n of ['--sky-top','--sky-bot','--far','--rock','--rock2','--soil','--snow','--ice','--ink','--muted','--accent','--gold','--good','--bad','--surface','--z0','--z1','--z2','--z3']) col[n] = css(n); requestDraw(); }
+function readColors(){ for (const n of ['--sky-top','--sky-bot','--far','--rock','--rock2','--soil','--snow','--ice','--ink','--muted','--accent','--gold','--good','--bad','--surface','--z0','--z1','--z2','--z3','--potosi','--potosi2','--mine']) col[n] = css(n); requestDraw(); }
 function resize(){
   const r = cv.getBoundingClientRect(), d = Math.min(2, devicePixelRatio || 1);
   W = r.width; Hh = r.height; cv.width = Math.round(W*d); cv.height = Math.round(Hh*d); ctx.setTransform(d,0,0,d,0,0);
@@ -1528,14 +1529,7 @@ function draw(t){
   ctx.fillStyle = col['--far']; ctx.beginPath(); ctx.moveTo(0,Hh*.55);
   const fr = seeded(7); for (let x=0;x<=W;x+=W/9) ctx.lineTo(x, Hh*(.28+fr()*.22)+hudH*.3); ctx.lineTo(W,Hh); ctx.lineTo(0,Hh); ctx.fill();
   // Potosí in act 2
-  if (act(S.year) === 2 && S.phase !== 'intro') {
-    const px = W*.66, py = hudH + Hh*.1, pw = W*.14;
-    ctx.fillStyle = col['--accent']; ctx.globalAlpha = .55; ctx.beginPath(); ctx.moveTo(px-pw,Hh*.7); ctx.lineTo(px,py); ctx.lineTo(px+pw,Hh*.7); ctx.fill(); ctx.globalAlpha = 1;
-    ctx.fillStyle = col['--ink']; ctx.font = `600 ${Math.max(10,W/70)}px "IBM Plex Mono", monospace`; ctx.textAlign = 'center';
-    ctx.fillText('POTOSÍ', px, py - 6);
-    const {mita} = crews(); const n = mita + S.wage;
-    for (let k=0;k<n;k++){ figure(px - pw*.3 + k*W*.018, py + Hh*.16 + (k%2)*4, col['--accent'], .8); }
-  }
+  if (act(S.year) === 2 && S.phase !== 'intro') drawPotosi(t, hudH);
   // a snow-capped summit behind the puna: the glaciers above the pasture (drawn before the slope, so the puna sits in front)
   { const g3 = ground(3), sx = W * .9, sy = g3 - Hh * .24, l = W * .76, r = W * 1.04, base = g3 + 12;
     ctx.fillStyle = col['--rock2']; ctx.beginPath(); ctx.moveTo(l, base); ctx.lineTo(sx, sy); ctx.lineTo(r, base); ctx.closePath(); ctx.fill();
@@ -1555,13 +1549,8 @@ function draw(t){
     if (S.built[z.key] || S.building[z.key]) {
       const done = S.built[z.key];
       ctx.globalAlpha = done ? 1 : .45;
-      if (z.what === 'terraces') { // stepped walls on the slope below
-        ctx.strokeStyle = col['--rock2']; ctx.lineWidth = 2.5;
-        const x0 = i===0 ? a - W*.04 : shelf(i-1)[1], y0 = i===0 ? gy + Hh*.08 : ground(i-1);
-        for (let k=1;k<=4;k++){ const f=k/5; const x=x0+(a-x0)*f, y=y0+(gy-y0)*f; ctx.beginPath(); ctx.moveTo(x-6,y); ctx.lineTo(x+W*.035,y); ctx.stroke(); }
-      } else {
-        for (let x=a;x<b;x+=10){ ctx.fillStyle = col['--ice']; ctx.fillRect(x, gy, 4, 5); }
-      }
+      if (z.what === 'terraces') drawTerraces(i, a, gy, z);
+      else drawWaruWaru(a, b, gy);
       ctx.globalAlpha = 1;
     }
     // crops: a different sprite per zone (maize, potatoes, kañiwa, llamas and alpacas)
@@ -1620,6 +1609,69 @@ function draw(t){
         ctx.globalAlpha = 1;
       }
     }
+  }
+}
+/* Potosí's Cerro Rico, drawn behind the farming slope in the colonial years: a rounded red cone with pale ore veins,
+   a dark mine mouth high on the cone for each crew sent there, mita workers (crimson) and wage workers (gold) at
+   the mouths, and more glints of silver as output rises after the 1570s. Its foot is hidden behind the farming
+   slope, as a far mountain should be. */
+function drawPotosi(t, hudH){
+  const px = W * .66, top = hudH + Hh * .1, base = Hh * .72, pw = W * .15, H = base - top;
+  const halfAt = v => pw * Math.min(1, v * 1.08); // half-width of the cone a fraction v of the way down
+  ctx.fillStyle = col['--potosi']; ctx.beginPath(); ctx.moveTo(px - pw, base);
+  ctx.quadraticCurveTo(px - pw * .42, top + H * .22, px - pw * .07, top + 3);
+  ctx.quadraticCurveTo(px, top - 4, px + pw * .07, top + 3);
+  ctx.quadraticCurveTo(px + pw * .42, top + H * .22, px + pw, base); ctx.closePath(); ctx.fill();
+  // ore veins
+  const rnd = seeded(53); ctx.strokeStyle = col['--potosi2']; ctx.lineWidth = 1.4; ctx.globalAlpha = .75;
+  for (let k = 0; k < 6; k++) { const u = -.75 + k * .3 + rnd() * .08;
+    ctx.beginPath(); ctx.moveTo(px + pw * u * .12, top + 10 + rnd() * 6);
+    ctx.quadraticCurveTo(px + pw * u * .55, top + H * .45, px + pw * u * .9, base - 3); ctx.stroke(); }
+  ctx.globalAlpha = 1;
+  // silver glints: more as output per worker rises (harvests 4-6)
+  const glints = Math.round(silverNow() / 4), gr = seeded(61);
+  for (let k = 0; k < glints; k++) { const v = .25 + gr() * .6, gx = px + (gr() * 2 - 1) * halfAt(v) * .8, gy = top + H * v, s = 2.2;
+    ctx.fillStyle = col['--snow']; ctx.beginPath(); ctx.moveTo(gx, gy - s); ctx.lineTo(gx + s, gy); ctx.lineTo(gx, gy + s); ctx.lineTo(gx - s, gy); ctx.closePath(); ctx.fill(); }
+  // a mine mouth per crew at Potosí, with its worker: mita crimson, wage gold
+  const {mita} = crews(), nMita = Math.max(0, Math.round(mita)), nWage = S.wage, n = Math.min(9, nMita + nWage), shown = Math.max(2, n);
+  for (let k = 0; k < shown; k++) {
+    const f = (k + .5) / shown, v = .26 + .2 * Math.sin(f * Math.PI), mx = px + (f * 2 - 1) * halfAt(v) * .78, my = top + H * v, r = Math.max(3, W / 260);
+    ctx.fillStyle = col['--mine']; ctx.beginPath(); ctx.arc(mx, my, r, Math.PI, 0); ctx.lineTo(mx + r, my + r * .6); ctx.lineTo(mx - r, my + r * .6); ctx.closePath(); ctx.fill();
+    if (k < n) figure(mx + r + 3, my + r * .6, k < nMita ? col['--accent'] : col['--gold'], .65);
+  }
+  // label, with the crews named in words as well as colours
+  const fs = Math.max(10, W / 70); ctx.textAlign = 'center';
+  ctx.fillStyle = col['--ink']; ctx.font = `700 ${fs}px "IBM Plex Mono", monospace`; ctx.fillText('POTOSÍ · CERRO RICO', px, top - 8);
+  ctx.font = `500 ${fs - 1}px "IBM Plex Mono", monospace`;
+  const m = `mita ${nMita}`, w = nWage ? ` · wage ${nWage}` : '', mw = ctx.measureText(m).width, ww = ctx.measureText(w).width, x0 = px - (mw + ww) / 2;
+  ctx.textAlign = 'left'; ctx.fillStyle = col['--accent']; ctx.fillText(m, x0, top - 8 - fs - 2);
+  if (w) { ctx.fillStyle = col['--gold']; ctx.fillText(w, x0 + mw, top - 8 - fs - 2); }
+}
+/* Andenes: stone retaining walls stepping up the slope below the shelf, each topped with a planted strip in the
+   zone's colour, and a stone face under the shelf itself. While being built they are drawn faint. */
+function drawTerraces(i, a, gy, z){
+  // the valley's slope runs from the canvas edge; the others from the shelf below
+  const x0 = i === 0 ? 0 : shelf(i - 1)[1], y0 = i === 0 ? Math.min(Hh - 4, gy + Hh * .14) : ground(i - 1);
+  const steps = 4, span = (a - x0) / (steps + 1), wallH = Math.max(4, Math.min(9, (y0 - gy) / (steps + 1) * .7));
+  for (let k = 1; k <= steps; k++) {
+    const f = k / (steps + 1), x = x0 + (a - x0) * f - span * .5, y = y0 + (gy - y0) * f, w = span + W * .018;
+    ctx.fillStyle = col['--rock2']; ctx.fillRect(x, y, w, wallH);
+    ctx.strokeStyle = col['--rock']; ctx.lineWidth = 1; ctx.beginPath();
+    ctx.moveTo(x, y + wallH / 2); ctx.lineTo(x + w, y + wallH / 2);
+    for (let s = 5; s < w; s += 8) { const off = (Math.round(s / 8) % 2) * wallH / 2; ctx.moveTo(x + s, y + off); ctx.lineTo(x + s, y + off + wallH / 2); }
+    ctx.stroke();
+    ctx.fillStyle = col[z.c]; ctx.fillRect(x, y - 2.5, w, 2.5);
+  }
+  const [, b] = shelf(i); ctx.fillStyle = col['--rock2']; ctx.fillRect(a, gy + 6, b - a, 5);
+  ctx.strokeStyle = col['--rock']; ctx.lineWidth = 1; ctx.beginPath();
+  for (let s = a + 6; s < b; s += 9) { ctx.moveTo(s, gy + 6); ctx.lineTo(s, gy + 11); } ctx.stroke();
+}
+/* Waru waru: raised planting beds separated by water channels across the shelf. */
+function drawWaruWaru(a, b, gy){
+  for (let x = a + 2; x < b - 8; x += 15) {
+    ctx.fillStyle = col['--ice']; ctx.fillRect(x, gy - 1, 5, 7);
+    ctx.fillStyle = col['--snow']; ctx.globalAlpha *= .6; ctx.fillRect(x + 1, gy, 3, 1.2); ctx.globalAlpha /= .6;
+    ctx.fillStyle = col['--soil']; ctx.beginPath(); ctx.moveTo(x + 5, gy + 6); ctx.lineTo(x + 6, gy - 3); ctx.lineTo(x + 14, gy - 3); ctx.lineTo(x + 15, gy + 6); ctx.closePath(); ctx.fill();
   }
 }
 /* Crop sprites. Colours are fixed natural colours, readable on both the light and the dark rock. */
