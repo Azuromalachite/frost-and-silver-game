@@ -140,7 +140,8 @@ function selfTest(html) {
     console.log(`caught: ${name}`);
   }
   let docErr = null;
-  try { checkDocs(PINNED.map((v, i) => i === 1 ? v + 1 : v), docTexts()); } catch (e) { docErr = e; }
+  // +10 kcal: the docs quote food to the nearest 10, so a 1-kcal plant would round away and test nothing
+  try { checkDocs(PINNED.map((v, i) => i === 1 ? v + 10 : v), docTexts()); } catch (e) { docErr = e; }
   assert.ok(docErr && /does not quote the pinned run/.test(docErr.message), 'self-test: a pinned line that differs from the docs was not caught');
   console.log('caught: docs quoting a different pinned run');
   console.log(`confirmed: all ${PLANTS.length} planted model changes and the docs mismatch are rejected`);
