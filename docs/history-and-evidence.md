@@ -62,10 +62,10 @@ years in a row; harvests 4–6 are snapshots decades apart.
 | claim in the game | label | source and limits |
 | --- | --- | --- |
 | Andean communities held fields at several altitudes so that one frost or drought rarely ruined everything | interpretation (widely accepted) | Murra (1972), the "vertical archipelago". Murra described access rights to separate "islands" of land, often far apart; the game draws one contiguous slope, which is a simplification. |
-| The four zone names (Yunga, Quechua, Suni, Puna) and their altitudes | documented | Pulgar Vidal (1941). These are a twentieth-century geographer's names for altitude zones, not Inca terms. |
-| Maize is the heart of the Quechua zone; frost-hardy bitter potatoes grow higher; the puna is mainly pasture | documented (general agronomy) | Checked against secondary sources only. |
+| The game's four zones (valley, upper fields, high grain, puna) are schematic; real altitude ranges overlap and vary | documented | Geographers also use Quechua-derived names for these zones (Pulgar Vidal 1941); the game uses plain descriptive names. |
+| Maize grows in the warmer valleys below about 3,500 m; potatoes and other tubers higher; cold-tolerant kañiwa higher still; the puna is mainly pasture | documented (general agronomy) | Checked against secondary sources only. |
 | Chuño keeps for years | documented | Fonseca & de Haan (2021), from notes. |
-| Raised fields (waru waru) soften frost; terraces protect less | documented for raised fields; the comparison is a game assumption | Kolata & Ortloff (1989) model raised-field frost protection and show it depends on the field's shape and water. The game's frost losses (20% with waru waru, 40% with terraces, 60% without) are play values. |
+| Raised fields (waru waru) soften frost; terraces protect less | documented for raised fields; the comparison is a game assumption | Kolata & Ortloff (1989) model raised-field frost protection and show it depends on the field's shape and water. The game's frost losses (20% with waru waru, 40% with terraces, 60% without, 45% for cold-tolerant kañiwa) are play values. |
 | Andean elders forecast rain from how clearly the Pleiades rise in June | documented (modern practice) | Orlove, Chiang & Cane (2000), checked from the abstract. That this was done around 1500 is not established. The game's forecast accuracy is a play value. |
 
 ### The Inca system
@@ -115,6 +115,15 @@ years in a row; harvests 4–6 are snapshots decades apart.
 | claim in the game | label | source and limits |
 | --- | --- | --- |
 | Potosí silver went to Spain and, through trade, as far as China | documented | Flynn (2015), cited from a literature review. |
+| Silver output at Potosí rose sharply after the 1570s, once mercury amalgamation spread | documented | Bakewell (1984), not re-read here. |
+| Each mine worker's silver is worth more in later colonial harvests | game assumption | The path (harvests 4, 5, 6) is chosen to follow the late-century surge; its size is invented. |
+
+### How the game shows its numbers
+
+| choice | label | why |
+| --- | --- | --- |
+| GDP per person as an index, c. 1500 = 100 | game assumption | Maddison (2003) uses 1990 dollars; the Maddison Project Database (Bolt & van Zanden) uses 2011 dollars and has Peru-specific estimates for the early 1600s. An index lets the game be compared with either without mixing units. |
+| Caloric Welfare Index out of 100 (50 food, 30 stores, 20 resilience) | game assumption | The weights come from the original game's classroom model; how each part is scored is this adaptation's. A model output, not a measurement. |
 
 ## What the game leaves out
 
@@ -169,6 +178,7 @@ years in a row; harvests 4–6 are snapshots decades apart.
 | Ascher, M., & Ascher, R. (1981). *Code of the Quipu: A Study in Media, Mathematics, and Culture*. University of Michigan Press. | quipu number system | no |
 | Urton, G. (2003). *Signs of the Inka Khipu: Binary Coding in the Andean Knotted-String Records*. University of Texas Press. | quipus and colonial counts | no |
 | Flynn, D. O. (2015). Silver in a global context, 1400–1800. In *The Cambridge World History*, vol. 6. | silver flows | from notes |
+| Bakewell, P. (1984). *Miners of the Red Mountain: Indian Labor in Potosí, 1545–1650*. University of New Mexico Press. | silver surge after the 1570s | no |
 | Pontzer, H., et al. (2016). Metabolic acceleration and the evolution of human brain size and life history. *Nature*, 533, 390–392. https://doi.org/10.1038/nature17654 | energy use for scale | read |
 
 "From notes" means the source was cited from a reference collection's reading

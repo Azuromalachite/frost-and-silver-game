@@ -285,6 +285,16 @@ sources:
     url: null
     locator: The Cambridge World History, vol. 6
 
+  - key: bakewell1984
+    title: "Miners of the Red Mountain: Indian Labor in Potosí, 1545–1650"
+    author: Peter Bakewell
+    date: 1984
+    access: not_read
+    by: null
+    when: null
+    url: null
+    notes: Standard account of Potosí labour and output, including the amalgamation boom after the 1570s.
+
   - key: thitibordin_game
     title: "Week 2: Tahuantinsuyu Harvest & Frost Defense (Interactive Game), and its author's description"
     author: Amnuayvit Thitibordin

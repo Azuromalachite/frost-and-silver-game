@@ -106,10 +106,61 @@ claims:
     layer: game_assumption
     status: labelled
     sources: [maddison2003]
-    code: ["SILVER = 14", "G0 = 340, P = 0.045"]
+    code: ["SILVER_BY_HARVEST = {4: 6, 5: 16, 6: 20}", "G0 = 340, P = 0.045"]
     pages:
       - path: frost-and-silver.html
         anchor: Teaching assumptions, tuned so the Inca years start near Maddison's 416
+
+  - id: claim.game.gdp_index
+    statement: >
+      The game shows GDP per person as an index (c. 1500 = 100) so that series in
+      different dollars (Maddison 2003 in 1990 dollars; the Maddison Project
+      Database in 2011 dollars) are never mixed.
+    layer: game_assumption
+    status: labelled
+    sources: [maddison2003, bolt_vanzanden2025]
+    code: ["const gi = v => v / 416 * 100;"]
+    pages:
+      - path: frost-and-silver.html
+        anchor: An index lets the game compare with either without mixing units.
+
+  - id: claim.colonial.silver_surge_1570s
+    statement: >
+      Silver output at Potosí rose sharply late in the sixteenth century, after
+      mercury amalgamation spread in the 1570s.
+    layer: documented
+    status: unverified
+    sources: [bakewell1984]
+    pages:
+      - path: frost-and-silver.html
+        anchor: after mercury amalgamation spread in the 1570s
+      - path: docs/history-and-evidence.md
+        anchor: Silver output at Potosí rose sharply after the 1570s
+
+  - id: claim.game.silver_path
+    statement: >
+      Each mine worker's silver is worth more in later colonial harvests (6, 16 and
+      20 per crew-equivalent per 1,000 people at harvests 4, 5 and 6).
+    layer: game_assumption
+    status: labelled
+    sources: [bakewell1984]
+    code: ["SILVER_BY_HARVEST = {4: 6, 5: 16, 6: 20}"]
+    pages:
+      - path: frost-and-silver.html
+        anchor: The game raises the value of each mine worker's silver from harvest 4 to harvest 6
+
+  - id: claim.game.welfare_index
+    statement: >
+      The Caloric Welfare Index scores each harvest out of 100: 50 for food
+      adequacy, 30 for stores, 20 for farming resilience.
+    layer: game_assumption
+    status: labelled
+    sources: [thitibordin_game]
+    code: ["res: 20 * Math.min(1, 0.7 * protShare + 0.3 * spread)"]
+    pages:
+      - path: frost-and-silver.html
+        anchor: It is a model output, not a measurement.
+    notes: The 50/30/20 weights come from the original game; the scoring of each part is this adaptation's.
 
   - id: claim.game.key_message
     statement: >
@@ -264,29 +315,31 @@ claims:
 
   - id: claim.land.zone_names
     statement: >
-      Yunga, Quechua, Suni and Puna are names for altitude zones from Pulgar
-      Vidal (1941), not Inca terms.
+      Geographers name the Andean altitude zones with Quechua-derived terms (Pulgar
+      Vidal 1941); the game uses plain descriptive names for four schematic zones
+      whose real ranges overlap.
     layer: documented
     status: partly_supported
     sources: [pulgarvidal1941]
     pages:
       - path: frost-and-silver.html
-        anchor: used by the geographer Javier Pulgar Vidal in 1941
+        anchor: Geographers also use Quechua-derived names for these zones (Pulgar Vidal 1941)
       - path: docs/history-and-evidence.md
-        anchor: The four zone names (Yunga, Quechua, Suni, Puna)
+        anchor: The game's four zones (valley, upper fields, high grain, puna)
 
   - id: claim.land.quechua_maize
     statement: >
-      The Quechua zone (about 2,300–3,500 m) is the main maize zone; higher up only
-      frost-hardy bitter potatoes grow, and the puna is mainly pasture.
+      Maize grows in the warmer valleys below about 3,500 m; potatoes and other
+      tubers grow higher; cold-tolerant kañiwa grows higher still; the puna is
+      mainly llama and alpaca pasture.
     layer: documented
     status: partly_supported
-    sources: [pulgarvidal1941]
+    sources: [pulgarvidal1941, fonseca_dehaan2021]
     pages:
       - path: frost-and-silver.html
-        anchor: The heart of Inca maize farming.
+        anchor: Cold-tolerant kañiwa, a small grain related to quinoa.
       - path: docs/history-and-evidence.md
-        anchor: Maize is the heart of the Quechua zone
+        anchor: Maize grows in the warmer valleys below about 3,500 m
 
   - id: claim.land.chuno_keeps
     statement: Chuño, freeze-dried potato, keeps for years.
@@ -314,12 +367,12 @@ claims:
 
   - id: claim.game.frost_losses
     statement: >
-      Frost destroys 60% of an unprotected crop, 40% with terraces and 20% with
-      waru waru.
+      Frost destroys 60% of an unprotected crop (45% of cold-tolerant kañiwa), 40%
+      with terraces and 20% with waru waru.
     layer: game_assumption
     status: labelled
     sources: [kolata_ortloff1989]
-    code: ["y:182, hi:.6, lo:.4", "y:163, hi:.6, lo:.2"]
+    code: ["y:182, hi:.6, lo:.4", "y:163, hi:.45, lo:.2"]
     pages:
       - path: frost-and-silver.html
         anchor: so the game gives waru waru more frost protection than terraces

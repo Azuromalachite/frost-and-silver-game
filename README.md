@@ -14,12 +14,12 @@ Or download `frost-and-silver.html` and open it in a browser. It is one self-con
 
 Each year you:
 
-- assign work crews to four altitude zones (Yunga, Quechua, Suni, Puna);
+- assign work crews to four altitude zones (valley maize, upper fields of potatoes and tubers, high grain such as kañiwa, and puna pasture);
 - build terraces (andenes) or raised fields (waru waru) against frost;
-- freeze-dry surplus into chuño for the storehouse (qollqa);
+- freeze-dry surplus into chuño for the community stores;
 - in the colonial years, choose whether to send crews to Potosí for wages.
 
-Students record a prediction before playing. The end screen compares Inca and colonial years, shows what each colonial rule cost, and produces a text report to paste into a class page.
+Students **predict** before playing, **track** each harvest in a report drawn as a quipu, and **compare**: "Replay with the same weather" lets them change one choice and see its effect side by side. The end screen compares Inca and colonial harvests on food, a Caloric Welfare Index (50 food, 30 stores, 20 resilience, from the original game) and GDP per person shown as an index (c. 1500 = 100), and produces a text report to paste into a class page.
 
 ## What the model is, and is not
 
@@ -27,13 +27,16 @@ The game is a teaching model, not a reconstruction. Default play (80 simulated g
 
 | | Inca years | Colonial years |
 |---|---|---|
-| Food available per person per day | ~1,640 kcal | ~1,330 kcal |
-| GDP per person (1990 Int$) | ~$419 | ~$454 |
+| Food available per person per day | ~1,660 kcal | ~1,330 kcal |
+| Caloric Welfare Index (out of 100) | ~69 | ~47 |
+| GDP per person (index, c. 1500 = 100) | ~101 | ~109 |
+
+GDP is shown as an index because the historical series come in different dollars (Maddison 2003 in 1990 dollars; the Maddison Project Database in 2011 dollars); an index can be compared with either without mixing units. Maddison's estimate for all of Latin America rises about 5% from 1500 to 1600; the game rises a little more.
 
 The end screen separates two things:
 
 - **Over time** (what an observer would see): food falls and GDP per person rises in nearly every game.
-- **What the colonial rules did** (same people, same weather, Inca rules instead): food about −530 kcal; GDP roughly unchanged (about +$6), because silver about offsets the field labour lost. Over time, GDP per person rises mainly because the population collapse left more land per survivor. Predictions are graded on this comparison, so weather cannot flip a correct prediction.
+- **What the colonial rules did** (same people, same weather, Inca rules instead): food about −530 kcal; GDP roughly unchanged (about +2 index points), because silver about offsets the field labour lost. Over time, GDP per person rises mainly because the population collapse left more land per survivor. Predictions are graded on this comparison, so weather cannot flip a correct prediction.
 
 ### Mechanisms that carry the result
 
@@ -44,7 +47,7 @@ The end screen separates two things:
 | Land per person | zone output ∝ labour^0.9, so survivors farm more land each, but terraces need hands | teaching assumption (cf. Wernke 2010) |
 | Reducciones | colonial yields 7% lower at c. 1575, 12% at c. 1592, 15% at c. 1600: families resettled into towns far from fields, with the loss building up | mechanism from Wernke 2010; gradual and locally varied (Hunter 2025; de la Puente Luna & Perales 2026); sizes are teaching assumptions |
 | Population | −50% before 1573, −15% more in the 1585–91 epidemics | round game figures; estimates vary widely |
-| GDP | 340 + 0.045 × field output + silver | teaching assumptions, tuned to start near Maddison's 416 |
+| GDP | 340 + 0.045 × field output + silver, shown as an index (416 = 100); each mine worker's silver is worth more at harvests 5 and 6, following the late-century surge after mercury amalgamation | teaching assumptions, tuned to start near Maddison's 416 |
 
 A "What would have to be true for this to reverse?" panel lets students change the Inca duty, colonial tribute, population fall and the value of mine work against farm work, and shows the thresholds where food would rise or GDP would fall.
 

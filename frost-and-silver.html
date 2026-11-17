@@ -126,6 +126,10 @@ canvas{display:block;width:100%;aspect-ratio:16/7.2;max-width:100%}
 .quipu{margin:4px 0 0;display:grid;gap:4px;justify-items:start}
 .quipu svg{width:100%;max-width:380px;height:auto;display:block}
 .quipu figcaption{font-size:13px;color:var(--muted);max-width:60ch}
+.cmpruns{border:1px solid var(--line);border-radius:6px;padding:14px;background:var(--bg)}
+.cmpruns thead td{font-family:var(--f-mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.cmpruns .ledger td{text-align:right}
+.cmpruns .ledger td:first-child{text-align:left}
 .keymsg{border-left:4px solid var(--accent);padding:8px 0 8px 14px;max-width:70ch}
 .keymsg p{margin:4px 0 0}
 .rev{border:1px solid var(--line);border-radius:6px;padding:14px;background:var(--bg)}
@@ -261,11 +265,11 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
       <p><b>GDP grew. Did life get better?</b> Economic historians estimate that output per person in Latin America rose a little across the 1500s, even as the population collapsed. GDP counts everything produced, including silver shipped across the world. It does not show who ate. Through six harvests you will watch two numbers side by side: <b>GDP per person</b> and <b>food per person</b>.</p>
     </div>
     <h2 style="font-size:26px;font-stretch:112%;text-transform:uppercase">You run an ayllu of about 1,000 people</h2>
-    <p>Your fields climb the mountain from a warm maize valley at 1,800 m to the frozen puna at 4,300 m. Higher fields freeze more often, so spreading crews across the zones is your insurance. Each year you send about 14 work crews (fewer if people die) to plant, build terraces, or freeze-dry potatoes into chuño for your community stores.</p>
+    <p>Your fields climb the mountain from warm maize valleys below about 3,500 m to the frozen puna above 4,000 m. Higher fields freeze more often, so spreading crews across the zones is your insurance. Each year you send about 14 work crews (fewer if people die) to plant, build terraces, or freeze-dry potatoes into chuño for your community stores.</p>
     <p>You play six harvests, each one farming year. Harvests 1–3 are three years in a row under the Inca, around 1500. Harvests 4–6 are sample years from c. 1575, c. 1592 and c. 1600, after the Spanish colonial mita began sending one man in seven from the communities of the mita region (yours is one) to the silver mines at Potosí. Between them, decades pass. Your goal is to feed everyone 1,700 kcal a day.</p>
     <div class="whybox">
       <h3>Why farm the cold heights?</h3>
-      <div class="vert" id="vert" role="img" aria-label="Four altitude zones rising from left to right: Yunga at 1,800 m grows maize, frost rare; Quechua at 3,000 m grows potatoes, frost some years; Suni at 3,800 m grows bitter potatoes, frost often; Puna at 4,300 m is llama and alpaca pasture, frost most years."></div>
+      <div class="vert" id="vert" role="img" aria-label="Four altitude zones rising from left to right: valley at 2,500–3,500 m grows maize, frost rare; upper fields at 3,500–3,900 m grow potatoes and other tubers, frost some years; high grain at 3,800–4,200 m grows kañiwa, frost often; puna at 4,000–4,500 m is llama and alpaca pasture, frost most years."></div>
       <p>Each height grows something the others can't, and one frost rarely hits every level at once. A community with fields at every height eats a mixed diet and keeps eating in a bad year. The anthropologist John Murra called this the <i>vertical archipelago</i>.</p>
       <p>In the game, each zone has room for only 5 crews (more once you build terraces or raised fields). So feeding everyone means sending some crews uphill, where frost is more likely.</p>
     </div>
@@ -319,6 +323,12 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
       <li>Terrace and raised-field effects. Raised fields protect against frost through their water and shape, and how much depends on the field (Kolata &amp; Ortloff 1989), so the game gives waru waru more frost protection than terraces; the sizes are play values. Also room per zone, chuño capacity, the starting community stores, the 1,900 kcal eating cap and spoilage.</li>
       <li>Deaths from hunger, the wage crews' tribute relief, and the 30% household spread behind "households below 1,700".</li>
     </ul>
+    <h4>How the numbers are shown</h4>
+    <ul>
+      <li><b>GDP as an index (c. 1500 = 100).</b> Historical GDP series come in different dollars: Maddison (2003) uses 1990 international dollars, the newer Maddison Project Database (Bolt &amp; van Zanden) uses 2011 dollars and gives Peru-specific estimates for the early 1600s. An index lets the game compare with either without mixing units. The dashed line shows Maddison's +5% for all of Latin America from 1500 to 1600.</li>
+      <li><b>Caloric Welfare Index</b>, out of 100: 50 points for food adequacy, 30 for stores, 20 for farming resilience. The weights come from the original game's classroom model; how each part is scored here (food against 1,700 kcal, stores against 90 days, resilience from protected fields and spread across zones) is this adaptation's assumption. It is a model output, not a measurement.</li>
+      <li><b>Silver.</b> Potosí's output rose sharply late in the century, after mercury amalgamation spread in the 1570s. The game raises the value of each mine worker's silver from harvest 4 to harvest 6; the path is a teaching assumption.</li>
+    </ul>
   </details>
 
   <footer class="foot">
@@ -332,17 +342,19 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
 (() => {
 const GOAL = 1700, COLONIAL = 1200, GDP_ANCHOR = 416, BASE_CREWS = 14, BASE_CAP = 5, CHUNO_CAP = 120;
 const ZONES = [
-  {key:'yunga', name:'Yunga', alt:'1,800 m', crop:'Coca, fruit & maize', y:185, hi:.6, lo:.4, build:'Build andenes', what:'terraces', cap:2, risk:'Frost: rare', why:'Warm valleys with little flat land.', c:'--z0'},
-  {key:'quechua', name:'Quechua', alt:'3,000 m', crop:'Maize & potatoes', y:182, hi:.6, lo:.4, build:'Build andenes', what:'terraces', cap:2, risk:'Frost: some years', why:'The heart of Inca maize farming.', c:'--z1'},
-  {key:'suni', name:'Suni', alt:'3,800 m', crop:'Bitter potatoes', y:163, hi:.6, lo:.2, build:'Build waru waru', what:'waru waru', cap:1, risk:'Frost: often', why:'Too cold for maize. Bitter potatoes survive frost and make the best chuño.', c:'--z2'},
-  {key:'puna', name:'Puna', alt:'4,300 m', crop:'Llamas & quinoa', y:122, hi:.3, lo:.3, build:null, risk:'Frost: most years; herds survive it', why:'Too cold for most crops. Pasture for llamas and alpacas.', c:'--z3'}
+  // Four schematic zones; real ranges overlap and vary with local conditions. Internal keys are kept from earlier versions.
+  {key:'yunga', name:'Valley', alt:'2,500–3,500 m', crop:'Maize', y:185, hi:.6, lo:.4, build:'Build andenes', what:'terraces', cap:2, risk:'Frost: rare', why:'Irrigated or rain-fed maize on valley floors and terraces.', c:'--z0'},
+  {key:'quechua', name:'Upper fields', alt:'3,500–3,900 m', crop:'Potatoes & other tubers', y:182, hi:.6, lo:.4, build:'Build andenes', what:'terraces', cap:2, risk:'Frost: some years', why:'Too cold for maize. Potatoes, oca and other tubers; the potatoes become chuño.', c:'--z1'},
+  {key:'suni', name:'High grain', alt:'3,800–4,200 m', crop:'Kañiwa', y:163, hi:.45, lo:.2, build:'Build waru waru', what:'waru waru', cap:1, risk:'Frost: often; kañiwa tolerates cold', why:'Cold-tolerant kañiwa, a small grain related to quinoa.', c:'--z2'},
+  {key:'puna', name:'Puna', alt:'4,000–4,500 m', crop:'Llamas & alpacas', y:122, hi:.3, lo:.3, build:null, risk:'Frost: most years; herds survive it', why:'Too cold for most crops. Pasture for llamas and alpacas.', c:'--z3'}
 ];
 const TERMS = [
   ['Ayllu', 'An Andean community of related families who hold land together and share work. Your village in this game.'],
   ['Inca', 'The empire that ruled the Andes until the Spanish conquest of the 1530s. Its own name, Tawantinsuyu, means “the four parts together”.'],
   ['Mita', 'Work done in turns. Under the Inca, communities sent workers to the state for set periods and were fed while they worked. Under Spain it became a forced draft for the silver mines. Potosí also ran on paid workers (mingas), and the line between drafted and paid work was often blurred (Gil Montero & Zagalsky 2016). Women worked there too, in ore sorting, refining and trade (Barragán Romano 2020).'],
   ['Potosí', 'A mountain of silver, the Cerro Rico (“rich hill”), above the mining city of Potosí (about 4,000 m) in today’s Bolivia. Spaniards began mining it in 1545, and its silver was shipped across the world, as far as China.'],
-  ['Yunga, Quechua, Suni, Puna', 'Quechua-derived names for the altitude zones, from warm valley to cold high grassland, used by the geographer Javier Pulgar Vidal in 1941. The puna, above about 4,000 m, is too cold for most crops but good for herds.'],
+  ['Valley, upper fields, high grain, puna', 'The game\'s four farming zones, from warm valley to cold grassland: maize in the valleys and on terraces, potatoes and other tubers higher up, cold-tolerant grains such as kañiwa above them, and llama and alpaca pasture on the puna, above about 4,000 m. The altitudes are rough; real ranges overlap and vary from valley to valley. Geographers also use Quechua-derived names for these zones (Pulgar Vidal 1941).'],
+  ['Kañiwa', 'A small, cold-tolerant grain related to quinoa, grown high in the Andes.'],
   ['Chuño', 'Potatoes frozen at night and dried by day until they keep for years. Food for bad harvests.'],
   ['Qollqa', 'A state storehouse. The Inca built thousands of them along roads and above towns, filled from the state fields. Households and communities kept their own stores too; in the game, your chuño goes into those community stores (Morris 1986).'],
   ['Quipu (khipu)', 'Knotted cords used to keep accounts: harvests, stores, labour owed and census counts. Numbers are knotted in tens, with the units at the bottom of each cord; colours and positions said what was being counted. Trained cord keepers (khipukamayuq) made and read them, and early Spanish officials relied on them for tribute and census counts.'],
@@ -372,9 +384,9 @@ ICONS.snow = '<line x1="8" y1="1.75" x2="8" y2="14.25"/><line x1="2.6" y1="4.875
 ICONS.llama = '<path d="M4.25 11.25 V5.75 H2.75 C2 5.75 1.75 5.25 1.75 4.75 C1.75 3.75 2.5 3.25 3.5 3.25 H4.5 L4.75 1.5 L6.25 3 C6.5 3.5 6.75 4 6.75 5 V7.75 H12.25 C13.25 7.75 13.75 8.5 13.75 9.5 V11.25 Z"/><line x1="5.25" y1="11.25" x2="5.25" y2="14"/><line x1="12.75" y1="11.25" x2="12.75" y2="14"/>';
 const svgI = (k, w) => `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="${w||1.1}" stroke-linecap="round" stroke-linejoin="round">${ICONS[k]}</svg>`;
 const VERT = [
-  {z:0, icon:'leaf', crop:'Coca, fruit, chili peppers and some maize.', frost:1, word:'rare'},
-  {z:1, icon:'corn', crop:'Maize and potatoes. Maize struggles above about 3,500 m.', frost:2, word:'some years'},
-  {z:2, icon:'potato', badge:true, crop:'Only frost-hardy bitter potatoes.', frost:3, word:'often'},
+  {z:0, icon:'corn', crop:'Maize on irrigated or rain-fed fields and terraces.', frost:1, word:'rare'},
+  {z:1, icon:'potato', crop:'Potatoes and other tubers. Maize struggles this high.', frost:2, word:'some years'},
+  {z:2, icon:'leaf', badge:true, crop:'Cold-tolerant kañiwa.', frost:3, word:'often'},
   {z:3, icon:'llama', crop:'Llamas and alpacas: meat, wool, pack animals.', frost:4, word:'most years'}
 ];
 function vertHTML(){
@@ -388,13 +400,16 @@ function vertHTML(){
 }
 // term → [icon, colour token]: people & state in red/gold, land in zone colours, food in gold/green
 const TERM_ICON = {'Ayllu':['community','--z1'],'Inca':['sun','--gold'],'Mita':['pickaxe','--accent'],'Potosí':['coins','--accent'],
-  'Yunga, Quechua, Suni, Puna':['mountains','--z2'],'Chuño':['potato','--z1'],'Qollqa':['store','--gold'],'Quipu (khipu)':['quipu','--z2'],'Andenes':['steps','--z0'],
+  'Valley, upper fields, high grain, puna':['mountains','--z2'],'Kañiwa':['leaf','--z2'],'Chuño':['potato','--z1'],'Qollqa':['store','--gold'],'Quipu (khipu)':['quipu','--z2'],'Andenes':['steps','--z0'],
   'Waru waru':['waves','--ice'],'Tribute':['form','--accent'],'kcal per person per day':['flame','--good']};
 const glossHTML = () => TERMS.map(([t, d]) => { const [ic, c] = TERM_ICON[t];
   return `<li><span class="gico" style="--c:var(${c})" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">${ICONS[ic]}</svg></span><div><b>${t}</b><p>${d}</p></div></li>`; }).join('');
 const YEARS = ['c. 1500','c. 1501','c. 1502','c. 1575','c. 1592','c. 1600'];
 const $ = id => document.getElementById(id);
 const fmt = x => Math.round(x).toLocaleString('en-US');
+// GDP is shown as an index, c. 1500 = 100 (the model's 416), so no dollar series is mixed with another.
+const gi = v => v / 416 * 100;
+const sgn1 = v => (v >= 0 ? '+' : '−') + Math.abs(v).toFixed(1);
 const erf = x => { const t = 1/(1+.3275911*Math.abs(x)); const y = 1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-.284496736)*t+.254829592)*t*Math.exp(-x*x); return x>=0?y:-y; };
 // Share of households below 1,700 if household food varies around the average with a 30% coefficient of variation (model).
 const shortShare = I => 0.5*(1+erf((GOAL - I)/(0.3*I)/Math.SQRT2));
@@ -405,15 +420,20 @@ function fresh(){
   return {phase:'intro', year:1, pop:1000, store:150, built:{yunga:false,quechua:false,suni:false,puna:false},
     building:{yunga:false,quechua:false,suni:false,puna:false},
     alloc:{yunga:4,quechua:4,suni:3,puna:1}, chuno:2, wage:0, yr:null, hist:[], pred:{}, hyp:'', who:'', anim:null,
-    N1573:0, mitaCrews:0, tribTotal:0};
+    N1573:0, mitaCrews:0, tribTotal:0, seed: Math.floor(Math.random() * 2147483646) + 1};
 }
 S = fresh();
+let LAST = null; // summary of the previous finished run, for "replay with the same weather"
 
+// Weather comes from the game's seed, so a replay with the same seed has the same frosts, droughts and forecasts.
+function mulberry32(a){ return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a);
+  t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 function rollYear(){
-  const r = Math.random();
+  const rnd = mulberry32(S.seed + S.year * 7919);
+  const r = rnd();
   const line = r < .15 ? 4 : r < .45 ? 3 : r < .80 ? 2 : r < .97 ? 1 : 0; // zones with index >= line freeze
-  const drought = Math.random() < .2;
-  const hazy = drought ? Math.random() < .75 : Math.random() < .25;
+  const drought = rnd() < .2;
+  const hazy = drought ? rnd() < .75 : rnd() < .25;
   return {line, drought, hazy};
 }
 /* ---------- model core ----------
@@ -428,7 +448,12 @@ function rollYear(){
    Labour is continuous: L crews-worth per 1,000 people; the board shows whole crews and `strength` carries the
    rounding and the share of labour away (Inca duty or the mita). */
 const ALPHA = 0.9, INCA_LEVY = 0.10, INCA_RETURN = 0.5, COLLAPSE = 0.5, LATE_EPIDEMIC = 0.15;
-const TRIB_PP = 500, SILVER = 14, WAGE_TRIB = 60, G0 = 340, P = 0.045;
+const TRIB_PP = 500, WAGE_TRIB = 60, G0 = 340, P = 0.045;
+// Silver output per mine worker rises late in the century, after mercury amalgamation spread at Potosí in the
+// 1570s; the path (value per crew-equivalent per 1,000 people) is a teaching assumption with the same average as before.
+const SILVER_BY_HARVEST = {4: 6, 5: 16, 6: 20};
+const SILVER_MEAN = (6 + 16 + 20) / 3;
+const silverNow = () => SILVER_BY_HARVEST[S.year] || 0;
 // Toledo's reducciones moved families into nucleated towns, far from many of their fields (Wernke 2010):
 // colonial-era fields yield less. The effect builds up as distant fields and terraces are given up, and it varied
 // from place to place (Hunter 2025; de la Puente Luna & Perales 2026), so the game phases it in (teaching assumption).
@@ -615,7 +640,8 @@ function renderHUD(){
     <span class="gauge" title="Food available per person per day last year"><span class="stat"><span>kcal/day</span><b>${intake==null?'–':fmt(intake)}</b></span>
       <span class="gbar"><span class="gfill" style="width:${intake==null?0:pct(intake)}%;background:var(${intake!=null&&intake<GOAL?'--bad':'--good'})"></span>
       <span class="gmark" style="left:${pct(GOAL)}%" title="Goal 1,700 (course teaching figure, unsourced)"></span><span class="gmark col" style="left:${pct(COLONIAL)}%" title="1,200: course teaching figure for colonial years (unsourced)"></span></span></span>
-    <span class="stat"><span>GDP/person</span><b>${gdp==null?'–':'$'+fmt(gdp)}</b></span>
+    <span class="stat" title="Caloric Welfare Index (classroom model), out of 100"><span>Welfare</span><b>${h ? Math.round(h.cwi) : '–'}</b></span>
+    <span class="stat" title="GDP per person as an index: c. 1500 = 100"><span>GDP index</span><b>${gdp==null?'–':gi(gdp).toFixed(0)}</b></span>
     <span class="stat"><span>People</span><b>${fmt(S.pop)}</b></span>
     <span class="stat"><span>Stores</span><b>${fmt(days)} days</b></span>`;
 }
@@ -654,7 +680,7 @@ function harvest(){
   const st = settle(food, S.store, S.chuno, per);
   const {toStore, spoiled, draw, intake} = st; S.store = st.store;
   const avail = intake + spoiled; // food on hand before the 1,900 eating cap; used for the household estimate
-  const silver = a2 ? (mita + S.wage) * SILVER * per : 0;
+  const silver = a2 ? (mita + S.wage) * silverNow() * per : 0;
   const gdp = G0 + P * (H + stateOut) + silver; // all field output counts, including state fields
   // Same people and weather under Inca rules (labour duty, feasts returned; no mita, tribute or silver; wage crews
   // farm instead), for the end screen and for grading predictions.
@@ -671,7 +697,15 @@ function harvest(){
   S.store *= popBefore / S.pop; // the store is food per person; same food, different number of people
   const builtNow = ZONES.filter(z => S.building[z.key]).map(z => z.what);
   for (const z of ZONES) if (S.building[z.key]) { S.built[z.key] = true; S.building[z.key] = false; }
-  const rec = {year:S.year, act:act(S.year), H, lost, saved, tribute, tRate, ret, stateOut, d, rf: a2 ? reducNow() : 1, toStore, spoiled, draw, intake, avail, gdp, silver, cf,
+  // Caloric Welfare Index: the original game's classroom index, 50% calorie adequacy, 30% storage buffer,
+  // 20% farming resilience. The component definitions below are this adaptation's (teaching assumptions).
+  const farm = ZONES.reduce((s, z) => s + S.alloc[z.key], 0);
+  const protShare = farm ? ZONES.reduce((s, z) => s + (S.built[z.key] && z.build ? S.alloc[z.key] : 0), 0) / farm : 0;
+  const spread = ZONES.filter(z => S.alloc[z.key] > 0).length / ZONES.length;
+  const cwiParts = {cal: 50 * Math.min(1, intake / GOAL), buf: 30 * Math.min(1, (S.store / GOAL * 365) / 90),
+    res: 20 * Math.min(1, 0.7 * protShare + 0.3 * spread)};
+  const cwi = cwiParts.cal + cwiParts.buf + cwiParts.res;
+  const rec = {year:S.year, act:act(S.year), cwi, cwiParts, alloc: {...S.alloc}, chuno: S.chuno, gidx: gdp / 416 * 100, H, lost, saved, tribute, tRate, ret, stateOut, d, rf: a2 ? reducNow() : 1, toStore, spoiled, draw, intake, avail, gdp, silver, cf,
     pop:S.pop, popBefore, mita, wage:S.wage, line:Y.line, drought:Y.drought, hazy:Y.hazy, zr, builtNow,
     idle: 0, storeDays: S.store / GOAL * 365};
   S.hist.push(rec);
@@ -732,6 +766,9 @@ function whyList(r){
   if (r.drought) out.push(`A dry year (what we now link to El Niño) cut every harvest by a quarter.${r.hazy ? ' The hazy Pleiades warned you.' : ' The Pleiades gave no warning.'}`);
   else if (r.hazy) out.push('The Pleiades looked hazy, but the rains came anyway.');
   if (r.act === 1) out.push(`One man in ten worked the state and temple fields under the Inca labour duty; ${fmt(r.ret)} came back as feasts and rations (game assumption: half the state harvest).`);
+  if (r.act === 2 && r.silver > 0) out.push(r.year === 4
+    ? 'Potosí\'s silver output is about to surge: mercury amalgamation, introduced in the 1570s, let miners refine poorer ore. In the game, each mine worker\'s silver is worth more in later harvests (game figure).'
+    : `Potosí's output has surged since the 1570s, so each mine worker's silver adds more to output this harvest (game figure).`);
   if (r.act === 2) out.push(`Resettlement into towns (the reducciones) left many fields far from home: yields are ${Math.round((1 - r.rf) * 100)}% lower this harvest (game figure; the loss grows as distant fields are given up, and varied from place to place).`);
   if (r.tribute > 0) out.push(`Colonial tribute took ${fmt(r.tribute)}, ${Math.round(r.tRate*100)}% of the harvest. The total was fixed at the 1573 count, so it weighs more when there are fewer people.`);
   if (r.mita) out.push(`${(r.d*7).toFixed(1)} men in seven were away at Potosí on the 1573 quota, so every crew worked that much short${r.wage?`, and ${r.wage} more crew${r.wage>1?'s':''} went for wages`:''}.`);
@@ -763,7 +800,8 @@ function showSummary(r){
       ${rows.map(x => `<tr><td>${x[0]}</td><td class="${x[2]}">${x[1]}</td></tr>`).join('')}
       <tr class="total"><td>Food available per person per day (goal 1,700)</td><td>${fmt(r.intake)}</td></tr>
       <tr><td>Households below 1,700 kcal (model guess)</td><td class="${shortShare(r.avail)>.5?'neg':''}">${Math.round(shortShare(r.avail)*100)}%</td></tr>
-      <tr><td>GDP per person (model, 1990 Int$)</td><td>$${fmt(r.gdp)}${r.silver?` <span class="mono" style="color:var(--muted)">incl. $${fmt(r.silver)} silver</span>`:''}</td></tr>
+      <tr><td>Caloric Welfare Index (classroom model: 50 food + 30 stores + 20 resilience)</td><td>${Math.round(r.cwi)} / 100 <span class="mono" style="color:var(--muted)">${Math.round(r.cwiParts.cal)} + ${Math.round(r.cwiParts.buf)} + ${Math.round(r.cwiParts.res)}</span></td></tr>
+      <tr><td>GDP per person (index, c. 1500 = 100)</td><td>${gi(r.gdp).toFixed(1)}${r.silver?` <span class="mono" style="color:var(--muted)">incl. ${gi(r.silver).toFixed(1)} from silver</span>`:''}</td></tr>
       <tr><td>People</td><td>${fmt(r.pop)} <span class="${dPop<-0.5?'neg':dPop>0.5?'pos':''}">(${dPop>=0?'+':'−'}${fmt(Math.abs(dPop))})</span></td></tr>
       <tr><td>Community stores hold</td><td>${fmt(r.storeDays)} days of food</td></tr>
     </tbody></table>
@@ -897,6 +935,37 @@ function showEnd(){
   // Core-model defaults for the reverse panel, taken from this playthrough
   const V = P * avg(a1, 'H') / Math.pow(1 - INCA_LEVY, ALPHA); // farm value per person if all labour farmed
   const tauObs = am(r => r.tRate), cTot = 1 - S.pop / 1000;
+  // Same-weather comparison with the previous run (predict, track, compare)
+  const cur = {seed: S.seed, k1, k2, g1, g2, c1: avg(a1,'cwi'), c2: avg(a2,'cwi'), hist: S.hist};
+  let compareHTML = '';
+  if (LAST && LAST.seed === S.seed) {
+    const zname = k => ZONES.find(z => z.key === k).name;
+    const changes = [];
+    S.hist.forEach((r, i) => {
+      const p = LAST.hist[i]; if (!p) return;
+      const diffs = [];
+      ZONES.forEach(z => { if (r.alloc[z.key] !== p.alloc[z.key]) diffs.push(`${zname(z.key)} ${p.alloc[z.key]} → ${r.alloc[z.key]} crews`); });
+      if (r.chuno !== p.chuno) diffs.push(`chuño ${p.chuno} → ${r.chuno}`);
+      if (r.wage !== p.wage) diffs.push(`wage crews ${p.wage} → ${r.wage}`);
+      if (r.builtNow.join() !== p.builtNow.join()) diffs.push(`built ${p.builtNow.join(' and ') || 'nothing'} → ${r.builtNow.join(' and ') || 'nothing'}`);
+      if (diffs.length) changes.push(`<li>Harvest ${r.year}: ${diffs.join('; ')}</li>`);
+    });
+    const row = (label, a, b, f) => `<tr><td>${label}</td><td>${f(a)}</td><td>${f(b)}</td><td class="${b - a >= 0 ? 'pos' : 'neg'}">${b - a >= 0 ? '+' : '−'}${f(Math.abs(b - a))}</td></tr>`;
+    const k = v => fmt(v), ix = v => gi(v).toFixed(1), w = v => Math.round(v);
+    compareHTML = `<div class="cmpruns">
+      <h3 style="font-size:18px;margin-bottom:6px">Same weather, different choices</h3>
+      <table class="ledger"><thead><tr><td></td><td>Last run</td><td>This run</td><td>Change</td></tr></thead><tbody>
+        ${row('Food, Inca harvests (kcal/day)', LAST.k1, k1, k)}
+        ${row('Food, colonial harvests (kcal/day)', LAST.k2, k2, k)}
+        ${row('Welfare index, colonial harvests', LAST.c2, cur.c2, w)}
+        ${row('GDP index, colonial harvests', gi(LAST.g2), gi(g2), v => v.toFixed(1))}
+      </tbody></table>
+      <p style="margin:8px 0 4px;font-size:14px"><b>What you changed:</b></p>
+      ${changes.length ? `<ul class="why">${changes.join('')}</ul>` : '<p style="margin:0;font-size:14px;color:var(--muted)">Nothing: both runs used the same choices, so the results are the same.</p>'}
+      <p style="margin:6px 0 0;font-size:13px;color:var(--muted)">The frost, droughts and forecasts were identical, so every difference above comes from your choices.</p>
+    </div>`;
+  }
+  LAST = cur;
   const p = $('p-end'); p.hidden = false;
   p.innerHTML = `
     <span class="eyebrow">Results</span>
@@ -905,18 +974,20 @@ function showEnd(){
     <div class="cmp">
       <div><span>Inca years, food available per person</span><b>${fmt(k1)} kcal</b></div>
       <div><span>Colonial years, food available per person</span><b class="${k2<k1-50?'neg':''}">${fmt(k2)} kcal</b></div>
-      <div><span>Inca years, GDP per person</span><b>$${fmt(g1)}</b></div>
-      <div><span>Colonial years, GDP per person</span><b class="${g2>g1+5?'pos':''}">$${fmt(g2)}</b></div>
+      <div><span>Caloric Welfare Index, Inca → colonial (classroom model, out of 100)</span><b>${Math.round(avg(a1,'cwi'))} → ${Math.round(avg(a2,'cwi'))}</b></div>
+      <div><span>Inca years, GDP per person (index)</span><b>${gi(g1).toFixed(1)}</b></div>
+      <div><span>Colonial years, GDP per person (index)</span><b class="${g2>g1+5?'pos':''}">${gi(g2).toFixed(1)}</b></div>
       <div><span>Households below 1,700 kcal, Inca → colonial (model guess)</span><b>${share(a1)}% → ${share(a2)}%</b></div>
     </div>
+    ${compareHTML}
     <div class="charts">
       ${chart('intake', 800, 2000, [{v:GOAL,t:'1,700: course figure (unsourced)',side:'a1',weak:true},{v:COLONIAL,t:'1,200: course figure (unsourced)',side:'a2',weak:true}], '--good', 'Food available, kcal per person per day', '')}
-      ${chart('gdp', 360, 520, [{v:GDP_ANCHOR,t:'Maddison 1500: 416 (estimate)',side:'a1'},{v:438,t:'Maddison 1600: 438',side:'a2'}], '--gold', 'GDP per person, 1990 Int$ (model)', '$')}
+      ${chart('gidx', 85, 125, [{v:100,t:'c. 1500 = 100',side:'a1'},{v:438/416*100,t:'Maddison: +5% by 1600 (all Latin America)',side:'a2'}], '--gold', 'GDP per person, index (c. 1500 = 100)', '')}
     </div>
     <p class="eyebrow" style="margin:0">Dotted lines: figures with no confirmed source. Dashed: Maddison's estimates for Latin America as a whole. The game's GDP formula was tuned to start near 416.</p>
     <div>
       <h3 style="font-size:18px;margin-bottom:6px">What the colonial rules did to your harvests 4–6</h3>
-      <p style="margin:0 0 8px;max-width:65ch;font-size:14px">The same people with the same weather, under Inca rules instead (labour duty and feasts, no mita, tribute or silver), would have had about <b>${fmt(cfK)} kcal</b> per person a day and <b>$${fmt(cfG)}</b> GDP per person. Here is where the difference went (averages over harvests 4–6):</p>
+      <p style="margin:0 0 8px;max-width:65ch;font-size:14px">The same people with the same weather, under Inca rules instead (labour duty and feasts, no mita, tribute or silver), would have had about <b>${fmt(cfK)} kcal</b> per person a day and a GDP index of <b>${gi(cfG).toFixed(1)}</b>. Here is where the difference went (averages over harvests 4–6):</p>
       <div class="charts" style="gap:12px 24px">
       <table class="ledger"><tbody>
         <tr><td>Food under Inca rules (same people, same weather)</td><td>${fmt(grownCf)}</td></tr>
@@ -928,19 +999,19 @@ function showEnd(){
         <tr class="total"><td>Food available (kcal/day)</td><td>${fmt(k2)}</td></tr>
       </tbody></table>
       <table class="ledger"><tbody>
-        <tr><td>GDP per person under Inca rules</td><td>$${fmt(cfG)}</td></tr>
-        <tr><td>Field output lost to the mita, wage crews and resettlement</td><td class="${lostVal>0?'neg':'pos'}">${sgn(-lostVal)}</td></tr>
-        <tr><td>Silver from Potosí added to output</td><td class="pos">+$${fmt(silv)}</td></tr>
-        <tr class="total"><td>GDP per person</td><td>$${fmt(g2)}</td></tr>
+        <tr><td>GDP index under Inca rules</td><td>${gi(cfG).toFixed(1)}</td></tr>
+        <tr><td>Field output lost to the mita, wage crews and resettlement</td><td class="${lostVal>0?'neg':'pos'}">${sgn1(-gi(lostVal))}</td></tr>
+        <tr><td>Silver from Potosí added to output</td><td class="pos">${sgn1(gi(silv))}</td></tr>
+        <tr class="total"><td>GDP index</td><td>${gi(g2).toFixed(1)}</td></tr>
       </tbody></table>
       </div>
-      <p style="margin:10px 0 0;max-width:65ch;font-size:15px"><b>So why did GDP per person ${dg === 'rise' ? 'rise' : 'change'} over time (${sgn(g2-g1)} $)?</b> The colonial rules themselves ${Math.abs(cg) <= 5 ? 'roughly broke even on output: silver came in, field labour went out' : cg > 0 ? `added ${sgn(cg)} $: silver outweighed the field labour lost` : `cost ${sgn(cg)} $: the field labour lost outweighed the silver`}. The rest came from the population collapse: fewer people shared the same land, so output per person ${dg === 'rise' ? 'rose' : 'changed'} while the rules took the food.</p>
+      <p style="margin:10px 0 0;max-width:65ch;font-size:15px"><b>So why did GDP per person ${dg === 'rise' ? 'rise' : 'change'} over time (${sgn1(gi(g2-g1))} points)?</b> The colonial rules themselves ${Math.abs(cg) <= 5 ? 'roughly broke even on output: silver came in, field labour went out' : cg > 0 ? `added ${sgn1(gi(cg))} points: silver outweighed the field labour lost` : `cost ${sgn1(gi(cg))} points: the field labour lost outweighed the silver`}. The rest came from the population collapse: fewer people shared the same land, so output per person ${dg === 'rise' ? 'rose' : 'changed'} while the rules took the food.</p>
       <p style="margin:8px 0 0;max-width:65ch;font-size:14px;color:var(--muted)">This comparison holds the people and the weather fixed, so it shows what the rules did. The harvest-by-harvest charts above also include frost, drought and the population collapse, which is what an observer at the time would have seen. Rows may be off by 1 or 2 from rounding.</p>
     </div>
     <div>
       <h3 style="font-size:18px;margin-bottom:6px">Your predictions</h3>
       <ul class="why">
-        <li>GDP per person would <b>${S.pred.g}</b>. ${right(S.pred.g, dgC)} <span style="color:var(--muted)">(${sgn(cg)} $ against Inca rules; over time it went ${dg})</span></li>
+        <li>GDP per person would <b>${S.pred.g}</b>. ${right(S.pred.g, dgC)} <span style="color:var(--muted)">(${sgn1(gi(cg))} index points against Inca rules; over time it went ${dg})</span></li>
         <li>Calories per person would <b>${S.pred.k}</b>. ${right(S.pred.k, dkC)} <span style="color:var(--muted)">(${sgn(ck)} kcal against Inca rules; over time ${dk})</span></li>
         ${S.hyp ? `<li>Your reasoning: “${esc(S.hyp)}”</li>` : ''}
       </ul>
@@ -953,7 +1024,7 @@ function showEnd(){
         <label for="sl-m">Inca labour duty <output id="o-m"></output></label><input type="range" id="sl-m" min="0" max="30" step="1" value="${INCA_LEVY*100}">
         <label for="sl-t">Colonial tribute, share of harvest <output id="o-t"></output></label><input type="range" id="sl-t" min="0" max="50" step="1" value="${Math.round(tauObs*100)}">
         <label for="sl-c">Population fall, 1520s–1600 <output id="o-c"></output></label><input type="range" id="sl-c" min="0" max="90" step="1" value="${Math.round(cTot*100)}">
-        <label for="sl-r">Silver output per mine worker ÷ farm output per farm worker <output id="o-r"></output></label><input type="range" id="sl-r" min="0" max="4" step="0.1" value="${(2*SILVER*7/V).toFixed(1)}">
+        <label for="sl-r">Silver output per mine worker ÷ farm output per farm worker <output id="o-r"></output></label><input type="range" id="sl-r" min="0" max="4" step="0.1" value="${(2*SILVER_MEAN*7/V).toFixed(1)}">
       </div>
       <div class="revout" id="revout" aria-live="polite"></div>
     </div>
@@ -963,8 +1034,9 @@ function showEnd(){
     </div>
     <div class="actions">
       <span class="free" id="copymsg">Copy a text report to paste into your class page.</span>
-      <span style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn ghost" id="again">Play again</button><button class="btn" id="copy">Copy report</button></span>
+      <span style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn ghost" id="again">New game</button><button class="btn ghost" id="copy">Copy report</button><button class="btn" id="replay">Replay with the same weather</button></span>
     </div>
+    <p style="margin:0;font-size:14px;color:var(--muted);max-width:65ch"><b style="color:var(--ink)">Predict, track, compare.</b> Change one choice, such as building terraces earlier, storing more chuño or sending fewer crews for wages, and replay with the same weather. The game will set the two runs side by side so you can explain what that one choice changed.</p>
     <textarea id="report" rows="8" readonly hidden></textarea>`;
   // Core model (expected values, no weather): index 1 = output per person with all labour farming in the Inca years.
   //   food_I = (1−m)^α + r·(1 − (1−m)^α)       food_C = Y_C·(1−τ)
@@ -981,11 +1053,12 @@ function showEnd(){
     const tag = (v, up, down) => v > 0.005 ? `<span class="chip ok">${up}</span>` : v < -0.005 ? `<span class="chip low">${down}</span>` : '<span class="chip">about the same</span>';
     $('revout').innerHTML = `
       <p><b>Food per person:</b> ${dF>=0?'+':'−'}${Math.abs(Math.round(dF*100))}% ${tag(dF,'rises','falls')} · ${tauStar > 0.005 ? `it would rise if colonial tribute were below <b>${Math.round(tauStar*100)}%</b> of the harvest.` : 'it would fall even with no tribute: the mita, resettlement and lost feasts outweigh the extra land per survivor.'}</p>
-      <p><b>GDP per person:</b> ${dG>=0?'+':'−'}$${fmt(Math.abs(dG))} ${tag(dG,'rises','falls')} · it would fall if a mine worker's silver were worth less than <b>${rhoStar.toFixed(1)}×</b> a farm worker's output${rhoStar<=0?' (never, at this population fall: more land per survivor already raises output)':''}.</p>
+      <p><b>GDP per person:</b> ${sgn1(gi(dG))} index points ${tag(dG,'rises','falls')} · it would fall if a mine worker's silver were worth less than <b>${rhoStar.toFixed(1)}×</b> a farm worker's output${rhoStar<=0?' (never, at this population fall: more land per survivor already raises output)':''}.</p>
       <p style="color:var(--muted);font-size:13px">Land per person rises as people die, but only a little (α = ${ALPHA}): terraces need hands to keep them up. Resettlement into towns costs about 11% of yields on average over the three colonial harvests; the Inca feasts are lost. The core model ignores which zones you farm: in the game, survivors also move to the best land, so food falls less there than here.</p>`;
   };
   ['sl-m','sl-t','sl-c','sl-r'].forEach(id => $(id).addEventListener('input', revUpdate)); revUpdate();
   $('again').onclick = restart;
+  $('replay').onclick = replaySame;
   $('copy').onclick = () => {
     const t = reportText(k1,k2,g1,g2,dgC,dkC), ta = $('report'); ta.value = t;
     const ok = () => { $('copymsg').textContent = 'Copied.'; };
@@ -999,9 +1072,9 @@ function reportText(k1,k2,g1,g2,dg,dk){
   const L = [`Frost and Silver: report${S.who?` by ${S.who}`:''}`, '',
     `Prediction: after the mita, GDP per person would ${S.pred.g} and calories would ${S.pred.k}.`,
     S.hyp ? `Reasoning: ${S.hyp}` : '', '',
-    'Harvest, year | food available kcal/day | GDP $ | people | frost reached | drought',
-    ...S.hist.map(r => `${r.year} ${YEARS[r.year-1]} | ${fmt(r.intake)} | ${fmt(r.gdp)} | ${fmt(r.pop)} | ${r.line===4?'none':ZONES[r.line].name} | ${r.drought?'yes':'no'}`), '',
-    `Inca years average: ${fmt(k1)} kcal, $${fmt(g1)}. Colonial years average: ${fmt(k2)} kcal, $${fmt(g2)}.`,
+    'Harvest, year | food available kcal/day | GDP index (c. 1500 = 100) | welfare index | people | frost reached | drought',
+    ...S.hist.map(r => `${r.year} ${YEARS[r.year-1]} | ${fmt(r.intake)} | ${gi(r.gdp).toFixed(1)} | ${Math.round(r.cwi)} | ${fmt(r.pop)} | ${r.line===4?'none':ZONES[r.line].name} | ${r.drought?'yes':'no'}`), '',
+    `Inca years average: ${fmt(k1)} kcal, GDP index ${gi(g1).toFixed(1)}. Colonial years average: ${fmt(k2)} kcal, GDP index ${gi(g2).toFixed(1)}.`,
     `Effect of the colonial rules (same people and weather, against Inca rules): GDP ${dg}, calories ${dk}.`, '',
     'Frost and Silver, adapted by Thanakrit Wongsatit from "Week 2: Tahuantinsuyu Harvest & Frost Defense" by Amnuayvit Thitibordin, CC BY-NC-SA 4.0.'];
   return L.filter((l,i,a) => !(l === '' && a[i-1] === '')).join('\n');
@@ -1014,6 +1087,16 @@ function restart(){
 }
 
 /* ---------- intro ---------- */
+// Same predictions, same weather (seed); the player changes choices and the end screen compares the runs.
+function replaySame(){
+  const keep = {pred: S.pred, hyp: S.hyp, who: S.who, seed: S.seed};
+  PLAY.auto = false; stopAutoTimers();
+  S = fresh(); Object.assign(S, keep);
+  $('p-end').hidden = true; $('card').hidden = true; $('notice').hidden = true; $('p-intro').hidden = true;
+  $('stage').hidden = false; $('p-plan').hidden = false; $('transport').hidden = false; tlSeg(0, 0, 0);
+  S.year = 1; S.yr = rollYear(); S.phase = 'plan'; clampAlloc(); renderPlan(); bringIntoView($('cv'));
+  const n = $('notice'); n.textContent = 'Replay: the weather will be the same as your last run. Change one choice and see what it does.'; n.hidden = false;
+}
 $('start').addEventListener('click', () => {
   const g = document.querySelector('input[name=pg]:checked'), k = document.querySelector('input[name=pk]:checked');
   if (!g || !k) { $('intro-msg').textContent = 'Pick both predictions first.'; $('intro-msg').classList.add('warn'); return; }
