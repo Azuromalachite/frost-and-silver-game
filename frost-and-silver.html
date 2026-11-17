@@ -625,7 +625,7 @@ function renderPlan(){
   f.textContent = free > 0 ? `${free} crew${free>1?'s':''} ${dealing ? 'still to place' : 'unassigned'}` : 'All crews assigned';
   f.className = 'free' + (free > 0 && !dealing ? ' warn' : '');
   $('dock').hidden = false;
-  renderHUD(); renderForecast(); scheduleAuto();
+  renderHUD(); renderForecast(); scheduleAuto(); requestDraw();
 }
 
 /* ---------- playback: auto-play, pause, speed ---------- */
@@ -1500,11 +1500,12 @@ $('start').addEventListener('click', () => {
 const cv = $('cv'), ctx = cv.getContext('2d');
 let W = 0, Hh = 0, col = {};
 const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
-function readColors(){ for (const n of ['--sky-top','--sky-bot','--far','--rock','--rock2','--soil','--snow','--ice','--ink','--muted','--accent','--gold','--good','--bad','--surface','--z0','--z1','--z2','--z3']) col[n] = css(n); }
+function readColors(){ for (const n of ['--sky-top','--sky-bot','--far','--rock','--rock2','--soil','--snow','--ice','--ink','--muted','--accent','--gold','--good','--bad','--surface','--z0','--z1','--z2','--z3']) col[n] = css(n); requestDraw(); }
 function resize(){
   const r = cv.getBoundingClientRect(), d = Math.min(2, devicePixelRatio || 1);
   W = r.width; Hh = r.height; cv.width = Math.round(W*d); cv.height = Math.round(Hh*d); ctx.setTransform(d,0,0,d,0,0);
   hudOver = getComputedStyle($('hud')).position === 'absolute'; // on phones the HUD sits above the canvas instead
+  requestDraw();
 }
 let hudOver = true;
 new ResizeObserver(resize).observe(cv);
@@ -1672,8 +1673,27 @@ function figure(x, y, c, s){
   ctx.fillStyle = c; ctx.beginPath(); ctx.arc(x, y - 11*s, 2.6*s+.6, 0, 7); ctx.fill();
   ctx.beginPath(); ctx.moveTo(x-3*s, y); ctx.lineTo(x+3*s, y); ctx.lineTo(x+1.6*s, y-8*s); ctx.lineTo(x-1.6*s, y-8*s); ctx.fill();
 }
-function loop(t){ try { draw(t); tlDraw(t); } catch(e) {} requestAnimationFrame(loop); }
+/* Draw on demand. The mountain used to be redrawn every frame (about 60 a second) even when nothing moved and
+   even when it was scrolled off screen, which keeps a laptop busy for a whole class. Now it is drawn:
+   - at full speed only while something animates (a harvest, the timeline filling, the plan being dealt);
+   - at once after a change (crews, buildings, theme, size), via requestDraw();
+   - for the crops' gentle sway, about 8 times a second, and not at all with reduced motion;
+   - never while the play area is off screen (it is redrawn when it comes back). */
+var needDraw = true, stageOnScreen = true, lastDraw = -1e9; // var: requestDraw can run before this line
+function requestDraw(){ needDraw = true; }
+const AMBIENT_MS = 125, reduceMotionMQ = matchMedia('(prefers-reduced-motion: reduce)');
+function animating(t){
+  return !!(S.anim && t - S.anim.t0 < S.anim.dur + 100) || (TL.dur > 0 && t - TL.t0 < TL.dur + 100) || !!DEAL.t;
+}
+function loop(t){
+  try {
+    const due = needDraw || (stageOnScreen && (animating(t) || (!reduceMotionMQ.matches && t - lastDraw >= AMBIENT_MS)));
+    if (due) { draw(t); tlDraw(t); lastDraw = t; needDraw = false; }
+  } catch(e) {}
+  requestAnimationFrame(loop);
+}
 requestAnimationFrame(loop);
+if ('IntersectionObserver' in window) new IntersectionObserver(es => { stageOnScreen = es[0].isIntersecting; if (stageOnScreen) requestDraw(); }).observe($('stage'));
 $('gloss-intro').innerHTML = glossHTML(); $('gloss-plan').innerHTML = glossHTML(); $('vert').innerHTML = vertHTML();
 renderHUD();
 })();
