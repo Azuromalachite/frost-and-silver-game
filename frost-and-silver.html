@@ -151,6 +151,7 @@ input[type=radio]{width:20px;height:20px;accent-color:var(--accent);vertical-ali
 .rtiles b{font:600 24px var(--f-mono);font-variant-numeric:tabular-nums}
 .rtiles b small{font-size:12px;color:var(--muted)}
 .rtiles > div > small{font-size:12px;color:var(--muted)}
+.success{border-left:4px solid var(--good);padding:6px 0 6px 12px;font-size:14px;max-width:70ch}
 .milestone{border:2px solid var(--gold);border-radius:6px;padding:12px 14px;display:grid;gap:4px;background:color-mix(in srgb,var(--gold) 10%,var(--surface));max-width:none!important;animation:msin .35s ease-out}
 .milestone b{font-family:var(--f-display);font-stretch:112%;text-transform:uppercase;font-size:20px}
 .milestone p{margin:0;max-width:65ch}
@@ -362,6 +363,7 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
       <li><b>Inca labour duty:</b> one man in ten on state and temple fields, half of that harvest returned as feasts and rations. Teaching assumption; how much came back is debated. The game also leaves out exchange: Andean communities traded and used markets as well as relying on redistribution (Hirth &amp; Pillsbury 2013), so the Inca years here are simpler than the real economy.</li>
       <li><b>Land per person:</b> output in a zone grows with labour to the power 0.9, so survivors of an epidemic each farm a little more land. The exponent is close to 1 because terraces need labour to keep up (Wernke 2010 describes terraces abandoned as people were lost). Teaching assumption.</li>
       <li><b>Resettlement:</b> Toledo's reducciones moved families into nucleated towns, often far from their fields (Wernke 2010). The change came gradually as distant fields and terraces were given up, and it varied from place to place, with some communities negotiating to keep their land (Hunter 2025; de la Puente Luna &amp; Perales 2026). The game lowers colonial yields by 7% at c. 1575, 12% at c. 1592 and 15% at c. 1600; the sizes are teaching assumptions.</li>
+      <li><b>Sampled years:</b> harvests 1–3 are consecutive years, but harvests 4–6 are snapshots of c. 1575, 1592 and 1600. Stores, buildings and people carry over between snapshots as a teaching simplification; the game does not model the decades in between (their harvests, losses, births or migration).</li>
       <li><b>Population:</b> a 50% fall before 1573 and 15% more in the 1585–91 epidemics. Historians' estimates vary widely; these are round game figures.</li>
       <li><b>Re-planning when crews fall:</b> at 1573 and after the 1585–91 epidemics you must re-plan fewer crews: keep your plan's shares, put every crew on the best land first, or set them yourself. The choice is yours, and it decides much of the result. With the default plan and seeds 1–80, best land first gives colonial food of about 1,385 kcal a day, and the colonial rules' GDP effect grades "stay" in 75 runs; keeping the same shares gives about 1,000 kcal and splits the grade 40 "stay", 40 "rise". Farming only the best land raises output per person but leaves no chuño crews and nothing growing up high. Before 18 November 2026 the board made this choice silently, always best land first.</li>
       <li><b>Zone yields:</b> the valley yields most and the puna least. With the re-plan above, this sets how much output per person rises after the collapse.</li>
@@ -1110,6 +1112,7 @@ function showTransition(){
       <tr><td>Each survivor farms more land, but terraces need hands, so the gain is small (game assumption)</td><td>small gain</td></tr>
       <tr><td>Toledo's reducciones moved families into new towns, far from many fields. Yields fall as distant fields are given up (game figure: 7% at first, 15% by 1600)</td><td class="neg">−7% → −15%</td></tr>
       <tr><td>Community stores (half the food lost, shared among half the people)</td><td>${fmt(S.store/GOAL*365)} days per person</td></tr>
+      <tr><td>From here the game samples three moments, c. 1575, 1592 and 1600, not every year. Stores carry over between them as a teaching simplification: the game does not play the years in between.</td><td>sampled years</td></tr>
       <tr><td>Mita quota: one man in seven at the 1573 count</td><td class="neg">fixed</td></tr>
       <tr><td>Tribute: a fixed total from the 1573 count (game rule, taken in food; the real tribute was paid in silver and goods)</td><td class="neg">fixed</td></tr>
     </tbody></table>
@@ -1260,11 +1263,13 @@ function showEnd(){
     </div>`;
   }
   LAST = cur;
+  const hungerDeaths = S.hist.reduce((s, r) => s + Math.max(0, r.popBefore - r.pop), 0); // deaths from hunger only, not the imposed collapse or epidemics
   const p = $('p-end'); p.hidden = false;
   p.innerHTML = `
     <span class="eyebrow">Results</span>
-    <h2 style="font-size:28px;font-stretch:112%;text-transform:uppercase">${dg === 'rise' && dk === 'fall' ? 'GDP grew. Life did not get better.' : dk !== 'fall' ? 'You kept people fed' : 'Six harvests on the mountain'}</h2>
+    <h2 style="font-size:28px;font-stretch:112%;text-transform:uppercase">${dg === 'rise' && dk === 'fall' ? 'In your game, GDP grew. Life did not get better.' : dk !== 'fall' ? 'You kept people fed' : 'Six harvests on the mountain'}</h2>
     <p class="keymsg" style="margin:0"><b>GDP per person ${g2 >= g1 ? 'rose' : 'fell'} ${Math.abs(Math.round((g2/g1 - 1)*100))}%; food per person ${k2 >= k1 ? 'rose' : 'fell'} ${Math.abs(Math.round((k2/k1 - 1)*100))}%.</b> GDP is an average of everything produced; it says nothing about who ate. That gap between growth and welfare is the point of this game. (GDP counts silver sent to Spain and China as output too; see below for how much of the change it explains.)</p>
+    <div class="success"><b>What counts as success.</b> After 1573 no plan we tested kept food at the 1,700 goal on average: the best of 2,304 strategies averaged about 1,580 kcal, and the default plan about 1,390. So success here is protecting your community, and explaining why GDP and food moved apart. Your colonial years: <b>${fmt(k2)} kcal</b> a day on average, <b>${fmt(hungerDeaths)}</b> ${Math.round(hungerDeaths) === 1 ? 'person' : 'people'} lost to hunger over the game, stores of <b>${fmt(S.store / GOAL * 365)} days</b> at the end.</div>
     <div class="cmp">
       <div><span>Inca years, food available per person</span><b>${fmt(k1)} kcal</b></div>
       <div><span>Colonial years, food available per person</span><b class="${k2<k1-50?'neg':''}">${fmt(k2)} kcal</b></div>
