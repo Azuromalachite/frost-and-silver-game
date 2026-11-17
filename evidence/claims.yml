@@ -89,9 +89,9 @@ claims:
       In the game, GDP per person rises over time through silver and through the
       population collapse, and which is the main cause depends on the
       decomposition: without silver it barely rises, without the collapse it
-      still rises. The collapse works mostly through the board's crew trim, which
-      leaves survivors farming their best land; more land per survivor adds about
-      a quarter of that.
+      still rises. The collapse works mostly through the player's re-plan: "Best
+      land first" leaves survivors farming their best land; more land per survivor
+      adds about a quarter of that.
     layer: game_result
     status: labelled
     sources: [maddison2003]
@@ -105,7 +105,7 @@ claims:
       1-80: of about 6.5 index points not caused by the rules, about 3.0 come
       from chuño crews moved to the fields, 2.0 from retreating to the best
       zones, 1.5 from the land exponent (0 at exponent 1). The first two follow
-      from clampAlloc's trim order, a play rule, not a historical claim. Until
+      from the re-plan choice (before 18 Nov 2026, a silent trim). Until
       2026-11-18 this claim said "more land per survivor", which the sweep
       showed to be about a quarter of the effect. A combined review of 1edc416
       showed the remaining single-cause wording was decomposition-dependent:
@@ -115,29 +115,35 @@ claims:
 
   - id: claim.game.crew_trim_order
     statement: >
-      When crews are lost, the board drops wage crews first, then chuño crews, then
-      the highest fields. It is a play rule, not a historical finding, and it
-      decides much of the GDP rise and the GDP grade.
+      When crews fall (1573, and after the 1585-91 epidemics) the game asks the
+      player to re-plan: keep the plan's shares on fewer crews, put every crew on
+      the best land first, or set them by hand; harvest and play wait for the
+      choice. The choice decides much of the GDP rise, the GDP grade and colonial
+      food.
     layer: game_assumption
     status: labelled
     sources: [maddison2003]
-    code: ["const order = [() => S.wage > 0 && S.wage--, () => S.chuno > 0 && S.chuno--,"]
+    code: ["if (usedBefore > B) { S.replan = {from: before, B, was: usedBefore, kind: null};"]
     pages:
       - path: frost-and-silver.html
-        anchor: This order is a play rule, not a historical finding
+        anchor: The choice is yours, and it decides much of the result
     notes: >
-      Measured 2026-11-18, default plan, seeds 1-80: with chuño dropped last
-      instead of first, the colonial rules' GDP effect grades "rise" in 80 of 80
-      seeds instead of "stay" in 74, and the over-time GDP rise falls from +8.1 to
-      +2.3 points. The source listed is the GDP estimate the game is tuned to; no
-      source sets the order.
+      Measured 2026-11-18, default plan, seeds 1-80. Best land first: colonial
+      food 1,385 kcal, welfare 70 -> 49, 41 deaths, GDP grade 75 stay / 5 rise.
+      Same shares: colonial food 1,004 kcal, welfare 70 -> 35, 95 deaths, grade
+      40 stay / 40 rise. Before 18 Nov 2026 the board re-planned silently (wage,
+      then chuño, then the highest fields), which a sensitivity sweep found drove
+      much of the GDP rise; making it the player's choice was the fix. The pinned
+      run and the model check choose best land first. No source sets either
+      plan; the source listed is the GDP estimate the game is tuned to.
 
   - id: claim.game.grading_weather
     statement: >
       Predictions are graded against the same people and weather under Inca
       rules. The weather still nudges the GDP grade, because silver ignores the
       weather while the farm output the mita removes does not: with the default
-      plan, seeds 1-80 give "rise" in 6 runs and "stay" in 74, each "rise" just
+      plan and best land first at each re-plan, seeds 1-80 give "rise" in 5 runs
+      and "stay" in 75, each "rise" just
       past the 3-point line.
     layer: game_result
     status: labelled
@@ -150,7 +156,8 @@ claims:
       the same 74/6 split was reported in PR #1. The earlier text said a bad
       frost could not make a correct prediction look wrong, which was false.
       Re-measured after the chuño winter roll was added: still 74 "stay", 6 "rise"
-      (same seeds). Re-measure after any model change.
+      (same seeds). Re-measured after the re-plan choice (18 Nov 2026), choosing best
+      land first: 75 "stay", 5 "rise" (seeds 10, 26, 30, 68, 72). Re-measure after any model change.
 
   - id: claim.game.gdp_formula
     statement: >

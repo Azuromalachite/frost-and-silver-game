@@ -53,8 +53,8 @@ states a claim more strongly than its registry entry allows is wrong.
 - **Name a single cause for the GDP rise.** It depends on the decomposition.
   At the game's settings (default plan, seeds 1–80) silver adds about 8 index
   points and the mita's lost field labour takes about 6.5 back, while the
-  population collapse adds about 6.5, mostly through the board's crew trim
-  (chuño crews and high fields dropped first); more land per survivor is about
+  population collapse adds about 6.5, mostly through the player's re-plan
+  ("Best land first" drops chuño crews and high fields); more land per survivor is about
   1.5 of that. Without silver GDP barely rises (+0.2); without the collapse it
   still rises (+5.1). Name both, and re-measure (`tools/sweep.html`) before
   restating a number.
@@ -88,11 +88,11 @@ Each one cites what taught it.
    stalled. **Test the Pages copy, not only a local or artifact copy.**
 2. **The pinned run reproduces exactly.** With `?seed=12345`, the default plan
    and Next step only, the results read
-   `1,764 kcal | 1,371 kcal | 80 → 53 | 103 | 108 | 46% → 73%`. A change that
+   `1,764 kcal | 1,411 kcal | 80 → 55 | 103 | 109 | 46% → 73%`, choosing "Best land first" at each re-plan. A change that
    is meant to leave the model alone must reproduce this. A change to the
    model recalibrates (60–80 games of default play), then updates this line,
    `PINNED` in `tests/review_model.cjs`, and the numbers in `README.md` and the
-   evidence document. CI's model check enforces the line and the 74/6 grading
+   evidence document. CI's model check enforces the line and the 75/5 grading
    split, so a moved number cannot merge unrecorded.
 3. **Every checker rule can fail.** Each rule has a test that plants its
    defect, and the same test with the rule disabled must pass. A rule with no

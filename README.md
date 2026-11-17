@@ -25,13 +25,13 @@ Students **predict** before playing, **track** each harvest in a report (four ti
 
 ## What the model is, and is not
 
-The game is a teaching model, not a reconstruction. The default plan, played with Next step on seeds 1–80 (measured 2026-11-18), gives on average:
+The game is a teaching model, not a reconstruction. The default plan, played with Next step on seeds 1–80 and choosing "Best land first" at each re-plan (measured 2026-11-18), gives on average:
 
 | | Inca years | Colonial years |
 |---|---|---|
 | Food available per person per day | ~1,670 kcal | ~1,390 kcal |
 | Caloric Welfare Index (out of 100) | ~70 | ~49 |
-| GDP per person (index, Maddison 1500 = 100) | ~101 | ~110 |
+| GDP per person (index, Maddison 1500 = 100) | ~101 | ~109 |
 
 Each harvest is followed by a winter that sets how much chuño a crew can freeze-dry (hard, normal or mild; a game assumption). It leaves these averages almost unchanged but moves single runs: colonial food differs by up to about 100 kcal a day, mostly because mild Inca winters leave smaller stores to carry past 1573.
 
@@ -40,7 +40,7 @@ GDP is shown as an index because the historical series come in different dollars
 The end screen separates two things:
 
 - **Over time** (what an observer would see): food falls and GDP per person rises in nearly every game.
-- **What the colonial rules did** (same people, same weather, Inca rules instead): food about −480 kcal; GDP roughly unchanged (about +2 index points), because silver about offsets the field labour lost. Over time, GDP per person rises for two reasons, and which counts as the main one depends on the decomposition. Silver adds about 8 index points, and the mita's lost field labour takes about 6.5 back. The population collapse adds about 6.5, mostly because when crews are lost the board drops the chuño crews and the highest fields first, so survivors farm only their best land; more land per survivor is about 1.5 of it. Without silver GDP barely rises (+0.2 points); without the collapse it still rises (+5.1). Chuño work counts for nothing in GDP, so moving crews from chuño to the fields raises measured GDP although nobody eats more. Details: [docs/sensitivity-2026-11-18.md](docs/sensitivity-2026-11-18.md). Predictions are graded on this comparison, which removes most of the weather's effect but not all: silver ignores the weather while the farm output the mita removes does not, so with the same plan the GDP grade reads "rise" instead of "stay" in 6 of 80 seeds.
+- **What the colonial rules did** (same people, same weather, Inca rules instead): food about −480 kcal; GDP roughly unchanged (about +2 index points), because silver about offsets the field labour lost. Over time, GDP per person rises for two reasons, and which counts as the main one depends on the decomposition. Silver adds about 8 index points, and the mita's lost field labour takes about 6.5 back. The population collapse adds about 6.5, mostly because when crews are lost the player re-plans, and "Best land first" drops the chuño crews and the highest fields so survivors farm only their best land; more land per survivor is about 1.5 of it. The re-plan is the player's choice: keeping the same shares instead leaves colonial food near 1,000 kcal a day and splits the GDP grade 40 "stay", 40 "rise". Without silver GDP barely rises (+0.2 points); without the collapse it still rises (+5.1). Chuño work counts for nothing in GDP, so moving crews from chuño to the fields raises measured GDP although nobody eats more. Details: [docs/sensitivity-2026-11-18.md](docs/sensitivity-2026-11-18.md). Predictions are graded on this comparison, which removes most of the weather's effect but not all: silver ignores the weather while the farm output the mita removes does not, so with the same plan the GDP grade reads "rise" instead of "stay" in 5 of 80 seeds.
 
 ### Mechanisms that carry the result
 
