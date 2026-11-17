@@ -20,7 +20,15 @@ python -m http.server 8000            # then open localhost:8000/frost-and-silve
 
 There is no build step and no JavaScript test suite (an optional Node harness, `tests/review_model.cjs`, is a dated snapshot; see `CONTRIBUTING.md`). **Load the page and read
 the console after every edit to the game.** A single unescaped apostrophe in
-a single-quoted string stops the whole script; the checker cannot see that.
+a single-quoted string stops the whole script. The evidence checker cannot see
+that; CI's `node --check` step can, but it catches syntax only, not a broken game.
+
+**Changes reach `main` only through a pull request.** A ruleset on `main`
+requires a PR whose `checks` workflow (`.github/workflows/checks.yml`: evidence
+check, can-fail tests, game script parses) has passed, and it blocks
+force-pushes and deleting the branch. Work on a branch, open a PR, wait for
+`checks` to pass, then merge at the commit you checked:
+`gh pr merge <n> -R Azuromalachite/frost-and-silver-game --merge --match-head-commit <sha>`.
 
 ## Where facts live
 

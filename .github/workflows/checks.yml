@@ -1,0 +1,39 @@
+name: checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    name: checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install PyYAML
+        run: python -m pip install pyyaml
+
+      - name: Evidence registry check
+        run: python evidence/check_evidence.py
+
+      - name: Checker can-fail tests
+        run: python -m unittest discover -s tests -v
+
+      - name: Game script parses
+        run: |
+          python tools/extract_game_script.py frost-and-silver.html "$RUNNER_TEMP/game.js"
+          node --check "$RUNNER_TEMP/game.js"
