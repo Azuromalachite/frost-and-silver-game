@@ -108,7 +108,9 @@ function check(html) {
 // Each planted change must make check() fail, and fail on the assertion named.
 const PLANTS = [
   ['tribute raised (a model constant)', 'TRIB_PP = 500', 'TRIB_PP = 520', /pinned run/],
-  ['frost odds changed (the weather)', 'const line = r < .15 ? 4', 'const line = r < .25 ? 4', /pinned run/],
+  // Frost almost never reaches the fields. (A first version moved .15 to .25,
+  // which seed 12345 happens never to draw, so it tested nothing.)
+  ['frost odds changed (the weather)', 'const line = r < .15 ? 4', 'const line = r < .95 ? 4', /pinned run/],
   ['winter roll removed', "winter = w < .25 ? 'hard' : w < .75 ? 'normal' : 'mild'", "winter = 'normal'", /pinned run/],
 ];
 function selfTest(html) {
