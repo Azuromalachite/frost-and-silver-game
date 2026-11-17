@@ -70,7 +70,7 @@ canvas{display:block;width:100%;aspect-ratio:16/7.2;max-width:100%}
 .zone .crop{font-size:13px;color:var(--muted);line-height:1.3}
 .zone .risk{font-family:var(--f-mono);font-size:11px;color:var(--muted)}
 .step{display:flex;align-items:center;gap:4px}
-.step button{width:34px;height:34px;flex:none;border-radius:4px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:700 18px/1 var(--f-mono);cursor:pointer}
+.step button{width:34px;height:34px;flex:none;border-radius:4px;border:1px solid color-mix(in srgb,var(--ink) 40%,var(--line));background:var(--bg);color:var(--ink);font:700 18px/1 var(--f-mono);cursor:pointer}
 .step button:disabled{opacity:.35;cursor:not-allowed}
 .step output{min-width:2.2ch;text-align:center;font:600 20px var(--f-mono)}
 .step small{color:var(--muted);font-size:11px;font-family:var(--f-mono)}
@@ -87,7 +87,8 @@ canvas{display:block;width:100%;aspect-ratio:16/7.2;max-width:100%}
 .free{font-family:var(--f-mono);font-size:14px}
 .free.warn{color:var(--bad)}
 .btn{font:800 15px var(--f-display);font-stretch:110%;text-transform:uppercase;letter-spacing:.03em;padding:12px 18px;border-radius:4px;border:0;background:var(--accent);color:var(--on-accent);cursor:pointer}
-.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid color-mix(in srgb,var(--ink) 40%,var(--line))}
+input[type=radio]{width:20px;height:20px;accent-color:var(--accent);vertical-align:-4px}
 :focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 .whybox{border-left:4px solid var(--z1);padding:4px 0 4px 14px;display:grid;gap:8px}
 .whybox h3{font-size:17px;font-stretch:110%;text-transform:uppercase}
@@ -120,7 +121,7 @@ canvas{display:block;width:100%;aspect-ratio:16/7.2;max-width:100%}
 .flog li.sum{font-weight:600;border-bottom:1px dashed var(--line);padding-bottom:4px;margin-bottom:4px}
 .ftag{color:var(--muted);font-weight:400}
 .transport{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;padding:8px 10px;border-top:1px solid var(--line);background:var(--surface);font-size:13px}
-.tbtn{font:700 13px var(--f-body);padding:6px 12px;border-radius:4px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+.tbtn{font:700 13px var(--f-body);padding:6px 12px;border-radius:4px;border:1px solid color-mix(in srgb,var(--ink) 40%,var(--line));background:var(--bg);color:var(--ink);cursor:pointer}
 .tplay{min-width:6.5em}
 .tplay.on{background:var(--ink);color:var(--surface);border-color:var(--ink)}
 .dz.deal,.dx.deal{animation:dealflash .6s ease-out}
@@ -264,7 +265,9 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
   .dzones{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
   .dzn{font-size:11px}
   .dz .build{font-size:12px;padding:4px 6px}
-  .tbtn{padding:6px 10px}
+  .tbtn{padding:6px 10px;min-height:44px}
+  .build,.dz .build{min-height:44px}
+  .replan .tbtn{min-height:44px}
   .zone .crop,.zone .why,.zone .risk{overflow-wrap:anywhere}
 }
 @media (prefers-reduced-motion:reduce){.gfill{transition:none}}
@@ -354,7 +357,7 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
     <summary>How the model works: which numbers carry the lesson, and which are only for play</summary>
     <h4>Carry the lesson (change these and the result can change)</h4>
     <ul>
-      <li><b>Colonial quotas fixed at the 1573 count.</b> The mita takes one man in seven of the 1573 population and tribute is a fixed total, so the burden per person rises as people die. This follows Toledo's system; the size of the tribute (500 kcal per person per day at the 1573 count, taken in food) is a game figure.</li>
+      <li><b>Colonial quotas set at the 1573 count.</b> The mita takes one man in seven of the 1573 population and tribute is a set total. Quotas were not cut as people died: only a new count could lower them, and recounts were slow and contested, so the burden per person rose. The game keeps both fixed, a simplification. This follows Toledo's system; the size of the tribute (500 kcal per person per day at the 1573 count, taken in food) is a game figure.</li>
       <li><b>Inca labour duty:</b> one man in ten on state and temple fields, half of that harvest returned as feasts and rations. Teaching assumption; how much came back is debated. The game also leaves out exchange: Andean communities traded and used markets as well as relying on redistribution (Hirth &amp; Pillsbury 2013), so the Inca years here are simpler than the real economy.</li>
       <li><b>Land per person:</b> output in a zone grows with labour to the power 0.9, so survivors of an epidemic each farm a little more land. The exponent is close to 1 because terraces need labour to keep up (Wernke 2010 describes terraces abandoned as people were lost). Teaching assumption.</li>
       <li><b>Resettlement:</b> Toledo's reducciones moved families into nucleated towns, often far from their fields (Wernke 2010). The change came gradually as distant fields and terraces were given up, and it varied from place to place, with some communities negotiating to keep their land (Hunter 2025; de la Puente Luna &amp; Perales 2026). The game lowers colonial yields by 7% at c. 1575, 12% at c. 1592 and 15% at c. 1600; the sizes are teaching assumptions.</li>
@@ -600,7 +603,7 @@ function renderPlan(){
   if (act(S.year) === 2) {
     const dd = crews().d;
     ex += `<div class="extra mita"><span class="lbl">Colonial mita: ${(dd*7).toFixed(1)} men in 7 away</span>
-      <p>Your ayllu lies inside the mita region. Its quota was fixed at the 1573 count, so as people die the same number of men must still go. You cannot change this. Every crew here works ${Math.round(dd*100)}% short. The game adds the silver they mine to your community's output figure.</p></div>
+      <p>Your ayllu lies inside the mita region. Its quota was set from the 1573 count and is not cut as people die: only a new count could lower it, and recounts were slow and contested. In the game it stays fixed, and you cannot change it. Every crew here works ${Math.round(dd*100)}% short. The game adds the silver they mine to your community's output figure.</p></div>
       <div class="extra"><span class="lbl">Potosí wage crews</span>
       <p>Paid work at Potosí (mingas). Each crew earns silver: GDP goes up and part of the tribute is paid in silver instead of food, but they grow no food.</p></div>`;
   } else {
@@ -920,7 +923,8 @@ function logAdd(tag, text, cls){ S.log.push({tag, text, cls: cls || ''}); render
 function renderLog(){
   const box = $('flog'), list = $('flog-list');
   box.hidden = !S.log.length;
-  list.innerHTML = S.log.map(e => `<li class="${e.cls}"><span class="ftag">[${e.tag}]</span> ${e.text}</li>`).join('');
+  const mark = c => c === 'neg' ? '▼ ' : c === 'pos' ? '▲ ' : '';
+  list.innerHTML = S.log.map(e => `<li class="${e.cls}"><span class="ftag">[${e.tag}]</span> ${mark(e.cls)}${e.text}</li>`).join('');
   list.scrollTop = list.scrollHeight;
 }
 const logTag = y => `H${y} · ${YEARS[y-1]}`;
@@ -1006,8 +1010,8 @@ function milestoneFor(r){
       text: 'Your community stores are empty. The next bad harvest will hit with nothing in reserve. Freeze-drying surplus into chuño refills them.'},
     r.lost > 400 && {key: 'frost', title: 'Killing frost',
       text: `Frost destroyed ${fmt(r.lost)} kcal per person a day of crops. Terraces and waru waru are the defences. In this game frost always strikes the highest fields first.`},
-    r.intake >= GOAL && {key: 'fed', title: 'Everyone fed',
-      text: 'Food per person reached the 1,700 goal this harvest.'}
+    r.intake >= GOAL && {key: 'fed', title: 'Average reached the goal',
+      text: `Food per person reached the 1,700 goal on average this harvest. Averages hide who goes short: in the game's household estimate, about ${Math.round(shortShare(r.avail) * 100)}% of households still fall below 1,700 (a model guess).`}
   ].filter(m => m && !S.seen[m.key]);
   return list[0] || null;
 }
@@ -1149,7 +1153,7 @@ function chart(key, lo, hi, refs, color, label, unit, marks = []){
   }
   for (const m of marks) {
     const mx = x(m.i), my = y(m.v);
-    s += `<path d="M${mx} ${my-6} L${mx+6} ${my} L${mx} ${my+6} L${mx-6} ${my} Z" style="fill:var(--surface);stroke:var(--ink);stroke-width:1.5"/><line x1="${mx+7}" x2="${W-R+2}" y1="${my}" y2="${my}" style="stroke:var(--ink);stroke-width:.8;opacity:.5"/><text x="${W-R+5}" y="${my+4}" style="fill:var(--ink);font:11px var(--f-body)">${m.t}</text>`;
+    s += `<path d="M${mx} ${my-6} L${mx+6} ${my} L${mx} ${my+6} L${mx-6} ${my} Z" style="fill:var(--surface);stroke:var(--ink);stroke-width:1.5"/><line x1="${mx+7}" x2="${W-R+2}" y1="${my}" y2="${my}" style="stroke:var(--ink);stroke-width:.8;opacity:.5"/><text x="${W-R+11}" y="${my+4}" style="fill:var(--ink);font:11px var(--f-body)">${m.t}</text>`;
   }
   const yearsShort = ['1500','1501','1502','1575','1592','1600'];
   for (let i = 0; i < 6; i++) s += `<text x="${x(i)}" y="${H-16}" text-anchor="middle" style="fill:var(--muted);font:11px var(--f-mono)">${yearsShort[i]}</text>`;
@@ -1160,6 +1164,31 @@ function chart(key, lo, hi, refs, color, label, unit, marks = []){
   pts.forEach((p,i) => { const v = S.hist[i][key], off = v < lo || v > hi;
     s += `<circle cx="${p[0]}" cy="${p[1]}" r="${i===5?4.5:3.2}" style="fill:${off?'var(--surface)':`var(${color})`};stroke:${off?`var(${color})`:'var(--surface)'};stroke-width:1.5"><title>${unit}${fmt(v)}${off?' (off the scale)':''}</title></circle>`; });
   if (S.hist.some(r => r[key] < lo || r[key] > hi)) s += `<text x="${W-R+5}" y="13" style="fill:var(--muted);font:11px var(--f-body)">hollow = off scale</text>`;
+  return s + '</svg>';
+}
+// Food and GDP on one scale (each indexed to its own Inca-years average = 100), so a 5% GDP rise and a 20% food fall
+// look as different as they are. The separate charts below keep the units.
+function chartIndexed(){
+  const W = 360, H = 214, L = 40, R = 84, T = 22, B = 34, inca = S.hist.slice(0, 3);
+  const base = k => inca.reduce((s, r) => s + r[k], 0) / inca.length;
+  const series = [{k:'intake', name:'Food', c:'--ice', dash:'6 4'}, {k:'gdp', name:'GDP', c:'--gold', dash:''}]
+    .map(o => ({...o, v: S.hist.map(r => r[o.k] / base(o.k) * 100)}));
+  const all = series.flatMap(o => o.v), lo = Math.min(90, Math.floor(Math.min(...all) / 10) * 10), hi = Math.max(110, Math.ceil(Math.max(...all) / 10) * 10);
+  const x = i => L + (W-L-R) * (i / 5), y = v => T + (H-T-B) * (1 - (v - lo) / (hi - lo));
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Food and GDP per person on one scale, each indexed to its Inca-years average = 100: food ${Math.round(series[0].v[5])}, GDP ${Math.round(series[1].v[5])} at c. 1600"><text x="${L}" y="13" style="fill:var(--ink);font:700 12px var(--f-body)">Food and GDP per person, Inca years = 100</text>`;
+  const step = hi - lo > 60 ? 20 : 10; // ticks on round values
+  for (let v = lo; v <= hi; v += step) {
+    s += `<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" style="stroke:var(--line)"/><text x="${L-6}" y="${y(v)+4}" text-anchor="end" style="fill:var(--muted);font:11px var(--f-mono)">${v}</text>`; }
+  const mid = (x(2) + x(3)) / 2;
+  s += `<rect x="${mid}" y="${T}" width="${W-R-mid}" height="${H-T-B}" style="fill:var(--accent);opacity:.07"/><line x1="${mid}" x2="${mid}" y1="${T}" y2="${H-B}" style="stroke:var(--accent);stroke-dasharray:3 3"/>`;
+  s += `<line x1="${L}" x2="${W-R}" y1="${y(100)}" y2="${y(100)}" style="stroke:var(--ink);opacity:.5"/>`;
+  const years = ['1500','1501','1502','1575','1592','1600'];
+  for (let i = 0; i < 6; i++) s += `<text x="${x(i)}" y="${H-16}" text-anchor="middle" style="fill:var(--muted);font:11px var(--f-mono)">${years[i]}</text>`;
+  const ends = series.map(o => y(o.v[5])); if (Math.abs(ends[0] - ends[1]) < 13) { const m = (ends[0] + ends[1]) / 2; ends[0] = m + (series[0].v[5] < series[1].v[5] ? 7 : -7); ends[1] = m + (series[0].v[5] < series[1].v[5] ? -7 : 7); }
+  series.forEach((o, j) => {
+    for (const seg of [[0,1,2],[3,4,5]]) s += `<polyline points="${seg.map(i => `${x(i)},${y(o.v[i])}`).join(' ')}" style="fill:none;stroke:var(${o.c});stroke-width:2.5${o.dash ? `;stroke-dasharray:${o.dash}` : ''}"/>`;
+    s += `<text x="${W-R+6}" y="${ends[j]+4}" style="fill:var(--ink);font:600 11px var(--f-body)">${o.name} ${Math.round(o.v[5])}</text>`;
+  });
   return s + '</svg>';
 }
 function dir(a, b, tol){ return b - a > tol ? 'rise' : a - b > tol ? 'fall' : 'stay'; }
@@ -1242,10 +1271,11 @@ function showEnd(){
     </div>
     ${compareHTML}
     <div class="charts">
-      ${chart('intake', 800, 2000, [{v:GOAL,t:'Goal 1,700',weak:true}], '--good', 'Food available, kcal per person per day', '')}
-      ${chart('gidx', 85, 125, [{v:100,t:'1500 = 100'}], '--gold', 'GDP per person, index', '', [{i:5, v:438/416*100, t:'1600: 105'}])}
+      ${chartIndexed()}
+      ${chart('intake', 800, 2000, [{v:GOAL,t:'Goal 1,700',weak:true},{v:COLONIAL,t:'1,200 course',weak:true}], '--ice', 'Food available, kcal per person per day', '')}
+      ${chart('gidx', 85, 125, [{v:100,t:'1500 = 100'}], '--gold', 'GDP per person, index', '', [{i:5, v:438/416*100, t:'Maddison 1600'}])}
     </div>
-    <p style="margin:0;font-size:13px;color:var(--muted);max-width:70ch">The goal line is the game's target, not a historical measurement. On the GDP chart, the dashed line (100) is Maddison's estimate for Latin America in 1500, and the diamond is his estimate for 1600, a 5% rise. Your game at c. 1600: ${sgn1(gi(S.hist[5].gdp) - 100)} points. The game was tuned to start near Maddison's 1500 level, so matching it there is a design choice, not a test.</p>
+    <p style="margin:0;font-size:13px;color:var(--muted);max-width:70ch">The goal line is the game's target, not a historical measurement. On the GDP chart, the dashed line (100) is Maddison's estimate for Latin America in 1500, and the diamond is his estimate for all of Latin America in 1600, a 5% rise. Your game at c. 1600: ${sgn1(gi(S.hist[5].gdp) - 100)} points. The game was tuned to land near both of Maddison's numbers, so coming close to them is a design choice, not a test the game passed. The dotted 1,200 line on the food chart is the course's figure for colonial food, which has no source we could confirm.</p>
     <div>
       <h3 style="font-size:18px;margin-bottom:6px">What the colonial rules did to your harvests 4–6</h3>
       <p style="margin:0 0 8px;max-width:65ch;font-size:14px">The same people with the same weather, under Inca rules instead (labour duty and feasts, no mita, tribute or silver), would have had about <b>${fmt(cfK)} kcal</b> per person a day (after stores and the eating cap) and a GDP index of <b>${gi(cfG).toFixed(0)}</b>. Here is where the difference went (averages over harvests 4–6):</p>
@@ -1450,9 +1480,10 @@ function draw(t){
     // labels
     // centred under the shelf, on the rock face
     // narrow screens: no altitude (it is in the zone cards) and whole degrees, so labels do not collide
-    const narrow = W < 600, fs = Math.max(10, Math.min(14, W/58)), sf = narrow ? 9 : fs - 2;
+    const narrow = W < 600, fs = Math.max(10, Math.min(14, W/58)), sf = narrow ? 10 : fs - 2;
     const air = airT(z), soil = soilT(z);
-    const small = narrow ? [z.qname, `Air ${Math.round(air)}° · Soil ${Math.round(soil)}°C`]
+    // phones: air only (soil is on the zone cards), whole degrees, same unit style as wider screens
+    const small = narrow ? [z.qname, `Air ${Math.round(air)}°C`]
                          : [`${z.qname} · ${z.alt}`, `Air ${degC(air)} · Soil ${degC(soil)}`];
     ctx.font = `500 ${sf}px "IBM Plex Mono", monospace`;
     const half = Math.max(...small.map(s => ctx.measureText(s).width)) / 2 + 3;
@@ -1462,7 +1493,7 @@ function draw(t){
     ctx.textAlign = 'center';
     // hierarchy: name is the brightest, heaviest mark; Quechua name, altitude and temperatures smaller and dimmer
     ctx.fillStyle = col['--snow']; ctx.font = `900 ${fs+1}px "Archivo", sans-serif`; ctx.fillText(z.name.toUpperCase(), cx, y1);
-    ctx.globalAlpha = .62; ctx.font = `500 ${sf}px "IBM Plex Mono", monospace`;
+    ctx.globalAlpha = .88; ctx.font = `500 ${sf}px "IBM Plex Mono", monospace`;
     ctx.fillText(small[0], cx, y2); ctx.fillText(small[1], cx, y3); ctx.globalAlpha = 1;
   }
 
