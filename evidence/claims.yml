@@ -342,6 +342,30 @@ claims:
         anchor: 'Murra (1972), the "vertical archipelago"'
     notes: Murra described access rights to separate islands of land; the game draws one slope.
 
+  - id: claim.game.frost_from_top
+    statement: >
+      In the game, frost always strikes from the top down: when it reaches a zone,
+      every zone above it freezes too. So a higher field is never safer than a
+      lower one, and spreading crews uphill adds room, not frost insurance.
+    layer: game_assumption
+    status: labelled
+    sources: [trasmonte2008]
+    code: ["// zones with index >= line freeze"]
+    pages:
+      - path: frost-and-silver.html
+        anchor: in the game the heights add room, not insurance
+      - path: docs/history-and-evidence.md
+        anchor: In the game, frost always strikes from the top down
+    notes: >
+      Frost risk rising with altitude is supported by Trasmonte et al. (2008,
+      abstract read) for the Mantaro basin. That frost never hits a lower zone
+      while sparing a higher one is the game's simplification. A strategy sweep
+      (docs/strategies-2026-11-18.md) showed its consequence: placing crews on the
+      best land first beats spreading them across zones in every comparison, so
+      the game's text no longer calls spreading insurance. Until 2026-11-18 it
+      did. Murra's insurance argument rests on bad years that hit heights
+      differently (claim.land.vertical_archipelago), which the game does not model.
+
   - id: claim.land.zone_names
     statement: >
       Geographers name the Andean altitude zones with Quechua-derived terms (Pulgar

@@ -66,6 +66,7 @@ years in a row; harvests 4–6 are snapshots decades apart.
 | claim in the game | label | source and limits |
 | --- | --- | --- |
 | Andean communities held fields at several altitudes so that one frost or drought rarely ruined everything | interpretation (widely accepted) | Murra (1972), the "vertical archipelago". Murra described access rights to separate "islands" of land, often far apart; the game draws one contiguous slope, which is a simplification. |
+| In the game, frost always strikes from the top down, so higher fields are never safer than the valley | game assumption (claim.game.frost_from_top) | Frost risk rising with altitude: Trasmonte et al. (2008), abstract read. That a frost never spares a higher zone while hitting a lower one is the game's simplification. Its consequence, measured in a [strategy sweep](strategies-2026-11-18.md): placing crews on the best land first always beats spreading them, so the game no longer calls spreading insurance. Murra's insurance argument needs bad years that hit heights differently, which the game leaves out. |
 | The game's four zones (valley, upper fields, high grain, puna) are schematic; real altitude ranges overlap and vary | documented | Geographers also use Quechua-derived names for these zones (Pulgar Vidal 1941); the game uses plain descriptive names and shows the nearest of his names under each: Quechua, Suni, Suni–Puna, Puna. The lecture's zones sit higher than his, so his low Yunga region, used by the original game, has no counterpart. |
 | Each zone's air and soil temperature | game assumption (claim.game.air_temperature, claim.game.soil_temperature) | Air 6.5 °C colder per 1,000 m (the original game's lapse rate), anchored at about 12 °C at Cusco (about 3,400 m); not checked against station data. Soil 4.2 °C below the air, warmed 0.8 °C by terraces and 1.6 °C by waru waru: the original game's rule. Shown for orientation only; frost losses do not depend on them. |
 | Maize grows in the warmer valleys below about 3,500 m; potatoes and other tubers higher; cold-tolerant kañiwa higher still; the puna is mainly pasture | documented (general agronomy) | Checked against secondary sources only. |
@@ -160,6 +161,11 @@ years in a row; harvests 4–6 are snapshots decades apart.
 6. Were mita quotas reset by recounts (revisitas) in practice, as tribute
    could be (claim.research.tribute_reassessment), and how long did a
    recount take? Cole (1985) is the place to check. The game keeps both fixed.
+7. Which bad years hit some heights and spared others: frost pockets on valley
+   floors, drought, hail, pests? The game could reward spreading crews only if
+   its shocks differed by zone, and that needs a source first
+   (claim.game.frost_from_top). Trasmonte et al. (2008) rank frost risk by
+   altitude and say nothing about valley floors freezing while slopes stay warm.
 
 ## Sources
 
