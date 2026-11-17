@@ -18,14 +18,14 @@ python -m unittest discover -s tests  # after changing the checker
 python -m http.server 8000            # then open localhost:8000/frost-and-silver.html?seed=12345
 ```
 
-There is no build step and no JavaScript test suite (an optional Node harness, `tests/review_model.cjs`, is a dated snapshot; see `CONTRIBUTING.md`). **Load the page and read
+There is no build step. `tests/review_model.cjs` (Node) checks the model headless, and CI runs it. **Load the page and read
 the console after every edit to the game.** A single unescaped apostrophe in
 a single-quoted string stops the whole script. The evidence checker cannot see
 that; CI's `node --check` step can, but it catches syntax only, not a broken game.
 
 **Changes reach `main` only through a pull request.** A ruleset on `main`
 requires a PR whose `checks` workflow (`.github/workflows/checks.yml`: evidence
-check, can-fail tests, game script parses) has passed, and it blocks
+check, can-fail tests, game script parses, model check with the pinned run) has passed, and it blocks
 force-pushes and deleting the branch. Work on a branch, open a PR, wait for
 `checks` to pass, then merge at the commit you checked:
 `gh pr merge <n> -R Azuromalachite/frost-and-silver-game --merge --match-head-commit <sha>`.
@@ -85,8 +85,10 @@ Each one cites what taught it.
    and Next step only, the results read
    `1,764 kcal | 1,371 kcal | 80 → 53 | 103 | 108 | 46% → 73%`. A change that
    is meant to leave the model alone must reproduce this. A change to the
-   model recalibrates (60–80 games of default play), then updates this line
-   and the numbers in `README.md` and the evidence document.
+   model recalibrates (60–80 games of default play), then updates this line,
+   `PINNED` in `tests/review_model.cjs`, and the numbers in `README.md` and the
+   evidence document. CI's model check enforces the line and the 74/6 grading
+   split, so a moved number cannot merge unrecorded.
 3. **Every checker rule can fail.** Each rule has a test that plants its
    defect, and the same test with the rule disabled must pass. A rule with no
    failing case is not known to work.
@@ -107,7 +109,8 @@ Each one cites what taught it.
    exit status directly. On Windows, `wsl bash -c '…'` from Git Bash reports
    the wrong status; call `wsl --cd <repo> python3 …`.
 2. The page loads with no console errors, at desktop width and at 375 px.
-3. The pinned run matches, or it was deliberately re-recorded.
+3. The pinned run matches, or it was deliberately re-recorded (CI's model
+   check fails otherwise).
 4. After pushing, the Pages copy serves the new version and plays.
 
 ## Working style

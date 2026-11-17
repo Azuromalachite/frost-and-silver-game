@@ -49,6 +49,18 @@ jobs:
           python -I -X utf8 tools/extract_game_script.py frost-and-silver.html "$RUNNER_TEMP/game.js"
           node --check "$RUNNER_TEMP/game.js"
 
+      - name: Model check (pinned run, replay, grading split)
+        # Runs the game's own script headless and asserts the numbers the
+        # repository records: the pinned run in CONTRIBUTING.md and AGENTS.md,
+        # identical replays, weather unchanged by choices, the welfare sum,
+        # and the 74/6 GDP grading split (claim.game.grading_weather). A model
+        # change that moves any of them must update them in the same PR.
+        # --self-test plants three model changes (a constant, the frost odds,
+        # the winter roll) and requires each to be caught.
+        run: |
+          node tests/review_model.cjs
+          node tests/review_model.cjs --self-test
+
       - name: The syntax check must be able to fail
         # Plants the historical defect and requires node --check to reject it,
         # and requires the extractor to refuse a file with no script rather

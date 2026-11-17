@@ -70,12 +70,17 @@ households below 1,700). A change that is meant to leave the model alone must
 reproduce this exactly. A change to the model will move it: recalibrate
 (60–80 games of default play), then record the new line here.
 
-## Optional: the Node model harness
+## The model check
 
-`tests/review_model.cjs` (from the 2026-11-18 research review) runs the game's model
-headless under Node.js. The Python tests do not run it, and its recorded output
-(`evidence/review-model-2026-11-18.json`) is a snapshot of commit `d0d9474`. Update
-its pinned values before trusting it again.
+`tests/review_model.cjs` runs the game's own script headless under Node.js and
+asserts the pinned run below, identical replays, weather unchanged by choices,
+the welfare sum, and the GDP grading split over seeds 1–80
+(`claim.game.grading_weather`). CI runs it on every pull request, with
+`--self-test`, which plants three model changes and requires each to be caught.
+A change that moves the pinned run or the split must update `PINNED` or
+`GRADES_1_80` in that file, and the places that quote them, in the same pull
+request. (`evidence/review-model-2026-11-18.json` is the first run's output, a
+dated snapshot of commit `d0d9474`.)
 
 ## Before you open a pull request
 
@@ -87,6 +92,7 @@ passes. It runs the same commands you can run locally:
 python evidence/check_evidence.py
 python -m unittest discover -s tests
 python tools/extract_game_script.py frost-and-silver.html game.js && node --check game.js
+node tests/review_model.cjs && node tests/review_model.cjs --self-test
 ```
 
 The last line catches syntax errors in the game's script (an unescaped
