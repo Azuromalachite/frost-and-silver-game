@@ -94,7 +94,7 @@ claims:
     sources: [maddison2003]
     pages:
       - path: frost-and-silver.html
-        anchor: The rest came from the population collapse
+        anchor: The rest came mostly from the population collapse
       - path: docs/history-and-evidence.md
         anchor: In the game, GDP per person rises mainly through more land per survivor
     notes: Depends on claim.game.gdp_formula and claim.game.reduccion_sizes.
@@ -185,7 +185,7 @@ claims:
     sources: [flynn2015]
     pages:
       - path: frost-and-silver.html
-        anchor: GDP counts silver sent to Spain and China as output.
+        anchor: GDP counts silver sent to Spain and China as output too
       - path: docs/history-and-evidence.md
         anchor: Potosí silver went to Spain and, through trade, as far as China
 
@@ -244,7 +244,7 @@ claims:
       2026-11-17. None gives these figures.
     pages:
       - path: frost-and-silver.html
-        anchor: "1,700: course figure (unsourced)"
+        anchor: The course figure of 1,700 falling to 1,200 kcal a day has no primary source
       - path: docs/history-and-evidence.md
         anchor: Food per person fell from about 1,700 to about 1,200 kcal a day
 
@@ -576,7 +576,7 @@ claims:
     sources: [cook1981]
     pages:
       - path: frost-and-silver.html
-        anchor: but are well over half
+        anchor: most put it at well over half
       - path: docs/history-and-evidence.md
         anchor: Cook (1981) estimates a very large fall with wide uncertainty
 
@@ -610,4 +610,4 @@ claims:
     code: ["ALPHA = 0.9"]
     pages:
       - path: frost-and-silver.html
-        anchor: output in a zone grows with labour to the power
+        anchor: output in a zone grows with labour to the power 0.9,

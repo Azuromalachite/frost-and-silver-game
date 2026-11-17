@@ -54,6 +54,18 @@ A source records how far anyone in this project has read it (`access`):
 - **After any change to the model, recalibrate** (60–80 games of default play)
   and update the numbers in the README and the evidence document.
 
+## Pinned run (check after any change)
+
+Open the game with `?seed=12345`, predict anything, and play the default plan
+with Next step only. The results tiles must read, in order:
+
+`1,740 kcal | 1,401 kcal | 80 → 54 | 103 | 108 | 47% → 71%`
+
+(Inca food, colonial food, welfare index, GDP index Inca, GDP index colonial,
+households below 1,700). A change that is meant to leave the model alone must
+reproduce this exactly. A change to the model will move it: recalibrate
+(60–80 games of default play), then record the new line here.
+
 ## Before you open a pull request
 
 ```bash

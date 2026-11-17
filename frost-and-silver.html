@@ -10,7 +10,7 @@
 /* Layout: one column. Mountain stage with a HUD strip on its top edge; the crew board sits directly under the four zones, column for column. */
 :root{
   --bg:#e7ecf1; --surface:#f7f9fb; --ink:#18203a; --muted:#56607a; --line:#cbd3de;
-  --accent:#ad1240; --gold:#b97f00; --ice:#2f86c0; --good:#2c7a4c; --bad:#ad1240;
+  --accent:#ad1240; --on-accent:#ffffff; --gold:#b97f00; --ice:#2f86c0; --good:#2c7a4c; --bad:#b3261e;
   --sky-top:#9cc1df; --sky-bot:#e8eef4; --far:#b9c6d3; --rock:#7b6a5a; --rock2:#9d8873; --soil:#694a35; --snow:#ffffff;
   --z0:#3c8d47; --z1:#b07f1e; --z2:#7462a6; --z3:#7f8f9c;
   --f-display:"Archivo","Arial Narrow",system-ui,sans-serif;
@@ -19,12 +19,12 @@
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#0d1221; --surface:#151c30; --ink:#e6eaf4; --muted:#9aa5bd; --line:#28314a;
-  --accent:#ff5c84; --gold:#f0b432; --ice:#7cc5f1; --good:#5cc48a; --bad:#ff5c84;
+  --accent:#ff5c84; --on-accent:#0d1221; --gold:#f0b432; --ice:#7cc5f1; --good:#5cc48a; --bad:#ff7a66;
   --sky-top:#08102a; --sky-bot:#26355c; --far:#2b3656; --rock:#4a4153; --rock2:#5d5367; --soil:#3c2d29; --snow:#c9d4e6;
   --z0:#4fae5b; --z1:#d4a43c; --z2:#9d8dd2; --z3:#a0b0bd; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#0d1221; --surface:#151c30; --ink:#e6eaf4; --muted:#9aa5bd; --line:#28314a;
-  --accent:#ff5c84; --gold:#f0b432; --ice:#7cc5f1; --good:#5cc48a; --bad:#ff5c84;
+  --accent:#ff5c84; --on-accent:#0d1221; --gold:#f0b432; --ice:#7cc5f1; --good:#5cc48a; --bad:#ff7a66;
   --sky-top:#08102a; --sky-bot:#26355c; --far:#2b3656; --rock:#4a4153; --rock2:#5d5367; --soil:#3c2d29; --snow:#c9d4e6;
   --z0:#4fae5b; --z1:#d4a43c; --z2:#9d8dd2; --z3:#a0b0bd; color-scheme:dark}
 html,body{background:var(--bg);color:var(--ink)}
@@ -82,7 +82,7 @@ canvas{display:block;width:100%;aspect-ratio:16/7.2;max-width:100%}
 .actions{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:12px}
 .free{font-family:var(--f-mono);font-size:14px}
 .free.warn{color:var(--bad)}
-.btn{font:800 15px var(--f-display);font-stretch:110%;text-transform:uppercase;letter-spacing:.03em;padding:12px 18px;border-radius:4px;border:0;background:var(--accent);color:#fff;cursor:pointer}
+.btn{font:800 15px var(--f-display);font-stretch:110%;text-transform:uppercase;letter-spacing:.03em;padding:12px 18px;border-radius:4px;border:0;background:var(--accent);color:var(--on-accent);cursor:pointer}
 .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
 :focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 .whybox{border-left:4px solid var(--z1);padding:4px 0 4px 14px;display:grid;gap:8px}
@@ -124,8 +124,24 @@ canvas{display:block;width:100%;aspect-ratio:16/7.2;max-width:100%}
 .tl b.gap{color:var(--accent);font-weight:700}
 .zone .state{font-size:12px;font-family:var(--f-mono);color:var(--muted)}
 .quipu{margin:4px 0 0;display:grid;gap:4px;justify-items:start}
-.quipu svg{width:100%;max-width:380px;height:auto;display:block}
+.quipu svg{width:100%;max-width:560px;height:auto;display:block}
 .quipu figcaption{font-size:13px;color:var(--muted);max-width:60ch}
+.rtiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.rtiles div{border:1px solid var(--line);border-radius:4px;padding:10px;display:grid;gap:2px}
+.rtiles span{font:600 11px var(--f-mono);text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.rtiles b{font:600 24px var(--f-mono);font-variant-numeric:tabular-nums}
+.rtiles b small{font-size:12px;color:var(--muted)}
+.rtiles > div > small{font-size:12px;color:var(--muted)}
+.keyq{font-size:clamp(26px,4.5vw,36px);font-stretch:112%;text-transform:uppercase;line-height:1.05}
+.introh{font-size:19px;font-stretch:110%;text-transform:uppercase;margin-top:6px}
+.key2{display:flex;flex-wrap:wrap;gap:6px 18px;flex:1 1 100%}
+.kcell{display:grid;gap:2px;min-width:150px;flex:1 1 200px}
+.klab{font:600 11px var(--f-mono);text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.klab i{font-style:normal;text-transform:none;letter-spacing:0}
+.kcell b{font:600 20px var(--f-mono);font-variant-numeric:tabular-nums;color:var(--ink)}
+.kcell small{font:500 11px var(--f-mono);color:var(--muted)}
+.gtick{position:absolute;top:12px;transform:translateX(-50%);font:500 10px var(--f-mono);color:var(--muted)}
+.kcell .gbar{display:block;height:8px;margin:2px 0 12px}
 .cmpruns{border:1px solid var(--line);border-radius:6px;padding:14px;background:var(--bg)}
 .cmpruns thead td{font-family:var(--f-mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
 .cmpruns .ledger td{text-align:right}
@@ -208,7 +224,7 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
   .zones{gap:4px}
   .zone h3{font-size:13px}
   .zone .crop{font-size:12px}
-  .step button{width:28px;height:30px;font-size:15px}
+  .step button{width:44px;height:44px;font-size:18px}
   .step output{font-size:16px}
   .step small{display:none}
   .build{font-size:11px;padding:4px}
@@ -218,9 +234,9 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
   .hud{position:static}
   .zones{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 12px}
   .dock{padding:8px}
-  .dzones{gap:4px}
+  .dzones{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
   .dzn{font-size:11px}
-  .dz .build{font-size:10px;padding:3px 4px}
+  .dz .build{font-size:12px;padding:4px 6px}
   .tbtn{padding:6px 10px}
   .zone .crop,.zone .why,.zone .risk{overflow-wrap:anywhere}
 }
@@ -230,7 +246,7 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
 <div class="wrap">
   <header class="top">
     <div class="mark">Frost <span class="amp">&amp;</span> Silver <span class="ag">1500 → 1600</span></div>
-    <div class="sub">In sixteenth-century Latin America, GDP per person grew. Life did not get better: people had less to eat. Play six harvests across the century and see how both can be true.</div>
+    <div class="sub">Economic historians estimate that GDP per person in Latin America rose a little across the 1500s. Did life get better? Play six harvests across the century and find out.</div>
   </header>
 
   <section class="stage" id="stage" aria-label="The mountainside" hidden>
@@ -248,23 +264,21 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
     </div>
     <div class="transport" id="transport" hidden>
       <span class="seg" role="group" aria-label="Play mode">
-        <button class="tbtn" id="tman" aria-pressed="true">Manual</button><button class="tbtn" id="tauto" aria-pressed="false">▶ Auto</button>
+        <button class="tbtn" id="tauto" aria-pressed="false">▶ Play</button><button class="tbtn" id="tman" aria-pressed="true">❚❚ Pause</button><button class="tbtn" id="tstep">Next step ⏭</button>
       </span>
       <span class="seg" role="group" aria-label="Speed">
         <button class="tbtn" data-speed="1" aria-pressed="true">1×</button><button class="tbtn" data-speed="2" aria-pressed="false">2×</button><button class="tbtn" data-speed="4" aria-pressed="false">4×</button>
       </span>
       <div class="tl" id="tl" role="progressbar" aria-label="Progress through the six harvests" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="tlfill" id="tlfill"></div></div>
-      <span id="tstatus">Manual: set your crews above, then press Bring in harvest.</span>
+      <span id="tstatus">Paused. Set your crews above, then press Next step (or Bring in harvest). Press Play to let the harvests run.</span>
     </div>
   </section>
 
   <section class="panel intro" id="p-intro">
-    <span class="eyebrow">Before you start</span>
-    <div class="keymsg">
-      <span class="eyebrow">The question</span>
-      <p><b>GDP grew. Did life get better?</b> Economic historians estimate that output per person in Latin America rose a little across the 1500s, even as the population collapsed. GDP counts everything produced, including silver shipped across the world. It does not show who ate. Through six harvests you will watch two numbers side by side: <b>GDP per person</b> and <b>food per person</b>.</p>
-    </div>
-    <h2 style="font-size:26px;font-stretch:112%;text-transform:uppercase">You run an ayllu of about 1,000 people</h2>
+    <span class="eyebrow">The question</span>
+    <h2 class="keyq">GDP grew. Did life get better?</h2>
+    <p class="keymsg">Economic historians estimate that output per person in Latin America rose a little across the 1500s, even as the population collapsed. GDP counts everything produced, including silver shipped across the world. It does not show who ate. Through six harvests you will watch two numbers side by side: <b>GDP per person</b> and <b>food per person</b>.</p>
+    <h3 class="introh">You run an ayllu of about 1,000 people</h3>
     <p>Your fields climb the mountain from warm maize valleys below about 3,500 m to the frozen puna above 4,000 m. Higher fields freeze more often, so spreading crews across the zones is your insurance. Each year you send about 14 work crews (fewer if people die) to plant, build terraces, or freeze-dry potatoes into chuño for your community stores.</p>
     <p>You play six harvests, each one farming year. Harvests 1–3 are three years in a row under the Inca, around 1500. Harvests 4–6 are sample years from c. 1575, c. 1592 and c. 1600, after the Spanish colonial mita began sending one man in seven from the communities of the mita region (yours is one) to the silver mines at Potosí. Between them, decades pass. Your goal is to feed everyone 1,700 kcal a day.</p>
     <div class="whybox">
@@ -273,25 +287,25 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
       <p>Each height grows something the others can't, and one frost rarely hits every level at once. A community with fields at every height eats a mixed diet and keeps eating in a bad year. The anthropologist John Murra called this the <i>vertical archipelago</i>.</p>
       <p>In the game, each zone has room for only 5 crews (more once you build terraces or raised fields). So feeding everyone means sending some crews uphill, where frost is more likely.</p>
     </div>
-    <h3 style="font-size:17px;font-stretch:110%;text-transform:uppercase">Words in this game</h3>
-    <ul class="gloss" id="gloss-intro"></ul>
+    <h3 class="introh">Your prediction</h3>
     <div class="preds">
-      <fieldset><legend>After the mita, GDP per person will…</legend>
+      <fieldset><legend>Compared with the same people under Inca rules, the colonial rules will make GDP per person…</legend>
         <label><input type="radio" name="pg" value="rise" id="pg-rise"> rise</label>
         <label><input type="radio" name="pg" value="stay" id="pg-stay"> stay</label>
         <label><input type="radio" name="pg" value="fall" id="pg-fall"> fall</label>
       </fieldset>
-      <fieldset><legend>…and calories per person will…</legend>
+      <fieldset><legend>…and food per person…</legend>
         <label><input type="radio" name="pk" value="rise" id="pk-rise"> rise</label>
         <label><input type="radio" name="pk" value="stay" id="pk-stay"> stay</label>
         <label><input type="radio" name="pk" value="fall" id="pk-fall"> fall</label>
       </fieldset>
     </div>
     <div class="field"><label for="hyp">Why do you think so? (one or two sentences)</label>
-      <textarea id="hyp" rows="2" placeholder="e.g. Silver adds to output, but the mita takes the labour that grows food."></textarea></div>
+      <textarea id="hyp" rows="2" placeholder="e.g. What will the mita and tribute change for a farming family?"></textarea></div>
     <div class="field"><label for="who">Your name (goes on your report)</label>
       <input type="text" id="who" autocomplete="name"></div>
     <div class="actions"><span class="free" id="intro-msg">Pick both predictions to start.</span><button class="btn" id="start">Start the game →</button></div>
+    <details class="glossbox"><summary>Words in this game: ayllu, mita, Potosí, quipu, chuño…</summary><ul class="gloss" id="gloss-intro"></ul></details>
   </section>
 
   <section class="card" id="card" role="region" aria-live="polite" aria-labelledby="mt" hidden></section>
@@ -312,7 +326,7 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
     <ul>
       <li><b>Colonial quotas fixed at the 1573 count.</b> The mita takes one man in seven of the 1573 population and tribute is a fixed total, so the burden per person rises as people die. This follows Toledo's system; the size of the tribute (500 kcal per person per day at the 1573 count, taken in food) is a game figure.</li>
       <li><b>Inca labour duty:</b> one man in ten on state and temple fields, half of that harvest returned as feasts and rations. Teaching assumption; how much came back is debated. The game also leaves out exchange: Andean communities traded and used markets as well as relying on redistribution (Hirth &amp; Pillsbury 2013), so the Inca years here are simpler than the real economy.</li>
-      <li><b>Land per person:</b> output in a zone grows with labour to the power 0.85, so survivors of an epidemic each farm a little more land. The exponent is close to 1 because terraces need labour to keep up (Wernke 2010 describes terraces abandoned as people were lost). Teaching assumption.</li>
+      <li><b>Land per person:</b> output in a zone grows with labour to the power 0.9, so survivors of an epidemic each farm a little more land. The exponent is close to 1 because terraces need labour to keep up (Wernke 2010 describes terraces abandoned as people were lost). Teaching assumption.</li>
       <li><b>Resettlement:</b> Toledo's reducciones moved families into nucleated towns, often far from their fields (Wernke 2010). The change came gradually as distant fields and terraces were given up, and it varied from place to place, with some communities negotiating to keep their land (Hunter 2025; de la Puente Luna &amp; Perales 2026). The game lowers colonial yields by 7% at c. 1575, 12% at c. 1592 and 15% at c. 1600; the sizes are teaching assumptions.</li>
       <li><b>Population:</b> a 50% fall before 1573 and 15% more in the 1585–91 epidemics. Historians' estimates vary widely; these are round game figures.</li>
       <li><b>Silver versus food in GDP:</b> GDP per person = 340 + 0.045 × field output + silver. A mine worker's silver counts somewhat more than a farm worker's output. Teaching assumptions, tuned so the Inca years start near Maddison's 416; the "reverse" panel shows what happens if they are different.</li>
@@ -325,7 +339,7 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
     </ul>
     <h4>How the numbers are shown</h4>
     <ul>
-      <li><b>GDP as an index (c. 1500 = 100).</b> Historical GDP series come in different dollars: Maddison (2003) uses 1990 international dollars, the newer Maddison Project Database (Bolt &amp; van Zanden) uses 2011 dollars and gives Peru-specific estimates for the early 1600s. An index lets the game compare with either without mixing units. The dashed line shows Maddison's +5% for all of Latin America from 1500 to 1600.</li>
+      <li><b>GDP as an index (Maddison's 1500 level, 416, = 100).</b> Historical GDP series come in different dollars: Maddison (2003) uses 1990 international dollars, the newer Maddison Project Database (Bolt &amp; van Zanden) uses 2011 dollars and gives Peru-specific estimates for the early 1600s. An index lets the game compare with either without mixing units. On the chart, the diamond is Maddison's 1600 estimate for all of Latin America, 5% above 1500. Because the game was tuned to start near 1500's level, matching it there is a design choice, not a test.</li>
       <li><b>Caloric Welfare Index</b>, out of 100: 50 points for food adequacy, 30 for stores, 20 for farming resilience. The weights come from the original game's classroom model; how each part is scored here (food against 1,700 kcal, stores against 90 days, resilience from protected fields and spread across zones) is this adaptation's assumption. It is a model output, not a measurement.</li>
       <li><b>Silver.</b> Potosí's output rose sharply late in the century, after mercury amalgamation spread in the 1570s. The game raises the value of each mine worker's silver from harvest 4 to harvest 6; the path is a teaching assumption.</li>
     </ul>
@@ -409,21 +423,23 @@ const $ = id => document.getElementById(id);
 const fmt = x => Math.round(x).toLocaleString('en-US');
 // GDP is shown as an index, c. 1500 = 100 (the model's 416), so no dollar series is mixed with another.
 const gi = v => v / 416 * 100;
-const sgn1 = v => (v >= 0 ? '+' : '−') + Math.abs(v).toFixed(1);
+const sgn1 = v => (Math.round(v) >= 0 ? "+" : "−") + Math.abs(Math.round(v));
 const erf = x => { const t = 1/(1+.3275911*Math.abs(x)); const y = 1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-.284496736)*t+.254829592)*t*Math.exp(-x*x); return x>=0?y:-y; };
 // Share of households below 1,700 if household food varies around the average with a 30% coefficient of variation (model).
 const shortShare = I => 0.5*(1+erf((GOAL - I)/(0.3*I)/Math.SQRT2));
 const act = y => y <= 3 ? 1 : 2;
 
+const URL_SEED = (() => { try { return Math.abs(parseInt(new URLSearchParams(location.search).get('seed'), 10)) || 0; } catch (e) { return 0; } })();
 let S;
 function fresh(){
   return {phase:'intro', year:1, pop:1000, store:150, built:{yunga:false,quechua:false,suni:false,puna:false},
     building:{yunga:false,quechua:false,suni:false,puna:false},
     alloc:{yunga:4,quechua:4,suni:3,puna:1}, chuno:2, wage:0, yr:null, hist:[], pred:{}, hyp:'', who:'', anim:null,
-    N1573:0, mitaCrews:0, tribTotal:0, seed: Math.floor(Math.random() * 2147483646) + 1};
+    N1573:0, mitaCrews:0, tribTotal:0, seed: URL_SEED || Math.floor(Math.random() * 2147483646) + 1};
 }
 S = fresh();
 let LAST = null; // summary of the previous finished run, for "replay with the same weather"
+// ?seed=123 in the address gives everyone the same weather (a whole class, or a pinned test run).
 
 // Weather comes from the game's seed, so a replay with the same seed has the same frosts, droughts and forecasts.
 function mulberry32(a){ return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a);
@@ -504,7 +520,7 @@ function clampAlloc(){
 function renderPlan(){
   const {avail, mita} = crews();
   const free = avail - used();
-  $('planh').innerHTML = `Harvest <b>${S.year}</b> of 6 · ${YEARS[S.year-1]}`;
+  $('planh').innerHTML = 'Your plan';
   $('plansub').textContent = `${act(S.year)===1 ? 'Inca' : 'Colonial'} · ${avail} crews to assign`;
   const eb = $('endyear'); eb.disabled = false; eb.textContent = `Bring in harvest ${S.year}`;
   const stepper = (attr, key, n, canDec, canInc, label) =>
@@ -592,8 +608,9 @@ function stopAutoTimers(){ clearTimeout(autoT); clearInterval(cdT); autoT = cdT 
 function renderTransport(){
   $('tman').setAttribute('aria-pressed', !PLAY.auto);
   $('tauto').setAttribute('aria-pressed', PLAY.auto);
+  $('tstep').disabled = S.phase === 'anim' && !(S.anim && S.anim.done);
   document.querySelectorAll('[data-speed]').forEach(b => b.setAttribute('aria-pressed', +b.dataset.speed === PLAY.speed));
-  if (!PLAY.auto) $('tstatus').textContent = 'Manual: set your crews above, then press Bring in harvest. Auto runs the harvests on their own with your current plan.';
+  if (!PLAY.auto) $('tstatus').textContent = 'Paused. Set your crews above, then press Next step (or Bring in harvest). Press Play to let the harvests run on their own with your current plan.';
 }
 // Auto-play advances one step after a delay that shrinks with speed; editing the plan restarts the countdown.
 function scheduleAuto(){
@@ -610,11 +627,17 @@ function scheduleAuto(){
   ms /= PLAY.speed;
   tlSeg(TL.from, to, ms);
   const until = performance.now() + ms;
-  const tick = () => { $('tstatus').textContent = `Auto: ${label.charAt(0).toLowerCase() + label.slice(1)} in ${Math.max(0, Math.ceil((until - performance.now()) / 1000))} s. Change crews any time (the countdown restarts), or press Manual to stop.`; };
+  const tick = () => { $('tstatus').textContent = `Auto: ${label.charAt(0).toLowerCase() + label.slice(1)} in ${Math.max(0, Math.ceil((until - performance.now()) / 1000))} s. Change crews any time (the countdown restarts), or press Pause.`; };
   tick(); cdT = setInterval(tick, 250);
   autoT = setTimeout(() => { stopAutoTimers(); step(); }, ms);
 }
 $('tman').addEventListener('click', () => { PLAY.auto = false; scheduleAuto(); });
+// Next step: advance one step by hand, whatever the mode: harvest, then the next report, then past 1573.
+$('tstep').addEventListener('click', () => {
+  if (S.phase === 'plan') $('endyear').click();
+  else if (S.phase === 'anim' && S.anim && S.anim.done && $('next')) $('next').click();
+  else if (S.phase === 'event' && $('go')) $('go').click();
+});
 $('tauto').addEventListener('click', () => { PLAY.auto = true; scheduleAuto(); });
 document.querySelectorAll('[data-speed]').forEach(b => b.addEventListener('click', () => { PLAY.speed = +b.dataset.speed; scheduleAuto(); }));
 document.addEventListener('click', e => {
@@ -637,11 +660,12 @@ function renderHUD(){
   const days = S.store / GOAL * 365;
   $('hud').innerHTML = `
     <span class="yr">Harvest <b>${S.phase==='intro'?'–':Math.min(S.year,6)}</b> of 6 · ${YEARS[Math.min(S.year,6)-1]} · ${act(S.year)===1?'Inca':'Colonial'}</span>
-    <span class="gauge" title="Food available per person per day last year"><span class="stat"><span>kcal/day</span><b>${intake==null?'–':fmt(intake)}</b></span>
-      <span class="gbar"><span class="gfill" style="width:${intake==null?0:pct(intake)}%;background:var(${intake!=null&&intake<GOAL?'--bad':'--good'})"></span>
-      <span class="gmark" style="left:${pct(GOAL)}%" title="Goal 1,700 (course teaching figure, unsourced)"></span><span class="gmark col" style="left:${pct(COLONIAL)}%" title="1,200: course teaching figure for colonial years (unsourced)"></span></span></span>
-    <span class="stat" title="Caloric Welfare Index (classroom model), out of 100"><span>Welfare</span><b>${h ? Math.round(h.cwi) : '–'}</b></span>
-    <span class="stat" title="GDP per person as an index: c. 1500 = 100"><span>GDP index</span><b>${gdp==null?'–':gi(gdp).toFixed(0)}</b></span>
+    <span class="key2">
+      <span class="kcell"><span class="klab">Food per person${h ? ` <i>(${YEARS[h.year-1]})</i>` : ''}</span><b>${intake==null?'–':fmt(intake)}<small> kcal/day</small></b>
+        <span class="gbar"><span class="gfill" style="width:${intake==null?0:pct(intake)}%;background:var(${intake!=null&&intake<GOAL?'--bad':'--good'})"></span><span class="gmark" style="left:${pct(GOAL)}%"></span><span class="gtick" style="left:${pct(GOAL)}%">goal</span></span></span>
+      <span class="kcell"><span class="klab">GDP per person${h ? ` <i>(${YEARS[h.year-1]})</i>` : ''}</span><b>${gdp==null?'–':gi(gdp).toFixed(0)}<small> index · 1500 = 100</small></b></span>
+    </span>
+    <span class="stat"><span>Welfare index (model)</span><b>${h ? Math.round(h.cwi) : '–'}</b></span>
     <span class="stat"><span>People</span><b>${fmt(S.pop)}</b></span>
     <span class="stat"><span>Stores</span><b>${fmt(days)} days</b></span>`;
 }
@@ -728,11 +752,16 @@ $('endyear').addEventListener('click', () => {
    turns as the digit, except 1, which is a figure-eight knot; zero is an empty place. */
 function quipuSVG(cords){
   // levels 50 apart, knots 4.4 apart: a full cluster of 9 spans 35, so each place keeps a visible gap
-  const W = 66, top = 16, levels = [42, 92, 142, 196], H = 262, width = cords.length * W + 16;
+  const W = 66, top = 16, levels = [42, 92, 142, 196], H = 262, LEFT = 56, width = cords.length * W + LEFT + 8;
   let s = `<svg viewBox="0 0 ${width} ${H}" role="img" aria-label="Quipu: ${cords.map(c => `${c.label} ${fmt(c.value)}`).join(', ')}">`;
-  s += `<path d="M4 ${top} Q ${width/2} ${top-8} ${width-4} ${top}" style="fill:none;stroke:var(--rock);stroke-width:4;stroke-linecap:round"/>`;
+  // place-value key: light bands with labels on the left, so students can read each cord against them
+  ['thousands', 'hundreds', 'tens', 'units'].forEach((name, p) => {
+    s += `<rect x="${LEFT - 4}" y="${levels[p] - 22}" width="${width - LEFT}" height="44" style="fill:var(--line);opacity:${p % 2 ? .25 : .45}"/>`;
+    s += `<text x="${LEFT - 8}" y="${levels[p] + 4}" text-anchor="end" style="fill:var(--muted);font:10px var(--f-mono)">${name}</text>`;
+  });
+  s += `<path d="M${LEFT - 4} ${top} Q ${(LEFT + width)/2} ${top-8} ${width-4} ${top}" style="fill:none;stroke:var(--rock);stroke-width:4;stroke-linecap:round"/>`;
   cords.forEach((c, i) => {
-    const x = 8 + W * (i + .5), v = Math.max(0, Math.round(c.value));
+    const x = LEFT + W * (i + .5), v = Math.max(0, Math.round(c.value));
     const digits = String(v).padStart(4, '0').slice(-4).split('').map(Number); // thousands, hundreds, tens, units
     const col = `var(${c.c})`;
     s += `<line x1="${x}" y1="${top}" x2="${x}" y2="${levels[3] + 26}" style="stroke:${col};stroke-width:2.5;stroke-linecap:round"/>`;
@@ -762,7 +791,7 @@ function whyList(r){
   else if (r.lost < 1) out.push(`Frost reached down to the ${zone} zone${r.line===3?'':' and everything above it'}, but you had no crops there.`);
   else out.push(`Frost reached down to the ${zone} zone${r.line===3?'':' and everything above it'}, destroying ${fmt(r.lost)} kcal per person per day.`);
   if (r.saved > 0) out.push(`Your terraces and raised fields saved ${fmt(r.saved)}.`);
-  else if (r.line < 3) out.push('In this game, waru waru would have cut the frost loss by two thirds and terraces by a third.');
+  else if (r.line < 3) out.push('In this game, waru waru would have cut the frost loss by more than half and terraces by a third.');
   if (r.drought) out.push(`A dry year (what we now link to El Niño) cut every harvest by a quarter.${r.hazy ? ' The hazy Pleiades warned you.' : ' The Pleiades gave no warning.'}`);
   else if (r.hazy) out.push('The Pleiades looked hazy, but the rains came anyway.');
   if (r.act === 1) out.push(`One man in ten worked the state and temple fields under the Inca labour duty; ${fmt(r.ret)} came back as feasts and rations (game assumption: half the state harvest).`);
@@ -796,12 +825,15 @@ function showSummary(r){
       <h2 id="mt">${ok ? 'Enough food on average' : 'Not enough food on average'} <span class="chip ${ok?'ok':'low'}">${fmt(r.intake)} kcal/day</span></h2>
     </div>
     <button class="btn" id="next">${r.year === 3 ? 'Continue to 1573 →' : r.year === 6 ? 'See your results →' : r.year === 4 ? 'Plan harvest 5 (c. 1592) →' : r.year === 5 ? 'Plan harvest 6 (c. 1600) →' : `Plan harvest ${r.year+1} (next year) →`}</button></div>
+    <div class="rtiles">
+      <div><span>Food per person</span><b>${fmt(r.intake)}<small> kcal/day</small></b><small>goal 1,700 (game)</small></div>
+      <div><span>GDP per person</span><b>${gi(r.gdp).toFixed(0)}<small> index</small></b><small>Maddison 1500 = 100${r.silver ? ` · ${gi(r.silver).toFixed(0)} points from silver` : ''}</small></div>
+    </div>
     <table class="ledger"><tbody>
       ${rows.map(x => `<tr><td>${x[0]}</td><td class="${x[2]}">${x[1]}</td></tr>`).join('')}
       <tr class="total"><td>Food available per person per day (goal 1,700)</td><td>${fmt(r.intake)}</td></tr>
       <tr><td>Households below 1,700 kcal (model guess)</td><td class="${shortShare(r.avail)>.5?'neg':''}">${Math.round(shortShare(r.avail)*100)}%</td></tr>
-      <tr><td>Caloric Welfare Index (classroom model: 50 food + 30 stores + 20 resilience)</td><td>${Math.round(r.cwi)} / 100 <span class="mono" style="color:var(--muted)">${Math.round(r.cwiParts.cal)} + ${Math.round(r.cwiParts.buf)} + ${Math.round(r.cwiParts.res)}</span></td></tr>
-      <tr><td>GDP per person (index, c. 1500 = 100)</td><td>${gi(r.gdp).toFixed(1)}${r.silver?` <span class="mono" style="color:var(--muted)">incl. ${gi(r.silver).toFixed(1)} from silver</span>`:''}</td></tr>
+      <tr><td>Caloric Welfare Index (classroom model)</td><td>${Math.round(r.cwi)} / 100<br><span class="mono" style="color:var(--muted);font-size:12px">food ${Math.round(r.cwiParts.cal)}/50 · stores ${Math.round(r.cwiParts.buf)}/30 · resilience ${Math.round(r.cwiParts.res)}/20</span></td></tr>
       <tr><td>People</td><td>${fmt(r.pop)} <span class="${dPop<-0.5?'neg':dPop>0.5?'pos':''}">(${dPop>=0?'+':'−'}${fmt(Math.abs(dPop))})</span></td></tr>
       <tr><td>Community stores hold</td><td>${fmt(r.storeDays)} days of food</td></tr>
     </tbody></table>
@@ -845,7 +877,7 @@ function showTransition(){
     <p>Epidemics of smallpox and measles have swept the Andes, and many Inca storehouses were emptied during the conquest and civil wars. The Inca labour duty and its feasts are gone.</p>
     <p>Toledo's officials counted the people in the 1570s and fixed each community's quotas from that count: a set number of men for the mita and a set amount of tribute. When people died, the quotas stayed the same.</p>
     <table class="ledger"><tbody>
-      <tr><td>People (estimates of the fall from the 1520s to the 1570s vary widely but are well over half; the game uses 50%)</td><td class="neg">${fmt(S.pop)} → ${fmt(S.pop*(1-COLLAPSE))}</td></tr>
+      <tr><td>People (estimates of the fall from the 1520s to the 1570s vary widely; most put it at well over half, though this project has not yet read them. The game uses 50%)</td><td class="neg">${fmt(S.pop)} → ${fmt(S.pop*(1-COLLAPSE))}</td></tr>
       <tr><td>Each survivor farms more land, but terraces need hands, so the gain is small (game assumption)</td><td>small gain</td></tr>
       <tr><td>Toledo's reducciones moved families into new towns, far from many fields. Yields fall as distant fields are given up (game figure: 7% at first, 15% by 1600)</td><td class="neg">−7% → −15%</td></tr>
       <tr><td>Community stores (half the food lost, shared among half the people)</td><td>${fmt(S.store/GOAL*365)} days per person</td></tr>
@@ -876,34 +908,39 @@ function bringIntoView(el){
 
 /* ---------- end screen ---------- */
 const avg = (arr, k) => arr.reduce((s,r) => s + r[k], 0) / arr.length;
-function chart(key, lo, hi, refs, color, label, unit){
-  const W = 320, H = 200, L = 44, R = 10, T = 18, B = 30;
+// refs: horizontal reference lines {v, t, weak}; marks: single reference points {i, v, t} (e.g. Maddison's 1600 value).
+// Labels sit in a right-hand margin outside the plot so the data never runs through them.
+function chart(key, lo, hi, refs, color, label, unit, marks = []){
+  const W = 360, H = 214, L = 40, R = 84, T = 22, B = 34;
   const x = i => L + (W-L-R) * (i / 5), y = v => T + (H-T-B) * (1 - (Math.max(lo,Math.min(hi,v)) - lo) / (hi - lo));
   const pts = S.hist.map((r,i) => [x(i), y(r[key])]);
-  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${label} by harvest"><text x="${L}" y="11" style="fill:var(--ink);font:700 11px var(--f-mono)">${label}</text>`;
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${label} by harvest"><text x="${L}" y="13" style="fill:var(--ink);font:700 12px var(--f-body)">${label}</text>`;
   const ticks = 4;
   for (let k = 0; k <= ticks; k++) { const v = lo + (hi-lo)*k/ticks;
-    s += `<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" style="stroke:var(--line)"/><text x="${L-6}" y="${y(v)+4}" text-anchor="end" style="fill:var(--muted);font:10px var(--f-mono)">${unit}${fmt(v)}</text>`; }
+    s += `<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" style="stroke:var(--line)"/><text x="${L-6}" y="${y(v)+4}" text-anchor="end" style="fill:var(--muted);font:11px var(--f-mono)">${unit}${fmt(v)}</text>`; }
   const mid = (x(2)+x(3))/2;
   s += `<rect x="${mid}" y="${T}" width="${W-R-mid}" height="${H-T-B}" style="fill:var(--accent);opacity:.07"/><line x1="${mid}" x2="${mid}" y1="${T}" y2="${H-B}" style="stroke:var(--accent);stroke-dasharray:3 3"/>`;
-  s += `<text x="${mid+4}" y="${T+11}" style="fill:var(--accent);font:600 10px var(--f-mono)">1573 mita</text>`;
-  // refs: {v, t, side: 'a1' | 'a2' | undefined (both)}; a dotted line marks a figure with no source
+  s += `<text x="${mid+4}" y="${H-B-5}" style="fill:var(--accent);font:600 10px var(--f-mono)">1573 mita</text>`;
   for (const r of refs) {
-    const x1 = r.side === 'a2' ? mid : L, x2 = r.side === 'a1' ? mid : W-R;
-    s += `<line x1="${x1}" x2="${x2}" y1="${y(r.v)}" y2="${y(r.v)}" style="stroke:var(--ink);stroke-dasharray:${r.weak ? '1.5 3' : '5 4'};opacity:.7"/><text x="${r.side === 'a2' ? x2-3 : x1+4}" y="${y(r.v)-4}" text-anchor="${r.side === 'a2' ? 'end' : 'start'}" style="fill:var(--ink);font:10px var(--f-body);opacity:.8">${r.t}</text>`;
+    s += `<line x1="${L}" x2="${W-R}" y1="${y(r.v)}" y2="${y(r.v)}" style="stroke:var(--ink);stroke-dasharray:${r.weak ? '1.5 3' : '5 4'};opacity:.6"/><text x="${W-R+5}" y="${y(r.v)+4}" style="fill:var(--ink);font:11px var(--f-body)">${r.t}</text>`;
   }
-  for (let i = 0; i < 6; i++) s += `<text x="${x(i)}" y="${H-12}" text-anchor="middle" style="fill:var(--muted);font:10px var(--f-mono)">${i+1}</text>`;
-  s += `<text x="${mid}" y="${H-1}" text-anchor="middle" style="fill:var(--accent);font:10px var(--f-body)">~70 years</text>`;
-  s += `<text x="${L}" y="${H-1}" style="fill:var(--muted);font:10px var(--f-body)">harvest</text>`;
+  for (const m of marks) {
+    const mx = x(m.i), my = y(m.v);
+    s += `<path d="M${mx} ${my-6} L${mx+6} ${my} L${mx} ${my+6} L${mx-6} ${my} Z" style="fill:var(--surface);stroke:var(--ink);stroke-width:1.5"/><line x1="${mx+7}" x2="${W-R+2}" y1="${my}" y2="${my}" style="stroke:var(--ink);stroke-width:.8;opacity:.5"/><text x="${W-R+5}" y="${my+4}" style="fill:var(--ink);font:11px var(--f-body)">${m.t}</text>`;
+  }
+  const yearsShort = ['1500','1501','1502','1575','1592','1600'];
+  for (let i = 0; i < 6; i++) s += `<text x="${x(i)}" y="${H-16}" text-anchor="middle" style="fill:var(--muted);font:11px var(--f-mono)">${yearsShort[i]}</text>`;
+  s += `<text x="${mid}" y="${H-2}" text-anchor="middle" style="fill:var(--accent);font:11px var(--f-body)">~70 years</text>`;
   // the line breaks at the 70-year gap between year 3 and year 4
   for (const seg of [pts.slice(0,3), pts.slice(3)]) if (seg.length > 1)
     s += `<polyline points="${seg.map(p=>p.join(',')).join(' ')}" style="fill:none;stroke:var(${color});stroke-width:2.5"/>`;
   pts.forEach((p,i) => { const v = S.hist[i][key], off = v < lo || v > hi;
     s += `<circle cx="${p[0]}" cy="${p[1]}" r="${i===5?4.5:3.2}" style="fill:${off?'var(--surface)':`var(${color})`};stroke:${off?`var(${color})`:'var(--surface)'};stroke-width:1.5"><title>${unit}${fmt(v)}${off?' (off the scale)':''}</title></circle>`; });
-  if (S.hist.some(r => r[key] < lo || r[key] > hi)) s += `<text x="${W-R}" y="11" text-anchor="end" style="fill:var(--muted);font:10px var(--f-body)">hollow = off scale</text>`;
+  if (S.hist.some(r => r[key] < lo || r[key] > hi)) s += `<text x="${W-R+5}" y="13" style="fill:var(--muted);font:11px var(--f-body)">hollow = off scale</text>`;
   return s + '</svg>';
 }
 function dir(a, b, tol){ return b - a > tol ? 'rise' : a - b > tol ? 'fall' : 'stay'; }
+const pastTense = d => ({rise: 'rose', fall: 'fell', stay: 'stayed about the same'})[d];
 function showEnd(){
   S.phase = 'end';
   PLAY.auto = false; stopAutoTimers();
@@ -919,7 +956,7 @@ function showEnd(){
   // weather, Inca rules instead). Predictions are graded on the second: weather cannot flip it.
   const dg = dir(g1, g2, 5), dk = dir(k1, k2, 50);
   const ck = am(r => r.intake - r.cf.intake), cg = am(r => r.gdp - r.cf.gdp);
-  const dgC = dir(0, cg, 5), dkC = dir(0, ck, 50);
+  const dgC = dir(0, cg, 12.5), dkC = dir(0, ck, 50); // GDP tolerance: 12.5 $ = 3 index points
   const right = (p, d) => p === d ? '<span class="chip ok">matches the colonial rules’ effect</span>' : `<span class="chip low">colonial rules’ effect: ${d}</span>`;
   const both = dgC !== 'fall' && dkC !== 'fall';
   const share = arr => Math.round(arr.reduce((s,r) => s + shortShare(r.avail), 0) / arr.length * 100);
@@ -951,14 +988,14 @@ function showEnd(){
       if (diffs.length) changes.push(`<li>Harvest ${r.year}: ${diffs.join('; ')}</li>`);
     });
     const row = (label, a, b, f) => `<tr><td>${label}</td><td>${f(a)}</td><td>${f(b)}</td><td class="${b - a >= 0 ? 'pos' : 'neg'}">${b - a >= 0 ? '+' : '−'}${f(Math.abs(b - a))}</td></tr>`;
-    const k = v => fmt(v), ix = v => gi(v).toFixed(1), w = v => Math.round(v);
+    const k = v => fmt(v), ix = v => gi(v).toFixed(0), w = v => Math.round(v);
     compareHTML = `<div class="cmpruns">
       <h3 style="font-size:18px;margin-bottom:6px">Same weather, different choices</h3>
       <table class="ledger"><thead><tr><td></td><td>Last run</td><td>This run</td><td>Change</td></tr></thead><tbody>
         ${row('Food, Inca harvests (kcal/day)', LAST.k1, k1, k)}
         ${row('Food, colonial harvests (kcal/day)', LAST.k2, k2, k)}
         ${row('Welfare index, colonial harvests', LAST.c2, cur.c2, w)}
-        ${row('GDP index, colonial harvests', gi(LAST.g2), gi(g2), v => v.toFixed(1))}
+        ${row('GDP index, colonial harvests', gi(LAST.g2), gi(g2), v => v.toFixed(0))}
       </tbody></table>
       <p style="margin:8px 0 4px;font-size:14px"><b>What you changed:</b></p>
       ${changes.length ? `<ul class="why">${changes.join('')}</ul>` : '<p style="margin:0;font-size:14px;color:var(--muted)">Nothing: both runs used the same choices, so the results are the same.</p>'}
@@ -970,27 +1007,27 @@ function showEnd(){
   p.innerHTML = `
     <span class="eyebrow">Results</span>
     <h2 style="font-size:28px;font-stretch:112%;text-transform:uppercase">${dg === 'rise' && dk === 'fall' ? 'GDP grew. Life did not get better.' : dk !== 'fall' ? 'You kept people fed' : 'Six harvests on the mountain'}</h2>
-    <p class="keymsg" style="margin:0"><b>GDP per person ${g2 >= g1 ? 'rose' : 'fell'} ${Math.abs(Math.round((g2/g1 - 1)*100))}%; food per person ${k2 >= k1 ? 'rose' : 'fell'} ${Math.abs(Math.round((k2/k1 - 1)*100))}%.</b> GDP counts silver sent to Spain and China as output. It says nothing about who ate. That gap between growth and welfare is the point of this game.</p>
+    <p class="keymsg" style="margin:0"><b>GDP per person ${g2 >= g1 ? 'rose' : 'fell'} ${Math.abs(Math.round((g2/g1 - 1)*100))}%; food per person ${k2 >= k1 ? 'rose' : 'fell'} ${Math.abs(Math.round((k2/k1 - 1)*100))}%.</b> GDP is an average of everything produced; it says nothing about who ate. That gap between growth and welfare is the point of this game. (GDP counts silver sent to Spain and China as output too; see below for how much of the change it explains.)</p>
     <div class="cmp">
       <div><span>Inca years, food available per person</span><b>${fmt(k1)} kcal</b></div>
       <div><span>Colonial years, food available per person</span><b class="${k2<k1-50?'neg':''}">${fmt(k2)} kcal</b></div>
       <div><span>Caloric Welfare Index, Inca → colonial (classroom model, out of 100)</span><b>${Math.round(avg(a1,'cwi'))} → ${Math.round(avg(a2,'cwi'))}</b></div>
-      <div><span>Inca years, GDP per person (index)</span><b>${gi(g1).toFixed(1)}</b></div>
-      <div><span>Colonial years, GDP per person (index)</span><b class="${g2>g1+5?'pos':''}">${gi(g2).toFixed(1)}</b></div>
-      <div><span>Households below 1,700 kcal, Inca → colonial (model guess)</span><b>${share(a1)}% → ${share(a2)}%</b></div>
+      <div><span>Inca years, GDP per person (index)</span><b>${gi(g1).toFixed(0)}</b></div>
+      <div><span>Colonial years, GDP per person (index)</span><b>${gi(g2).toFixed(0)}</b></div>
+      <div><span>Households below 1,700 kcal, Inca → colonial (model guess: about half fall short even when the average meets the goal)</span><b>${share(a1)}% → ${share(a2)}%</b></div>
     </div>
     ${compareHTML}
     <div class="charts">
-      ${chart('intake', 800, 2000, [{v:GOAL,t:'1,700: course figure (unsourced)',side:'a1',weak:true},{v:COLONIAL,t:'1,200: course figure (unsourced)',side:'a2',weak:true}], '--good', 'Food available, kcal per person per day', '')}
-      ${chart('gidx', 85, 125, [{v:100,t:'c. 1500 = 100',side:'a1'},{v:438/416*100,t:'Maddison: +5% by 1600 (all Latin America)',side:'a2'}], '--gold', 'GDP per person, index (c. 1500 = 100)', '')}
+      ${chart('intake', 800, 2000, [{v:GOAL,t:'Goal 1,700',weak:true}], '--good', 'Food available, kcal per person per day', '')}
+      ${chart('gidx', 85, 125, [{v:100,t:'1500 = 100'}], '--gold', 'GDP per person, index', '', [{i:5, v:438/416*100, t:'1600: 105'}])}
     </div>
-    <p class="eyebrow" style="margin:0">Dotted lines: figures with no confirmed source. Dashed: Maddison's estimates for Latin America as a whole. The game's GDP formula was tuned to start near 416.</p>
+    <p style="margin:0;font-size:13px;color:var(--muted);max-width:70ch">The goal line is the game's target, not a historical measurement. On the GDP chart, the dashed line (100) is Maddison's estimate for Latin America in 1500, and the diamond is his estimate for 1600, a 5% rise. Your game at c. 1600: ${sgn1(gi(S.hist[5].gdp) - 100)} points. The game was tuned to start near Maddison's 1500 level, so matching it there is a design choice, not a test.</p>
     <div>
       <h3 style="font-size:18px;margin-bottom:6px">What the colonial rules did to your harvests 4–6</h3>
-      <p style="margin:0 0 8px;max-width:65ch;font-size:14px">The same people with the same weather, under Inca rules instead (labour duty and feasts, no mita, tribute or silver), would have had about <b>${fmt(cfK)} kcal</b> per person a day and a GDP index of <b>${gi(cfG).toFixed(1)}</b>. Here is where the difference went (averages over harvests 4–6):</p>
+      <p style="margin:0 0 8px;max-width:65ch;font-size:14px">The same people with the same weather, under Inca rules instead (labour duty and feasts, no mita, tribute or silver), would have had about <b>${fmt(cfK)} kcal</b> per person a day (after stores and the eating cap) and a GDP index of <b>${gi(cfG).toFixed(0)}</b>. Here is where the difference went (averages over harvests 4–6):</p>
       <div class="charts" style="gap:12px 24px">
       <table class="ledger"><tbody>
-        <tr><td>Food under Inca rules (same people, same weather)</td><td>${fmt(grownCf)}</td></tr>
+        <tr><td>Food grown under Inca rules (same people, same weather), before stores and the eating cap</td><td>${fmt(grownCf)}</td></tr>
         <tr><td>Labour at Potosí instead of the Inca duty (mita and wage crews)</td><td class="${labourCost>0?'neg':'pos'}">${sgn(-labourCost)}</td></tr>
         <tr><td>Resettlement into towns, far from the fields (reducciones)</td><td class="neg">−${fmt(reducCost)}</td></tr>
         <tr><td>Inca feasts and rations no longer returned</td><td class="neg">−${fmt(feastLost)}</td></tr>
@@ -999,27 +1036,27 @@ function showEnd(){
         <tr class="total"><td>Food available (kcal/day)</td><td>${fmt(k2)}</td></tr>
       </tbody></table>
       <table class="ledger"><tbody>
-        <tr><td>GDP index under Inca rules</td><td>${gi(cfG).toFixed(1)}</td></tr>
+        <tr><td>GDP index under Inca rules</td><td>${gi(cfG).toFixed(0)}</td></tr>
         <tr><td>Field output lost to the mita, wage crews and resettlement</td><td class="${lostVal>0?'neg':'pos'}">${sgn1(-gi(lostVal))}</td></tr>
         <tr><td>Silver from Potosí added to output</td><td class="pos">${sgn1(gi(silv))}</td></tr>
-        <tr class="total"><td>GDP index</td><td>${gi(g2).toFixed(1)}</td></tr>
+        <tr class="total"><td>GDP index</td><td>${gi(g2).toFixed(0)}</td></tr>
       </tbody></table>
       </div>
-      <p style="margin:10px 0 0;max-width:65ch;font-size:15px"><b>So why did GDP per person ${dg === 'rise' ? 'rise' : 'change'} over time (${sgn1(gi(g2-g1))} points)?</b> The colonial rules themselves ${Math.abs(cg) <= 5 ? 'roughly broke even on output: silver came in, field labour went out' : cg > 0 ? `added ${sgn1(gi(cg))} points: silver outweighed the field labour lost` : `cost ${sgn1(gi(cg))} points: the field labour lost outweighed the silver`}. The rest came from the population collapse: fewer people shared the same land, so output per person ${dg === 'rise' ? 'rose' : 'changed'} while the rules took the food.</p>
+      <p style="margin:10px 0 0;max-width:65ch;font-size:15px"><b>So why did GDP per person ${dg === 'rise' ? 'rise' : 'change'} over time (${sgn1(gi(g2-g1))} points)?</b> The colonial rules themselves ${Math.abs(cg) <= 12.5 ? 'roughly broke even on output: silver came in, field labour went out' : cg > 0 ? `added ${sgn1(gi(cg))} points: silver outweighed the field labour lost` : `cost ${sgn1(gi(cg))} points: the field labour lost outweighed the silver`}. The rest came mostly from the population collapse (plus this run's weather and choices): fewer people shared the same land, so output per person ${dg === 'rise' ? 'rose' : 'changed'} while the rules took the food. GDP also moves less than food because most of it, a fixed 340 for everything else produced, is held constant in the game.</p>
       <p style="margin:8px 0 0;max-width:65ch;font-size:14px;color:var(--muted)">This comparison holds the people and the weather fixed, so it shows what the rules did. The harvest-by-harvest charts above also include frost, drought and the population collapse, which is what an observer at the time would have seen. Rows may be off by 1 or 2 from rounding.</p>
     </div>
     <div>
       <h3 style="font-size:18px;margin-bottom:6px">Your predictions</h3>
       <ul class="why">
-        <li>GDP per person would <b>${S.pred.g}</b>. ${right(S.pred.g, dgC)} <span style="color:var(--muted)">(${sgn1(gi(cg))} index points against Inca rules; over time it went ${dg})</span></li>
-        <li>Calories per person would <b>${S.pred.k}</b>. ${right(S.pred.k, dkC)} <span style="color:var(--muted)">(${sgn(ck)} kcal against Inca rules; over time ${dk})</span></li>
+        <li>The colonial rules would make GDP per person <b>${S.pred.g}</b>. ${right(S.pred.g, dgC)} <span style="color:var(--muted)">(${sgn1(gi(cg))} index points against Inca rules; changes within 3 points count as "stay". Over time: ${pastTense(dg)})</span></li>
+        <li>…and food per person <b>${S.pred.k}</b>. ${right(S.pred.k, dkC)} <span style="color:var(--muted)">(${sgn(ck)} kcal against Inca rules. Over time: ${pastTense(dk)})</span></li>
         ${S.hyp ? `<li>Your reasoning: “${esc(S.hyp)}”</li>` : ''}
       </ul>
       <p style="margin:6px 0 0;font-size:13px;color:var(--muted);max-width:65ch">Predictions are checked against what the colonial rules did, with the people and weather held fixed, so a bad frost cannot make a correct prediction look wrong.</p>
     </div>
     <div class="rev">
       <h3 style="font-size:18px;margin-bottom:6px">What would have to be true for this to reverse?</h3>
-      <p style="margin:0 0 10px;font-size:14px;max-width:65ch">This uses the game's core model without weather or stores: food per person from the share of labour in the fields and the land each person farms; GDP from field output plus silver. Move the sliders; the starting values are the game's.</p>
+      <p style="margin:0 0 10px;font-size:14px;max-width:65ch"><b>A simpler model than your game, so its numbers will not match your run.</b> It keeps only the core: the share of labour in the fields, the land each person farms, tribute and silver. It leaves out weather, stores, and survivors moving to the best fields. Use it to see which assumption the result depends on. The sliders start at the game's values.</p>
       <div class="sliders">
         <label for="sl-m">Inca labour duty <output id="o-m"></output></label><input type="range" id="sl-m" min="0" max="30" step="1" value="${INCA_LEVY*100}">
         <label for="sl-t">Colonial tribute, share of harvest <output id="o-t"></output></label><input type="range" id="sl-t" min="0" max="50" step="1" value="${Math.round(tauObs*100)}">
@@ -1030,7 +1067,7 @@ function showEnd(){
     </div>
     <div>
       <h3 style="font-size:18px;margin-bottom:6px">What the record suggests</h3>
-      <p style="margin:0;max-width:65ch">Maddison's estimates for Latin America as a whole have GDP per person rising slightly, from 416 in 1500 to 438 in 1600 (1990 Int$), even as total output and population fell. For this period they are informed guesses, not measurements. Silver is counted as output where it was mined; home-grown food counts too, but at low farm prices, so a fall in food can hide behind a rise in silver. The course benchmark of 1,700 falling to 1,200 kcal a day has no primary source we could confirm, so treat it as a teaching figure. What is well supported: colonial labour drafts pulled workers out of the farming cycle, populations collapsed, and village studies (Wernke &amp; Whitmore 2009) find many households short of food even where the community as a whole produced a surplus. GDP per person is an average of output. It says nothing about who eats.</p>
+      <p style="margin:0;max-width:65ch">Maddison's estimates for Latin America as a whole have GDP per person rising slightly, from 416 in 1500 to 438 in 1600 (1990 Int$), even as total output and population fell. For this period they are informed guesses, not measurements. Output per person can rise for more than one reason: more silver, or fewer people sharing the same land. In this game the second matters more. The course figure of 1,700 falling to 1,200 kcal a day has no primary source we could confirm, so treat it as a teaching figure. From the sources checked so far: colonial labour drafts pulled workers out of the farming cycle, the population fell steeply, and one village study (Wernke &amp; Whitmore 2009, abstract read) finds households short of food even where the community as a whole produced a surplus. GDP per person is an average of output. It says nothing about who eats.</p>
     </div>
     <div class="actions">
       <span class="free" id="copymsg">Copy a text report to paste into your class page.</span>
@@ -1052,7 +1089,7 @@ function showEnd(){
     const tauStar = Math.max(0, 1 - fI/YC), rhoStar = Math.max(0, (1-YC)/d);
     const tag = (v, up, down) => v > 0.005 ? `<span class="chip ok">${up}</span>` : v < -0.005 ? `<span class="chip low">${down}</span>` : '<span class="chip">about the same</span>';
     $('revout').innerHTML = `
-      <p><b>Food per person:</b> ${dF>=0?'+':'−'}${Math.abs(Math.round(dF*100))}% ${tag(dF,'rises','falls')} · ${tauStar > 0.005 ? `it would rise if colonial tribute were below <b>${Math.round(tauStar*100)}%</b> of the harvest.` : 'it would fall even with no tribute: the mita, resettlement and lost feasts outweigh the extra land per survivor.'}</p>
+      <p><b>Food per person:</b> ${dF>=0?'+':'−'}${Math.abs(Math.round(dF*100))}% ${tag(dF,'rises','falls')} · ${tauStar > 0.005 ? `in this model it would rise if colonial tribute were below <b>${Math.round(tauStar*100)}%</b> of the harvest.` : 'in this model the mita, resettlement and lost feasts alone outweigh the extra land per survivor.'}</p>
       <p><b>GDP per person:</b> ${sgn1(gi(dG))} index points ${tag(dG,'rises','falls')} · it would fall if a mine worker's silver were worth less than <b>${rhoStar.toFixed(1)}×</b> a farm worker's output${rhoStar<=0?' (never, at this population fall: more land per survivor already raises output)':''}.</p>
       <p style="color:var(--muted);font-size:13px">Land per person rises as people die, but only a little (α = ${ALPHA}): terraces need hands to keep them up. Resettlement into towns costs about 11% of yields on average over the three colonial harvests; the Inca feasts are lost. The core model ignores which zones you farm: in the game, survivors also move to the best land, so food falls less there than here.</p>`;
   };
@@ -1072,9 +1109,9 @@ function reportText(k1,k2,g1,g2,dg,dk){
   const L = [`Frost and Silver: report${S.who?` by ${S.who}`:''}`, '',
     `Prediction: after the mita, GDP per person would ${S.pred.g} and calories would ${S.pred.k}.`,
     S.hyp ? `Reasoning: ${S.hyp}` : '', '',
-    'Harvest, year | food available kcal/day | GDP index (c. 1500 = 100) | welfare index | people | frost reached | drought',
-    ...S.hist.map(r => `${r.year} ${YEARS[r.year-1]} | ${fmt(r.intake)} | ${gi(r.gdp).toFixed(1)} | ${Math.round(r.cwi)} | ${fmt(r.pop)} | ${r.line===4?'none':ZONES[r.line].name} | ${r.drought?'yes':'no'}`), '',
-    `Inca years average: ${fmt(k1)} kcal, GDP index ${gi(g1).toFixed(1)}. Colonial years average: ${fmt(k2)} kcal, GDP index ${gi(g2).toFixed(1)}.`,
+    'Harvest, year | food available kcal/day | GDP index (Maddison 1500 = 100) | welfare index | people | frost reached | drought',
+    ...S.hist.map(r => `${r.year} ${YEARS[r.year-1]} | ${fmt(r.intake)} | ${gi(r.gdp).toFixed(0)} | ${Math.round(r.cwi)} | ${fmt(r.pop)} | ${r.line===4?'none':ZONES[r.line].name} | ${r.drought?'yes':'no'}`), '',
+    `Inca years average: ${fmt(k1)} kcal, GDP index ${gi(g1).toFixed(0)}. Colonial years average: ${fmt(k2)} kcal, GDP index ${gi(g2).toFixed(0)}.`,
     `Effect of the colonial rules (same people and weather, against Inca rules): GDP ${dg}, calories ${dk}.`, '',
     'Frost and Silver, adapted by Thanakrit Wongsatit from "Week 2: Tahuantinsuyu Harvest & Frost Defense" by Amnuayvit Thitibordin, CC BY-NC-SA 4.0.'];
   return L.filter((l,i,a) => !(l === '' && a[i-1] === '')).join('\n');
@@ -1193,7 +1230,8 @@ function draw(t){
     for (let i=0;i<4;i++){
       if (!r.zr[i].froze) continue;
       const x0 = i*W/4, gy = ground(i), fall = Math.min(1, p*2);
-      ctx.fillStyle = col['--ice']; ctx.globalAlpha = .28 * fall; ctx.fillRect(x0, hudH, W/4, gy - hudH + 8); ctx.globalAlpha = 1;
+      const [sa, sb] = shelf(i), fg = ctx.createLinearGradient(0, hudH, 0, gy + 6); fg.addColorStop(0, col['--ice']); fg.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = fg; ctx.globalAlpha = .45 * fall; ctx.fillRect(sa - 4, hudH, sb - sa + 8, gy - hudH + 6); ctx.globalAlpha = 1;
       const rnd = seeded(97+i);
       for (let k=0;k<26;k++){ const x = x0 + rnd()*W/4, y0 = hudH + rnd()*(gy-hudH); const y = hudH + ((y0 - hudH + p*(gy-hudH)*1.6) % (gy-hudH));
         ctx.fillStyle = col['--snow']; ctx.fillRect(x, y, 2.4, 2.4); }

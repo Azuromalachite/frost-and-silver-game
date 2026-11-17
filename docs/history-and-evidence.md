@@ -1,8 +1,9 @@
 # Frost & Silver: the history behind the game, and how far to trust it
 
 What the game says about the Andes between 1500 and 1600, what each statement
-rests on, and what is the game's own invention. Written 2026-11-17 for the
-version at commit `3ac65ac`.
+rests on, and what is the game's own invention. Kept in step with the game
+(last updated 2026-11-18); `evidence/check_evidence.py` checks that its anchors
+still match the game.
 
 ## Short answers
 
