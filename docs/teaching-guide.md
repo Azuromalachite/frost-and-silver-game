@@ -58,9 +58,13 @@ sweep](strategies-2026-11-18.md)). So reaching 1,700 is not the test. Success is
 - protecting the community: fewer hunger deaths, stores kept, food kept up;
 - explaining, with the end screen's numbers, why GDP rose while food fell.
 
-The end screen says this and shows each student's own numbers. Assess the
-explanation, not the outcome: two students with the same reasoning can get
-different results, because the weather differs between seeds.
+The end screen says this and shows each student's own numbers. It also plays
+the 2,304 tested plans on the student's own weather and names the best one by
+welfare over the whole game, so luck with the weather does not count, and a
+student can replay to try it. It lists the turning points of their game
+(milestones, with the harvest each happened in). Assess the explanation, not the
+outcome: two students with the same reasoning can get different results,
+because the weather differs between seeds.
 
 ## Discussion prompts
 

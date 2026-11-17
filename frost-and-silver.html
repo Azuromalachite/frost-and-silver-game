@@ -152,6 +152,8 @@ input[type=radio]{width:20px;height:20px;accent-color:var(--accent);vertical-ali
 .rtiles b small{font-size:12px;color:var(--muted)}
 .rtiles > div > small{font-size:12px;color:var(--muted)}
 .rtiles > div > small.trend{font:600 12px var(--f-mono)}
+.samewx,.turns{font-size:14px;max-width:70ch}
+.turns .chip{margin:2px 2px 0 0}
 .success{border-left:4px solid var(--good);padding:6px 0 6px 12px;font-size:14px;max-width:70ch}
 .milestone{border:2px solid var(--gold);border-radius:6px;padding:12px 14px;display:grid;gap:4px;background:color-mix(in srgb,var(--gold) 10%,var(--surface));max-width:none!important;animation:msin .35s ease-out}
 .milestone b{font-family:var(--f-display);font-stretch:112%;text-transform:uppercase;font-size:20px}
@@ -1035,7 +1037,7 @@ function milestoneFor(r){
 function showMilestone(r){
   const m = milestoneFor(r);
   if (!m) return;
-  S.seen[m.key] = true;
+  S.seen[m.key] = r.year; // the harvest it happened in, for the end screen
   logAdd(logTag(r.year), `Milestone: ${m.title}.`);
   const wasAuto = PLAY.auto;
   if (wasAuto) { PLAY.auto = false; stopAutoTimers(); renderTransport(); $('tstatus').textContent = `Paused at a milestone: ${m.title}. Press Keep playing or Play to continue.`; }
@@ -1088,7 +1090,8 @@ function renderReplan(){
   el.querySelectorAll('[data-replan]').forEach(b => b.onclick = () => replanTo(b.dataset.replan));
 }
 const replanPending = () => !!(S.replan && !S.replan.kind && !S.replan.done);
-function nextYear(){
+// Moving on, state only (no screen): used by the game and by the same-weather comparison of tested plans.
+function advanceState(){
   const prevBase = S.lastBase ?? BASE_CREWS, usedBefore = used(), before = planCounts();
   S.year++; S.yr = rollYear(); S.phase = 'plan'; S.anim = null;
   const late = S.year === 5;
@@ -1099,6 +1102,16 @@ function nextYear(){
   clampAlloc();
   const {base} = crews(), diff = base - prevBase;
   S.lastBase = base;
+  return {late, diff};
+}
+function collapseState(){ // 1573, state only
+  const popPre = S.pop;
+  S.pop *= (1 - COLLAPSE); // store is per person: half the food lost, shared among half the people
+  S.N1573 = S.pop; S.mitaCrews = BASE_CREWS * S.pop / 1000 / 7; S.tribTotal = TRIB_PP * S.pop;
+  return popPre;
+}
+function nextYear(){
+  const {late, diff} = advanceState();
   const msgs = [];
   if (diff < 0) msgs.push(`${-diff} fewer crew${diff < -1 ? 's' : ''} this year: ${S.year === 4 ? 'conquest and epidemics have halved your community' : 'hunger and disease cost lives'}.`);
   else if (diff > 0) msgs.push(`${diff} more crew${diff > 1 ? 's' : ''} this year: the community grew. Assign ${diff > 1 ? 'them' : 'it'} below.`);
@@ -1129,9 +1142,7 @@ function showTransition(){
     </tbody></table>
     <p>Watch the two numbers above the mountain from now on.</p>`, true);
   $('go').onclick = () => {
-    const popPre = S.pop;
-    S.pop *= (1 - COLLAPSE); // store is per person: half the food lost, shared among half the people
-    S.N1573 = S.pop; S.mitaCrews = BASE_CREWS * S.pop / 1000 / 7; S.tribTotal = TRIB_PP * S.pop;
+    const popPre = collapseState();
     logAdd(logTag(4), `1573: the colonial mita and tribute begin. People ${fmt(popPre)} → ${fmt(S.pop)} after conquest and epidemics (game figure: −50%).`, 'neg');
     closeModal(); nextYear();
   };
@@ -1211,6 +1222,60 @@ function chartIndexed(){
 }
 function dir(a, b, tol){ return b - a > tol ? 'rise' : a - b > tol ? 'fall' : 'stay'; }
 const pastTense = d => ({rise: 'rose', fall: 'fell', stay: 'stayed about the same'})[d];
+const MILESTONE_TITLE = {fed: 'Average reached the goal', paradox: 'Growth without a better life', hunger: 'Hunger', stores: 'Stores used up', frost: 'Killing frost'};
+/* How the player's plan compares with the tested plans ON THE SAME WEATHER (this game's seed), so luck with the
+   weather does not count. The grid is the one in docs/strategies-2026-11-18.md: builds in harvest 1; Inca chuño
+   0-5 and a placing rule; colonial chuño 0-3, wage crews 0-2 and a placing rule. Run in small batches so the
+   page stays responsive. */
+const GRID_ORDER = ['yunga', 'quechua', 'suni', 'puna'];
+const PLAN_GRID = (() => {
+  const builds = [[], ['yunga'], ['quechua'], ['suni'], ['yunga','quechua'], ['yunga','suni'], ['quechua','suni'], ['yunga','quechua','suni']], out = [];
+  for (const build of builds) for (let ic = 0; ic <= 5; ic++) for (const ir of ['best','spread']) for (let cc = 0; cc <= 3; cc++) for (let w = 0; w <= 2; w++) for (const cr of ['best','spread'])
+    out.push({build, incaChuno: ic, incaRule: ir, colChuno: cc, wage: w, colRule: cr});
+  return out;
+})();
+function applyGridPlan(st){
+  const col = act(S.year) === 2;
+  for (const z of GRID_ORDER) { S.alloc[z] = 0; if (S.year > 1) S.building[z] = false; }
+  S.chuno = 0; S.wage = 0;
+  let free = crews().avail;
+  if (S.year === 1) for (const z of GRID_ORDER) S.building[z] = st.build.includes(z);
+  free -= GRID_ORDER.filter(z => S.building[z]).length * 2;
+  const ch = Math.max(0, Math.min(free, col ? st.colChuno : st.incaChuno)); S.chuno = ch; free -= ch;
+  if (col) { const w = Math.max(0, Math.min(free, st.wage)); S.wage = w; free -= w; }
+  const room = z => cap(ZONES.find(q => q.key === z));
+  if ((col ? st.colRule : st.incaRule) === 'best') { for (const z of GRID_ORDER) { const k = Math.min(free, room(z)); S.alloc[z] = k; free -= k; } }
+  else { let moved = true; while (free > 0 && moved) { moved = false; for (const z of GRID_ORDER) if (free > 0 && S.alloc[z] < room(z)) { S.alloc[z]++; free--; moved = true; } } }
+}
+function simulatePlan(seed, st){
+  const keep = S;
+  try {
+    S = fresh(); S.seed = seed; S.year = 1; S.yr = rollYear(); S.phase = 'plan'; clampAlloc();
+    while (S.hist.length < 6) {
+      applyGridPlan(st); harvest();
+      if (S.year === 3) { collapseState(); advanceState(); } else if (S.year < 6) advanceState();
+    }
+    const b = S.hist.slice(3);
+    return {k2: b.reduce((s, r) => s + r.intake, 0) / 3, w: S.hist.reduce((s, r) => s + r.cwi, 0) / 6, deaths: S.hist.reduce((s, r) => s + Math.max(0, r.popBefore - r.pop), 0)};
+  } finally { S = keep; }
+}
+function compareOnSameWeather(seed, mine, done){
+  const res = []; let i = 0;
+  const batch = () => {
+    const stop = Math.min(PLAN_GRID.length, i + 150);
+    for (; i < stop; i++) res.push(simulatePlan(seed, PLAN_GRID[i]));
+    if (i < PLAN_GRID.length) { setTimeout(batch, 0); return; }
+    // Compare with the BEST plan on this weather, not a percentile: the grid includes deliberately poor plans
+    // (its median is far below the default plan), so a rank against it would flatter everyone. "Best" is the
+    // highest welfare over the whole game, not colonial food alone: the plan with the most colonial food can
+    // starve the Inca years to pay for it.
+    let bi = 0;
+    res.forEach((r, j) => { const b = res[bi]; if (r.w > b.w + 0.05 || (Math.abs(r.w - b.w) <= 0.05 && r.deaths < b.deaths)) bi = j; });
+    done({n: res.length, best: res[bi], plan: PLAN_GRID[bi]});
+  };
+  setTimeout(batch, 0);
+}
+
 function showEnd(){
   S.phase = 'end';
   PLAY.auto = false; stopAutoTimers();
@@ -1275,12 +1340,15 @@ function showEnd(){
   }
   LAST = cur;
   const hungerDeaths = S.hist.reduce((s, r) => s + Math.max(0, r.popBefore - r.pop), 0); // deaths from hunger only, not the imposed collapse or epidemics
+  const endSeed = S.seed;
   const p = $('p-end'); p.hidden = false;
   p.innerHTML = `
     <span class="eyebrow">Results</span>
     <h2 style="font-size:28px;font-stretch:112%;text-transform:uppercase">${dg === 'rise' && dk === 'fall' ? 'In your game, GDP grew. Life did not get better.' : dk !== 'fall' ? 'You kept people fed' : 'Six harvests on the mountain'}</h2>
     <p class="keymsg" style="margin:0"><b>GDP per person ${g2 >= g1 ? 'rose' : 'fell'} ${Math.abs(Math.round((g2/g1 - 1)*100))}%; food per person ${k2 >= k1 ? 'rose' : 'fell'} ${Math.abs(Math.round((k2/k1 - 1)*100))}%.</b> GDP is an average of everything produced; it says nothing about who ate. That gap between growth and welfare is the point of this game. (GDP counts silver sent to Spain and China as output too; see below for how much of the change it explains.)</p>
     <div class="success"><b>What counts as success.</b> After 1573 no plan we tested kept food at the 1,700 goal on average: the best of 2,304 strategies averaged about 1,580 kcal, and the default plan about 1,390. So success here is protecting your community, and explaining why GDP and food moved apart. Your colonial years: <b>${fmt(k2)} kcal</b> a day on average, <b>${fmt(hungerDeaths)}</b> ${Math.round(hungerDeaths) === 1 ? 'person' : 'people'} lost to hunger over the game, stores of <b>${fmt(S.store / GOAL * 365)} days</b> at the end.</div>
+    <div class="samewx" id="samewx"><b>Compared with tested plans on the same weather.</b> <span id="samewx-out">Playing the 2,304 tested plans on your weather…</span></div>
+    <div class="turns"><b>Turning points in your game:</b> ${Object.keys(S.seen).length ? Object.entries(S.seen).sort((a, b) => a[1] - b[1]).map(([k, y]) => `<span class="chip ${k === 'fed' ? 'ok' : k === 'paradox' ? '' : 'low'}">${MILESTONE_TITLE[k] || k} · harvest ${y}</span>`).join(' ') : 'none'}</div>
     <div class="cmp">
       <div><span>Inca years, food available per person</span><b>${fmt(k1)} kcal</b></div>
       <div><span>Colonial years, food available per person</span><b class="${k2<k1-50?'neg':''}">${fmt(k2)} kcal</b></div>
@@ -1350,6 +1418,15 @@ function showEnd(){
     </div>
     <p style="margin:0;font-size:14px;color:var(--muted);max-width:65ch"><b style="color:var(--ink)">Predict, track, compare.</b> Change one choice, such as building terraces earlier, storing more chuño or sending fewer crews for wages, and replay with the same weather. The game will set the two runs side by side so you can explain what that one choice changed.</p>
     <textarea id="report" rows="8" readonly hidden></textarea>`;
+  compareOnSameWeather(endSeed, {k2, deaths: hungerDeaths}, c => {
+    const el = $('samewx-out'); if (!el) return;
+    const st = c.plan, crewsN = n => `${n} crew${n === 1 ? '' : 's'}`;
+    const builds = st.build.map(z => ({yunga: 'Valley terraces', quechua: 'Upper-field terraces', suni: 'waru waru'})[z]);
+    const rule = r => r === 'best' ? 'best land first' : 'crews spread across the zones';
+    const how = `${builds.length ? `build ${builds.join(' and ')}` : 'build nothing'}; in the Inca years ${crewsN(st.incaChuno)} on chuño and the rest ${rule(st.incaRule)}; after 1573 ${crewsN(st.colChuno)} on chuño, ${crewsN(st.wage)} for wages, the rest ${rule(st.colRule)}`;
+    const myW = S.hist.reduce((s, r) => s + r.cwi, 0) / S.hist.length;
+    el.innerHTML = `On your weather (seed ${endSeed}), the best of the ${fmt(c.n)} tested plans, judged by welfare over the whole game, scored <b>${Math.round(c.best.w)}</b>, kept ${fmt(c.best.k2)} kcal a day after 1573 and lost ${fmt(c.best.deaths)} people to hunger. It was: ${how}. Your plan scored <b>${Math.round(myW)}</b>, kept ${fmt(k2)} kcal and lost ${fmt(hungerDeaths)}. Try that plan with Replay with the same weather. The tested plans keep one simple rule for each period; yours could change every year. Your explanation of why GDP and food moved apart matters more than this comparison.`;
+  });
   // Core model (expected values, no weather): index 1 = output per person with all labour farming in the Inca years.
   //   food_I = (1−m)^α + r·(1 − (1−m)^α)       food_C = Y_C·(1−τ)
   //   Y_C = (1/(1−c))^(1−α) · (1−d)^α,  d = 1/7 (the 1573 quota)
