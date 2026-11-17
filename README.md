@@ -19,7 +19,7 @@ Each year you:
 - freeze-dry surplus into chuño for the community stores;
 - in the colonial years, choose whether to send crews to Potosí for wages.
 
-One Play/Pause button and Next step control the pace. On Play, each year's plan is dealt into the crew board one crew at a time, so players see where the crews go (the plan is last year's; any click takes over). Milestones (everyone fed, growth without a better life, stores used up, hunger) pause play. A **field and climate log** under the controls keeps one line per event for the whole game: frost and what it cost, dry years, feasts, tribute, stores, deaths and new terraces.
+One Play/Pause button and Next step control the pace. On Play, each year's plan is dealt into the crew board one crew at a time, so players see where the crews go (the plan is last year's; any click takes over). Milestones (the average reaching the goal, growth without a better life, stores used up, hunger) pause play. A **field and climate log** under the controls keeps one line per event for the whole game: frost and what it cost, dry years, feasts, tribute, stores, deaths and new terraces.
 
 Students **predict** before playing, **track** each harvest in a report (four tiles: food, GDP index, welfare index, people; where the food went; and the same numbers knotted as a quipu), and **compare**: "Replay with the same weather" lets them change one choice and see its effect side by side. The end screen compares Inca and colonial harvests on food, a Caloric Welfare Index (50 food, 30 stores, 20 resilience, from the original game) and GDP per person shown as an index (Maddison's 1500 level = 100), and produces a text report to paste into a class page.
 
@@ -46,7 +46,7 @@ The end screen separates two things:
 
 | Mechanism | In the game | Status |
 |---|---|---|
-| Colonial quotas fixed at the 1573 count | mita = one man in seven of the 1573 population; tribute a fixed total (500 kcal per person at 1573, taken in food), so the burden per survivor rises | structure follows Toledo's system; tribute size is a game figure |
+| Colonial quotas set at the 1573 count | mita = one man in seven of the 1573 population; tribute a set total (500 kcal per person at 1573, taken in food). Quotas were not cut as people died; only a slow, contested recount could lower them. The game keeps both fixed, so the burden per survivor rises | structure follows Toledo's system; tribute size is a game figure |
 | Inca labour duty | one man in ten on state and temple fields (into the state qollqa); half that harvest returned as feasts and rations | teaching assumption; the game leaves out exchange and markets (Hirth & Pillsbury 2013) |
 | Land per person | zone output ∝ labour^0.9, so survivors farm more land each, but terraces need hands | teaching assumption (cf. Wernke 2010) |
 | Reducciones | colonial yields 7% lower at c. 1575, 12% at c. 1592, 15% at c. 1600: families resettled into towns far from fields, with the loss building up | mechanism from Wernke 2010; gradual and locally varied (Hunter 2025; de la Puente Luna & Perales 2026); sizes are teaching assumptions |
@@ -59,7 +59,7 @@ Everything else (yields, frost and drought odds, protection, chuño, community s
 
 ### Anchors and their status
 
-- **GDP per person 416 (1500) → 438 (1600):** Maddison's conjectural estimates for Latin America as a whole, not Andes-specific. The game runs a little above 438 in the colonial years.
+- **GDP per person 416 (1500) → 438 (1600):** Maddison's conjectural estimates for Latin America as a whole, not Andes-specific. The game was tuned to land near both, so matching them is a design choice, not a test. It runs a little above 438 in the colonial years.
 - **1,700 → 1,200 kcal per day:** the original game's teaching figure. We could not find a primary source; the game marks it as unsourced.
 - **Households below 1,700 kcal:** a model guess (household food assumed to vary 30% around the average), illustrating the point of Wernke & Whitmore (2009) that households can go short while a region has a surplus.
 
