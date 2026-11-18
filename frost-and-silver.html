@@ -1430,8 +1430,8 @@ function compareOnSameWeather(seed, mine, done){
 // The fair benchmark: ADVANCE_PLAN was chosen on test weathers, before anyone knew this one, and is scored on it.
 function fairVerdict(f, me){
   if (!betterOutcome(f, me)) return 'Your community did as well or better (judged first by hunger deaths, then food after 1573, then welfare).';
-  if (Math.abs(f.deaths - me.deaths) > 0.5) return `It lost ${fmt(me.deaths - f.deaths)} fewer people to hunger.`;
-  if (Math.abs(f.k2 - me.k2) > 5) return `It lost about as many people and kept ${kcal(f.k2 - me.k2)} kcal more a day after 1573.`;
+  if (Math.abs(f.deaths - me.deaths) > 0.5) return `It lost ${fmt(Math.round(me.deaths) - Math.round(f.deaths))} fewer people to hunger.`; // from the rounded figures printed beside it
+  if (Math.abs(f.k2 - me.k2) > 5) return `It lost about as many people and kept ${fmt(Number(kcal(f.k2).replace(/,/g, '')) - Number(kcal(me.k2).replace(/,/g, '')))} kcal more a day after 1573.`;
   return 'It lost about as many people, kept about as much food and scored a little more on welfare.';
 }
 function fairLine(k2, hungerDeaths){
@@ -1623,7 +1623,7 @@ function showEnd(){
   $('again').onclick = restart;
   $('replay').onclick = replaySame;
   $('copy').onclick = () => {
-    const t = reportText(k1,k2,g1,g2,cg,dkC), ta = $('report'); ta.value = t;
+    const t = reportText(k1,k2,g1,g2,cg,dkC,hungerDeaths), ta = $('report'); ta.value = t;
     const ok = () => { $('copymsg').textContent = 'Copied.'; };
     const fail = () => { ta.hidden = false; ta.focus(); ta.select(); $('copymsg').textContent = 'Select the text below and copy it.'; };
     try { navigator.clipboard.writeText(t).then(ok, fail); } catch (e) { fail(); }
@@ -1631,14 +1631,20 @@ function showEnd(){
   p.scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block:'start'});
 }
 function esc(s){ return s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
-function reportText(k1,k2,g1,g2,cg,dk){
+// The copied report is what a teacher marks from, so it carries what the end screen judges: hunger deaths and stores
+// as well as food and GDP, and the comparison with a plan the student could have chosen in advance.
+function reportText(k1,k2,g1,g2,cg,dk,hungerDeaths){
+  const myW = S.hist.reduce((s, r) => s + r.cwi, 0) / S.hist.length, f = simulatePlan(S.seed, ADVANCE_PLAN);
+  const days = v => fmt(v), dead = r => Math.max(0, r.popBefore - r.pop);
   const L = [`Frost and Silver: report${S.who?` by ${S.who}`:''}`, '',
     `Weather: ${wxName(S.mode, S.seed)}.`,
     `Prediction: after the mita, GDP per person would ${S.pred.g} and calories would ${S.pred.k}.`,
-    S.hyp ? `Reasoning: ${S.hyp}` : '', '',
-    'Harvest, year | food available kcal/day | GDP index (Maddison 1500 = 100) | welfare index | people | frost reached | drought',
-    ...S.hist.map(r => `${r.year} ${YEARS[r.year-1]} | ${kcal(r.intake)} | ${gi(r.gdp).toFixed(0)} | ${Math.round(r.cwi)} | ${fmt(r.pop)} | ${r.line===4?'none':ZONES[r.line].name} | ${r.drought?'yes':'no'}`), '',
+    `Reasoning: ${S.hyp || '(none written)'}`, '',
+    'Harvest, year | food available kcal/day | GDP index (Maddison 1500 = 100) | welfare index | people | hunger deaths | stores (days) | frost reached | drought',
+    ...S.hist.map(r => `${r.year} ${YEARS[r.year-1]} | ${kcal(r.intake)} | ${gi(r.gdp).toFixed(0)} | ${Math.round(r.cwi)} | ${fmt(r.pop)} | ${fmt(dead(r))} | ${days(r.storeDays)} | ${r.line===4?'none':ZONES[r.line].name} | ${r.drought?'yes':'no'}`), '',
     `Inca years average: ${kcal(k1)} kcal, GDP index ${gi(g1).toFixed(0)}. Colonial years average: ${kcal(k2)} kcal, GDP index ${gi(g2).toFixed(0)}.`,
+    `Community: ${fmt(hungerDeaths)} ${Math.round(hungerDeaths) === 1 ? 'person' : 'people'} lost to hunger over the game; stores of ${days(S.store / GOAL * 365)} days at the end; welfare ${Math.round(myW)} on average.`,
+    `Plan chosen in advance (Valley terraces; 1 Inca chuño crew; best land first throughout), on the same weather: ${kcal(f.k2)} kcal a day after 1573, ${fmt(f.deaths)} lost to hunger, welfare ${Math.round(f.w)}. ${fairVerdict(f, {deaths: hungerDeaths, k2, w: myW})}`,
     `Re-plan choices when crews fell: ${replanChoices().map(x => REPLAN_WORD[x] || x).join(', ') || 'none'}.`,
     `Effect of the colonial rules (same people and weather, against Inca rules): food ${dk} (graded); GDP ${sgn1(gi(cg))} index points (not graded: it depends on the weather and on the re-plan).`, '',
     'Frost and Silver, adapted by Thanakrit Wongsatit from "Week 2: Tahuantinsuyu Harvest & Frost Defense" by Amnuayvit Thitibordin, CC BY-NC-SA 4.0.'];
