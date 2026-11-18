@@ -36,6 +36,8 @@ claims:
         anchor: Maddison's figures for Latin America as a whole go from 416
       - path: frost-and-silver.html
         anchor: from 416 in 1500 to 438 in 1600
+      - path: frost-and-silver.html
+        anchor: have GDP per person rising about 5% across the 1500s
     notes: Conjectures for a whole continent, not Andes-specific measurements.
 
   - id: claim.gdp.total_fell_per_person_rose
@@ -161,9 +163,10 @@ claims:
 
   - id: claim.game.grading_weather
     statement: >
-      Predictions compare the colonial years with Inca rules for the same people
-      and weather. Only the food prediction is graded. The colonial rules' GDP
-      effect is shown, not graded, because the weather nudges it (silver ignores
+      The food prediction compares the colonial years with Inca rules for the same
+      people and weather, and is the only graded answer. GDP is asked as an
+      ungraded "what raised it?" question, answered from the game's own split,
+      because the colonial rules' GDP effect is weak and the weather nudges it (silver ignores
       the weather while the farm output the mita removes does not: with the
       default plan and best land first, seeds 1-80 give "rise" in 5 runs and
       "stay" in 75) and the student's re-plan moves it (the two re-plan choices
@@ -173,7 +176,7 @@ claims:
     sources: [maddison2003]
     pages:
       - path: frost-and-silver.html
-        anchor: That is one reason the GDP answer is not graded
+        anchor: which is one reason the GDP question is not graded
     notes: >
       Measured 2026-11-18 at commit cea920d (default plan, Next step, seeds 1-80);
       the same 74/6 split was reported in PR #1. The earlier text said a bad
@@ -183,7 +186,10 @@ claims:
       land first: 75 "stay", 5 "rise" (seeds 10, 26, 30, 68, 72). A second combined review
       (main at 902bdbf) showed the grade also depends on the re-plan: keeping the same
       shares gives 40/40, and the two differ on 35 of 80 seeds (reproduced here), so
-      the GDP prediction stopped being graded. Re-measure after any model change.
+      the GDP prediction stopped being graded. On 2026-11-18 (author's decision)
+      it was replaced by the "what raised GDP?" question: the intro's headline
+      says GDP grew, which primed "rise" for an effect that is mostly "stay".
+      Re-measure after any model change.
 
   - id: claim.game.gdp_formula
     statement: >

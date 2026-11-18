@@ -227,6 +227,7 @@ body.autobar-on{padding-bottom:84px} /* room to scroll the last controls clear o
 .intro p{margin:0;max-width:65ch}
 .preds{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
 fieldset{border:1px solid var(--line);border-radius:4px;padding:8px 12px;margin:0;min-width:0}
+.whypick label{display:block;margin:4px 0;white-space:normal}
 .wxpick{margin-top:12px}.wxpick label{display:block;margin:4px 0;white-space:normal}.wxpick .free{margin:6px 0 0;font-size:13px}
 legend{font-weight:700;padding:0 4px}
 fieldset label{margin-right:14px;white-space:nowrap}
@@ -342,15 +343,16 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
     </div>
     <h3 class="introh">Your prediction</h3>
     <div class="preds">
-      <fieldset><legend>Compared with the same people under Inca rules, the colonial rules will make GDP per person…</legend>
-        <label><input type="radio" name="pg" value="rise" id="pg-rise"> rise</label>
-        <label><input type="radio" name="pg" value="stay" id="pg-stay"> stay</label>
-        <label><input type="radio" name="pg" value="fall" id="pg-fall"> fall</label>
-      </fieldset>
-      <fieldset><legend>…and food per person…</legend>
+      <fieldset><legend>Compared with the same people under Inca rules, the colonial rules will make food per person…</legend>
         <label><input type="radio" name="pk" value="rise" id="pk-rise"> rise</label>
         <label><input type="radio" name="pk" value="stay" id="pk-stay"> stay</label>
         <label><input type="radio" name="pk" value="fall" id="pk-fall"> fall</label>
+      </fieldset>
+      <fieldset class="whypick"><legend>Angus Maddison's estimates, informed guesses for all of Latin America, have GDP per person rising about 5% across the 1500s. In this game GDP per person rises too. What do you think will raise it?</legend>
+        <label><input type="radio" name="why" value="silver" id="why-silver"> Silver from the mines</label>
+        <label><input type="radio" name="why" value="people" id="why-people"> Fewer people sharing the land</label>
+        <label><input type="radio" name="why" value="both" id="why-both"> Both</label>
+        <label><input type="radio" name="why" value="unsure" id="why-unsure"> Not sure</label>
       </fieldset>
     </div>
     <fieldset class="wxpick" id="wxpick"><legend>Weather</legend>
@@ -364,7 +366,7 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
       <textarea id="hyp" rows="2" placeholder="e.g. What will the mita and tribute change for a farming family?"></textarea></div>
     <div class="field"><label for="who">Your name (goes on your report)</label>
       <input type="text" id="who" autocomplete="name"></div>
-    <div class="actions"><span class="free" id="intro-msg">Pick both predictions to start.</span><button class="btn" id="start">Start the game →</button></div>
+    <div class="actions"><span class="free" id="intro-msg">Answer both questions to start.</span><button class="btn" id="start">Start the game →</button></div>
     <details class="glossbox"><summary>Words in this game: ayllu, mita, Potosí, quipu, chuño…</summary><ul class="gloss" id="gloss-intro"></ul></details>
   </section>
 
@@ -1364,6 +1366,16 @@ function dir(a, b, tol){ return b - a > tol ? 'rise' : a - b > tol ? 'fall' : 's
 // The re-plan choices of this game, in order (the last one may still be on S.replan).
 const replanChoices = () => [...(S.replanKinds || []), ...(S.replan && S.replan.kind ? [S.replan.kind] : [])];
 const REPLAN_WORD = {best: 'best land first', shares: 'kept the shares', own: 'set by hand'};
+const WHY_LABEL = {silver: 'silver from the mines', people: 'fewer people sharing the land', both: 'both', unsure: 'not sure'};
+// What raised GDP per person over time in this game, as the model splits it (not graded: the split depends on how it
+// is decomposed, and the weather and the re-plan move it). silver: silver's part; lost: field output the mita, wage
+// crews and resettlement took; rest: everything else (fewer people sharing the land, the re-plan, the weather).
+function whyAnswer(silver, lost, rest, total){
+  const p = v => (v >= 0 ? '+' : '−') + Math.abs(v).toFixed(1);
+  const up = [silver > 0.5 && 'silver', rest > 0.5 && 'fewer people (with your re-plan and the weather)'].filter(Boolean);
+  const here = up.length === 2 ? 'Here both raised it.' : up.length === 1 ? `Here ${up[0]} raised it; the rest held it back.` : 'Here neither raised it much.';
+  return `In your game GDP per person changed by ${p(total)} index points: silver ${p(silver)}; field output lost to the mita, wage crews and resettlement ${p(lost)}; everything else, mostly fewer people sharing the land, how you re-planned and the weather, ${p(rest)}. ${here} Which counts as the main cause depends on how you split it: in this game, over 80 test weathers with best land first, without silver GDP per person barely rises (+0.07), and without the collapse it still rises (+5.5). In this game's formula chuño work counts for nothing in GDP. These are the model's results, not a finding about the real 1500s.`;
+}
 const pastTense = d => ({rise: 'rose', fall: 'fell', stay: 'stayed about the same'})[d];
 const MILESTONE_TITLE = {fed: 'Average reached the goal', paradox: 'Growth without a better life', hunger: 'Hunger', stores: 'Stores used up', frost: 'Killing frost'};
 /* How the player's plan compares with the tested plans ON THE SAME WEATHER (this game's seed). The best of them is
@@ -1603,14 +1615,14 @@ function showEnd(){
       <p style="margin:8px 0 0;max-width:65ch;font-size:14px;color:var(--muted)">This comparison holds the people and the weather fixed, so it shows what the rules did. The harvest-by-harvest charts above also include frost, drought and the population collapse, which is what an observer at the time would have seen. Rows may be off by 1 or 2 from rounding.</p>
     </div>
     <div>
-      <h3 style="font-size:18px;margin-bottom:6px">Your predictions</h3>
-      <p style="margin:0 0 6px;font-size:14px;max-width:65ch">Both compare your colonial years with Inca rules in the same years (the same people and weather), not with the start of the game. Only the food prediction is graded: under the colonial rules food fell in every game we tested. The GDP answer is for discussion, because it depends on the weather and on how you re-planned at 1573 (the two re-plan choices give different GDP answers on almost half of the weathers we tested).</p>
+      <h3 style="font-size:18px;margin-bottom:6px">Your answers</h3>
+      <p style="margin:0 0 6px;font-size:14px;max-width:65ch">The food prediction compares your colonial years with Inca rules in the same years (the same people and weather), not with the start of the game, and it is graded: under the colonial rules food fell in every game we tested. The question about GDP has no single right answer, so it is not graded; below is what raised GDP in your game.</p>
       <ul class="why">
-        <li>The colonial rules would make GDP per person <b>${S.pred.g}</b>. <span class="chip">not graded</span> <span style="color:var(--muted)">In your game, with your choices, they changed it by ${(gi(cg) >= 0 ? '+' : '−') + Math.abs(gi(cg)).toFixed(1)} index points against Inca rules (a change of less than 3 points reads as "stay"). Over time GDP ${pastTense(dg)}. Discuss: what made the difference?</span></li>
-        <li>…and food per person <b>${S.pred.k}</b>. ${right(S.pred.k, dkC)} <span style="color:var(--muted)">(${sgn(ck)} kcal against Inca rules. Over time: ${pastTense(dk)})</span></li>
+        <li>Under the colonial rules, food per person would <b>${S.pred.k}</b>. ${right(S.pred.k, dkC)} <span style="color:var(--muted)">(${sgn(ck)} kcal against Inca rules. Over time: ${pastTense(dk)})</span></li>
+        <li>What raised GDP per person? You said: <b>${WHY_LABEL[S.pred.why] || 'no answer'}</b>. <span class="chip">not graded</span> <span style="color:var(--muted)">${whyAnswer(gi(silvC), gi(cg - silvC), gi(g2 - g1 - cg), gi(g2 - g1))}</span></li>
         ${S.hyp ? `<li>Your reasoning: “${esc(S.hyp)}”</li>` : ''}
       </ul>
-      <p style="margin:6px 0 0;font-size:13px;color:var(--muted);max-width:65ch">The comparison holds the people and the weather fixed, which removes most of the weather's effect, but not all of it. Silver does not depend on the weather, while the farm work the mita takes away does, so in a frosty run the colonial rules look a little better for GDP. That is one reason the GDP answer is not graded; your re-plan at 1573 is the other.</p>
+      <p style="margin:6px 0 0;font-size:13px;color:var(--muted);max-width:65ch">The food comparison holds the people and the weather fixed, so it shows what the rules did. The GDP split above does not: the weather and your re-plan at 1573 both move it, which is one reason the GDP question is not graded.</p>
     </div>
     <div class="rev">
       <h3 style="font-size:18px;margin-bottom:6px">What would have to be true for this to reverse?</h3>
@@ -1679,11 +1691,13 @@ function esc(s){ return s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'
 // The copied report is what a teacher marks from, so it carries what the end screen judges: hunger deaths and stores
 // as well as food and GDP, and the comparison with a plan the student could have chosen in advance.
 function reportText(k1,k2,g1,g2,cg,dk,hungerDeaths){
+  const silvRep = S.hist.slice(3).reduce((s, r) => s + r.silver, 0) / 3;
   const myW = S.hist.reduce((s, r) => s + r.cwi, 0) / S.hist.length, f = simulatePlan(S.seed, ADVANCE_PLAN);
   const days = v => fmt(v), dead = r => Math.max(0, r.popBefore - r.pop);
   const L = [`Frost and Silver: report${S.who?` by ${S.who}`:''}`, '',
     `Weather: ${wxName(S.mode, S.seed)}.`,
-    `Prediction: after the mita, GDP per person would ${S.pred.g} and calories would ${S.pred.k}.`,
+    `Prediction (graded): under the colonial rules, food per person would ${S.pred.k}.`,
+    `What raised GDP per person (not graded): ${WHY_LABEL[S.pred.why] || 'no answer'}.`,
     `Reasoning: ${S.hyp || '(none written)'}`, '',
     'Harvest, year | food available kcal/day | GDP index (Maddison 1500 = 100) | welfare index | people | hunger deaths | stores (days) | frost reached | drought',
     ...S.hist.map(r => `${r.year} ${YEARS[r.year-1]} | ${kcal(r.intake)} | ${gi(r.gdp).toFixed(0)} | ${Math.round(r.cwi)} | ${fmt(r.pop)} | ${fmt(dead(r))} | ${days(r.storeDays)} | ${r.line===4?'none':ZONES[r.line].name} | ${r.drought?'yes':'no'}`), '',
@@ -1691,7 +1705,8 @@ function reportText(k1,k2,g1,g2,cg,dk,hungerDeaths){
     `Community: ${fmt(hungerDeaths)} ${Math.round(hungerDeaths) === 1 ? 'person' : 'people'} lost to hunger over the game; stores of ${days(S.store / GOAL * 365)} days at the end; welfare ${Math.round(myW)} on average.`,
     `Plan chosen in advance (Valley terraces; 1 Inca chuño crew; best land first throughout), on the same weather: ${kcal(f.k2)} kcal a day after 1573, ${fmt(f.deaths)} lost to hunger, welfare ${Math.round(f.w)}. ${fairVerdict(f, {deaths: hungerDeaths, k2, w: myW})}`,
     `Re-plan choices when crews fell: ${replanChoices().map(x => REPLAN_WORD[x] || x).join(', ') || 'none'}.`,
-    `Effect of the colonial rules (same people and weather, against Inca rules): food ${dk} (graded); GDP ${sgn1(gi(cg))} index points (not graded: it depends on the weather and on the re-plan).`, '',
+    `Effect of the colonial rules (same people and weather, against Inca rules): food ${dk} (graded).`,
+    `What raised GDP in this game (model result, not graded): silver ${sgn1(gi(silvRep))}; field output lost to the mita, wage crews and resettlement ${sgn1(gi(cg - silvRep))}; everything else (fewer people, the re-plan, the weather) ${sgn1(gi(g2 - g1 - cg))}.`, '',
     'Frost and Silver, adapted by Thanakrit Wongsatit from "Week 2: Tahuantinsuyu Harvest & Frost Defense" by Amnuayvit Thitibordin, CC BY-NC-SA 4.0.'];
   return L.filter((l,i,a) => !(l === '' && a[i-1] === '')).join('\n');
 }
@@ -1716,9 +1731,9 @@ function replaySame(){
   const n = $('notice'); n.textContent = 'Replay: the weather will be the same as your last run. Change one choice and see what it does.'; n.hidden = false;
 }
 $('start').addEventListener('click', () => {
-  const g = document.querySelector('input[name=pg]:checked'), k = document.querySelector('input[name=pk]:checked');
-  if (!g || !k) { $('intro-msg').textContent = 'Pick both predictions first.'; $('intro-msg').classList.add('warn'); return; }
-  S.pred = {g: g.value, k: k.value}; S.hyp = $('hyp').value.trim(); S.who = $('who').value.trim();
+  const why = document.querySelector('input[name=why]:checked'), k = document.querySelector('input[name=pk]:checked');
+  if (!why || !k) { $('intro-msg').textContent = 'Answer both questions first.'; $('intro-msg').classList.add('warn'); return; }
+  S.pred = {k: k.value, why: why.value}; S.hyp = $('hyp').value.trim(); S.who = $('who').value.trim();
   const wx = (document.querySelector('input[name=wx]:checked') || {value: S.mode}).value;
   if (WX_PRESETS[wx]) S.seed = WX_PRESETS[wx].seed;
   else if (wx === 'random' && S.mode !== 'random') S.seed = Math.floor(Math.random() * 2147483646) + 1;

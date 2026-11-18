@@ -94,8 +94,11 @@ because the weather differs between seeds.
   silver, and the collapse (fewer people, re-planned onto their best land).
   With best land first, without silver GDP barely rises; without the collapse it
   still rises. With the same shares the rules are most of a smaller rise. Ask
-  students what each counterfactual removes. The GDP prediction is not graded
-  for this reason; only the food prediction is.
+  students what each counterfactual removes. Students answer this as an
+  ungraded question before playing ("In this game GDP per person rises too.
+  What do you think will raise it? Silver / fewer people sharing the land /
+  both / not sure"), and the end screen shows
+  the split for their own game; only the food prediction is graded.
 - **What did your re-plan at 1573 do?** Putting every crew on the best land
   leaves no chuño and nothing growing up high. Which choice grows more depends on the plan the student held:
   with the starting plan (two chuño crews) keeping the shares grew less food on
@@ -137,12 +140,12 @@ headed "Two models, different questions".
 Before a class, play once on the classroom browser, and once at phone width,
 with a fixed seed:
 
-- [ ] the briefing loads; the predictions and Start the game work;
+- [ ] the briefing loads; the food prediction, the "what raised GDP?" question and Start the game work;
 - [ ] change crews by hand; build terraces; the field log records each harvest;
 - [ ] Play runs, Pause stops it, Next step advances one step;
 - [ ] a milestone pauses play and Keep playing resumes it;
 - [ ] at 1573 the re-plan box appears and the harvest waits for a choice;
-- [ ] the end screen shows the success box, the charts, the graded food prediction and the ungraded GDP answer;
+- [ ] the end screen shows the success box, the charts, the graded food prediction and the answer to "what raised GDP?";
 - [ ] Replay with the same weather gives the same frosts, and the comparison table appears;
 - [ ] Copy report copies the text report;
 - [ ] in dark mode, everything is readable;
