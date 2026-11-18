@@ -123,7 +123,9 @@ input[type=radio]{width:20px;height:20px;accent-color:var(--accent);vertical-ali
 .flog li.neg{color:var(--bad)} .flog li.pos{color:var(--good)}
 .flog li.sum{font-weight:600;border-bottom:1px dashed var(--line);padding-bottom:4px;margin-bottom:4px}
 .ftag{color:var(--muted);font-weight:400}
-.autobar{position:fixed;left:50%;transform:translateX(-50%);bottom:max(8px,env(safe-area-inset-bottom,0px));z-index:30;display:flex;gap:10px;align-items:center;padding:6px 10px;background:var(--surface);border:1px solid var(--line);border-radius:6px;font:12px var(--f-mono);color:var(--ink);width:max-content;max-width:calc(100% - 24px)}
+.autobar{position:fixed;left:max(16px,env(safe-area-inset-left,0px));bottom:max(8px,env(safe-area-inset-bottom,0px));z-index:30;display:flex;gap:10px;align-items:center;padding:6px 10px;background:var(--surface);border:1px solid var(--line);border-radius:6px;font:12px var(--f-mono);color:var(--ink);width:max-content;max-width:min(560px,calc(100% - 32px));box-sizing:border-box}
+body.autobar-on{padding-bottom:84px} /* room to scroll the last controls clear of the bar */
+.sr{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 .transport{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;padding:8px 10px;border-top:1px solid var(--line);background:var(--surface);font-size:13px}
 .tbtn{font:700 13px var(--f-body);padding:6px 12px;border-radius:4px;border:1px solid color-mix(in srgb,var(--ink) 40%,var(--line));background:var(--bg);color:var(--ink);cursor:pointer}
 .tplay{min-width:6.5em}
@@ -308,7 +310,7 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
       </div>
       <div class="forecast" id="forecast" hidden></div>
     </div>
-    <div class="autobar" id="autobar" hidden role="status"><span id="autobar-txt"></span><button class="tbtn" id="autobar-pause">❚❚ Pause</button></div>
+    <div class="autobar" id="autobar" hidden><span id="autobar-txt" aria-hidden="true"></span><span class="sr" id="autobar-sr" role="status"></span><button class="tbtn" id="autobar-pause">❚❚ Pause</button></div>
     <div class="transport" id="transport" hidden>
       <span class="seg" role="group" aria-label="Play mode">
         <button class="tbtn tplay" id="tplay">▶ Play</button><button class="tbtn" id="tstep">Next step ⏭</button>
@@ -385,7 +387,7 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
       <li><b>Resettlement:</b> Toledo's reducciones moved families into nucleated towns, often far from their fields (Wernke 2010). The change came gradually as distant fields and terraces were given up, and it varied from place to place, with some communities negotiating to keep their land (Hunter 2025; de la Puente Luna &amp; Perales 2026). The game lowers colonial yields by 7% at c. 1575, 12% at c. 1592 and 15% at c. 1600; the sizes are teaching assumptions.</li>
       <li><b>Sampled years:</b> harvests 1–3 are consecutive years, but harvests 4–6 are snapshots of c. 1575, 1592 and 1600. Stores, buildings and people carry over between snapshots as a teaching simplification; the game does not model the decades in between (their harvests, losses, births or migration).</li>
       <li><b>Population:</b> a 50% fall before 1573 and 15% more in the 1585–91 epidemics. Historians' estimates vary widely; these are round game figures.</li>
-      <li><b>Stores across the 70 years:</b> the game jumps from harvest 3 (c. 1502) to harvest 4 (c. 1575) and keeps each person's share of the community stores across the gap, so chuño stored under the Inca still feeds people after 1573. That is a game simplification: no store lasts 70 years, and many Inca storehouses were emptied during the conquest and civil wars. Emptying them at 1573 would cut colonial food by about 120 kcal a day with the default plan; the lesson holds either way.</li>
+      <li><b>Stores across the 70 years:</b> the game jumps from harvest 3 (c. 1502) to harvest 4 (c. 1575) and keeps each person's share of the community stores across the gap, so chuño stored under the Inca still feeds people after 1573. That is a game simplification: no store lasts 70 years, and many Inca storehouses were emptied during the conquest and civil wars. Emptying them at 1573 would cut colonial food by about 120 kcal a day with the default plan (measured 2026-11-18); the lesson holds either way.</li>
       <li><b>Re-planning when crews fall:</b> whenever crews fall (at 1573, after the 1585–91 epidemics, and after hunger deaths) you must re-plan fewer crews: keep your plan's shares, put every crew on the best land first, or set them yourself. The choice is yours, and it decides much of the result. With the default plan and seeds 1–80, best land first gives colonial food of about 1,385 kcal a day and keeping the same shares about 1,000; with fewer chuño crews in the plan, keeping the shares can grow more. The re-plan box shows both for the plan you hold. Farming only the best land leaves no chuño crews and nothing growing up high. Before 18 November 2026 the board made this choice silently, always best land first.</li>
       <li><b>Zone yields:</b> the valley yields most and the puna least. With the re-plan above, this sets how much output per person rises after the collapse.</li>
       <li><b>Silver versus food in GDP:</b> GDP per person = 340 + 0.045 × field output + silver. In this game's formula chuño crews add nothing to GDP (preserving food is not counted as output here), so moving crews from chuño to the fields raises measured GDP even though nobody eats more. A mine worker's silver counts somewhat more than a farm worker's output. Teaching assumptions, tuned so the Inca years start near Maddison's 416; the "reverse" panel shows what happens if they are different.</li>
@@ -792,16 +794,30 @@ $('tstep').addEventListener('click', () => {
   else if (S.phase === 'event' && $('go')) $('go').click();
 });
 // While Play runs, a report can push Play/Pause and the countdown off screen; the bar at the bottom repeats them.
+let autobarSaid = '', autobarHeld = false;
 function renderAutobar(){
   const bar = $('autobar'), tr = $('transport'); if (!bar || !tr) return;
-  const b = tr.getBoundingClientRect(), onScreen = !tr.hidden && b.bottom > 0 && b.top < innerHeight;
-  bar.hidden = !(PLAY.auto && !onScreen && S.phase !== 'end');
-  if (!bar.hidden) $('autobar-txt').textContent = $('tstatus').textContent;
+  // the controls count as on screen only when a usable strip of them is visible (a 3 px sliver once hid the bar
+  // for the whole crew deal)
+  const b = tr.getBoundingClientRect(), onScreen = !tr.hidden && Math.min(b.bottom, innerHeight) - Math.max(b.top, 0) >= 40;
+  // after Pause the bar stays (as Play) until the controls come into view, so a paused player is not stranded
+  if (PLAY.auto) autobarHeld = true;
+  if (onScreen || S.phase === 'end') autobarHeld = false;
+  const show = autobarHeld && !onScreen && S.phase !== 'end';
+  bar.hidden = !show; if (document.body) document.body.classList.toggle('autobar-on', show);
+  if (!show) return;
+  $('autobar-txt').textContent = PLAY.auto ? $('tstatus').textContent : 'Paused.';
+  $('autobar-pause').textContent = PLAY.auto ? '❚❚ Pause' : '▶ Play';
+  // screen readers hear what is happening next, not every second of the countdown
+  // the deal is announced once, not crew by crew
+  const now = $('tstatus').textContent.replace(/\s+/g, ' ');
+  const said = !PLAY.auto ? 'Paused.' : /^Auto-plan:/.test(now) ? 'Auto-plan: dealing the crews.' : now.replace(/ in \d+ s\b/, '').split('. ')[0];
+  if (said !== autobarSaid) { $('autobar-sr').textContent = said; autobarSaid = said; }
 }
 // checked on scroll, resize and every status change (the countdown ticks), not by an observer that a background page may never fire
 window.addEventListener('scroll', renderAutobar, {passive: true}); window.addEventListener('resize', renderAutobar);
 new MutationObserver(renderAutobar).observe($('tstatus'), {childList: true, characterData: true, subtree: true});
-$('autobar-pause').addEventListener('click', () => { if (PLAY.auto) $('tplay').click(); renderAutobar(); });
+$('autobar-pause').addEventListener('click', () => { $('tplay').click(); renderAutobar(); }); // Pause, or Play again after a pause
 $('tplay').addEventListener('click', () => {
   if (S.phase === 'event' && $('go') && !PLAY.auto) { PLAY.auto = true; $('go').click(); return; } // Play at 1573 moves on; the re-plan that always follows then pauses for a choice
   PLAY.auto = !PLAY.auto; scheduleAuto();

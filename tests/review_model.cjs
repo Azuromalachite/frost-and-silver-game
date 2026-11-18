@@ -51,6 +51,18 @@ const ADVANCE = {chosen: [true, true, true], w: 67.2, k2: 1550, deaths: 18.9, re
 // The plan offered as chosen in advance, seeds 1-80: welfare must fall after 1573 as food does (the key message). Mean
 // welfare Inca -> colonial and the seeds where it rises; it rose on 49 when resilience could max out with people hungry.
 const ADVANCE_WELFARE = {inca: 73, colonial: 61.3, rises: 19};
+// Quoted elsewhere and checked here (review round 3 found them unchecked):
+// - Hard: the general plan's hunger deaths (intro, teaching guide "92 against 4", hard-mode doc);
+// - Extreme: the fewest hunger deaths of any tested plan (intro "no tested plan avoids hunger", hard-mode doc ~130);
+// - Standard: the plan chosen in advance keeps about 1,530 kcal (teaching guide);
+// - the best of the 2,304 tested plans averages about 1,580 kcal after 1573 (end screen's success box);
+// - the hindsight best, averaged over seeds 1-80 (claim.game.advance_plan);
+// - the rules' food effect averaged over seeds 1-80 (README "about -480", hard-mode doc -479);
+// - the README table of default-plan means (food to the nearest 5 kcal, welfare and GDP index to the nearest 1).
+const HARD_GENERAL_DEATHS = 4.1, EXTREME_MIN_DEATHS = 130.4, STANDARD_ADVANCE_FOOD = 1530, BEST_GRID_FOOD = 1580;
+const HINDSIGHT = {deaths: 16.3, k2: 1561, w: 67.5, reach1700: 22};
+const RULES_FOOD_EFFECT_1_80 = -479;
+const README_MEANS = {food: [1675, 1385], welfare: [64, 46], gdp: [102, 109]};
 const REPLAN = 'best'; // the pinned run's re-plan choice
 
 function load(html) {
@@ -155,11 +167,13 @@ function check(html, {heavy = true} = {}) {
     soft(() => assert.deepEqual(presetOut[key], p.def, `weather preset ${key} (seed ${p.seed}) benchmark moved: re-run tools/seeds.html and update WX_PRESETS and docs/hard-mode-2026-11-18.md together`));
   }
   const gen = playPlans(code, presets.hard.seed, () => GENERAL);
-  soft(() => assert.ok(gen.deaths < 10, `weather preset hard: the general plan lost ${r1(gen.deaths)} people; the intro says careful planning saves many lives (docs/hard-mode-2026-11-18.md: 4)`));
+  soft(() => assert.equal(r1(gen.deaths), HARD_GENERAL_DEATHS, `weather preset hard: the general plan lost ${r1(gen.deaths)} people, recorded ${HARD_GENERAL_DEATHS}; the intro says careful planning saves many lives: update HARD_GENERAL_DEATHS, the teaching guide and docs/hard-mode-2026-11-18.md`));
+  const stdAdv = playPlans(code, presets.standard.seed, () => g.ADVANCE_PLAN);
+  soft(() => assert.equal(Math.round(stdAdv.k2 / 10) * 10, STANDARD_ADVANCE_FOOD, `on Standard the plan chosen in advance keeps ${Math.round(stdAdv.k2)} kcal, recorded about ${STANDARD_ADVANCE_FOOD}: update the teaching guide and STANDARD_ADVANCE_FOOD`));
   if (heavy) {
     const ge = make(code, presets.extreme.seed);
     const minDeaths = Math.min(...ge.PLAN_GRID.map(p => ge.simulatePlan(presets.extreme.seed, p).deaths));
-    soft(() => assert.ok(minDeaths >= 100, `weather preset extreme: a tested plan lost only ${r1(minDeaths)} people; the intro says no tested plan avoids hunger`));
+    soft(() => assert.equal(r1(minDeaths), EXTREME_MIN_DEATHS, `weather preset extreme: the fewest hunger deaths of any tested plan is ${r1(minDeaths)}, recorded ${EXTREME_MIN_DEATHS}; the intro says no tested plan avoids hunger: update EXTREME_MIN_DEATHS and docs/hard-mode-2026-11-18.md`));
     presetOut.extremeMinDeaths = r1(minDeaths);
   }
   for (const key of ['hard', 'extreme']) soft(() => {
@@ -219,10 +233,22 @@ function check(html, {heavy = true} = {}) {
     advance = {chosen: [pick(1, 40), pick(41, 80), pick(1, 80)].map(j => j === aj),
       w: r1(W.reduce((s, w) => s + w[aj], 0) / 80), k2: Math.round(K.reduce((s, k) => s + k[aj], 0) / 80), deaths: r1(D.reduce((s, d) => s + d[aj], 0) / 80), reach1700: K.filter(k => k[aj] >= 1700).length};
     soft(() => assert.deepEqual(advance, ADVANCE, 'the advance plan is no longer the best chosen on seeds 1-40, 41-80 and 1-80, or its record moved: update ADVANCE_PLAN, claim.game.advance_plan and ADVANCE'));
+    // the hindsight best on each weather (the end screen's rule), averaged over seeds 1-80
+    const hb = Array.from({length: 80}, (_, s) => grid.reduce((bj, _p, j) => g.betterOutcome({deaths: D[s][j], k2: K[s][j], w: W[s][j]}, {deaths: D[s][bj], k2: K[s][bj], w: W[s][bj]}) ? j : bj, 0));
+    const hindsight = {deaths: r1(hb.reduce((t, j, s) => t + D[s][j], 0) / 80), k2: Math.round(hb.reduce((t, j, s) => t + K[s][j], 0) / 80),
+      w: r1(hb.reduce((t, j, s) => t + W[s][j], 0) / 80), reach1700: hb.filter((j, s) => K[s][j] >= 1700).length};
+    soft(() => assert.deepEqual(hindsight, HINDSIGHT, 'the hindsight best\'s record over seeds 1-80 moved: update claim.game.advance_plan and HINDSIGHT'));
+    const bestGridFood = Math.max(...grid.map((_, j) => mean(K, j, 1, 80)));
+    soft(() => assert.equal(Math.round(bestGridFood / 10) * 10, BEST_GRID_FOOD, `the best tested plan averages ${Math.round(bestGridFood)} kcal after 1573, the end screen says about ${BEST_GRID_FOOD}: update both`));
+    presetOut.hindsight = hindsight; presetOut.bestGridFood = Math.round(bestGridFood);
   }
 
-  if (fails.length) throw new assert.AssertionError({message: fails.join('\n')});
   const mean = k => [0, 1].map(i => runs.best.reduce((s, t) => s + t[k][i], 0) / runs.best.length);
+  const ckMean = Math.round(runs.best.reduce((s, t) => s + t.ck, 0) / runs.best.length);
+  soft(() => assert.equal(ckMean, RULES_FOOD_EFFECT_1_80, `the rules' food effect averages ${ckMean} kcal over seeds 1-80, recorded ${RULES_FOOD_EFFECT_1_80}: update README, docs/hard-mode-2026-11-18.md and RULES_FOOD_EFFECT_1_80`));
+  const readme = {food: mean('food').map(v => Math.round(v / 5) * 5), welfare: mean('welfare').map(Math.round), gdp: mean('gdp').map(Math.round)};
+  soft(() => assert.deepEqual(readme, README_MEANS, 'the README table of default-plan means moved: update README.md and README_MEANS'));
+  if (fails.length) throw new assert.AssertionError({message: fails.join('\n')});
   return {pinned, presets: presetOut, hard_general_plan: {deaths: r1(gen.deaths), w: r1(gen.w)}, gdp_reads_1_80: counts, replan_gdp_disagree: disagree,
     advance_plan: advance, advance_welfare: aw, food_falls: foodFalls, mean_colonial_food: meanFood, field_loss: {total: r1(mb('lostIdx')), resettlement: r1(-mb('resettleIdx'))}, shares_wins: sharesWins, changing_wins: changingWins,
     means_1_80_best_land:{food:mean('food'), welfare:mean('welfare'), gdp:mean('gdp')}};
@@ -238,6 +264,12 @@ function checkDocs(pinned, texts) {
     assert.ok(text.includes('`' + pinnedLine(pinned) + '`'), `${name} does not quote the pinned run ${pinnedLine(pinned)}`);
 }
 const docTexts = () => Object.fromEntries(['CONTRIBUTING.md', 'AGENTS.md'].map(f => [f, fs.readFileSync(path.join(__dirname, '..', f), 'utf8')]));
+function checkReadme(m, text) {
+  const k = v => '~' + v.toLocaleString('en-US');
+  for (const row of [`| ${k(m.food[0])} kcal | ${k(m.food[1])} kcal |`, `| ${k(m.welfare[0])} | ${k(m.welfare[1])} |`, `| ${k(m.gdp[0])} | ${k(m.gdp[1])} |`])
+    assert.ok(text.includes(row), `README.md's table of default-plan means does not quote ${row}`);
+}
+const readmeText = () => fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
 
 // Each planted change must make check() fail, with every expected assertion among the failures.
 // The last field (heavy) also runs the slow checks (the 2,304-plan grid), needed only by the plants that target them.
@@ -250,7 +282,8 @@ const PLANTS = [
   // the tolerance moves only how the GDP effect reads, not the pinned numbers
   ['GDP tolerance changed', 'const GDP_TOL = 12.5;', 'const GDP_TOL = 2.5;', [/reading split/]],
   // a preset pointing at another seed must fail on its benchmark, not slip through to the end screen
-  ['Hard preset seed changed', 'hard:     {seed: 313,', 'hard:     {seed: 314,', [/weather preset hard/]],
+  ['Hard preset seed changed', 'hard:     {seed: 313,', 'hard:     {seed: 314,', [/weather preset hard \(seed/, /the general plan lost/]],
+  ['Extreme preset seed changed', 'extreme:  {seed: 2024,', 'extreme:  {seed: 2025,', [/weather preset extreme \(seed/, /fewest hunger deaths of any tested plan/], true],
   // Start ignoring the radio: the seed stays random
   ['Start ignores the weather choice', 'if (WX_PRESETS[wx]) S.seed = WX_PRESETS[wx].seed;', 'if (WX_PRESETS[wx]) S.seed = S.seed;', [/weather choice hard/]],
   // "Keep the same shares" silently doing best land first: no board then does better by keeping its shares,
@@ -283,6 +316,10 @@ function selfTest(html) {
   try { checkDocs(PINNED.map((v, i) => i === 1 ? v + 10 : v), docTexts()); } catch (e) { docErr = e; }
   assert.ok(docErr && /does not quote the pinned run/.test(docErr.message), 'self-test: a pinned line that differs from the docs was not caught');
   console.log('caught: docs quoting a different pinned run');
+  let rmErr = null;
+  try { checkReadme({...README_MEANS, welfare: [README_MEANS.welfare[0] + 1, README_MEANS.welfare[1]]}, readmeText()); } catch (e) { rmErr = e; }
+  assert.ok(rmErr && /does not quote/.test(rmErr.message), 'self-test: a README table that differs from the model was not caught');
+  console.log('caught: README quoting different means');
   console.log(`confirmed: all ${PLANTS.length} planted model changes and the docs mismatch are rejected`);
 }
 
@@ -291,6 +328,6 @@ if (require.main === module) {
   const file = args.find(a => !a.startsWith('--')) || path.join(__dirname, '..', 'frost-and-silver.html');
   const html = fs.readFileSync(file, 'utf8');
   if (args.includes('--self-test')) selfTest(html);
-  else { checkDocs(PINNED, docTexts()); console.log(JSON.stringify({commit:process.env.GITHUB_SHA || 'local', ...check(html)}, null, 2)); }
+  else { checkDocs(PINNED, docTexts()); checkReadme(README_MEANS, readmeText()); console.log(JSON.stringify({commit:process.env.GITHUB_SHA || 'local', ...check(html)}, null, 2)); }
 }
 module.exports = {load, make, finish, check};
