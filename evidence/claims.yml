@@ -677,12 +677,12 @@ claims:
 
   - id: claim.colonial.fixed_quotas
     statement: >
-      Mita and tribute quotas were set from 1570s population counts and were not
-      cut as people died; only a new count could lower them, so the burden per
-      survivor rose.
+      Colonial obligations were assessed from population counts, but tribute
+      assessments and official mita allocations followed different paths of
+      adjustment; the game holding both totals fixed is a simplification.
     layer: documented
     status: partly_supported
-    sources: [upenn_dia_mita]
+    sources: [upenn_dia_mita, zagalsky2014]
     pages:
       - path: frost-and-silver.html
         anchor: When people died, the quotas were not cut to match.
@@ -692,8 +692,12 @@ claims:
       Quota-setting from the 1570s counts is supported by a reference work. How
       often recounts (revisitas) lowered them is not settled here: tribute could be
       reassessed (claim.research.tribute_reassessment), and whether mita quotas
-      were reset in practice is an open question (Cole 1985 is where to check).
+      were reset in practice is partly addressed by claim.research.quota_tribute_paths
+      and claim.research.quota_fulfilment; Cole (1985) remains a reading lead.
       The game keeps both fixed; that is a simplification, labelled in the game.
+      The historical statement is narrowed here; the player-facing wording that
+      groups both obligations together remains a documented follow-up in the
+      food-access implementation review, not a reason to upgrade this claim.
       The PR #1 review removed the book-presentation transcript from this claim's
       sources, because it qualifies the claim rather than supporting it.
 
@@ -702,13 +706,14 @@ claims:
       Potosí also used paid workers (mingas), and women worked in ore sorting,
       refining and trade.
     layer: documented
-    status: unverified
-    sources: [gilmontero_zagalsky2016, barragan2020]
+    status: partly_supported
+    sources: [gilmontero_zagalsky2016, barragan2020, arroyoabad_etal2012]
     pages:
       - path: frost-and-silver.html
         anchor: Potosí also ran on paid workers (mingas)
       - path: docs/history-and-evidence.md
         anchor: Potosí also ran on paid workers (mingas)
+    notes: Selected direct readings support paid labour and women in processing and trade; the Gil Montero and Zagalsky source remains from notes. No historical wage-to-calorie coefficient follows.
 
   - id: claim.game.tribute_in_food
     statement: >
@@ -1303,3 +1308,93 @@ claims:
       - path: docs/climate-weather-literature-2026-11-18.md
         anchor: "Own-farm production shortfalls do not establish observed starvation."
     notes: "Production sufficiency model excludes or cannot fully quantify tribute, herding, exchange and sharing; not measured daily consumption or mortality."
+
+  - id: claim.research.wage_purchasing_power
+    statement: "Reconstructed purchasing power differs between free miners and mita workers."
+    layer: estimate
+    status: partly_supported
+    sources: [arroyoabad_etal2012]
+    pages:
+      - path: docs/food-access-recovery-literature-2026-11-18.md
+        anchor: "Reconstructed purchasing power differs between free miners and mita workers."
+    notes: "Urban wage and basket reconstruction; not observed intake or a calibrated benefit from one game wage crew."
+
+  - id: claim.research.quota_tribute_paths
+    statement: "Official mita allocations were more rigid than tribute reassessments in the cases studied."
+    layer: interpretation
+    status: partly_supported
+    sources: [zagalsky2014]
+    pages:
+      - path: docs/food-access-recovery-literature-2026-11-18.md
+        anchor: "Official mita allocations were more rigid than tribute reassessments in the cases studied."
+    notes: "The study concerns early colonial Potosi and selected regional cases, not universal immunity from quota changes."
+
+  - id: claim.research.quota_fulfilment
+    statement: "Fixed allocations could be fulfilled through labour, money or mixed arrangements."
+    layer: documented
+    status: partly_supported
+    sources: [zagalsky2014]
+    pages:
+      - path: docs/food-access-recovery-literature-2026-11-18.md
+        anchor: "Fixed allocations could be fulfilled through labour, money or mixed arrangements."
+    notes: "Detailed 1610 fulfilment evidence is later than the game; official allocations and actual attendance are different quantities."
+
+  - id: claim.research.seed_network_recovery
+    statement: "Seed exchange can support recovery after crop failure, with access differing by cultivar and farmer."
+    layer: interpretation
+    status: partly_supported
+    sources: [arce_etal2018]
+    pages:
+      - path: docs/food-access-recovery-literature-2026-11-18.md
+        anchor: "Seed exchange can support recovery after crop failure, with access differing by cultivar and farmer."
+    notes: "Retrospective modern survey with non-contemporaneous recalled seasons; does not supply a causal recovery rate."
+
+  - id: claim.research.weevil_spatial_scale
+    statement: "Local potato clustering was associated with lower weevil infestation in a rotating landscape."
+    layer: documented
+    status: partly_supported
+    sources: [parsa_etal2011]
+    pages:
+      - path: docs/food-access-recovery-literature-2026-11-18.md
+        anchor: "Local potato clustering was associated with lower weevil infestation in a rotating landscape."
+    notes: "One growing season and a specific walking pest; not a universal diversity penalty or evidence for continuous monocropping."
+
+  - id: claim.research.herd_nonfood_services
+    statement: "Herds supplied fuel and fertilizer through their dung."
+    layer: documented
+    status: partly_supported
+    sources: [winterhalder_etal1974]
+    pages:
+      - path: docs/food-access-recovery-literature-2026-11-18.md
+        anchor: "Herds supplied fuel and fertilizer through their dung."
+    notes: "Small modern mixed-livestock study; access and collection costs matter. Does not calibrate precolonial herds or carrying capacity."
+
+  - id: claim.research.dung_ash_recycling
+    statement: "Returning dung ash to fields recycles some nutrients without restoring all benefits of unburned manure."
+    layer: documented
+    status: partly_supported
+    sources: [sillar2000]
+    pages:
+      - path: docs/food-access-recovery-literature-2026-11-18.md
+        anchor: "Returning dung ash to fields recycles some nutrients without restoring all benefits of unburned manure."
+    notes: "Ethnographic account, not a calibrated nutrient balance or universal fertilizer substitution rate."
+
+  - id: claim.research.adoption_transition_costs
+    statement: "Construction downtime and learning risks constrained kiln adoption in Sillar's account."
+    layer: interpretation
+    status: partly_supported
+    sources: [sillar2000]
+    pages:
+      - path: docs/food-access-recovery-literature-2026-11-18.md
+        anchor: "Construction downtime and learning risks constrained kiln adoption in Sillar's account."
+    notes: "Interpretation of modern pottery adoption; no numerical transfer to terraces, raised fields or stores."
+
+  - id: claim.research.household_mining_work
+    statement: "Women participated in ore processing and trade within Potosi's mining economy."
+    layer: documented
+    status: partly_supported
+    sources: [barragan2020]
+    pages:
+      - path: docs/food-access-recovery-literature-2026-11-18.md
+        anchor: "Women participated in ore processing and trade within Potosi's mining economy."
+    notes: "Read period-specific passages; later banking statistics and a complete provisioning/care budget are not used as sixteenth-century evidence."

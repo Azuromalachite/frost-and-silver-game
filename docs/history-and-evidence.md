@@ -91,8 +91,8 @@ years in a row; harvests 4–6 are snapshots decades apart.
 | claim in the game | label | source and limits |
 | --- | --- | --- |
 | The Potosí mita drew one adult man in seven, from a defined mita region, not from every community | documented | Checked in this project (Dell 2010 uses that boundary). |
-| Mita and tribute quotas were set from census counts and not cut as people died, so the burden per survivor rose | documented (partly) | Checked in this project from a reference work on Toledo's mita and tribute. Only a new count (revisita) could lower quotas; tribute could be reassessed this way, and whether mita quotas were reset in practice is open (question 6). The game keeps both fixed, a labelled simplification. |
-| Potosí also ran on paid workers (mingas); women worked in ore sorting, refining and trade | documented, from notes | Gil Montero & Zagalsky (2016); Barragán Romano (2020). The game's wage crews stand in for paid work. |
+| Mita and tribute quotas were set from census counts, with differing paths of adjustment | documented (partly) | The teaching reference describes count-based obligations. Selected sections of Zagalsky (2014) distinguish more rigid official mita allocations from tribute reassessment and distinguish allocations from actual labour or money payments (question 6). The game keeps both fixed as a simplification; its grouped recount wording still needs qualification. |
+| Potosí also ran on paid workers (mingas); women worked in ore sorting, refining and trade | documented, partly supported | Gil Montero & Zagalsky (2016), from notes; Barragán Romano (2020), selected sections read. The game's wage crews stand in for paid work. |
 | Tribute is taken as food: 500 kcal per person per day at the 1573 count | game assumption | The real tribute was a fixed amount per adult man, paid in silver and goods. The size is chosen to calibrate the game. |
 | Resettlement into towns (reducciones) put many fields far from home | documented | Wernke (2010). |
 | Resettlement cut yields by 7% (c. 1575), 12% (c. 1592) and 15% (c. 1600) | game assumption | Hunter (2025) and de la Puente Luna & Perales (2026), from notes: the change was gradual and varied from place to place. The sizes are invented. |
@@ -150,9 +150,10 @@ years in a row; harvests 4–6 are snapshots decades apart.
 1. Where does the 1,700 → 1,200 kcal figure come from? The original game's
    author may know.
 2. How much of the rise in GDP per person was silver and how much was more
-   land per survivor? Arroyo Abad, Davies & van Zanden (2012) and Arroyo Abad
-   & van Zanden (2016) should be read for this; this document has not yet
-   done so.
+   land per survivor? Selected sections of Arroyo Abad, Davies & van Zanden
+   (2012) are now read in the [food-access review](food-access-recovery-literature-2026-11-18.md).
+   Its wage reconstruction does not identify that decomposition for this
+   community. Arroyo Abad & van Zanden (2016) remains from notes.
 3. How large was the Inca labour duty, and how much came back?
 4. How quickly did resettlement and the abandonment of terraces cut yields,
    and where?
@@ -161,7 +162,12 @@ years in a row; harvests 4–6 are snapshots decades apart.
    common for annual means? The original author may know.
 6. Were mita quotas reset by recounts (revisitas) in practice, as tribute
    could be (claim.research.tribute_reassessment), and how long did a
-   recount take? Cole (1985) is the place to check. The game keeps both fixed.
+   recount take? Zagalsky (2014), selected sections now read, supports greater
+   rigidity in official mita allocations than tribute reassessment
+   (claim.research.quota_tribute_paths), while distinguishing allocation from
+   fulfilment in labour or money (claim.research.quota_fulfilment). Its detailed
+   1610 evidence is later than the game. Adjustment timing and local application
+   remain open; Cole (1985) is another reading lead. The game keeps both fixed.
 7. Which bad years hit some heights and spared others: frost pockets on valley
    floors, drought, hail, pests? The game could reward spreading crews only if
    its shocks differed by zone, and that needs a source first
@@ -188,11 +194,11 @@ years in a row; harvests 4–6 are snapshots decades apart.
 | --- | --- | --- |
 | Maddison, A. (2003). *The World Economy: Historical Statistics*. OECD. | GDP estimates | figures checked |
 | Arroyo Abad, L., & van Zanden, J. L. (2016). Growth under extractive institutions? *Journal of Economic History*, 76(4), 1182–1215. https://doi.org/10.1017/S0022050716000954 | colonial growth | no |
-| Arroyo Abad, L., Davies, E., & van Zanden, J. L. (2012). Between conquest and independence: real wages and demographic change in Spanish America, 1530–1820. *Explorations in Economic History*, 49(2), 149–166. | wages and depopulation | no |
+| Arroyo Abad, L., Davies, E., & van Zanden, J. L. (2012). Between conquest and independence: real wages and demographic change in Spanish America, 1530–1820. *Explorations in Economic History*, 49(2), 149–166. | wages and depopulation | selected passages, PDF pp. 4-8, 11 and 14 |
 | Bolt, J., & van Zanden, J. L. (2025). Maddison-style estimates of the evolution of the world economy: a new 2023 update. *Journal of Economic Surveys*. https://doi.org/10.1111/joes.12618 | dollar units | from notes |
 | Dell, M. (2010). The persistent effects of Peru's mining mita. *Econometrica*, 78(6), 1863–1903. https://doi.org/10.3982/ECTA8121 | mita region | boundary checked |
 | Gil Montero, R., & Zagalsky, P. C. (2016). Colonial organization of mine labour in Charcas. *International Review of Social History*. https://doi.org/10.1017/S0020859016000456 | mita and paid labour | from notes |
-| Barragán Romano, R. (2020). Women in the silver mines of Potosí. *International Review of Social History*. https://doi.org/10.1017/S0020859019000555 | women's work | from notes |
+| Barragán Romano, R. (2020). Women in the silver mines of Potosí. *International Review of Social History*. https://doi.org/10.1017/S0020859019000555 | women's work | selected publisher sections |
 | Wernke, S. A., & Whitmore, T. M. (2009). Agriculture and inequality in the colonial Andes. *Human Ecology*, 37, 421–440. https://doi.org/10.1007/s10745-009-9261-2 | household shortfalls | selected pp. 428-437 |
 | Wernke, S. A. (2010). A reduced landscape. *Journal of Latin American Geography*, 9(3), 51–83. | reducciones, terraces | no |
 | Hunter, R. A. (2025). The structural transformation of Ollantaytambo's Inka ecology under Spanish rule. *Antiquity*. https://doi.org/10.15184/aqy.2024.200 | gradual change | from notes |
@@ -239,3 +245,13 @@ a reproducible counterexample to the assertion that weather cannot change a
 prediction grade. The game's wording was corrected after it
 (claim.game.grading_weather). The historical and model limitations remain even when the
 registry checker passes.
+
+## Food access and recovery addendum, 18 November 2026
+
+The [seven-paper review](food-access-recovery-literature-2026-11-18.md) distinguishes
+reconstructed purchasing power from consumption, official quotas from actual
+labour or payments, and food inventory from productive reserves. It also qualifies
+generic diversification and fuel-versus-fertilizer rules. The
+[implementation review](food-access-recovery-gaps-2026-11-18.md) records current code
+limits and research gates on main through PR #29. These notes do not implement
+new markets, stocks, pests, protection costs or historical parameters.

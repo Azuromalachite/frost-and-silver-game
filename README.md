@@ -136,6 +136,14 @@ evidence notes and proposed behaviour, with no gameplay changes or new calibrate
 weather parameters. All new source readings are recorded as `sections_read` and
 the eleven new claims as `partly_supported`.
 
+The [seven-paper food-access and recovery review](docs/food-access-recovery-literature-2026-11-18.md)
+examines wages and purchasing power, quota fulfilment, seed exchange, spatial pest
+effects, dung resources and household mining work. Its
+[implementation-gap review](docs/food-access-recovery-gaps-2026-11-18.md) is based
+on main through PR #29 and proposes an order of work without changing gameplay.
+Five sources are newly registered and two earlier readings extended; all seven
+are `sections_read`, with nine new claims at `partly_supported`.
+
 ## Credits and licence
 
 Adapted from [“Week 2: Tahuantinsuyu Harvest & Frost Defense”](https://superlative-sprinkles-2653a1.netlify.app/) by Amnuayvit Thitibordin, licensed [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
