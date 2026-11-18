@@ -43,7 +43,7 @@ herds, obligations). A model that changes the structure is compared with the gam
 | # | question | status |
 |---|---|---|
 | 1 | Does the lesson survive the game's structural choices (the player's plan; fixed tribute)? | done: robust, all four cells ≥ 2/3 ([results](results/2026-11-18-structural-robustness.md)) |
-| 2 | When does work at Potosí raise a household's food? | done: hired work raised food in 3.4% of draws, mita in 0%; supports the game's rule within these ranges; the Godoy costs carry it ([results](results/2026-11-19-wage-food-breakeven.md)). 2b waits for Bakewell pp. 102–104 prices |
+| 2 | When does work at Potosí raise a household's food? | done: hired work raised food in 3.4% of draws, mita in 0%; supports the game's rule within these ranges; the Godoy costs carry it ([results](results/2026-11-19-wage-food-breakeven.md)). 2b [inputs transcribed](../docs/bakewell-purchasing-power-transcription-2026-11-19.md); [execution addendum](pre-registrations/2026-11-19-wage-food-2b-execution.md) prepared, no re-run yet |
 
 ## Layout
 

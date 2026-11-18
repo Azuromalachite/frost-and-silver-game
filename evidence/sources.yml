@@ -327,11 +327,11 @@ sources:
     author: Peter Bakewell
     date: 1984
     access: sections_read
-    by: Codex processing and income review
-    when: 2026-11-18
+    by: Codex supplied-page transcription
+    when: "2026-11-19"
     url: https://archive.org/details/minersofredmount0000bake
-    locator: "Supplied page images, pp. 100-111, 122-125 and 132-133"
-    notes: "Partial book access resolves selected wage and budget sections. Statutory pay, hired work, substitution and ore rights differ. The 1608 Godoy estimate is not representative consumption. The pre-existing silver-surge claim remains unverified; this read is not a production-series audit."
+    locator: "Previously selected pp. 100-111, 122-125, 132-133; page images 102-105 and 122-125 visually rechecked for table transcription on 2026-11-19"
+    notes: "Partial book only. Rounded food-purchasing-power and cash-wage tables visually checked on supplied pages; ordinary peso/reales pairing explicit on pp. 124-125. Historical prices, prescribed wages, hired work, substitute premiums and ore rights differ. Godoy costs are not representative consumption; silver-output claim remains unverified."
 
   - key: thitibordin_game
     title: "Week 2: Tahuantinsuyu Harvest & Frost Defense (Interactive Game), and its author's description"

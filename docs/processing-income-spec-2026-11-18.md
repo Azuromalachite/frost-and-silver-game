@@ -121,8 +121,9 @@ Supplied page images cover pp. 100-111, 122-125 and 132-133. Prescribed rates,
 occupation, period and ore compensation matter. Around 1600, pp. 124-125 report
 56-72 reales per five-day week for additional hired ore cutters. A worker hired
 to substitute for a mita conscript is reported at that rate plus the 20-real weekly
-mita wage; which party paid each part is not recorded here and must be checked on
-pp. 124-125 before any budget uses it.
+mita wage. The [page-image transcription](bakewell-purchasing-power-transcription-2026-11-19.md)
+now records that the 56-72-real premium came from those engaging the substitute;
+regular mita pay is additional. This payment flow remains outside experiment 2b.
 Ore payments are separate. Do not apply these earnings to every worker or add
 payments to GDP as if all were separate new output.
 Claim: `claim.research.mining_earnings_categories`.
@@ -136,13 +137,15 @@ from the 1603 purchasing-power reconstruction (pp. 102-104). It is later than
 the game's final harvest and cannot directly calibrate 1575.
 Claim: `claim.research.mining_budget_case`.
 
-Currency warning: the table's `200.1.0` is a compound monetary amount, not
-200.10 decimal pesos. The unit is taken here as pesos of 8 reales, an inference
-from the figures (26 weeks × 20 reales ÷ 8 = 65 pesos, the Godoy wage), not a
-reading of Bakewell's own statement; read the trailing places (reales, then
-granos or maravedís) from p. 105 before converting. Keep historical currency and its declared conversion in
-the data schema. Page 104's alternative-food calorie columns spend the entire
-wage on each food in turn; never add them into one basket. Family work and
+Currency warning: the table's compound amount is not decimal pesos. The ordinary
+peso/reales pairing is now explicit in the visually rechecked wage passages on
+pp. 124-125 (claim.research.bakewell_currency_pairing), rather than inferred only
+from the Godoy arithmetic. Keep pesos corrientes distinct from pesos ensayados;
+do not assign an unverified name to the final subdivision in p. 105's notation.
+The [machine-readable purchasing-power transcription](../evidence/bakewell-purchasing-power-1603.json)
+preserves the original daily-energy and weekly-mass tables, currency context and
+five-paid-day/seven-consumption-day convention. Page 104 spends the whole wage
+on each food in turn; the columns are alternatives, not a basket. Family work and
 provisions brought to town can cover costs, but such support is not free at
 household or community level (pp. 104, 110-111 and 132-133).
 

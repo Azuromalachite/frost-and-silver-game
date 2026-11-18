@@ -153,3 +153,12 @@ A copy uploaded by someone other than the author or the publisher (Scribd, docum
 find a passage, but it is never the registry `url`, its copyright status and fidelity are unknown, and no number read
 only from it leaves `provisional` until the publisher's, the institution's or the author's copy is checked. The
 registry links the institutional or publisher record and names the upload in `notes`.
+
+## Bakewell purchasing-power follow-up: 19 November 2026
+
+The user had already supplied pp. 102-104 and 122-125. The remaining bottleneck
+was transcription, not page access. These page images, together with p. 105,
+were visually checked for the [new transcription](../docs/bakewell-purchasing-power-transcription-2026-11-19.md).
+Selected numerical tables and wage/currency passages are now machine-readable;
+whole-book access and the silver-production series remain unaudited. No scans
+or private file links are included. Experiment 2b remains uncomputed.
