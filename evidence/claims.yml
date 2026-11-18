@@ -1215,6 +1215,8 @@ claims:
     pages:
       - path: docs/agropastoral-literature-2026-11-18.md
         anchor: The body-vest group outperformed both comparison groups in the modern trial.
+      - path: docs/water-camelid-weather-review-2026-11-19.md
+        anchor: "The randomized trial allocated 150 crias"
 
   - id: claim.research.caravan_supplies
     statement: >
@@ -1452,7 +1454,7 @@ claims:
     notes: >
       The game's harvest report used to say "what we now link to El Niño", which
       read as a rule, and then (#30, briefly) that dry years are often linked to
-      El Niño, which reversed the conditional the sources support. Orlove et al. (2000, abstract read) tie El Niño years to
+      El Niño, which reversed the conditional the sources support. Orlove et al. (2000, selected sections read) tie El Niño years to
       lower rainfall and the Pleiades forecast; Jonaitis et al. (2021, sections
       read) find the relationship varies across southern Peru and Bolivia, with
       some station groups showing insignificant or opposite signs. The game's
@@ -1557,3 +1559,173 @@ claims:
       - path: docs/climate-risk-experiment-2026-11-18.md
         anchor: "CVaR-based agricultural planning can be formulated without reinforcement learning."
     notes: "Modern planting/hedging example; no general superiority over RL or direct transfer of institutions/correlation models follows."
+
+  - id: claim.research.crop_water_balance
+    statement: "Soil water storage mediates the relation between rainfall and crop water stress."
+    layer: documented
+    status: partly_supported
+    sources: [fao56_1998]
+    pages:
+      - path: docs/water-camelid-weather-review-2026-11-19.md
+        anchor: "Soil water storage mediates the relation between rainfall and crop water stress."
+    notes: "Selected readings with study-specific limits in the review; not a historical game coefficient or completed ecological experiment."
+
+  - id: claim.research.quinoa_water_coefficients
+    statement: "Quinoa water coefficients were estimated under specified Altiplano conditions."
+    layer: estimate
+    status: partly_supported
+    sources: [garcia_etal2003_water]
+    pages:
+      - path: docs/water-camelid-weather-review-2026-11-19.md
+        anchor: "Quinoa water coefficients were estimated under specified Altiplano conditions."
+    notes: "Selected readings with study-specific limits in the review; not a historical game coefficient or completed ecological experiment."
+
+  - id: claim.research.highland_et_methods
+    statement: "Temperature-only water-demand estimates did not transfer equally across the studied highland sites."
+    layer: documented
+    status: partly_supported
+    sources: [garcia_etal2004_et0]
+    pages:
+      - path: docs/water-camelid-weather-review-2026-11-19.md
+        anchor: "Temperature-only water-demand estimates did not transfer equally across the studied highland sites."
+    notes: "Selected readings with study-specific limits in the review; not a historical game coefficient or completed ecological experiment."
+
+  - id: claim.research.quinoa_stage_water
+    statement: "The stage-specific quinoa irrigation study is an abstract-only lead in this review."
+    layer: documented
+    status: unverified
+    sources: [geerts_etal2008_stage]
+    pages:
+      - path: docs/water-camelid-weather-review-2026-11-19.md
+        anchor: "The stage-specific quinoa irrigation study is an abstract-only lead in this review."
+    notes: "Abstract-only reading lead; full methods/tables pending and no numerical parameter adopted."
+
+  - id: claim.research.quinoa_groundwater_salt
+    statement: "Groundwater and salinity complicate the benefits of supplemental irrigation."
+    layer: interpretation
+    status: partly_supported
+    sources: [geerts_etal2008_south]
+    pages:
+      - path: docs/water-camelid-weather-review-2026-11-19.md
+        anchor: "Groundwater and salinity complicate the benefits of supplemental irrigation."
+    notes: "Selected readings with study-specific limits in the review; not a historical game coefficient or completed ecological experiment."
+
+  - id: claim.research.quinoa_water_resolution
+    statement: "Rainfall aggregation changed water-stressed quinoa simulations in the published model."
+    layer: documented
+    status: partly_supported
+    sources: [geerts_etal2009_aquacrop]
+    pages:
+      - path: docs/water-camelid-weather-review-2026-11-19.md
+        anchor: "Rainfall aggregation changed water-stressed quinoa simulations in the published model."
+    notes: "Selected readings with study-specific limits in the review; not a historical game coefficient or completed ecological experiment."
+
+  - id: claim.research.chenopodium_root_plasticity
+    statement: "The rhizotron experiment found population-specific rooting responses to water deficit."
+    layer: documented
+    status: partly_supported
+    sources: [alvarezflores_etal2018_roots]
+    pages:
+      - path: docs/water-camelid-weather-review-2026-11-19.md
+        anchor: "The rhizotron experiment found population-specific rooting responses to water deficit."
+    notes: "Selected readings with study-specific limits in the review; not a historical game coefficient or completed ecological experiment."
+
+  - id: claim.research.bitter_potato_water_lead
+    statement: "Bitter-potato drought physiology remains an abstract-only reading lead here."
+    layer: documented
+    status: unverified
+    sources: [vacher1998_drought]
+    pages:
+      - path: docs/water-camelid-weather-review-2026-11-19.md
+        anchor: "Bitter-potato drought physiology remains an abstract-only reading lead here."
+    notes: "Abstract-only reading lead; full methods/tables pending and no numerical parameter adopted."
+
+  - id: claim.research.potato_water_carbon
+    statement: "Carbon-water flux measurements do not directly measure edible potato energy."
+    layer: interpretation
+    status: partly_supported
+    sources: [martinez_etal2024_watercarbon]
+    pages:
+      - path: docs/water-camelid-weather-review-2026-11-19.md
+        anchor: "Carbon-water flux measurements do not directly measure edible potato energy."
+    notes: "Selected readings with study-specific limits in the review; not a historical game coefficient or completed ecological experiment."
+
+  - id: claim.research.potato_water_reporting
+    statement: "The Superchola article's abstract and yield table require reconciliation."
+    layer: documented
+    status: partly_supported
+    sources: [lascano_etal2026_water]
+    pages:
+      - path: docs/water-camelid-weather-review-2026-11-19.md
+        anchor: "The Superchola article's abstract and yield table require reconciliation."
+    notes: "Selected readings with study-specific limits in the review; not a historical game coefficient or completed ecological experiment."
+
+  - id: claim.research.llama_exposure_energy
+    statement: "Adult llama energetics varied with movement as well as environmental conditions."
+    layer: documented
+    status: partly_supported
+    sources: [riek_etal2019]
+    pages:
+      - path: docs/water-camelid-weather-review-2026-11-19.md
+        anchor: "Adult llama energetics varied with movement as well as environmental conditions."
+    notes: "Selected readings with study-specific limits in the review; not a historical game coefficient or completed ecological experiment."
+
+  - id: claim.research.pasture_access_recruitment
+    statement: "Pasture access and forage production were distinct outcomes in the grazing study."
+    layer: documented
+    status: partly_supported
+    sources: [buttolph_coppock2004]
+    pages:
+      - path: docs/water-camelid-weather-review-2026-11-19.md
+        anchor: "Pasture access and forage production were distinct outcomes in the grazing study."
+    notes: "Selected readings with study-specific limits in the review; not a historical game coefficient or completed ecological experiment."
+
+  - id: claim.research.llama_nutrition_lead
+    statement: "The llama nutritional-restriction experiment remains an abstract-only lead here."
+    layer: documented
+    status: unverified
+    sources: [norambuena_etal2013]
+    pages:
+      - path: docs/water-camelid-weather-review-2026-11-19.md
+        anchor: "The llama nutritional-restriction experiment remains an abstract-only lead here."
+    notes: "Abstract-only reading lead; full methods/tables pending and no numerical parameter adopted."
+
+  - id: claim.research.alpaca_nutrition_null
+    statement: "Pre-breeding nutritional measurements did not distinguish later pregnancy in the studied alpacas."
+    layer: documented
+    status: partly_supported
+    sources: [norambuena_etal2018]
+    pages:
+      - path: docs/water-camelid-weather-review-2026-11-19.md
+        anchor: "Pre-breeding nutritional measurements did not distinguish later pregnancy in the studied alpacas."
+    notes: "Selected readings with study-specific limits in the review; not a historical game coefficient or completed ecological experiment."
+
+  - id: claim.research.camelid_cold_disease_lead
+    statement: "The cold-exposure cytokine study remains an abstract-only lead here."
+    layer: documented
+    status: unverified
+    sources: [arias_etal2016_cold]
+    pages:
+      - path: docs/water-camelid-weather-review-2026-11-19.md
+        anchor: "The cold-exposure cytokine study remains an abstract-only lead here."
+    notes: "Abstract-only reading lead; full methods/tables pending and no numerical parameter adopted."
+
+  - id: claim.research.historical_weather_knowledge
+    statement: "Late-sixteenth-century Pleiades forecasts are documented; pre-conquest Inca forecasting remains unestablished."
+    layer: documented
+    status: partly_supported
+    sources: [orlove2000]
+    pages:
+      - path: docs/water-camelid-weather-review-2026-11-19.md
+        anchor: "Late-sixteenth-century Pleiades forecasts are documented; pre-conquest Inca forecasting remains unestablished."
+    notes: "Selected readings with study-specific limits in the review; not a historical game coefficient or completed ecological experiment."
+
+  - id: claim.research.documentary_enso_limit
+    statement: "Historical weather descriptions and modern ENSO classifications are different kinds of knowledge."
+    layer: interpretation
+    status: unverified
+    sources: [garciaherrera_etal2008]
+    pages:
+      - path: docs/water-camelid-weather-review-2026-11-19.md
+        anchor: "Historical weather descriptions and modern ENSO classifications are different kinds of knowledge."
+    notes: "Abstract-only reading lead; full methods/tables pending and no numerical parameter adopted."

@@ -153,3 +153,25 @@ A copy uploaded by someone other than the author or the publisher (Scribd, docum
 find a passage, but it is never the registry `url`, its copyright status and fidelity are unknown, and no number read
 only from it leaves `provisional` until the publisher's, the institution's or the author's copy is checked. The
 registry links the institutional or publisher record and names the upload in `notes`.
+
+## Crop water, camelids and weather knowledge: 19 November 2026
+
+See the [integrated reading notes](../docs/water-camelid-weather-review-2026-11-19.md) for named sections and study limitations.
+
+| Priority | Work | Remaining barrier | Useful next route |
+|---|---|---|---|
+| High | Geerts et al. 2008, Introducing deficit irrigation | Institutional abstracts accessible; full methods/tables not obtained; publisher route previously returned 403 | Institutional subscription, author copy or document delivery |
+| High | Vacher 1998, quinoa and bitter potato | IRD requests PDF access; publisher returned 403 | Author/institutional request or subscription |
+| Medium | Norambuena et al. 2013, llama nutritional restriction | Abstract read; complete article not obtained | Institutional subscription or author copy |
+| Medium | Arias et al. 2016, cytokines and cold | Repository provides metadata/abstract; publisher returned 403 | Institutional subscription or author copy |
+| Resolved for selected text | Garcia 2003/2004; Geerts 2008 southern quinoa and 2009 AquaCrop | Article text accessible through mirrors; original table/figure and data checks remain | Obtain original PDFs and underlying datasets before numerical replication |
+| Resolved for selected text | Alvarez-Flores 2018 | Public author-uploaded text found despite IRD request barrier | Original PDF/supplement for figure verification |
+| Open, evidence issue | Superchola 2026 | Full text accessible; yield claim and definitions need clarification | Check corrections/version history or seek author clarification |
+| Still a quantitative gap | Camelid fibre, milk and loaded transport under cold | No validated frost-to-output function established in this bounded review | Targeted primary production and pack-work experiments |
+
+These describe this review's access, not a declaration that no public copy exists anywhere. A browser challenge is not necessarily a subscription paywall. No paid access, author contact or redistribution of papers was undertaken.
+
+
+Additional open selected readings: FAO 56 chapter 8 (official HTML), Martinez-Maldonado et al. 2024 (university PDF), Buttolph and Coppock 2004 (publisher HTML), Norambuena et al. 2018 (SciELO), and Orlove et al. 2000 (author-hosted PDF). Riek and Valenzuela extend the earlier selected readings, not new full-text barriers. Garcia-Herrera et al. 2008 was read only through its abstract/archive description; full reading remains pending rather than confirmed blocked.
+
+For Academia.edu mirrors, uploader identity was not independently verified. Canonical registry URLs use the publisher or institution. Numerical candidates remain provisional pending original-copy/table verification. No raw study dataset was reanalysed.

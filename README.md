@@ -158,6 +158,11 @@ and household-budget accounts. The [spatial climate-risk experiment](docs/climat
 defines a narrow, held-out comparison before game integration. These are research
 specifications; no new calibration or gameplay results are claimed.
 
+The [integrated water, camelid and weather-knowledge review](docs/water-camelid-weather-review-2026-11-19.md)
+connects crop water balances, pasture access, herd recruitment and historical
+Pleiades forecasting. It records access barriers and draft Path B experiments;
+it changes no gameplay or completed research result.
+
 ## Credits and licence
 
 Adapted from [“Week 2: Tahuantinsuyu Harvest & Frost Defense”](https://superlative-sprinkles-2653a1.netlify.app/) by Amnuayvit Thitibordin, licensed [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).

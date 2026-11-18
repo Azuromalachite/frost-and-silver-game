@@ -199,11 +199,12 @@ sources:
     title: "Forecasting Andean rainfall and crop yield from the influence of El Niño on Pleiades visibility"
     author: Benjamin S. Orlove; John C. H. Chiang; Mark A. Cane
     date: 2000
-    access: abstract_read
-    by: review agent (claims and charts)
-    when: 2026-11-17
+    access: sections_read
+    by: Codex integrated water, camelid and weather review
+    when: "2026-11-19"
     url: https://doi.org/10.1038/47456
-    notes: Reports a correlation, not a hit rate. Modern practice; use around 1500 is not established.
+    locator: "Author-hosted PDF pp. 68-71; opening historical discussion and Table 1"
+    notes: "Selected paper text read. Late-sixteenth-century forecasts documented; pre-conquest Inca use for weather prediction unestablished. No historical forecast hit rate or fixed ENSO recurrence inferred."
 
   - key: fonseca_dehaan2021
     title: "Traditional freeze-drying: chuño, kaya, chullqi"
@@ -863,3 +864,168 @@ sources:
     url: "https://bear.warrington.ufl.edu/aitsahlia/Annals_OR.pdf"
     locator: "Author-hosted PDF, printed pp. 201-205: abstract, introduction, CVaR and optimization model"
     notes: "Online 2009; issue 2011. Methodological comparison, modern US cotton/financial hedging; not Andean institutions, calibrated weather dependence or evidence RL is inferior."
+
+  - key: fao56_1998
+    title: "Crop evapotranspiration: Guidelines for computing crop water requirements"
+    author: "Richard G. Allen; Luis S. Pereira; Dirk Raes; Martin Smith"
+    date: 1998
+    access: "sections_read"
+    by: "Codex integrated water, camelid and weather review"
+    when: "2026-11-19"
+    url: "https://www.fao.org/4/x0490e/x0490e0e.htm"
+    locator: "Chapter 8: water stress coefficient, soil water balance, equations 80-87"
+    notes: "Official methodological reference, not historical Andean calibration."
+
+  - key: garcia_etal2003_water
+    title: "Evapotranspiration analysis and irrigation requirements of quinoa (Chenopodium quinoa) in the Bolivian highlands"
+    author: "Magali Garcia; Dirk Raes; Sven-Erik Jacobsen"
+    date: 2003
+    access: "sections_read"
+    by: "Codex integrated water, camelid and weather review"
+    when: "2026-11-19"
+    url: "https://doi.org/10.1016/S0378-3774(02)00162-2"
+    locator: "Selected Methods and Results, printed pp. 121-127; water-balance discussion and extracted Table 3"
+    notes: "Academia.edu text mirror read; upload identity not independently verified. Candidate coefficients remain provisional until original tables are checked. Text symbols/alignment damaged."
+
+  - key: garcia_etal2004_et0
+    title: "Dynamics of reference evapotranspiration in the Bolivian highlands (Altiplano)"
+    author: "Magali Garcia; Dirk Raes; Rick Allen; Carlos Herbas"
+    date: 2004
+    access: "sections_read"
+    by: "Codex integrated water, camelid and weather review"
+    when: "2026-11-19"
+    url: "https://doi.org/10.1016/j.agrformet.2004.03.005"
+    locator: "Article-text mirror: abstract and selected method-comparison passages"
+    notes: "Academia.edu text mirror read; original tables and data not independently audited. Method transfer differs by location."
+
+  - key: geerts_etal2008_stage
+    title: "Introducing deficit irrigation to stabilize yields of quinoa (Chenopodium quinoa Willd.)"
+    author: "Sam Geerts; Dirk Raes; Magali Garcia; Jean Vacher; et al."
+    date: 2008
+    access: "abstract_read"
+    by: "Codex integrated water, camelid and weather review"
+    when: "2026-11-19"
+    url: "https://doi.org/10.1016/j.eja.2007.11.008"
+    locator: "Detailed author abstract in IRD record PAR00002327 and UMSA record"
+    notes: "Complete methods/tables not obtained. Stage-specific effects are reading leads, not validated numerical inputs."
+
+  - key: geerts_etal2008_south
+    title: "Could deficit irrigation be a sustainable practice for quinoa (Chenopodium quinoa Willd.) in the Southern Bolivian Altiplano?"
+    author: "Sam Geerts; Dirk Raes; Magali Garcia; et al."
+    date: 2008
+    access: "sections_read"
+    by: "Codex integrated water, camelid and weather review"
+    when: "2026-11-19"
+    url: "https://doi.org/10.1016/j.agwat.2008.02.012"
+    locator: "Selected Methods 2, Results and Discussion 3, Conclusions 4; article text, pp. 909-917"
+    notes: "Academia.edu text mirror read; original figures/tables not visually verified. Groundwater and salinity outcomes include modeling; context-specific percentages remain provisional."
+
+  - key: geerts_etal2009_aquacrop
+    title: "Simulating Yield Response of Quinoa to Water Availability with AquaCrop"
+    author: "Sam Geerts; Dirk Raes; Magali Garcia; et al."
+    date: 2009
+    access: "sections_read"
+    by: "Codex integrated water, camelid and weather review"
+    when: "2026-11-19"
+    url: "https://doi.org/10.2134/agronj2008.0137s"
+    locator: "Article-text mirror: selected Methods, calibration and validation, sensitivity discussion; pp. 499-506"
+    notes: "Publisher PDF redirected to abstract. Academia.edu text supplies selected body sections, not an original parameter-table/figure audit or raw data replication."
+
+  - key: alvarezflores_etal2018_roots
+    title: "Rooting plasticity in wild and cultivated Andean Chenopodium species under soil water deficit"
+    author: "Ricardo Alvarez-Flores; Anh Nguyen-Thi-Truc; Santiago Peredo-Parada; Richard Joffre; Thierry Winkel"
+    date: 2018
+    access: "sections_read"
+    by: "Codex integrated water, camelid and weather review"
+    when: "2026-11-19"
+    url: "https://doi.org/10.1007/s11104-018-3588-7"
+    locator: "Author-uploaded article text on ResearchGate: selected Methods, Results and Discussion; six-week rhizotron experiment"
+    notes: "Uploaded by Thierry Winkel; public author text resolves selected reading despite IRD request barrier. Seedlings and root architecture, not seasonal edible-yield or field tolerance ranking."
+
+  - key: vacher1998_drought
+    title: "Responses of two main Andean crops, quinoa (Chenopodium quinoa Willd) and papa amarga (Solanum juzepczukii Buk.) to drought on the Bolivian Altiplano: significance of local adaptation"
+    author: "Jean-Joinville Vacher"
+    date: 1998
+    access: "abstract_read"
+    by: "Codex integrated water, camelid and weather review"
+    when: "2026-11-19"
+    url: "https://www.documentation.ird.fr/hor/fdi:010051977"
+    locator: "Institutional author abstract only"
+    notes: "IRD requests PDF access; publisher returned 403. Dry-matter values cannot be treated as edible grain/tuber yield without methods."
+
+  - key: martinez_etal2024_watercarbon
+    title: "Carbon and water vapor exchanges coupling for different irrigated and rainfed conditions on Andean potato agroecosystems"
+    author: "Fabio Ernesto Martinez-Maldonado; Angela Maria Castano-Marin; Gerardo Antonio Goez-Vinasco; Fabio Ricardo Marin"
+    date: 2024
+    access: "sections_read"
+    by: "Codex integrated water, camelid and weather review"
+    when: "2026-11-19"
+    url: "https://doi.org/10.1007/s00704-024-05034-1"
+    locator: "University-hosted PDF, pp. 7609-7613 and selected Discussion pp. 7619-7624"
+    notes: "Distinct commercial plots and water regimes in Colombia, not a common randomized irrigation trial. Ecosystem carbon fluxes are not edible energy; figures not independently checked."
+
+  - key: lascano_etal2026_water
+    title: "Physiological and Productive Response of Solanum tuberosum L. var. Superchola to Water Deficit in the Andean Highlands of Ecuador"
+    author: "Mishel Katherine Lascano Munoz; Charles Jim Cachipuendo Ulcuango; Juan Eduardo Leon Teran"
+    date: 2026
+    access: "sections_read"
+    by: "Codex integrated water, camelid and weather review"
+    when: "2026-11-19"
+    url: "https://doi.org/10.3390/agriculture16020246"
+    locator: "Open publisher HTML: Abstract, Methods, Results and Tables 7-9"
+    notes: "Abstract yield-preservation claim conflicts with Table 9 significance groups; ETo/ETc labels and water-saving denominator require clarification. No game parameter adopted."
+
+  - key: buttolph_coppock2004
+    title: "Influence of deferred grazing on vegetation dynamics and livestock productivity in an Andean pastoral system"
+    author: "Lita P. Buttolph; D. Layne Coppock"
+    date: 2004
+    access: "sections_read"
+    by: "Codex integrated water, camelid and weather review"
+    when: "2026-11-19"
+    url: "https://doi.org/10.1111/j.0021-8901.2004.00921.x"
+    locator: "Open publisher HTML: Methods, Results including Table 2, Discussion"
+    notes: "Livestock outcomes from 32 herd-owner interviews; exclosure access differs by species. Freeze-thaw limitation is interpretation, not randomized frost treatment. Table 2 morbidity p=0.0802 differs from prose significance claim."
+
+  - key: norambuena_etal2013
+    title: "Effects of nutritional restriction on metabolic, endocrine, and ovarian function in llamas (Lama glama)"
+    author: "M. C. Norambuena; M. Silva; F. Urra; C. Ulloa-Leal; A. Fernandez; G. P. Adams; W. Huanca; M. H. Ratto"
+    date: 2013
+    access: "abstract_read"
+    by: "Codex integrated water, camelid and weather review"
+    when: "2026-11-19"
+    url: "https://doi.org/10.1016/j.anireprosci.2013.01.019"
+    locator: "PubMed abstract, PMID 23562451"
+    notes: "Randomized nutritional restriction experiment; full methods not obtained. Physiological endpoints are not measured pregnancy, milk or frost-loss coefficients."
+
+  - key: norambuena_etal2018
+    title: "Relationship between the nutritional state before the breeding period and the reproductive success in alpacas (Vicugna pacos) from the Chilean Puna"
+    author: "Cecilia Norambuena; Francisca Hernandez; Jorge Alfaro; Gustavo Carcamo; Angela Clavarria; Miriam Velasco"
+    date: 2018
+    access: "sections_read"
+    by: "Codex integrated water, camelid and weather review"
+    when: "2026-11-19"
+    url: "https://doi.org/10.4067/S0719-81322018000100110"
+    locator: "SciELO HTML: Abstract, Methods and Results/Discussion"
+    notes: "Observational 35-female sample; pre-breeding indicators did not distinguish later pregnancy. Not proof that nutrition never affects reproduction."
+
+  - key: arias_etal2016_cold
+    title: "Cytokines expression in alpacas and llamas exposed to cold stress"
+    author: "Nino Arias; Billie Velapatino; Armando Hung; Jaime Cok"
+    date: 2016
+    access: "abstract_read"
+    by: "Codex integrated water, camelid and weather review"
+    when: "2026-11-19"
+    url: "https://doi.org/10.1016/j.smallrumres.2016.07.016"
+    locator: "UPCH institutional abstract and search-visible publisher Methods excerpt"
+    notes: "Cold/high-altitude versus mild/sea-level comparison and in-vitro pathogen challenge; altitude, exposure and infection not separated. Publisher 403; full article not obtained."
+
+  - key: garciaherrera_etal2008
+    title: "A Chronology of El Nino Events from Primary Documentary Sources in Northern Peru"
+    author: "Ricardo Garcia-Herrera; et al."
+    date: 2008
+    access: "abstract_read"
+    by: "Codex integrated water, camelid and weather review"
+    when: "2026-11-19"
+    url: "https://doi.org/10.1175/2007JCLI1830.1"
+    locator: "Publisher abstract and NOAA archive description, study 6210"
+    notes: "Modern reconstruction of 1550-1900 observations; does not show that historical observers knew ENSO recurrence or a Pacific-wide mechanism."
