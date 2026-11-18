@@ -970,7 +970,7 @@ function whyList(r){
   // The hint used to point only to waru waru, in High grain; "Best land first" at 1573 then leaves High grain empty, so a
   // student who followed every hint wasted the build. Valley terraces protect and widen the best land, which stays farmed.
   else if (r.line < 3 && !S.built.yunga) out.push('In this game, terraces cut a zone\'s frost loss by a third and waru waru by more than half, but a build pays only while crews farm its zone. Valley terraces protect and widen your best land, which stays farmed after crews fall; waru waru in High grain pay only if crews still farm there.');
-  if (r.drought) out.push(`A dry year (what we now link to El Niño) cut every harvest by a quarter (game figure).${r.hazy ? ' The hazy Pleiades warned you.' : ' The Pleiades gave no warning.'}`);
+  if (r.drought) out.push(`A dry year (in the southern Andes often, though not everywhere, linked to El Niño) cut every harvest by a quarter (game figure).${r.hazy ? ' The hazy Pleiades warned you.' : ' The Pleiades gave no warning.'}`);
   else if (r.hazy) out.push('The Pleiades looked hazy, but the rains came anyway.');
   if (r.act === 1) out.push(`One man in ten worked the state and temple fields under the Inca labour duty; ${fmt(r.ret)} came back as feasts and rations (game assumption: half the state harvest).`);
   if (r.act === 2 && r.silver > 0) out.push(r.year === 4
@@ -1002,7 +1002,7 @@ function logHarvest(r){
   if (r.line === 4) logAdd(tag, 'No frost.');
   else if (r.lost < 1) logAdd(tag, `Frost down to the ${zone} zone; no crops there.`);
   else logAdd(tag, `Frost down to the ${zone} zone: −${fmt(r.lost)}${r.saved > 0 ? `; terraces and raised fields saved ${fmt(r.saved)}` : ''}.`, 'neg');
-  if (r.drought) logAdd(tag, `Dry year (what we now link to El Niño): every zone −25% (game figure). ${r.hazy ? 'The hazy Pleiades warned of it.' : 'No warning from the Pleiades.'}`, 'neg');
+  if (r.drought) logAdd(tag, `Dry year (often, not everywhere, linked to El Niño): every zone −25% (game figure). ${r.hazy ? 'The hazy Pleiades warned of it.' : 'No warning from the Pleiades.'}`, 'neg');
   else if (r.hazy) logAdd(tag, 'Hazy Pleiades, but the rains came.');
   if (r.ret > 0) logAdd(tag, `Inca feasts and rations +${fmt(r.ret)}.`, 'pos');
   if (r.tribute > 0) logAdd(tag, `Tribute −${fmt(r.tribute)} (${Math.round(r.tRate*100)}% of the harvest; game rule).`, 'neg');

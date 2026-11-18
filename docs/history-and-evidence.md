@@ -176,7 +176,10 @@ years in a row; harvests 4–6 are snapshots decades apart.
    The [climate review](climate-weather-literature-2026-11-18.md) now supplies
    evidence for terrain effects (claim.climate.topoclimate), interacting physical
    controls (claim.climate.frost_controls), and geographically differing drought
-   responses (claim.climate.drought_heterogeneity). It does not supply the joint
+   responses (claim.climate.drought_heterogeneity). The terrain evidence cuts
+   against the game's rule: local cold-air drainage and exposure are how a lower
+   field can freeze while a higher one does not, which claim.game.frost_from_top
+   rules out. It does not supply the joint
    crop-loss probabilities needed to quantify diversification. A basin or an
    explicitly composite setting also needs to be chosen before calibration.
    The [debrief proposal](weather-debrief-proposal-2026-11-18.md) can test weather

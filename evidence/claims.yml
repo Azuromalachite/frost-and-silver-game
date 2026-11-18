@@ -435,6 +435,12 @@ claims:
       the game's text no longer calls spreading insurance. Until 2026-11-18 it
       did. Murra's insurance argument rests on bad years that hit heights
       differently (claim.land.vertical_archipelago), which the game does not model.
+      Pouteau et al. (2011, sections read; claim.climate.topoclimate) find local
+      terrain effects on frost alongside the elevation gradient: cold-air
+      drainage and exposure are how a lower field can freeze while a higher one
+      does not, which the rule does not allow. That cuts against its
+      historical footing; it stays a labelled simplification until a source
+      gives joint crop-loss probabilities by height.
 
   - id: claim.land.zone_names
     statement: >
@@ -1398,3 +1404,22 @@ claims:
       - path: docs/food-access-recovery-literature-2026-11-18.md
         anchor: "Women participated in ore processing and trade within Potosi's mining economy."
     notes: "Read period-specific passages; later banking statistics and a complete provisioning/care budget are not used as sixteenth-century evidence."
+
+  - id: claim.climate.drought_el_nino
+    statement: >
+      In the southern Andes dry years are often, though not everywhere or always,
+      linked to El Niño: the rainfall response differs between station groups in
+      southern Peru and Bolivia.
+    layer: documented
+    status: partly_supported
+    sources: [orlove2000, jonaitis_etal2021]
+    pages:
+      - path: frost-and-silver.html
+        anchor: in the southern Andes often, though not everywhere, linked to El Niño
+    notes: >
+      The game's harvest report used to say "what we now link to El Niño", which
+      read as a rule. Orlove et al. (2000, abstract read) tie El Niño years to
+      lower rainfall and the Pleiades forecast; Jonaitis et al. (2021, sections
+      read) find the relationship varies across southern Peru and Bolivia, with
+      some station groups showing insignificant or opposite signs. The game's
+      droughts are drawn at random and do not model ENSO.

@@ -116,6 +116,12 @@ at 0 C than rarer severe events. Fine-scale validation partly aggregates predict
 back to satellite resolution; independent field validation remains limited.
 Different marginal risks do not supply simultaneous plot-loss covariance or crop
 damage functions. Claim: `claim.climate.topoclimate`.
+
+**For the game:** this cuts against `claim.game.frost_from_top`. Local cold-air
+drainage and exposure are how a lower field can freeze while a higher one stays
+clear, which the game's rule (frost always strikes from the top down) rules out.
+The rule stays a labelled simplification, because the paper gives frost
+occurrence, not the joint crop losses by height that diversification would need.
 [DOI](https://doi.org/10.1016/j.rse.2010.08.011).
 
 ### Garcia et al. 2007: timing and water availability
