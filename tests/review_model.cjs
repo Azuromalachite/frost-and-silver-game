@@ -30,7 +30,7 @@ const vm = require('node:vm');
 const path = require('node:path');
 const assert = require('node:assert/strict');
 
-const PINNED = [1764, 1411, 80, 55, 103, 109, 46, 73]; // food Inca, colonial; welfare; GDP index; % short
+const PINNED = [1764, 1411, 74, 52, 103, 109, 46, 73]; // food Inca, colonial; welfare; GDP index; % short
 // Seeds 1-80, default plan, "Best land first": how the rules' GDP effect reads (shown, not graded).
 const GDP_READS_1_80 = {stay: 75, rise: 5};
 // Seeds 1-80, default plan: the two re-plan choices read the GDP effect differently on this many seeds.
@@ -43,10 +43,10 @@ const SHARES_WINS = {default: 0, '5/5/3/1 no chuño': 24};
 // part of it, to the nearest 0.5 (README, AGENTS.md, history-and-evidence.md: "about 6.5 … resettlement about 2.5").
 const FIELD_LOSS_1_80 = {total: -6.5, resettlement: -2.5};
 // The changing plan named on the end screen beats the hindsight-best fixed plan on this many of seeds 1-80.
-const CHANGING_WINS = 52; // 57 before terraces stopped counting as protection in the year they are built
+const CHANGING_WINS = 58; // 57 before terraces stopped counting as protection in their build year, then 52; 58 since resilience no longer rewards spreading
 // The end screen's plan chosen in advance (ADVANCE_PLAN): best on seeds 1-40, 41-80 and 1-80; its mean welfare and
 // colonial food on seeds 1-80, and the seeds where it reaches 1,700 kcal.
-const ADVANCE = {chosen: [true, true, true], w: 73.9, k2: 1550, reach1700: 21};
+const ADVANCE = {chosen: [true, true, true], w: 75, k2: 1550, reach1700: 21};
 const REPLAN = 'best'; // the pinned run's re-plan choice
 
 function load(html) {

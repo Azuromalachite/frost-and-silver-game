@@ -398,7 +398,7 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
     <h4>How the numbers are shown</h4>
     <ul>
       <li><b>GDP as an index (Maddison's 1500 level, 416, = 100).</b> Historical GDP series come in different dollars: Maddison (2003) uses 1990 international dollars, the newer Maddison Project Database (Bolt &amp; van Zanden) uses 2011 dollars and gives Peru-specific estimates for the early 1600s. An index lets the game compare with either without mixing units. On the chart, the diamond is Maddison's 1600 estimate for all of Latin America, 5% above 1500. Because the game was tuned to start near 1500's level, matching it there is a design choice, not a test.</li>
-      <li><b>Caloric Welfare Index</b>, out of 100: 50 points for food adequacy, 30 for stores, 20 for farming resilience. The weights come from the original game's classroom model; how each part is scored here (food against 1,700 kcal, stores against 90 days, resilience from protected fields and spread across zones) is this adaptation's assumption. It is a model output, not a measurement.</li>
+      <li><b>Caloric Welfare Index</b>, out of 100: 50 points for food adequacy, 30 for stores, 20 for farming resilience. The weights come from the original game's classroom model; how each part is scored here (food against 1,700 kcal, stores against 90 days, resilience from the share of farm crews on terraces or raised fields that stood before the harvest) is this adaptation's assumption. It no longer rewards spreading crews across zones, because in this game spreading never pays. It is a model output, not a measurement.</li>
       <li><b>Silver.</b> Potosí's output rose sharply late in the century, after mercury amalgamation spread in the 1570s. The game raises the value of each mine worker's silver from harvest 4 to harvest 6; the path is a teaching assumption.</li>
     </ul>
   </details>
@@ -902,9 +902,8 @@ function harvest(){
   // 20% farming resilience. The component definitions below are this adaptation's (teaching assumptions).
   const farm = ZONES.reduce((s, z) => s + S.alloc[z.key], 0);
   const protShare = farm ? ZONES.reduce((s, z) => s + (builtBefore[z.key] && z.build ? S.alloc[z.key] : 0), 0) / farm : 0;
-  const spread = ZONES.filter(z => S.alloc[z.key] > 0).length / ZONES.length;
   const cwiParts = {cal: 50 * Math.min(1, intake / GOAL), buf: 30 * Math.min(1, (S.store / GOAL * 365) / 90),
-    res: 20 * Math.min(1, 0.7 * protShare + 0.3 * spread)};
+    res: 20 * protShare /* until 2026-11-18 30% of this part rewarded spreading across zones, which this game's frost never pays */};
   const cwi = cwiParts.cal + cwiParts.buf + cwiParts.res;
   const rec = {year:S.year, act:act(S.year), cwi, cwiParts, alloc: {...S.alloc}, chuno: S.chuno, gidx: gdp / 416 * 100, H, lost, saved, tribute, tRate, ret, stateOut, d, rf: a2 ? reducNow() : 1, toStore, spoiled, draw, intake, avail, gdp, silver, cf,
     pop:S.pop, popBefore, mita, wage:S.wage, line:Y.line, drought:Y.drought, hazy:Y.hazy, winter:Y.winter, chunoRoom: S.chuno * CHUNO_CAP * wm * per, zr, builtNow,
@@ -968,7 +967,9 @@ function whyList(r){
   else if (r.lost < 1) out.push(`Frost reached down to the ${zone} zone${r.line===3?'':' and everything above it'}, but you had no crops there.`);
   else out.push(`Frost reached down to the ${zone} zone${r.line===3?'':' and everything above it'}, destroying ${fmt(r.lost)} kcal per person per day.`);
   if (r.saved > 0) out.push(`Your terraces and raised fields saved ${fmt(r.saved)}.`);
-  else if (r.line < 3 && !S.built.suni) out.push('In this game, waru waru would have cut the frost loss by more than half and terraces by a third.');
+  // The hint used to point only to waru waru, in High grain; "Best land first" at 1573 then leaves High grain empty, so a
+  // student who followed every hint wasted the build. Valley terraces protect and widen the best land, which stays farmed.
+  else if (r.line < 3 && !S.built.yunga) out.push('In this game, terraces cut a zone\'s frost loss by a third and waru waru by more than half, but a build pays only while crews farm its zone. Valley terraces protect and widen your best land, which stays farmed after crews fall; waru waru in High grain pay only if crews still farm there.');
   if (r.drought) out.push(`A dry year (what we now link to El Niño) cut every harvest by a quarter (game figure).${r.hazy ? ' The hazy Pleiades warned you.' : ' The Pleiades gave no warning.'}`);
   else if (r.hazy) out.push('The Pleiades looked hazy, but the rains came anyway.');
   if (r.act === 1) out.push(`One man in ten worked the state and temple fields under the Inca labour duty; ${fmt(r.ret)} came back as feasts and rations (game assumption: half the state harvest).`);
@@ -1559,7 +1560,7 @@ function showEnd(){
     const rule = r => r === 'best' ? 'best land first' : 'crews spread across the zones';
     const how = `${builds.length ? `build ${builds.join(' and ')}` : 'build nothing'}; in the Inca years ${crewsN(st.incaChuno)} on chuño and the rest ${rule(st.incaRule)}; after 1573 ${crewsN(st.colChuno)} on chuño, ${crewsN(st.wage)} for wages, the rest ${rule(st.colRule)}`;
     const myW = S.hist.reduce((s, r) => s + r.cwi, 0) / S.hist.length;
-    const ceiling = `It is not a ceiling either: one plan that changes by harvest beat it on 52 of 80 test weathers: build Valley and Upper-field terraces in harvest 1 with no chuño crews, put three crews on chuño in harvests 2 and 3, then every crew on the best land after 1573 (with other terraces it rarely does). Your explanation of why GDP and food moved apart matters more than this comparison.`;
+    const ceiling = `It is not a ceiling either: one plan that changes by harvest beat it on 58 of 80 test weathers: build Valley and Upper-field terraces in harvest 1 with no chuño crews, put three crews on chuño in harvests 2 and 3, then every crew on the best land after 1573 (with other terraces it rarely does). Your explanation of why GDP and food moved apart matters more than this comparison.`;
     // on some weathers the plan chosen in advance is also the hindsight best: say so instead of repeating it
     if (JSON.stringify(st) === JSON.stringify(ADVANCE_PLAN)) { el.innerHTML = `On your weather (seed ${endSeed}) the plan above was also the best of the ${fmt(c.n)} tested plans picked after the weather was known. ${ceiling.replace('It is not a ceiling either:', 'It is not a ceiling:')}`; return; }
     el.innerHTML = `On your weather (seed ${endSeed}), the best of ${fmt(c.n)} tested plans that keep one rule for each period, picked after the weather was known, judged by welfare over the whole game, scored <b>${Math.round(c.best.w)}</b>, kept ${kcal(c.best.k2)} kcal a day after 1573${c.best.k2 >= 1700 ? ' (it reached the goal only because it was chosen knowing this weather; averaged over many weathers no plan does)' : ''} and lost ${fmt(c.best.deaths)} people to hunger. It was: ${how}. Your plan scored <b>${Math.round(myW)}</b>, kept ${kcal(k2)} kcal and lost ${fmt(hungerDeaths)}. Nobody could have picked it in advance. ${ceiling}`;
