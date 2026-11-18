@@ -1,9 +1,9 @@
-# Crop and camelid implementation review after PR #22
+# Crop and camelid implementation review after PR #29
 
 Reviewed 18 November 2026 against main
-[`6a6dda4`](https://github.com/Azuromalachite/frost-and-silver-game/commit/6a6dda436119c3841f3059ea7947185fb2a1cd65).
+[`8e443c5`](https://github.com/Azuromalachite/frost-and-silver-game/commit/8e443c566094b93561182e2ffb068e039cbb6270).
 Game-file SHA-256:
-`898540d26b4633e7694a7c65eae3b653ec93c339925a1e0550d73670df8e5bbf`.
+`f93aa841bf3029a099c013d54c2fa70ea2e4cce6d15bdb4be327720a1b2cdefe`.
 This contribution adds evidence and diagnostics, not new gameplay or parameters.
 See the [twelve reading notes](agropastoral-literature-2026-11-18.md), with bounded
 claims and source-specific reading depths in the registry.
@@ -16,17 +16,17 @@ These are current features, not outstanding fixes in this review:
 | Area | Current treatment |
 |---|---|
 | Winter processing | Post-harvest winter conditions affect chuño throughput |
-| Crew reductions | The player chooses a re-plan; Best land first preserves wage crews |
+| Crew reductions | Repeated Best land first preserves hand-added wage crews; hand-set plans get their own projection |
 | GDP explanation | Decomposition depends on the re-plan; no single universal cause |
 | Assessment | Food is graded; GDP is shown for discussion, not graded |
-| Diversification | Briefing and debrief disclose that spreading does not pay in this model |
-| Strategy comparison | A same-weather search is labelled as a restricted, hindsight benchmark |
+| Diversification | Resilience now scores protected fields only; occupied-zone count earns no bonus |
+| Strategy comparison | A strategy chosen in advance leads; the restricted hindsight comparison is separately labelled |
 | Difficulty | Standard, Hard and Extreme change the seed, with survival compared on the same weather |
 | Time | Sampled colonial years and the stock-carrying simplification are disclosed |
 | Rendering and controls | Upstream adds redraw/error handling, comparison cancellation and visible Pause |
 | Verification | CI already runs the model check and its planted-defect self-tests |
 
-These observations are from code and the merged PRs through #22. Rendering and
+These observations are from code and the merged PRs through #29. Rendering and
 control fixes were not independently re-tested in a browser for this contribution.
 
 ## Reproducible checks on this revision
@@ -34,25 +34,28 @@ control fixes were not independently re-tested in a browser for this contributio
 ```sh
 node tests/review_model.cjs
 node tests/review_model.cjs --self-test
-node tools/review_agropastoral.cjs
+node tools/review_agropastoral.cjs origin/main
 ```
 
-The diagnostic tool reuses the upstream headless loader and checks. Importing the
-loader now has no CLI side effects; executing the existing check retains its
-behaviour. The [recorded output](../evidence/review-agropastoral-model-2026-11-18.json)
-includes the input commit, exact game-file hash and policy. It is a dated record,
-not an automatically refreshed artifact. No changes were made to the game HTML,
-PINNED values, grading, workflow or existing historical snapshot.
+The diagnostic tool reuses the current upstream headless loader and checks.
+The loader additionally exposes the production functions needed by the diagnostic;
+all upstream assertions and self-test plants are retained. The optional model ref
+is verified against the reviewed game bytes, preventing a stale revision label.
+The [current recorded output](../evidence/review-agropastoral-model-pr29-2026-11-18.json)
+includes the input commit, exact game-file hash and policy. The
+[PR #22 snapshot](../evidence/review-agropastoral-model-2026-11-18.json) is retained
+unchanged as a historical record. This refresh preserves main's game HTML, pinned
+constants, grading and workflow.
 
 For seed 12345, default manual play and Best land first at each required re-plan,
 the displayed pinned line remains:
 
-`1,760 kcal | 1,410 kcal | 80 -> 55 | 103 | 109 | 45% -> 75%`
+`1,760 kcal | 1,410 kcal | 74 -> 52 | 103 | 109 | 45% -> 75%`
 
 | Equal-weight seeds 1-80, same re-plan policy | Inca mean | Colonial mean |
 |---|---:|---:|
 | Food, model kcal/person/day | 1676.29 | 1384.85 |
-| Welfare index | 69.94 | 48.51 |
+| Welfare index | 64.03 | 45.63 |
 | GDP index | 101.50 | 109.46 |
 
 Food's matched effect is negative in all 80 runs. The internal GDP effect buckets
@@ -101,15 +104,18 @@ Test that herding labour alone cannot create breeding adults and that slaughter
 reduces the appropriate productive stock. Do not insert the modern cohort's 22
 percent mortality or its clinical-illness association as a frost coefficient.
 
-### 3. The new diversification wording is honest; the ecological opportunity remains
+### 3. The diversity score bonus is removed; ecological mechanisms remain open
 
 Locations: `rollYear`, `grow`, `bestLandFirst`, welfare resilience calculation;
 see also [the existing strategy review](strategies-2026-11-18.md).
 
 Higher zones are never spared a frost that reaches a lower one. Drought applies
-the same 25 percent loss everywhere. The score rewards occupied zone count, but
-that is not an empirical estimate of loss covariance. The present text already
-discloses the resulting dominance of lower-field allocation.
+the same 25 percent loss everywhere. PR #29 removed the occupied-zone bonus:
+resilience now counts protected fields only. Removing that score inconsistency
+does not establish a biological diversification benefit. PRs #25 and #28 also
+make re-plan comparisons depend on the actual board and distinguish sample
+weathers from the student's weather; there is no universal lower-field dominance
+claim here.
 
 The new papers do not establish a reversal of this altitude ordering. Winkel
 concerns shelter within quinoa stands; Condori concerns genotype and timing;
@@ -141,9 +147,11 @@ annual spoilage rates, universal deterioration or historical yield bonuses.
 
 Locations: `YEARS`, `advanceState`, `collapseState`, `settle`.
 
-The colonial harvests represent separated sample years. Applying a single annual
-survival, breeding, ageing or soil-recovery update across those gaps would make
-new state variables misleading. Decide between representative episodes with
+The colonial harvests represent separated sample years. PR #26 deliberately
+retains and labels per-person food-store carryover across the gap; this review
+preserves that teaching choice. Applying a single annual survival, breeding,
+ageing or soil-recovery update across those gaps would make new state variables
+misleading. Decide between representative episodes with
 specified starting stocks and an intervening annual simulation before adding
 biological persistence. A scenario reset is not biological recovery.
 
@@ -158,6 +166,12 @@ historical evidence motivates examining provisioning networks, but not a price
 or payload calibration. A market extension would need prices, access, trade costs
 and who receives wages or caravan returns; it should permit both relief and
 failure under stated conditions rather than guarantee either outcome.
+
+PR #28's wage-crew preservation fixes player control, not this accounting limit.
+Its hand-set re-plan projection and stores warning are already implemented.
+The household estimate continues to use food on hand before the eating cap,
+rather than actual intake; differences at the same capped intake are therefore
+not listed as a new bug.
 
 ### 7. The matched comparison remains conditional on each factual starting state
 
