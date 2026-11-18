@@ -58,7 +58,8 @@ A source records how far anyone in this project has read it (`access`):
 
 Open the game with `?seed=12345`, predict anything, and play the default plan
 with Next step only, choosing **Best land first** each time the game asks you to
-re-plan (at 1573 and after the 1585–91 epidemics). The results tiles must read, in order:
+re-plan (at 1573 and after the 1585–91 epidemics). On the results, open **All numbers
+as tables**; its first table (Averages, read row by row) must read, in order:
 
 `1,760 kcal | 1,410 kcal | 74 → 52 | 103 | 109 | 45% → 75%`
 
