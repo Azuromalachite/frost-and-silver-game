@@ -1,5 +1,5 @@
 # Pre-registration: does a herd kept as a living food store change outcomes, strategies or the lesson?
-Date: 2026-11-19 · Project: Frost & Silver, Path B, experiment 4 · Verdict: PURSUE (author's choices recorded below; to be accepted before any computation)
+Date: 2026-11-19 · Project: Frost & Silver, Path B, experiment 4 · Verdict: PURSUE (accepted by the author 2026-11-19, before any computation)
 
 ## Seed observation (what sparked this)
 The Puna is a fourth crop zone. Crews there produce food the same year, and no herd persists
