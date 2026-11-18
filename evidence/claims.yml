@@ -248,7 +248,7 @@ claims:
     layer: game_assumption
     status: labelled
     sources: [thitibordin_game]
-    code: ["res: 20 * protShare * Math.min(1, intake / GOAL) * Math.min(1, (S.store / GOAL * 365) / 90)"]
+    code: ["res: 20 * protShare * Math.min(1, (S.store / GOAL * 365) / 90)"]
     pages:
       - path: frost-and-silver.html
         anchor: It is a model output, not a measurement.
@@ -267,9 +267,16 @@ claims:
       74.9, rising on 49 of 80 seeds) while its food fell, because survivors on
       terraced land maxed out resilience however hungry they were. Since then
       resilience is scaled by food adequacy and stores (by the author's
-      decision): that plan goes 73 -> 61.3, rising on 19 seeds, all of them with
-      colonial food still above the 1,700 goal. tests/review_model.cjs asserts
-      the fall (ADVANCE_WELFARE), with a planted defect.
+      decision): that plan went 73 -> 61.3, rising on 19 seeds (a note here said
+      all 19 kept colonial food above 1,700; a review found 6 that did not). Its
+      first colonial harvest was still its strictly best harvest on 48 of 80
+      seeds, because protection was counted against the crews left after the
+      collapse. Review 4 counts protected crews against the community's full 14
+      crews and drops the food factor, which never took effect (stores are eaten
+      before anyone goes short): the plan goes 72.6 -> 58, rising on 2 seeds, and
+      harvest 4 is never strictly its best harvest (it can tie an Inca harvest,
+      fed and with the stores carried across 1573). tests/review_model.cjs asserts
+      both (ADVANCE_WELFARE), with planted defects.
 
   - id: claim.game.key_message
     statement: >
@@ -1034,21 +1041,23 @@ claims:
       Building Valley and Upper-field terraces in harvest 1 with no chuño crews,
       three chuño crews in harvests 2 and 3, then every crew on the best land
       after 1573, beat the best fixed plan picked after the weather was known on
-      40 of seeds 1-80, judged by hunger deaths, then food, then welfare. With Valley terraces alone, or other numbers of chuño
-      crews, a changing plan rarely does.
+      42 of seeds 1-80, judged by hunger deaths, then food, then welfare. Other
+      changing plans do well too: a review counted 45 and 47 of 80 for Valley
+      terraces with one, then two or three, chuño crews (main at a881766).
     layer: game_result
     status: labelled
     sources: []
     pages:
       - path: frost-and-silver.html
-        anchor: one plan that changes by harvest beat it on 40 of 80 test weathers
+        anchor: one plan that changes by harvest beat it on 42 of 80 test weathers
     notes: >
       Asserted by tests/review_model.cjs (CHANGING_WINS). The end screen used to
       say "about two seeds in three" without naming the terraces; a review found
       the obvious reading (Valley terraces only) beats it on 0-13 of 80. It was
       57 of 80 until terraces stopped counting toward the welfare index's
       resilience in the year they are built, then 52, and 58 once resilience
-      stopped rewarding spread (both 2026-11-18), judged on welfare alone; 40 once
+      stopped rewarding spread (both 2026-11-18), judged on welfare alone; 42 since
+      resilience counts the full 14 crews (review 4), 40 before that, once
       the end screen ranked plans by hunger deaths first (review round 3).
 
   - id: claim.game.advance_plan
@@ -1058,7 +1067,7 @@ claims:
       1573, lost the fewest people to hunger averaged over seeds 1-80 (ranked by
       deaths, then food, then welfare), and is the same plan when chosen on seeds
       1-40 or 41-80 alone. Scored on each weather it averages 18.9 hunger deaths,
-      1,550 kcal after 1573 and 67.2 welfare, against 16.3, 1,561 and 67.5 for the
+      1,550 kcal after 1573 and 65.3 welfare, against 16.3, 1,561 and 65.4 for the
       best plan picked knowing that weather; it reaches 1,700 kcal on 21 seeds
       against 22.
     layer: game_result

@@ -407,14 +407,14 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
     <h4>How the numbers are shown</h4>
     <ul>
       <li><b>GDP as an index (Maddison's 1500 level, 416, = 100).</b> Historical GDP series come in different dollars: Maddison (2003) uses 1990 international dollars, the newer Maddison Project Database (Bolt &amp; van Zanden) uses 2011 dollars and gives Peru-specific estimates for the early 1600s. An index lets the game compare with either without mixing units. On the chart, the diamond is Maddison's 1600 estimate for all of Latin America, 5% above 1500. Because the game was tuned to start near 1500's level, matching it there is a design choice, not a test.</li>
-      <li><b>Caloric Welfare Index</b>, out of 100: 50 points for food adequacy, 30 for stores, 20 for farming resilience. The weights come from the original game's classroom model; how each part is scored here (food against 1,700 kcal, stores against 90 days, resilience from the share of farm crews on terraces or raised fields that stood before the harvest, scaled by how well people ate and how full the stores are, so a hungry community with empty stores scores no resilience) is this adaptation's assumption. It does not reward spreading crews across zones, because in this game spreading never pays. It is a model output, not a measurement.</li>
+      <li><b>Caloric Welfare Index</b>, out of 100: 50 points for food adequacy, 30 for stores, 20 for farming resilience. The weights come from the original game's classroom model; how each part is scored here (food against 1,700 kcal, stores against 90 days, resilience from the crews on terraces or raised fields that stood before the harvest, counted against the community's full 14 crews and scaled by how full the stores are, so a community with empty stores scores no resilience) is this adaptation's assumption. It does not reward spreading crews across zones, because in this game spreading never pays. It is a model output, not a measurement.</li>
       <li><b>Silver.</b> Potosí's output rose sharply late in the century, after mercury amalgamation spread in the 1570s. The game raises the value of each mine worker's silver from harvest 4 to harvest 6; the path is a teaching assumption.</li>
     </ul>
   </details>
 
   <footer class="foot">
     <p>Adapted from <a href="https://superlative-sprinkles-2653a1.netlify.app/" target="_blank" rel="noopener">“Week 2: Tahuantinsuyu Harvest &amp; Frost Defense”</a> by Amnuayvit Thitibordin, licensed <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a>. Changes: rebuilt as a turn-based game with a colonial second act, a new model and a new visual design. This adaptation is also licensed CC BY-NC-SA 4.0. Adapted by Thanakrit Wongsatit. The original author built the game around one message: GDP per person grew in sixteenth-century Latin America, but life did not get better, because food per person fell. He drew on Maddison's historical statistics and his familiarity with global economic history, and also used the game to teach the quipu.</p>
-    <p>The game is a model, not a reconstruction. Anchors: GDP per person of 416 in 1500 and 438 in 1600 are Maddison's conjectural estimates for Latin America as a whole (1990 international dollars; not Andes-specific), and the game's GDP formula was tuned to start near 416. The fall from about 1,700 to about 1,200 kcal is the original game's teaching figure and has no source we could confirm. Here “kcal per person per day” means average food available across all ages, capped at 1,900. The household share assumes household food varies 30% around the average; it is a guess that illustrates the point Wernke &amp; Whitmore (2009, <i>Human Ecology</i> 37:421) make about production, that some households' own fields fall short while the community has a surplus (they measure what fields produced, not what people ate). Every other number is the game's own. For scale, adults in a modern multi-country sample that excluded manual labourers used about 2,190 (women) and 2,720 (men) kcal a day (Pontzer et al. 2016, <i>Nature</i> 533:390, Table 1); a community average that includes children is lower.</p>
+    <p>The game is a model, not a reconstruction. Anchors: GDP per person of 416 in 1500 and 438 in 1600 are Maddison's conjectural estimates for Latin America as a whole (1990 international dollars; not Andes-specific), and the game's GDP formula was tuned to start near 416. The fall from about 1,700 to about 1,200 kcal is the original game's teaching figure and has no source we could confirm. Here “kcal per person per day” means average food available across all ages, capped at 1,900. The household share assumes household food varies 30% around the average; it is a guess that illustrates the point Wernke &amp; Whitmore (2009, <i>Human Ecology</i> 37:421) make about production, that some households' own fields fall short while the community has a surplus (their model estimates what fields produced, not what people ate). Every other number is the game's own. For scale, adults in a modern multi-country sample that excluded manual labourers used about 2,190 (women) and 2,720 (men) kcal a day (Pontzer et al. 2016, <i>Nature</i> 533:390, Table 1); a community average that includes children is lower.</p>
   </footer>
 </div>
 
@@ -924,9 +924,11 @@ function harvest(){
   // Caloric Welfare Index: the original game's classroom index, 50% calorie adequacy, 30% storage buffer,
   // 20% farming resilience. The component definitions below are this adaptation's (teaching assumptions).
   const farm = ZONES.reduce((s, z) => s + S.alloc[z.key], 0);
-  const protShare = farm ? ZONES.reduce((s, z) => s + (builtBefore[z.key] && z.build ? S.alloc[z.key] : 0), 0) / farm : 0;
+  // protected crews against the full pre-collapse crew count: when survivors crowd onto terraced land after 1573 the
+  // community is smaller, not better protected (as a share of the crews left, this jumped from 0.58 to 1)
+  const protShare = ZONES.reduce((s, z) => s + (builtBefore[z.key] && z.build ? S.alloc[z.key] : 0), 0) / BASE_CREWS;
   const cwiParts = {cal: 50 * Math.min(1, intake / GOAL), buf: 30 * Math.min(1, (S.store / GOAL * 365) / 90),
-    res: 20 * protShare * Math.min(1, intake / GOAL) * Math.min(1, (S.store / GOAL * 365) / 90) /* protected fields count only for a fed community with stores: protection cannot score while people go hungry. Until 2026-11-18 30% of this part rewarded spreading, which this game's frost never pays */};
+    res: 20 * protShare * Math.min(1, (S.store / GOAL * 365) / 90) /* protection counts only for a community with stores (stores are eaten before anyone goes short, so empty stores also mean hunger; a separate food factor never took effect). Until 2026-11-18 30% of this part rewarded spreading, which this game's frost never pays */};
   const cwi = cwiParts.cal + cwiParts.buf + cwiParts.res;
   const rec = {year:S.year, act:act(S.year), cwi, cwiParts, alloc: {...S.alloc}, chuno: S.chuno, gidx: gdp / 416 * 100, H, lost, saved, tribute, tRate, ret, stateOut, d, rf: a2 ? reducNow() : 1, toStore, spoiled, draw, intake, avail, gdp, silver, cf,
     pop:S.pop, popBefore, mita, wage:S.wage, line:Y.line, drought:Y.drought, hazy:Y.hazy, winter:Y.winter, chunoRoom: S.chuno * CHUNO_CAP * wm * per, zr, builtNow,
@@ -1025,7 +1027,7 @@ function logHarvest(r){
   if (r.line === 4) logAdd(tag, 'No frost.');
   else if (r.lost < 1) logAdd(tag, `Frost down to the ${zone} zone; no crops there.`);
   else logAdd(tag, `Frost down to the ${zone} zone: −${fmt(r.lost)}${r.saved > 0 ? `; terraces and raised fields saved ${fmt(r.saved)}` : ''}.`, 'neg');
-  if (r.drought) logAdd(tag, `Dry year (in the southern Andes El Niño years tend to be dry): every zone −25% (game figure). ${r.hazy ? 'The hazy Pleiades warned of it.' : 'No warning from the Pleiades.'}`, 'neg');
+  if (r.drought) logAdd(tag, `Dry year (in the southern Andes El Niño years tend to be dry, though not everywhere): every zone −25% (game figure). ${r.hazy ? 'The hazy Pleiades warned of it.' : 'No warning from the Pleiades.'}`, 'neg');
   else if (r.hazy) logAdd(tag, 'Hazy Pleiades, but the rains came.');
   if (r.ret > 0) logAdd(tag, `Inca feasts and rations +${fmt(r.ret)}.`, 'pos');
   if (r.tribute > 0) logAdd(tag, `Tribute −${fmt(r.tribute)} (${Math.round(r.tRate*100)}% of the harvest; game rule).`, 'neg');
@@ -1175,7 +1177,9 @@ function renderReplan(){
   el.hidden = false;
   const p = replanProjection(), dF = p.best.food - p.shares.food;
   const hadChuno = S.replan.from[SHARE_KEYS.indexOf('chuno')] > 0, hadWage = S.replan.from[SHARE_KEYS.indexOf('wage')] > 0;
+  const sameBoard = JSON.stringify(bestLandFirst(S.replan.B)) === JSON.stringify(keepShares(S.replan.from, S.replan.B));
   const verdict = Math.abs(dF) < 25 ? 'For this plan the two came out about the same on average.'
+    : sameBoard ? `Both choices give the same board now; the difference (${dF > 0 ? 'best land first' : 'keeping the shares'} ahead on average) comes from later re-plans, where they part ways.`
     : dF > 0 ? `For this plan best land first grew more on average: ${hadChuno ? 'the chuño crews it drops grow nothing to eat' : 'it moves crews down from the colder, frostier zones'}.`
     : hadWage ? 'For this plan keeping the shares grew more on average: it trims wage crews along with the rest, while best land first keeps every wage crew and so farms with fewer crews.'
     : 'For this plan keeping the shares grew more on average: spreading crews over the lower zones grows more than crowding the valley.';
@@ -1183,7 +1187,7 @@ function renderReplan(){
   const row = (name, q) => `<tr><td>${name}</td><td class="n">${kcal(q.food)}</td><td class="n">${fmt(q.deaths)}</td></tr>`;
   el.innerHTML = `<h3 id="rp-h">${k ? 'Re-planned' : 'Choose how to re-plan'}: ${S.replan.B} crews instead of ${S.replan.was} (${cause})</h3>
     <p><b>Keep the same shares</b>: your plan on fewer crews; chuño crews and the high fields carry on. <b>Best land first</b>: every crew on the lowest zones, each filled before the next; no chuño crews, nothing growing up high; wage crews stay.</p>
-    <table><caption style="text-align:left;font-size:12px;color:var(--muted)">The rest of the game from here, averaged over ${REPLAN_SAMPLE} sample weathers (not yours), with the same choice at any later re-plan</caption>
+    <table><caption style="text-align:left;font-size:12px;color:var(--muted)">The rest of the game from here, averaged over ${REPLAN_SAMPLE} sample weathers (not yours), with the same choice at any later re-plan (a hand-set plan keeps its shares)</caption>
       <thead><tr><th scope="col">Choice</th><th scope="col">Food a day</th><th scope="col">Hunger deaths</th></tr></thead>
       <tbody>${row('Keep the same shares', p.shares)}${row('Best land first', p.best)}${p.own ? row('As you set them by hand', p.own) : ''}</tbody></table>
     <p>${verdict} Which choice is better depends on the plan you held, and on weather nobody can see yet.${k ? '' : ' The harvest waits until you choose.'}</p>
@@ -1407,8 +1411,10 @@ function applyGridPlan(st){
 // student's own weather it is a fair benchmark; the best of the grid on that weather is picked with hindsight.
 const ADVANCE_PLAN = {build: ['yunga'], incaChuno: 1, incaRule: 'best', colChuno: 0, wage: 0, colRule: 'best'};
 // How the end screen ranks two results ({deaths, k2, w}): fewer hunger deaths first, then more food after 1573, then
-// welfare. Welfare alone once let a student who lost 134 people "match or beat" a plan that lost 20.
-const betterOutcome = (a, b) => Math.abs(a.deaths - b.deaths) > 0.5 ? a.deaths < b.deaths : Math.abs(a.k2 - b.k2) > 5 ? a.k2 > b.k2 : a.w > b.w;
+// welfare. Welfare alone once let a student who lost 134 people "match or beat" a plan that lost 20. Deaths and food are
+// compared as they are shown (whole people, food to the nearest 10 kcal), which also keeps the ranking transitive.
+const betterOutcome = (a, b) => { const da = Math.round(a.deaths), db = Math.round(b.deaths), ka = Math.round(a.k2 / 10), kb = Math.round(b.k2 / 10);
+  return da !== db ? da < db : ka !== kb ? ka > kb : a.w > b.w; };
 function simulatePlan(seed, st){
   const keep = S;
   try {
@@ -1445,8 +1451,8 @@ function compareOnSameWeather(seed, mine, done){
 // The fair benchmark: ADVANCE_PLAN was chosen on test weathers, before anyone knew this one, and is scored on it.
 function fairVerdict(f, me){
   if (!betterOutcome(f, me)) return 'Your community did as well or better (judged first by hunger deaths, then food after 1573, then welfare).';
-  if (Math.abs(f.deaths - me.deaths) > 0.5) return `It lost ${fmt(Math.round(me.deaths) - Math.round(f.deaths))} fewer people to hunger.`; // from the rounded figures printed beside it
-  if (Math.abs(f.k2 - me.k2) > 5) return `It lost about as many people and kept ${fmt(Number(kcal(f.k2).replace(/,/g, '')) - Number(kcal(me.k2).replace(/,/g, '')))} kcal more a day after 1573.`;
+  if (Math.round(f.deaths) !== Math.round(me.deaths)) return `It lost ${fmt(Math.round(me.deaths) - Math.round(f.deaths))} fewer people to hunger.`; // the rounded figures printed beside it
+  if (Math.round(f.k2 / 10) !== Math.round(me.k2 / 10)) return `It lost about as many people and kept ${fmt(Number(kcal(f.k2).replace(/,/g, '')) - Number(kcal(me.k2).replace(/,/g, '')))} kcal more a day after 1573.`;
   return 'It lost about as many people, kept about as much food and scored a little more on welfare.';
 }
 function fairLine(k2, hungerDeaths){
@@ -1544,9 +1550,10 @@ function showEnd(){
     });
     const n = RUNS.length, showFirst = n > 2;
     // good: whether a rise is better (food, welfare) or worse (deaths); GDP is neither, so its change is uncoloured
-    const row = (label, get, f, good) => { const a = get(LAST), b = get(cur), d = Math.round((b - a) * 10) / 10;
+    const num = t => Number(String(t).replace(/,/g, '')); // the value as shown, so 3 | 3 never reads "+1"
+    const row = (label, get, f, good) => { const a = get(LAST), b = get(cur), d = num(f(b)) - num(f(a));
       const cls = good === undefined || Math.abs(d) < 0.5 ? '' : (d > 0) === good ? 'pos' : 'neg';
-      return `<tr><td>${label}</td>${showFirst ? `<td>${f(get(FIRST))}</td>` : ''}<td>${f(a)}</td><td>${f(b)}<br><small class="${cls}">${Math.abs(d) < 0.5 ? 'same' : `${d > 0 ? '+' : '−'}${f(Math.abs(d))}`}</small></td></tr>`; }; // the change on its own line keeps the column narrow on phones
+      return `<tr><td>${label}</td>${showFirst ? `<td>${f(get(FIRST))}</td>` : ''}<td>${f(a)}</td><td>${f(b)}<br><small class="${cls}">${Math.abs(d) < 0.5 ? 'same' : `${d > 0 ? '+' : '−'}${fmt(Math.abs(d))}`}</small></td></tr>`; }; // the change on its own line keeps the column narrow on phones
     const k = v => fmt(v), w = v => Math.round(v), ix = v => gi(v).toFixed(0);
     const bi = RUNS.reduce((b, r, i) => betterOutcome(r, RUNS[b]) ? i : b, 0);
     compareHTML = `<div class="cmpruns">
@@ -1637,7 +1644,7 @@ function showEnd(){
     </div>
     <div>
       <h3 style="font-size:18px;margin-bottom:6px">What the record suggests</h3>
-      <p style="margin:0;max-width:65ch">Maddison's estimates for Latin America as a whole have GDP per person rising slightly, from 416 in 1500 to 438 in 1600 (1990 Int$), even as total output and population fell. For this period they are informed guesses, not measurements. Output per person can rise for more than one reason: more silver, or fewer people sharing the same land. In this game both matter, and which matters more depends on how you count: silver against the field labour the mita takes out (your game splits them above), and how survivors re-plan their fewer crews. The course figure of 1,700 falling to 1,200 kcal a day has no primary source we could confirm, so treat it as a teaching figure. From the sources checked so far: colonial labour drafts pulled workers out of the farming cycle, the population fell steeply, and one village study (Wernke &amp; Whitmore 2009) finds households whose own fields produced less than they needed even where the community as a whole produced a surplus; it measures production, not food eaten, and leaves out tribute, herding, trade and sharing. GDP per person is an average of output. It says nothing about who eats.</p>
+      <p style="margin:0;max-width:65ch">Maddison's estimates for Latin America as a whole have GDP per person rising slightly, from 416 in 1500 to 438 in 1600 (1990 Int$), even as total output and population fell. For this period they are informed guesses, not measurements. Output per person can rise for more than one reason: more silver, or fewer people sharing the same land. In this game both matter, and which matters more depends on how you count: silver against the field labour the mita takes out (your game splits them above), and how survivors re-plan their fewer crews. The course figure of 1,700 falling to 1,200 kcal a day has no primary source we could confirm, so treat it as a teaching figure. From the sources checked so far: colonial labour drafts pulled workers out of the farming cycle, the population fell steeply, and one village study (Wernke &amp; Whitmore 2009) finds households whose own fields produced less than they needed even where the community as a whole produced a surplus; their model estimates what households' fields produced, not food eaten, and does not fully quantify tribute, herding, trade and sharing. GDP per person is an average of output. It says nothing about who eats.</p>
     </div>
     <div class="actions">
       <span class="free" id="copymsg">Copy a text report to paste into your class page.</span>
@@ -1653,7 +1660,7 @@ function showEnd(){
     const rule = r => r === 'best' ? 'best land first' : 'crews spread across the zones';
     const how = `${builds.length ? `build ${builds.join(' and ')}` : 'build nothing'}; in the Inca years ${crewsN(st.incaChuno)} on chuño and the rest ${rule(st.incaRule)}; after 1573 ${crewsN(st.colChuno)} on chuño, ${crewsN(st.wage)} for wages, the rest ${rule(st.colRule)}`;
     const myW = S.hist.reduce((s, r) => s + r.cwi, 0) / S.hist.length;
-    const ceiling = `It is not a ceiling either: one plan that changes by harvest beat it on 40 of 80 test weathers: build Valley and Upper-field terraces in harvest 1 with no chuño crews, put three crews on chuño in harvests 2 and 3, then every crew on the best land after 1573 (other changing plans do well too; which terraces you build matters). Your explanation of why GDP and food moved apart matters more than this comparison.`;
+    const ceiling = `It is not a ceiling either: one plan that changes by harvest beat it on 42 of 80 test weathers: build Valley and Upper-field terraces in harvest 1 with no chuño crews, put three crews on chuño in harvests 2 and 3, then every crew on the best land after 1573 (other changing plans do well too; which terraces you build matters). Your explanation of why GDP and food moved apart matters more than this comparison.`;
     // on some weathers the plan chosen in advance is also the hindsight best: say so instead of repeating it
     if (JSON.stringify(st) === JSON.stringify(ADVANCE_PLAN)) { el.innerHTML = `On your weather (seed ${endSeed}) the plan above was also the best of the ${fmt(c.n)} tested plans picked after the weather was known. ${ceiling.replace('It is not a ceiling either:', 'It is not a ceiling:')}`; return; }
     el.innerHTML = `On your weather (seed ${endSeed}), the best of ${fmt(c.n)} tested plans that keep one rule for each period, picked after the weather was known, judged first by hunger deaths, then food after 1573, then welfare, scored <b>${Math.round(c.best.w)}</b>, kept ${kcal(c.best.k2)} kcal a day after 1573${c.best.k2 >= 1700 ? ' (it reached the goal on this weather; averaged over many weathers no tested plan does)' : ''} and lost ${fmt(c.best.deaths)} people to hunger. It was: ${how}. Your plan scored <b>${Math.round(myW)}</b>, kept ${kcal(k2)} kcal and lost ${fmt(hungerDeaths)}. Nobody could have picked it in advance. ${ceiling}`;
@@ -1695,11 +1702,11 @@ function reportText(k1,k2,g1,g2,cg,dk,hungerDeaths){
   const myW = S.hist.reduce((s, r) => s + r.cwi, 0) / S.hist.length, f = simulatePlan(S.seed, ADVANCE_PLAN);
   const days = v => fmt(v), dead = r => Math.max(0, r.popBefore - r.pop);
   const L = [`Frost and Silver: report${S.who?` by ${S.who}`:''}`, '',
-    `Weather: ${wxName(S.mode, S.seed)}.`,
+    `Weather: ${wxName(S.mode, S.seed)}${RUNS.length > 1 ? `; run ${RUNS.length} on this weather` : ''}.`,
     `Prediction (graded): under the colonial rules, food per person would ${S.pred.k}.`,
     `What raised GDP per person (not graded): ${WHY_LABEL[S.pred.why] || 'no answer'}.`,
     `Reasoning: ${S.hyp || '(none written)'}`, '',
-    'Harvest, year | food available kcal/day | GDP index (Maddison 1500 = 100) | welfare index | people | hunger deaths | stores (days) | frost reached | drought',
+    'Harvest, year | food available kcal/day | GDP index (Maddison 1500 = 100) | welfare index | people | hunger deaths (each rounded; the total below is not the sum of the rounded rows) | stores (days) | frost reached | drought',
     ...S.hist.map(r => `${r.year} ${YEARS[r.year-1]} | ${kcal(r.intake)} | ${gi(r.gdp).toFixed(0)} | ${Math.round(r.cwi)} | ${fmt(r.pop)} | ${fmt(dead(r))} | ${days(r.storeDays)} | ${r.line===4?'none':ZONES[r.line].name} | ${r.drought?'yes':'no'}`), '',
     `Inca years average: ${kcal(k1)} kcal, GDP index ${gi(g1).toFixed(0)}. Colonial years average: ${kcal(k2)} kcal, GDP index ${gi(g2).toFixed(0)}.`,
     `Community: ${fmt(hungerDeaths)} ${Math.round(hungerDeaths) === 1 ? 'person' : 'people'} lost to hunger over the game; stores of ${days(S.store / GOAL * 365)} days at the end; welfare ${Math.round(myW)} on average.`,
@@ -1712,7 +1719,7 @@ function reportText(k1,k2,g1,g2,cg,dk,hungerDeaths){
 }
 function restart(){
   PLAY.auto = false; stopAutoTimers();
-  compareGen++; S = fresh(); renderLog(); $('p-end').hidden = true; $('p-plan').hidden = true; $('card').hidden = true; $('notice').hidden = true; $('p-intro').hidden = false;
+  compareGen++; RUNS = []; S = fresh(); renderLog(); $('p-end').hidden = true; $('p-plan').hidden = true; $('card').hidden = true; $('notice').hidden = true; $('p-intro').hidden = false;
   $('dock').hidden = true; $('transport').hidden = true; $('stage').hidden = true; tlSeg(0, 0, 0);
   renderHUD(); renderForecast(); window.scrollTo({top:0});
 }

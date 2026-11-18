@@ -24,6 +24,11 @@
 > loses welfare after 1573 as food falls (73 → 61). The end screen ranks plans by
 > hunger deaths, then food, then welfare; the same plan is still best (18.9
 > deaths, 1,550 kcal, 67.2 welfare on seeds 1–80).
+>
+> **Update, review 4 (18 November 2026).** Resilience counts protected crews
+> against the community's full 14 crews, scaled by stores. The plan chosen in
+> advance goes 72.6 → 58 and its harvest 4 is never strictly its best harvest;
+> its mean welfare is 65.3. Food, deaths and the choice of plan are unchanged.
 
 **Question.** What is the best way to play, how much better is it than the
 default plan, and do the game's numbers reward what its text teaches?

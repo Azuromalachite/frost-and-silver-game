@@ -91,7 +91,7 @@ figures the intro relies on, and the README's table of means. Some numbers
 come from one-off sweeps that change the model (the ablations behind "+0.07"
 and "+5.47", the stores halved or emptied, the collapse's parts); those are
 dated where they are quoted and are not re-checked here. CI runs it on every pull request, with
-`--self-test`, which plants thirteen model changes and requires each to trip the
+`--self-test`, which plants fourteen model changes and requires each to trip the
 assertion meant for it. A change that moves one of these numbers must update
 the constant at the top of that file, and the places that quote it, in the same
 pull request. Without Node, `tools/run_model_check.html` runs the same file in a
