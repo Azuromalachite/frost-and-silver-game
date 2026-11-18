@@ -98,11 +98,12 @@ sources:
     title: "Agriculture and Inequality in the Colonial Andes: A Simulation of Production and Consumption Using Administrative Documents"
     author: Steven A. Wernke; Thomas M. Whitmore
     date: 2009
-    access: abstract_read
-    by: review agent (claims and charts)
-    when: 2026-11-17
+    access: sections_read
+    by: Codex climate review
+    when: 2026-11-18
     url: https://doi.org/10.1007/s10745-009-9261-2
-    notes: Household figures not read; the abstract supports hardship despite a regional surplus.
+    locator: Human Ecology 37, selected pp. 428-437, especially pp. 432-437
+    notes: Model exclusions and results read beyond the abstract. Own-farm production shortfalls are not observed consumption or starvation; tribute, herding, trade and sharing are not fully quantified. Household spread remains a game assumption.
 
   - key: wernke2010
     title: "A Reduced Landscape: Toward a Multi-Causal Understanding of Historic Period Agricultural Deintensification in Highland Peru"
@@ -447,3 +448,113 @@ sources:
     url: https://doi.org/10.1177/1046878116646693
     locator: Simulation and Gaming 47(4), pp. 517-542; supplied advance-version PDF pp. 8-20
     notes: Relevant theory and best practices read. The supplied PDF uses pagination 1-26. Full text now available, resolving the earlier access gap; does not validate learning outcomes of this game.
+
+  - key: saavedra_takahashi2017
+    title: "Physical controls on frost events in the central Andes of Peru using in situ observations and energy flux models"
+    author: "Miguel Saavedra; Ken Takahashi"
+    date: 2017
+    access: sections_read
+    by: Codex climate review
+    when: 2026-11-18
+    url: https://doi.org/10.1016/j.agrformet.2017.02.019
+    locator: "Main text pp. 58-69; Tables 1-4 and figure captions 2-12"
+    notes: "Supplied 13-page PDF resolves access. Modern Huancayo observations and short grass-ground campaign, not crop loss or colonial calibration; supplements and every figure not independently checked."
+
+  - key: saelim_etal2025
+    title: "Biomarker evidence for arid intervals during the past ~1,800 years in the central Andean highlands"
+    author: "Jarunetr N. Sae-Lim; Bronwen L. Konecky; Jack A. Hutchings; Neal Michelutti; Christopher Grooms; Mathias Vuille; Isla S. Castaneda; John P. Smol"
+    date: 2025
+    access: sections_read
+    by: Codex climate review
+    when: 2026-11-18
+    url: https://doi.org/10.1016/j.epsl.2025.119407
+    locator: "Main text pp. 1-11; Table 2 and figure captions 2-5"
+    notes: "Supplied 12-page PDF resolves access. Sample resolution 11-40 years; annual interpolation is not annual observation. Regional circulation and local stress differ; supplements and archive not reanalysed."
+
+  - key: pouteau_etal2011
+    title: "Downscaling MODIS-derived maps using GIS and boosted regression trees: The case of frost occurrence over the arid Andean highlands of Bolivia"
+    author: "Robin Pouteau; Serge Rambal; Jean-Pierre Ratte; Fabien Goge; Richard Joffre; Thierry Winkel"
+    date: 2011
+    access: sections_read
+    by: Codex climate review
+    when: 2026-11-18
+    url: https://doi.org/10.1016/j.rse.2010.08.011
+    locator: "Methods 2.2-2.3; Results 3.1-3.2; Discussion 4.1-4.2"
+    notes: "Author-uploaded article text read on ResearchGate. Scale-dependent terrain effects do not establish simultaneous plot loss covariance or injury; severe-event and fine-scale validation limited."
+
+  - key: garcia_etal2007
+    title: "Agroclimatic constraints for rainfed agriculture in the Bolivian Altiplano"
+    author: "M. Garcia; D. Raes; S.-E. Jacobsen; T. Michel"
+    date: 2007
+    access: sections_read
+    by: Codex climate review
+    when: 2026-11-18
+    url: https://doi.org/10.1016/j.jaridenv.2007.02.005
+    locator: "Methods 2; Results 3; Discussion 4; Tables 1, 2 and 5 in article text"
+    notes: "Academia.edu article text read. Transcription can lose temperature minus signs; numerical calibration needs original table images. Frost-free period uses a probability threshold, not zero frost."
+
+  - key: canedorosso_etal2021
+    title: "Drought impact in the Bolivian Altiplano agriculture associated with the El Nino-Southern Oscillation using satellite imagery data"
+    author: "Claudia Canedo-Rosso; Stefan Hochrainer-Stigler; Georg Pflug; Bruno Condori; Ronny Berndtsson"
+    date: 2021
+    access: sections_read
+    by: Codex climate review
+    when: 2026-11-18
+    url: https://doi.org/10.5194/nhess-21-995-2021
+    locator: "Data 2; selected Methods 3; Results 4; Discussion 5"
+    notes: "Open publisher HTML read. Modern satellite vegetation and temperature indicators, not household calories; gridded averages and ENSO associations have spatial exceptions."
+
+  - key: cruz_etal2024
+    title: "Growing in Scarcity: Pre-Hispanic Rain-Fed Agriculture in the Semi-Arid and Frost-Prone Andean Altiplano (Bolivia)"
+    author: "Pablo Cruz; Richard Joffre; Thibault Saintenoy; Jean-Joinville Vacher"
+    date: 2024
+    access: sections_read
+    by: Codex climate review
+    when: 2026-11-18
+    url: https://doi.org/10.3390/land13050619
+    locator: "Methods 2; selected Results 3; Discussion 4.1; Conclusions 5"
+    notes: "Open publisher HTML read. Archaeological field mapping and ethnographic interpretation, not an experiment isolating mita effects or quantified protection benefits."
+
+  - key: jonaitis_etal2021
+    title: "Spatiotemporal patterns of ENSO-precipitation relationships in the tropical Andes of southern Peru and Bolivia"
+    author: "Joseph A. Jonaitis; L. Baker Perry; Peter T. Soule; Christopher Thaxton; Marcos F. Andrade-Flores; Tania Ita Vargas; Laura Ticona"
+    date: 2021
+    access: sections_read
+    by: Codex climate review
+    when: 2026-11-18
+    url: https://doi.org/10.1002/joc.7058
+    locator: "Institution-hosted PDF pp. 4-10 and 13; Methods 3, selected Results 4, Discussion 5, Conclusions 6"
+    notes: "Selected sections of author-institution PDF read. Modern 75-station study; some eastern opposite-sign relationships are not significant. Not deterministic weather rules."
+
+  - key: bird_etal2011
+    title: "A 2,300-year-long annually resolved record of the South American summer monsoon from the Peruvian Andes"
+    author: "Broxton W. Bird; Mark B. Abbott; Mathias Vuille; Donald T. Rodbell; Nathan D. Stansell; Michael F. Rosenmeier"
+    date: 2011
+    access: sections_read
+    by: Codex climate review
+    when: 2026-11-18
+    url: https://doi.org/10.1073/pnas.1003719108
+    locator: "Study Site; selected Results and Discussion; Methods; Summary"
+    notes: "Open PMC article sections read. Regional monsoon reconstruction, not local harvest weather or annual crop loss calibration; supplementary material not reviewed."
+
+  - key: fao_frost2005_vol1
+    title: "Frost Protection: Fundamentals, Practice and Economics. Volume 1"
+    author: "Richard L. Snyder; J. Paulo de Melo-Abreu"
+    date: 2005
+    access: sections_read
+    by: Codex climate review
+    when: 2026-11-18
+    url: https://www.fao.org/4/y7223e/y7223e00.htm
+    locator: "Chapters 1 and 3; Chapter 7, Heaters and Smoke effects"
+    notes: "Official HTML chapters read. Physics and modern protection mechanisms do not establish historical feasibility, effectiveness or labour costs."
+
+  - key: fao_frost2005_vol2
+    title: "Frost Protection: Fundamentals, Practice and Economics. Volume 2"
+    author: "Richard L. Snyder; J. Paulo de Melo-Abreu; Scott Matulich"
+    date: 2005
+    access: sections_read
+    by: Codex climate review
+    when: 2026-11-18
+    url: https://www.fao.org/4/y7231e/y7231e00.htm
+    locator: "Chapter 2, Introduction and Risk"
+    notes: "Official HTML sections read. Decision analysis under uncertainty, not historical Andean technologies, prices, weather probabilities or costs."

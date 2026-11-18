@@ -107,7 +107,7 @@ years in a row; harvests 4–6 are snapshots decades apart.
 | Colonial Peru and Mexico saw economic growth from about 1550, driven partly by mining | interpretation | Arroyo Abad & van Zanden (2016), cited from a literature review, not re-read. |
 | In the game, GDP per person rises through silver and through the population collapse; which is the main cause depends on the decomposition | game result | Default plan, seeds 1–80: silver adds about 8 index points and the mita's lost field labour takes about 6.5 back; the collapse adds about 6.5, of which about 3.0 is chuño crews moved to the fields, 2.0 retreating to the best zones and 1.5 more land per survivor ([sensitivity sweep](sensitivity-2026-11-18.md)). With best land first at each re-plan, without silver GDP barely rises (+0.07); without the collapse it still rises (+5.47); with the same shares the rules are most of a smaller rise (3.05 of 4.65). In the game's formula chuño work counts for nothing in GDP. The re-plan when crews fall is the player's choice (claim.game.crew_trim_order); these numbers use "Best land first". Keeping the same shares leaves colonial food near 1,000 kcal. |
 | Food per person fell from about 1,700 to about 1,200 kcal a day | unsourced | The original game's figure. Not found in any source. Shown in the game as a dotted, labelled line. |
-| Households can go short even when a region produces a surplus | documented | Wernke & Whitmore (2009), checked from the abstract. The game's "households below 1,700 kcal" share comes from an assumed 30% spread, not from their figures. |
+| Households can go short even when a region produces a surplus | documented | Wernke & Whitmore (2009), selected model and results sections read. Own-farm shortfalls are not observed consumption or starvation; herding, trade and sharing are not fully quantified. The game's "households below 1,700 kcal" share comes from an assumed 30% spread, not from their figures. |
 | Adults use about 2,190 (women) and 2,720 (men) kcal a day | documented, modern | Pontzer et al. (2016), Table 1, read. A modern multi-country sample that excluded manual labourers; used only for scale. |
 | Skeletons and isotopes show diet changed after contact | documented, from notes | Klaus & Tam (2010); Tessone et al. (2025). Neither gives kcal a day. |
 
@@ -167,6 +167,14 @@ years in a row; harvests 4–6 are snapshots decades apart.
    its shocks differed by zone, and that needs a source first
    (claim.game.frost_from_top). Trasmonte et al. (2008) rank frost risk by
    altitude and say nothing about valley floors freezing while slopes stay warm.
+   The [climate review](climate-weather-literature-2026-11-18.md) now supplies
+   evidence for terrain effects (claim.climate.topoclimate), interacting physical
+   controls (claim.climate.frost_controls), and geographically differing drought
+   responses (claim.climate.drought_heterogeneity). It does not supply the joint
+   crop-loss probabilities needed to quantify diversification. A basin or an
+   explicitly composite setting also needs to be chosen before calibration.
+   The [debrief proposal](weather-debrief-proposal-2026-11-18.md) can test weather
+   sensitivity using the present model while these numerical questions remain open.
 
 ## Sources
 
@@ -179,7 +187,7 @@ years in a row; harvests 4–6 are snapshots decades apart.
 | Dell, M. (2010). The persistent effects of Peru's mining mita. *Econometrica*, 78(6), 1863–1903. https://doi.org/10.3982/ECTA8121 | mita region | boundary checked |
 | Gil Montero, R., & Zagalsky, P. C. (2016). Colonial organization of mine labour in Charcas. *International Review of Social History*. https://doi.org/10.1017/S0020859016000456 | mita and paid labour | from notes |
 | Barragán Romano, R. (2020). Women in the silver mines of Potosí. *International Review of Social History*. https://doi.org/10.1017/S0020859019000555 | women's work | from notes |
-| Wernke, S. A., & Whitmore, T. M. (2009). Agriculture and inequality in the colonial Andes. *Human Ecology*, 37, 421–440. https://doi.org/10.1007/s10745-009-9261-2 | household shortfalls | abstract |
+| Wernke, S. A., & Whitmore, T. M. (2009). Agriculture and inequality in the colonial Andes. *Human Ecology*, 37, 421–440. https://doi.org/10.1007/s10745-009-9261-2 | household shortfalls | selected pp. 428-437 |
 | Wernke, S. A. (2010). A reduced landscape. *Journal of Latin American Geography*, 9(3), 51–83. | reducciones, terraces | no |
 | Hunter, R. A. (2025). The structural transformation of Ollantaytambo's Inka ecology under Spanish rule. *Antiquity*. https://doi.org/10.15184/aqy.2024.200 | gradual change | from notes |
 | de la Puente Luna, J. C., & Perales Munguía, M. F. (2026). Villages at the crossroads. *Ethnohistory*. https://doi.org/10.1215/00141801-12105092 | local variation | from notes |
