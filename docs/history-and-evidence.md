@@ -222,7 +222,7 @@ years in a row; harvests 4–6 are snapshots decades apart.
 | Ascher, M., & Ascher, R. (1981). *Code of the Quipu: A Study in Media, Mathematics, and Culture*. University of Michigan Press. | quipu number system | no |
 | Urton, G. (2003). *Signs of the Inka Khipu: Binary Coding in the Andean Knotted-String Records*. University of Texas Press. | quipus and colonial counts | no |
 | Flynn, D. O. (2015). Silver in a global context, 1400–1800. In *The Cambridge World History*, vol. 6. | silver flows | from notes |
-| Bakewell, P. (1984). *Miners of the Red Mountain: Indian Labor in Potosí, 1545–1650*. University of New Mexico Press. | silver surge after the 1570s | no |
+| Bakewell, P. (1984). *Miners of the Red Mountain: Indian Labor in Potosí, 1545–1650*. University of New Mexico Press. | silver context; wages and budgets | selected pp. 100-111, 122-125 and 132-133; silver-output series not audited |
 | Pontzer, H., et al. (2016). Metabolic acceleration and the evolution of human brain size and life history. *Nature*, 533, 390–392. https://doi.org/10.1038/nature17654 | energy use for scale | read |
 
 "From notes" means the source was cited from a reference collection's reading
@@ -259,3 +259,18 @@ generic diversification and fuel-versus-fertilizer rules. The
 [implementation review](food-access-recovery-gaps-2026-11-18.md) records current code
 limits and research gates on main through PR #29. These notes do not implement
 new markets, stocks, pests, protection costs or historical parameters.
+
+## Processing and mining budgets: evidence update
+
+The [new specification](processing-income-spec-2026-11-18.md) records the supplied
+processing papers and Bakewell/Cole page images, distinguishes mass yield from
+energy recovery, records the two Burgos DOIs and documents a provisional batch
+audit. Historical receipts, provisioning costs and transfers require separate
+accounts. These readings do not validate the existing food, death or silver-path
+coefficients. The pre-existing silver-surge claim remains unverified rather than
+being upgraded merely because other parts of Bakewell were read.
+
+The [climate experiment](climate-risk-experiment-2026-11-18.md) turns the open
+spatial-risk question into a proposed one-crop, synchronized-weather comparison.
+It establishes no diversification benefit or annual reconstruction. The original
+author's open design questions above remain open.
