@@ -51,10 +51,12 @@ sources:
     title: "Between Conquest and Independence: Real Wages and Demographic Change in Spanish America, 1530–1820"
     author: Leticia Arroyo Abad; Elwyn Davies; Jan Luiten van Zanden
     date: 2012
-    access: from_notes
-    by: literature review supplied by the user
-    when: 2026-11-17
-    url: null
+    access: sections_read
+    by: Codex food-access and recovery review
+    when: 2026-11-18
+    url: https://doi.org/10.1016/j.eeh.2011.12.001
+    locator: "Author-hosted 18-page PDF, selected passages pp. 4-8, 11 and 14: Data and sources, Real wages, Maddison discussion and data appendix"
+    notes: "Urban wage/basket reconstruction, not observed diets. Sparse early Potosi prices, employment assumptions and occupational-risk adjustment limit inference; no community calorie calibration."
 
   - key: dell2010
     title: "The Persistent Effects of Peru's Mining Mita"
@@ -89,10 +91,12 @@ sources:
     title: "Women in the Silver Mines of Potosí: Rethinking the History of “Informality” and “Precarity”"
     author: Rossana Barragán Romano
     date: 2020
-    access: from_notes
-    by: reference collection index
-    when: 2026-11-17
+    access: sections_read
+    by: Codex food-access and recovery review
+    when: 2026-11-18
     url: https://doi.org/10.1017/S0020859019000555
+    locator: "Publisher HTML: Introduction; early-period ore market discussion; selected post-1575 processing discussion; Conclusions and footnote 11"
+    notes: "Direct reading extends earlier collection notes. Sixteenth- and eighteenth-century evidence must be separated; household provisioning/care is explicitly outside the article's scope."
 
   - key: wernke_whitmore2009
     title: "Agriculture and Inequality in the Colonial Andes: A Simulation of Production and Consumption Using Administrative Documents"
@@ -447,3 +451,58 @@ sources:
     url: https://doi.org/10.1177/1046878116646693
     locator: Simulation and Gaming 47(4), pp. 517-542; supplied advance-version PDF pp. 8-20
     notes: Relevant theory and best practices read. The supplied PDF uses pagination 1-26. Full text now available, resolving the earlier access gap; does not validate learning outcomes of this game.
+
+  - key: zagalsky2014
+    title: "La mita de Potosi: una imposicion colonial invariable en un contexto de multiples transformaciones (siglos XVI-XVII; Charcas, Virreinato del Peru)"
+    author: "Paula C. Zagalsky"
+    date: 2014
+    access: sections_read
+    by: Codex food-access and recovery review
+    when: 2026-11-18
+    url: "https://chungara.cl/Vols/2014/46-3/04-ZAGALSKY_46%283%29_2014.pdf"
+    locator: "Selected pp. 385-388 and 391-392; Tables 5-7 discussion and Conclusions; abstract p. 375"
+    notes: "Official allocations distinguished from actual fulfilment. Detailed 1610 evidence is later than the game; no universal commutation rate. This article does not resolve reading of the distinct 2023 book."
+
+  - key: arce_etal2018
+    title: "Unearthing Unevenness of Potato Seed Networks in the High Andes: A Comparison of Distinct Cultivar Groups and Farmer Types Following Seasons With and Without Acute Stress"
+    author: "Alejandra Arce; Stef de Haan; Dharani D. Burra; Raul Ccanto"
+    date: 2018
+    access: sections_read
+    by: Codex food-access and recovery review
+    when: 2026-11-18
+    url: "https://www.frontiersin.org/journals/sustainable-food-systems/articles/10.3389/fsufs.2018.00043/full"
+    locator: "Methods: Sample selection and Farmer surveys; Results: Intensity of seed procurement and Structure of seed networks; Discussion: Limitations"
+    notes: "Modern retrospective household survey, with different recalled years aggregated by stress condition; not a shared-shock experiment or colonial seed-loss calibration."
+
+  - key: parsa_etal2011
+    title: "Resource concentration dilutes a key pest in indigenous potato agriculture"
+    author: "Soroush Parsa; Raul Ccanto; Jay A. Rosenheim"
+    date: 2011
+    access: sections_read
+    by: Codex food-access and recovery review
+    when: 2026-11-18
+    url: "https://rosenheim.faculty.ucdavis.edu/wp-content/uploads/sites/137/2014/09/Parsa-et-al.-2011-Ecol.-Appl.-.pdf"
+    locator: "Methods pp. 540-542; selected Results pp. 542-543 and Discussion pp. 543-545; Tables 2-3 text"
+    notes: "One-season observational landscape study; spatial aggregation differs from repeated cropping at one location. Scenario comparisons are predictions, not intervention trials; not all figures independently checked."
+
+  - key: winterhalder_etal1974
+    title: "Dung as an essential resource in a highland Peruvian community"
+    author: "Bruce Winterhalder; Robert Larsen; R. Brooke Thomas"
+    date: 1974
+    access: sections_read
+    by: Codex food-access and recovery review
+    when: 2026-11-18
+    url: "https://www.researchgate.net/profile/Bruce-Winterhalder/publication/227279385_Dung_as_an_Essential_Resource_in_a_Highland_Peruvian_Community/links/0f3175319f121d0c3b000000/Dung-as-an-Essential-Resource-in-a-Highland-Peruvian-Community.pdf"
+    locator: "Selected pp. 95-102: Field methods, Results and Discussion; Tables II-V text and access-to-herds calculation"
+    notes: "Small modern Nunoa study and short dry-season llama observations. Some animal data are substituted; pasture estimates explicitly describe practice rather than carrying capacity. Fuel energy is not edible energy."
+
+  - key: sillar2000
+    title: "Dung by Preference: The Choice of Fuel as an Example of How Andean Pottery Production Is Embedded within Wider Technical, Social, and Economic Practices"
+    author: "Bill Sillar"
+    date: 2000
+    access: sections_read
+    by: Codex food-access and recovery review
+    when: 2026-11-18
+    url: "https://www.academia.edu/35728527/Dung_by_Preference_The_Choice_of_Fuel_as_an_Example_of_How_Andean_Pottery_Production_is_Embedded_Within_Wider_Technical_Social_and_Economic_Practices"
+    locator: "Selected pp. 44, 48-54 and 56-58: husbandry, Dung as a fertiliser, Charamoray adoption account and conclusion; author-uploaded article text"
+    notes: "Ethnographic and interpretive account. Ash recycles some nutrients, not all manure benefits. Kiln transition costs are not terrace construction parameters; PDF and every figure not independently verified."

@@ -31,7 +31,28 @@ The entries below preserve the earlier search's access findings unless an explic
 - The 2025 storage article also has an open PDF at its [publisher](https://revistas.pucp.edu.pe/index.php/boletindearqueologia/article/view/29942).
 - The [MPD2023 release](https://www.rug.nl/ggdc/historicaldevelopment/maddison/releases/maddison-project-database-2023) workbook was obtained and the Peru figures in the literature notes checked.
 - Wernke (2010) has an [author-hosted PDF](https://stevenwernke.com/wp-content/uploads/2020/09/A_reduced_landscape_toward_a_m.pdf). Availability does not upgrade the registry's reading status.
-- Other successfully retrieved collection works still require claim-specific reading: Wernke and Whitmore (2009), Dell (2010), Gil Montero and Zagalsky (2016), Barragan Romano (2020), Arroyo Abad and van Zanden (2016), Bolt and van Zanden's update paper, Kolata and Ortloff (1989), Orlove et al. (2000), Hunter (2025), the CIP freeze-drying chapter, Robins and Hagan (2012), and Allen (2001).
+- Other successfully retrieved collection works still require claim-specific reading: Wernke and Whitmore (2009), Dell (2010), Gil Montero and Zagalsky (2016), Arroyo Abad and van Zanden (2016), Bolt and van Zanden's update paper, Kolata and Ortloff (1989), Orlove et al. (2000), Hunter (2025), the CIP freeze-drying chapter, Robins and Hagan (2012), and Allen (2001).
 - Robins and Hagan's main article was retrieved as full-text HTML; the supplemental calculations remain a retrieval gap. The freeze-drying download is the complete CIP parent volume, not a standalone chapter.
+
+## Food access and recovery review: public routes and partial reads
+
+The [reading ledger](../docs/food-access-recovery-literature-2026-11-18.md) gives
+locators and public routes for seven papers. All are recorded as `sections_read`.
+Availability does not imply verification of every table, figure or supplement.
+
+| Work | Access finding |
+|---|---|
+| Arroyo Abad, Davies and van Zanden (2012) | Complete author-hosted PDF available; selected reading extends collection notes. |
+| Zagalsky (2014) | SciELO returned 403; the journal's own PDF worked. Does not resolve the distinct 2023 book. |
+| Arce et al. (2018) | Complete publisher HTML available; selected methods, results and limitations read. |
+| Parsa et al. (2011) | Author-hosted PDF available; selected study sections read. |
+| Winterhalder et al. (1974) | Publisher subscription barrier; complete author-uploaded 16-page PDF successfully opened through ResearchGate. |
+| Sillar (2000) | Wiley returned the abstract and a tested PDF link failed; author-uploaded article text is readable on Academia.edu and ResearchGate. Reliable PDF/figure verification remains pending. |
+| Barragan Romano (2020) | Complete publisher HTML available; direct selected reading replaces reliance solely on collection notes. |
+
+None is currently a complete text-access gap for this review. Some routes may
+fail independently of others; a PDF link or full-text badge alone was not treated
+as proof of readable content. No raw historical records or supplemental datasets
+were reanalysed.
 
 The bibliography contains metadata and public links. It includes no PDFs, full article extracts, private file links, or privately circulated teaching slides.
