@@ -36,7 +36,13 @@ shows from what the game assumes.
   chose Hard is not marked down for it. How the seeds were chosen:
   [hard-mode-2026-11-18.md](hard-mode-2026-11-18.md).
 - **A class experiment**: give every group the Hard seed, let each choose its own
-  policy, then compare who kept the most people alive and why.
+  policy, then compare who kept the most people alive and why. Compare groups
+  only within one preset: the colonial rules' food effect depends on the weather
+  (about −490 kcal on Standard, −720 on Hard and −1,040 on Extreme), because a
+  fixed tribute takes a larger share of a poor harvest.
+- **Standard is a typical weather for food, but not for planning**: on it the
+  default plan is already close to the best tested plan. Use Hard to show what
+  planning saves.
 - **Try your seed first.** Some are harsh. A harsh seed can be a deliberate
   lesson, but it should not be a surprise.
 - **Try it on the classroom browser and a phone** before the session; see the
@@ -88,10 +94,13 @@ because the weather differs between seeds.
   students what each counterfactual removes. The GDP prediction is not graded
   for this reason; only the food prediction is.
 - **What did your re-plan at 1573 do?** Putting every crew on the best land
-  raises output per person but leaves no chuño and nothing growing up high.
-  In this game keeping the same shares never does better: less food, more
-  deaths and smaller stores on every test seed. Ask what the game leaves out
-  that might have made stores or variety worth keeping.
+  leaves no chuño and nothing growing up high. Which choice grows more depends on the plan the student held:
+  with the starting plan (two chuño crews) keeping the shares grew less food on
+  every test seed and never kept more stores; with few chuño crews (5/5/3/1,
+  none on chuño) it grew more on 24 of 80, because spreading crews over the
+  lower zones grows more than crowding the valley. The re-plan box shows both
+  for the plan on the student's board. Ask what the game leaves out that might
+  have made stores or variety worth keeping.
 - **Why doesn't spreading crews across heights help in this game?** Historians
   (Murra) argue that farming at several heights protected communities, because
   a bad year rarely hit every height. In the game it never pays: frost always
@@ -130,7 +139,7 @@ with a fixed seed:
 - [ ] Play runs, Pause stops it, Next step advances one step;
 - [ ] a milestone pauses play and Keep playing resumes it;
 - [ ] at 1573 the re-plan box appears and the harvest waits for a choice;
-- [ ] the end screen shows the success box, the charts and the grades;
+- [ ] the end screen shows the success box, the charts, the graded food prediction and the ungraded GDP answer;
 - [ ] Replay with the same weather gives the same frosts, and the comparison table appears;
 - [ ] Copy report copies the text report;
 - [ ] in dark mode, everything is readable.

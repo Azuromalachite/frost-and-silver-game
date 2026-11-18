@@ -35,6 +35,10 @@ SEARCHED = ("    searched: >\n"
 
 # name: (file or "DELETE", old, new, expected message, checker condition or None)
 CASES = {
+    "game assumption with no source": (
+        C, "layer: game_assumption\n    status: labelled\n    sources: [maddison2003]",
+        "layer: game_assumption\n    status: labelled\n    sources: []",
+        "no sources", 'if not keys and layer != "game_result":'),
     "unknown source key": (
         C, "sources: [bolt_vanzanden2025]", "sources: [bolt_vanzanden2025, no_such_source]",
         "unknown source 'no_such_source'", "if k not in source_by_key:"),
