@@ -185,6 +185,8 @@ body.autobar-on{padding-bottom:84px} /* room to scroll the last controls clear o
 .cmpruns thead td{font-family:var(--f-mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
 .cmpruns .ledger td{text-align:right}
 .cmpruns .ledger td:first-child{text-align:left}
+.cmpruns .ledger td+td{padding-left:12px;white-space:nowrap;vertical-align:top}
+.cmpruns .ledger thead td{white-space:normal;vertical-align:bottom} /* "First run (1)" may wrap on a phone */
 .keymsg{border-left:4px solid var(--accent);padding:8px 0 8px 14px;max-width:70ch}
 .keymsg p{margin:4px 0 0}
 .rev{border:1px solid var(--line);border-radius:6px;padding:14px;background:var(--bg)}
@@ -255,7 +257,8 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
 .chip.low{background:color-mix(in srgb,var(--bad) 18%,transparent);color:var(--bad)}
 
 /* results */
-.charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:16px}
+.charts>*{min-width:0} /* a chart never widens its column past a phone screen */
 .charts svg{width:100%;height:auto;display:block}
 .cmp{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
 .cmp div{border:1px solid var(--line);border-radius:4px;padding:10px}
@@ -528,7 +531,7 @@ function fresh(){
     N1573:0, mitaCrews:0, tribTotal:0, seed: URL_SEED || Math.floor(Math.random() * 2147483646) + 1, mode: URL_SEED ? (wxKeyFor(URL_SEED) || 'link') : 'random', replanKinds: [], seen: {}, log: []};
 }
 S = fresh();
-let LAST = null; // summary of the previous finished run, for "replay with the same weather"
+let RUNS = []; // every finished run on the current weather (seed), oldest first, for "replay with the same weather"
 // ?seed=123 in the address gives everyone the same weather (a whole class, or a pinned test run).
 
 // Weather comes from the game's seed, so a replay with the same seed has the same frosts, droughts and forecasts.
@@ -911,7 +914,7 @@ function harvest(){
   if (intake < 1500) S.pop *= 1 - (1500 - intake) / 1500 * .2;
   else if (intake >= 1800) S.pop *= 1.01;
   S.store *= popBefore / S.pop; // the store is food per person; same food, different number of people
-  const builtNow = ZONES.filter(z => S.building[z.key]).map(z => z.what);
+  const builtNow = ZONES.filter(z => S.building[z.key]).map(z => `${z.what} (${z.name})`); // 'terraces' alone did not say where
   // Protection in this harvest is what stood before it: terraces finished this year protect from the next harvest
   // (the frost loss already works this way; until 2026-11-18 the welfare index counted them a year early).
   const builtBefore = {...S.built};
@@ -1443,6 +1446,36 @@ function survivalLine(){
   if (!p) return `You played ${wxName(S.mode, S.seed)}. ${again}`;
   return `You played ${wxName(S.mode, S.seed)}, a sequence from the game's weather model, not a record of those years. On it the default plan (with best land first at each re-plan) keeps about ${kcal(p.def.k2)} kcal a day after 1573 and loses about ${fmt(p.def.deaths)} people to hunger: compare your community with that, not with an easier weather. ${again}`;
 }
+// Every run on this weather: colonial food and hunger deaths, run by run. Two small charts, not one with two axes,
+// because the measures have different scales. The best run (betterOutcome) is ringed.
+function runsChart(bi){
+  // minSpan keeps a small difference looking small (9 kcal once filled the whole chart); zero: start the axis at 0
+  const one = (title, get, f, color, minSpan, zero) => {
+    const W = 300, H = 132, L = 44, R = 14, T = 24, B = 26, n = RUNS.length, vals = RUNS.map(get);
+    let lo = zero ? 0 : Math.min(...vals), hi = Math.max(...vals);
+    if (hi - lo < minSpan) { const mid = zero ? minSpan / 2 : (hi + lo) / 2; lo = Math.max(0, mid - minSpan / 2); hi = lo + minSpan; }
+    const pad = (hi - lo) * 0.1; if (!zero) lo = Math.max(0, lo - pad); hi += pad;
+    if (zero) hi = Math.max(hi, Math.max(...vals) * 1.15);
+    const step = zero ? 5 : 100; lo = Math.floor(lo / step) * step; hi = Math.ceil(hi / step) * step; // round axis ends
+    const x = i => L + (W - L - R) * (n === 1 ? 0.5 : i / (n - 1)), y = v => T + (H - T - B) * (1 - (v - lo) / (hi - lo));
+    let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${title}, run by run: ${vals.map((v, i) => `run ${i + 1} ${f(v)}`).join(', ')}" style="width:100%;max-width:${W}px;height:auto;display:block">`;
+    s += `<text x="${L}" y="14" style="fill:var(--ink);font:700 12px var(--f-body)">${title}</text>`;
+    for (const v of [lo, hi]) s += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" style="stroke:var(--line)"/><text x="${L - 6}" y="${y(v) + 4}" text-anchor="end" style="fill:var(--muted);font:11px var(--f-mono)">${f(v)}</text>`;
+    s += `<polyline points="${vals.map((v, i) => `${x(i)},${y(v)}`).join(' ')}" style="fill:none;stroke:var(${color});stroke-width:2"/>`;
+    vals.forEach((v, i) => {
+      if (i === bi) s += `<circle cx="${x(i)}" cy="${y(v)}" r="8" style="fill:none;stroke:var(--ink);stroke-width:1.5"/>`;
+      s += `<circle cx="${x(i)}" cy="${y(v)}" r="4" style="fill:var(${color});stroke:var(--surface);stroke-width:2"><title>Run ${i + 1}: ${f(v)}${i === bi ? ' (best so far)' : ''}</title></circle>`;
+      s += `<text x="${x(i)}" y="${H - 8}" text-anchor="middle" style="fill:var(--muted);font:11px var(--f-mono)">${i + 1}</text>`;
+    });
+    s += `<text x="${x(n - 1) - 8}" y="${y(vals[n - 1]) + (vals[n - 1] > (lo + hi) / 2 ? 16 : -10)}" text-anchor="end" style="fill:var(--ink);font:600 11px var(--f-mono)">${f(vals[n - 1])}</text>`;
+    return s + '</svg>';
+  };
+  return `<div class="runschart" style="display:flex;flex-wrap:wrap;gap:12px 24px;margin:10px 0 4px">
+      <div style="flex:1 1 240px">${one('Food after 1573, kcal a day', r => r.k2, v => fmt(v), '--ice', 300, false)}</div>
+      <div style="flex:1 1 240px">${one('People lost to hunger', r => r.deaths, v => fmt(v), '--accent', 10, true)}</div>
+    </div>
+    <p style="margin:0;font-size:12px;color:var(--muted)">Runs on this weather, left to right; the ringed point is your best run so far. Hover a point for its value.</p>`;
+}
 function showEnd(){
   S.phase = 'end';
   PLAY.auto = false; stopAutoTimers();
@@ -1477,10 +1510,15 @@ function showEnd(){
   // Core-model defaults for the reverse panel, taken from this playthrough
   const V = P * avg(a1, 'H') / Math.pow(1 - INCA_LEVY, ALPHA); // farm value per person if all labour farmed
   const tauObs = am(r => r.tRate), cTot = 1 - S.pop / 1000;
-  // Same-weather comparison with the previous run (predict, track, compare)
-  const cur = {seed: S.seed, k1, k2, g1, g2, c1: avg(a1,'cwi'), c2: avg(a2,'cwi'), hist: S.hist};
+  // Same-weather comparison with earlier runs (predict, track, compare): the first run, the last run and this one in
+  // the table, and every run on this weather in a chart, so a third replay does not lose the first or the best.
+  const cur = {seed: S.seed, k1, k2, g1, g2, c1: avg(a1,'cwi'), c2: avg(a2,'cwi'), hist: S.hist,
+    deaths: S.hist.reduce((s, r) => s + Math.max(0, r.popBefore - r.pop), 0), w: avg(S.hist, 'cwi')};
+  if (RUNS.length && RUNS[0].seed !== S.seed) RUNS = [];
+  RUNS.push(cur);
+  const LAST = RUNS.length > 1 ? RUNS[RUNS.length - 2] : null, FIRST = RUNS[0];
   let compareHTML = '';
-  if (LAST && LAST.seed === S.seed) {
+  if (LAST) {
     const zname = k => ZONES.find(z => z.key === k).name;
     const changes = [];
     S.hist.forEach((r, i) => {
@@ -1492,22 +1530,29 @@ function showEnd(){
       if (r.builtNow.join() !== p.builtNow.join()) diffs.push(`built ${p.builtNow.join(' and ') || 'nothing'} → ${r.builtNow.join(' and ') || 'nothing'}`);
       if (diffs.length) changes.push(`<li>Harvest ${r.year}: ${diffs.join('; ')}</li>`);
     });
-    const row = (label, a, b, f) => `<tr><td>${label}</td><td>${f(a)}</td><td>${f(b)}</td><td class="${b - a >= 0 ? 'pos' : 'neg'}">${b - a >= 0 ? '+' : '−'}${f(Math.abs(b - a))}</td></tr>`;
-    const k = v => fmt(v), ix = v => gi(v).toFixed(0), w = v => Math.round(v);
+    const n = RUNS.length, showFirst = n > 2;
+    // good: whether a rise is better (food, welfare) or worse (deaths); GDP is neither, so its change is uncoloured
+    const row = (label, get, f, good) => { const a = get(LAST), b = get(cur), d = Math.round((b - a) * 10) / 10;
+      const cls = good === undefined || Math.abs(d) < 0.5 ? '' : (d > 0) === good ? 'pos' : 'neg';
+      return `<tr><td>${label}</td>${showFirst ? `<td>${f(get(FIRST))}</td>` : ''}<td>${f(a)}</td><td>${f(b)}<br><small class="${cls}">${Math.abs(d) < 0.5 ? 'same' : `${d > 0 ? '+' : '−'}${f(Math.abs(d))}`}</small></td></tr>`; }; // the change on its own line keeps the column narrow on phones
+    const k = v => fmt(v), w = v => Math.round(v), ix = v => gi(v).toFixed(0);
+    const bi = RUNS.reduce((b, r, i) => betterOutcome(r, RUNS[b]) ? i : b, 0);
     compareHTML = `<div class="cmpruns">
       <h3 style="font-size:18px;margin-bottom:6px">Same weather, different choices</h3>
-      <table class="ledger"><thead><tr><td></td><td>Last run</td><td>This run</td><td>Change</td></tr></thead><tbody>
-        ${row('Food, Inca harvests (kcal/day)', LAST.k1, k1, k)}
-        ${row('Food, colonial harvests (kcal/day)', LAST.k2, k2, k)}
-        ${row('Welfare index, colonial harvests', LAST.c2, cur.c2, w)}
-        ${row('GDP index, colonial harvests', gi(LAST.g2), gi(g2), v => v.toFixed(0))}
+      <p style="margin:0 0 6px;font-size:14px">This is run ${n} on this weather. ${n > 2 ? `The table compares it with your first run and your last one; the chart below shows every run.` : 'The table compares it with your last run.'} Best so far: <b>run ${bi + 1}</b> (judged first by hunger deaths, then food after 1573, then welfare).</p>
+      <table class="ledger"><thead><tr><td></td>${showFirst ? '<td>First run (1)</td>' : ''}<td>Last run (${n - 1})</td><td>This run (${n})</td></tr></thead><tbody>
+        ${row('Food, Inca harvests (kcal/day)', r => r.k1, k, true)}
+        ${row('Food, colonial harvests (kcal/day)', r => r.k2, k, true)}
+        ${row('People lost to hunger', r => r.deaths, k, false)}
+        ${row('Welfare index, colonial harvests', r => r.c2, w, true)}
+        ${row('GDP index, colonial harvests', r => r.g2, ix)}
       </tbody></table>
-      <p style="margin:8px 0 4px;font-size:14px"><b>What you changed:</b></p>
+      ${n > 2 ? runsChart(bi) : ''}
+      <p style="margin:8px 0 4px;font-size:14px"><b>What you changed since your last run:</b></p>
       ${changes.length ? `<ul class="why">${changes.join('')}</ul>` : '<p style="margin:0;font-size:14px;color:var(--muted)">Nothing: both runs used the same choices, so the results are the same.</p>'}
       <p style="margin:6px 0 0;font-size:13px;color:var(--muted)">The frost, droughts and forecasts were identical, so every difference above comes from your choices.</p>
     </div>`;
   }
-  LAST = cur;
   const hungerDeaths = S.hist.reduce((s, r) => s + Math.max(0, r.popBefore - r.pop), 0); // deaths from hunger only, not the imposed collapse or epidemics
   const endSeed = S.seed;
   const p = $('p-end'); p.hidden = false;
