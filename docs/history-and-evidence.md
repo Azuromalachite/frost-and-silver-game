@@ -274,3 +274,13 @@ The [climate experiment](climate-risk-experiment-2026-11-18.md) turns the open
 spatial-risk question into a proposed one-crop, synchronized-weather comparison.
 It establishes no diversification benefit or annual reconstruction. The original
 author's open design questions above remain open.
+
+## Crop water, camelids and weather knowledge: 19 November 2026
+
+The [integrated review](water-camelid-weather-review-2026-11-19.md) connects
+soil-water balances, species-specific roots, adult energetics, neonatal survival,
+pasture access and historical forecasting. It distinguishes late-sixteenth-century
+Pleiades forecasts from unestablished pre-conquest Inca forecasting, and from a
+modern ENSO mechanism (claim.research.historical_weather_knowledge).
+Abstract-only leads remain unverified. The crop and herd experiment questions
+are Path B proposals; gameplay, numerical calibration and completed results are unchanged.
