@@ -120,3 +120,29 @@ There is no remaining confirmed full-text barrier among these twelve after the
 supplied attachments, but some retrieval routes are unreliable and several works
 still need complete reading. Do not confuse that statement with resolution of the
 older book/chapter gaps above. No subscription purchase or author contact was made.
+
+## Processing, mining budgets and experiment design: 18 November 2026
+
+The [new specification](../docs/processing-income-spec-2026-11-18.md) records
+the supplied-paper readings and numerical limits; the
+[climate experiment](../docs/climate-risk-experiment-2026-11-18.md) is proposed work.
+
+| Work | Access and reading status |
+|---|---|
+| Werge (1979), DOI 10.1080/03670244.1979.9990534 | Supplied PDF resolves earlier full-text barrier; text pp. 229-234 read. Labour-table component/total discrepancy needs page-image checking. |
+| De Haan et al. (2012), DOI 10.1002/jsfa.5589 | Supplied complete PDF; selected methods, Table 1 and discussion read. |
+| Burgos et al. (2009), chuno protein/minerals | Correct DOI **10.1016/j.jfca.2008.09.001**; supplied full text resolves barrier; extracted table, not an independent figure audit. |
+| Burgos et al. (2009), ascorbic acid | DOI **10.1016/j.jfca.2008.05.013**; additional supplied paper. Earlier conversation linked this DOI to the wrong title. |
+| Bakewell (1984) | Supplied pp. 100-111, 122-125 and 132-133 resolve critical wage/budget passages. Whole-book access remains partial; production series not audited. |
+| Cole (1985) | Supplied pp. 46-54 resolve that chapter section only; earlier service-calendar/compensation sections remain a reading target. |
+| Callizaya Huanca (2021), T-2902 | [Public text mirror](https://es.scribd.com/document/579193284/T-2902) readable; [university route](https://repositorio.umsa.bo/xmlui/handle/123456789/25934) failed or redirected. Original Table 6 and laboratory annexes remain to verify. |
+| Luque Vilca et al. (2024) | [Publisher abstract](https://unaj.edu.pe/revista/index.php/vpin/article/view/298) readable; article PDF requests failed. |
+| Calizaya Pari and Huaman Choque (2024) | [Associated thesis PDF](https://repositorio.unaj.edu.pe/server/api/core/bitstreams/53e53573-934b-463b-93b2-0660eeef1dad/content) accessible; selected sections read, screenshot retrieval timed out. Not independent of the associated article. |
+| Valdivieso et al. (2025) | [SciELO full text](https://www.scielo.org.bo/scielo.php?pid=S0250-54602025000100016&script=sci_arttext) accessible; selected methods/results read. |
+| AitSahlia et al. (2011) | [Author-hosted PDF](https://bear.warrington.ufl.edu/aitsahlia/Annals_OR.pdf) accessible; selected pp. 201-205 read. |
+
+Mangan's *Trading Roles*, chapter 3 (pp. 76-105), has readable third-party text;
+publisher/JSTOR access and a reliable page-image check remain unresolved. It is
+a price/provisioning lead, not an unread source asserted to support new numerical
+claims here. An inaccessible retrieval route is not proof a work is paywalled.
+No subscriptions, author contacts, supplied PDFs or private file links are included.

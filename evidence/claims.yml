@@ -1442,3 +1442,103 @@ claims:
       read) find the relationship varies across southern Peru and Bolivia, with
       some station groups showing insignificant or opposite signs. The game's
       droughts are drawn at random and do not model ENSO.
+
+  - id: claim.research.processing_labour
+    statement: "Werge reports estimated processing labour for a specified potato batch."
+    layer: estimate
+    status: partly_supported
+    sources: [werge1979]
+    pages:
+      - path: docs/processing-income-spec-2026-11-18.md
+        anchor: "Werge reports estimated processing labour for a specified potato batch."
+    notes: "Regional white-chuno estimate; excludes transport/guarding and contains an unresolved extracted-table upper-total discrepancy. Not a crew coefficient."
+
+  - id: claim.research.processing_composition
+    statement: "Cooked white-chuño composition is not a batch energy-retention measurement."
+    layer: interpretation
+    status: partly_supported
+    sources: [burgos_etal2009_chuno, dehaan_etal2012_chuno]
+    pages:
+      - path: docs/processing-income-spec-2026-11-18.md
+        anchor: "Cooked white-chuño composition is not a batch energy-retention measurement."
+    notes: "Study preparation states and denominators do not identify total mass or energy retention; numerical game conversion remains open."
+
+  - id: claim.research.processing_vitamin_c
+    statement: "Potato vitamin C concentration changes with cultivar, cooking and storage."
+    layer: documented
+    status: partly_supported
+    sources: [burgos_etal2009_ascorbic]
+    pages:
+      - path: docs/processing-income-spec-2026-11-18.md
+        anchor: "Potato vitamin C concentration changes with cultivar, cooking and storage."
+    notes: "Modern fresh/cooked/stored potato study; not a chuno processing experiment or mortality parameter."
+
+  - id: claim.research.processing_energy_candidate
+    statement: "Callizaya reports product weights and food-energy values that permit a provisional calculation."
+    layer: estimate
+    status: partly_supported
+    sources: [callizaya2021]
+    pages:
+      - path: docs/processing-income-spec-2026-11-18.md
+        anchor: "Callizaya reports product weights and food-energy values that permit a provisional calculation."
+    notes: "Derived values are provisional; original laboratory annexes not audited and Luki solids balance exceeds 100 percent."
+
+  - id: claim.research.processing_controlled_yield
+    statement: "Controlled processing provides additional mass-yield observations."
+    layer: documented
+    status: partly_supported
+    sources: [luque_etal2024_chuno, calizaya_huaman2024]
+    pages:
+      - path: docs/processing-income-spec-2026-11-18.md
+        anchor: "Controlled processing provides additional mass-yield observations."
+    notes: "Associated abstract/thesis are not independent replications. Freezer conditions and composition-basis issues prevent historical energy calibration."
+
+  - id: claim.research.processing_black_mass
+    statement: "Experimental black-chuño preparation shows variety-dependent mass recovery."
+    layer: documented
+    status: partly_supported
+    sources: [valdivieso_etal2025_chuno]
+    pages:
+      - path: docs/processing-income-spec-2026-11-18.md
+        anchor: "Experimental black-chuño preparation shows variety-dependent mass recovery."
+    notes: "Small experimental samples, text-reported weight losses; neither starch extraction nor mass recovery equals food-energy retention."
+
+  - id: claim.research.mining_earnings_categories
+    statement: "Bakewell distinguishes compulsory wages, hired earnings and substitute-worker payments."
+    layer: documented
+    status: partly_supported
+    sources: [bakewell1984]
+    pages:
+      - path: docs/processing-income-spec-2026-11-18.md
+        anchor: "Bakewell distinguishes compulsory wages, hired earnings and substitute-worker payments."
+    notes: "Selected pages; occupations, dates, pay forms and labour arrangements differ. No universal wage or access entitlement."
+
+  - id: claim.research.mining_budget_case
+    statement: "Bakewell's Godoy example estimates expenses exceeding compulsory-service wages."
+    layer: estimate
+    status: partly_supported
+    sources: [bakewell1984]
+    pages:
+      - path: docs/processing-income-spec-2026-11-18.md
+        anchor: "Bakewell's Godoy example estimates expenses exceeding compulsory-service wages."
+    notes: "One individual-worker estimate from 1608, later than the game; compound currency and retail assumptions require preservation."
+
+  - id: claim.research.mining_water_input
+    statement: "Cole identifies water supply as an input to silver processing."
+    layer: documented
+    status: partly_supported
+    sources: [cole1985]
+    pages:
+      - path: docs/processing-income-spec-2026-11-18.md
+        anchor: "Cole identifies water supply as an input to silver processing."
+    notes: "Partial chapter, including seventeenth-century context. Motivates a hypothesis about joint shocks, not a numerical drought effect."
+
+  - id: claim.research.climate_scenario_optimization
+    statement: "CVaR-based agricultural planning can be formulated without reinforcement learning."
+    layer: documented
+    status: partly_supported
+    sources: [aitsahlia_etal2011]
+    pages:
+      - path: docs/climate-risk-experiment-2026-11-18.md
+        anchor: "CVaR-based agricultural planning can be formulated without reinforcement learning."
+    notes: "Modern planting/hedging example; no general superiority over RL or direct transfer of institutions/correlation models follows."

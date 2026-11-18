@@ -323,14 +323,15 @@ sources:
     locator: The Cambridge World History, vol. 6
 
   - key: bakewell1984
-    title: "Miners of the Red Mountain: Indian Labor in Potosí, 1545–1650"
+    title: "Miners of the Red Mountain: Indian Labor in Potosi, 1545-1650"
     author: Peter Bakewell
     date: 1984
-    access: not_read
-    by: null
-    when: null
-    url: null
-    notes: Standard account of Potosí labour and output, including the amalgamation boom after the 1570s.
+    access: sections_read
+    by: Codex processing and income review
+    when: 2026-11-18
+    url: https://archive.org/details/minersofredmount0000bake
+    locator: "Supplied page images, pp. 100-111, 122-125 and 132-133"
+    notes: "Partial book access resolves selected wage and budget sections. Statutory pay, hired work, substitution and ore rights differ. The 1608 Godoy estimate is not representative consumption. The pre-existing silver-surge claim remains unverified; this read is not a production-series audit."
 
   - key: thitibordin_game
     title: "Week 2: Tahuantinsuyu Harvest & Frost Defense (Interactive Game), and its author's description"
@@ -752,3 +753,113 @@ sources:
     url: "https://www.academia.edu/35728527/Dung_by_Preference_The_Choice_of_Fuel_as_an_Example_of_How_Andean_Pottery_Production_is_Embedded_Within_Wider_Technical_Social_and_Economic_Practices"
     locator: "Selected pp. 44, 48-54 and 56-58: husbandry, Dung as a fertiliser, Charamoray adoption account and conclusion; author-uploaded article text"
     notes: "Ethnographic and interpretive account. Ash recycles some nutrients, not all manure benefits. Kiln transition costs are not terrace construction parameters; PDF and every figure not independently verified."
+
+  - key: werge1979
+    title: "Potato processing in the central highlands of Peru"
+    author: "Robert W. Werge"
+    date: 1979
+    access: "sections_read"
+    by: "Codex processing and income review"
+    when: "2026-11-18"
+    url: "https://doi.org/10.1080/03670244.1979.9990534"
+    locator: "Supplied PDF, printed pp. 229-234; methods and Table II p. 232"
+    notes: "Text read; figures not independently audited. White-chuno labour excludes transport and guarding. Extracted component-row upper sum differs from reported total; verify page image before numerical adoption."
+
+  - key: dehaan_etal2012_chuno
+    title: "Effect of production environment, genotype and process on the mineral content of native bitter potato cultivars converted into white chuno"
+    author: "Stef de Haan; Gabriela Burgos; Raul Ccanto; Jesus Arcos; Maria Scurrah; Elisa Salas; Merideth Bonierbale"
+    date: 2012
+    access: "sections_read"
+    by: "Codex processing and income review"
+    when: "2026-11-18"
+    url: "https://doi.org/10.1002/jsfa.5589"
+    locator: "Supplied 8-page PDF: methods pp. 2-3, Table 1 p. 3, discussion pp. 6-7"
+    notes: "Dry matter concerns cooked/rehydrated samples, not a whole-batch fresh-to-dried mass or energy balance. No universal recovery coefficient."
+
+  - key: burgos_etal2009_chuno
+    title: "Protein, iron, zinc and calcium concentrations of potatoes following traditional processing as chuno"
+    author: "Gabriela Burgos; Stef de Haan; Elisa Salas; Merideth Bonierbale"
+    date: 2009
+    access: "sections_read"
+    by: "Codex processing and income review"
+    when: "2026-11-18"
+    url: "https://doi.org/10.1016/j.jfca.2008.09.001"
+    locator: "Supplied 3-page PDF, pp. 617-619: methods, Table 1 extracted text, results and conclusion"
+    notes: "Nine cultivars processed by one farmer; cooked/peeled white chuno. Table images not independently audited; concentration changes are not batch nutrient recovery. Corrects an earlier conversational DOI mismatch."
+
+  - key: burgos_etal2009_ascorbic
+    title: "Ascorbic acid concentration of native Andean potato varieties as affected by environment, cooking and storage"
+    author: "Gabriela Burgos; S. Auqui; Walter Amoros; Elisa Salas; Merideth Bonierbale"
+    date: 2009
+    access: "sections_read"
+    by: "Codex processing and income review"
+    when: "2026-11-18"
+    url: "https://doi.org/10.1016/j.jfca.2008.05.013"
+    locator: "Supplied PDF: p. 533, methods pp. 534-535, cooking/storage results and conclusions pp. 537-538"
+    notes: "Vitamin C study, not the chuno protein/mineral paper and not an energy-recovery experiment. Retention on a dry-weight concentration basis is not a whole-batch mass balance."
+
+  - key: cole1985
+    title: "The Potosi Mita, 1573-1700: Compulsory Indian Labor in the Andes"
+    author: "Jeffrey A. Cole"
+    date: 1985
+    access: "sections_read"
+    by: "Codex processing and income review"
+    when: "2026-11-18"
+    url: "https://books.google.com/books?id=sEQG2ziLSUMC"
+    locator: "Supplied chapter 3 page images, pp. 46-54"
+    notes: "Partial book access. Water and milling discussion includes seventeenth-century episodes; employer petitions and proposed remedies are not neutral measurements or implemented interventions. No historical weather penalty calibrated."
+
+  - key: callizaya2021
+    title: "Valor nutricional del chuno de tres variedades de papa en la localidad de Viacha, La Paz"
+    author: "Sumilda Callizaya Huanca"
+    date: 2021
+    access: "sections_read"
+    by: "Codex processing and income review"
+    when: "2026-11-18"
+    url: "https://es.scribd.com/document/579193284/T-2902"
+    locator: "Text mirror: methods pp. 36-45; energy pp. 51-52; Table 6 p. 80; conclusions pp. 82-83"
+    notes: "Original university PDF route failed. Candidate paired data require laboratory-annex verification; combined Luki yield/moisture implies more than 100 percent solids recovery. Calculations are provisional."
+
+  - key: luque_etal2024_chuno
+    title: "Produccion de chuno utilizando papa nativa dulce Imilla Negra y papa amarga Locka bajo condiciones controladas"
+    author: "Olivia Magaly Luque Vilca; Brayyan Arnaldo Calizaya Pari; Yessica Huaman Choque"
+    date: 2024
+    access: "abstract_read"
+    by: "Codex processing and income review"
+    when: "2026-11-18"
+    url: "https://doi.org/10.47190/nric.v4i4.298"
+    locator: "Publisher abstract and metadata; article PDF routes failed"
+    notes: "Mass yields and product composition reported in abstract. Associated 2024 thesis supplies selected methods/tables; these are not independent studies."
+
+  - key: calizaya_huaman2024
+    title: "Caracterizacion de las propiedades fisicoquimicas, termicas y reologicas de almidones nativos y modificados de papa (Solanum tuberosum) y chuno para su uso en recubrimientos comestibles"
+    author: "Brayyan Arnaldo Calizaya Pari; Yessica Huaman Choque"
+    date: 2024
+    access: "sections_read"
+    by: "Codex processing and income review"
+    when: "2026-11-18"
+    url: "https://repositorio.unaj.edu.pe/server/api/core/bitstreams/53e53573-934b-463b-93b2-0660eeef1dad/content"
+    locator: "Cover; printed pp. 55-62 (PDF pp. 79-86), Tables 13-14 (printed pp. 94 and 101; PDF pp. 118 and 125)"
+    notes: "Controlled freezer process; text and diagrams differ on duration. Extracted composition needs audit. Same authors and associated research as Luque et al. 2024; avoid double-counting evidence."
+
+  - key: valdivieso_etal2025_chuno
+    title: "Chuno prepared experimentally from three varieties of Bolivian potatoes (Solanum spp.): starch extraction, amylose quantification, and microscopy imaging"
+    author: "Fabiola Valdivieso; Jose A. Bravo; Patricia Mollinedo"
+    date: 2025
+    access: "sections_read"
+    by: "Codex processing and income review"
+    when: "2026-11-18"
+    url: "https://doi.org/10.53287/zhee8928ha24t"
+    locator: "SciELO full text: Experimental; Obtaining chuno from potatoes; Fig. 5 discussion"
+    notes: "Three small samples per variety. Mass loss does not establish energy retention; starch extraction is a distinct yield. Figure values read from discussion, not independently image-audited."
+
+  - key: aitsahlia_etal2011
+    title: "Optimal crop planting schedules and financial hedging strategies under ENSO-based climate forecasts"
+    author: "Farid AitSahlia; Chung-Jui Wang; Victor E. Cabrera; Stan Uryasev; Clyde W. Fraisse"
+    date: 2011
+    access: "sections_read"
+    by: "Codex processing and income review"
+    when: "2026-11-18"
+    url: "https://bear.warrington.ufl.edu/aitsahlia/Annals_OR.pdf"
+    locator: "Author-hosted PDF, printed pp. 201-205: abstract, introduction, CVaR and optimization model"
+    notes: "Online 2009; issue 2011. Methodological comparison, modern US cotton/financial hedging; not Andean institutions, calibrated weather dependence or evidence RL is inferior."

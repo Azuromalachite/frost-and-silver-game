@@ -144,6 +144,12 @@ on main through PR #29 and proposes an order of work without changing gameplay.
 Five sources are newly registered and two earlier readings extended; all seven
 are `sections_read`, with nine new claims at `partly_supported`.
 
+The [potato-processing and mining-income specification](docs/processing-income-spec-2026-11-18.md)
+adds supplied-paper readings, a provisional energy audit and separate physical
+and household-budget accounts. The [spatial climate-risk experiment](docs/climate-risk-experiment-2026-11-18.md)
+defines a narrow, held-out comparison before game integration. These are research
+specifications; no new calibration or gameplay results are claimed.
+
 ## Credits and licence
 
 Adapted from [“Week 2: Tahuantinsuyu Harvest & Frost Defense”](https://superlative-sprinkles-2653a1.netlify.app/) by Amnuayvit Thitibordin, licensed [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
