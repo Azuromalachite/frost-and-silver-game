@@ -220,6 +220,7 @@ input[type=radio]{width:20px;height:20px;accent-color:var(--accent);vertical-ali
 .intro p{margin:0;max-width:65ch}
 .preds{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
 fieldset{border:1px solid var(--line);border-radius:4px;padding:8px 12px;margin:0;min-width:0}
+.wxpick{margin-top:12px}.wxpick label{display:block;margin:4px 0}.wxpick .free{margin:6px 0 0;font-size:13px}
 legend{font-weight:700;padding:0 4px}
 fieldset label{margin-right:14px;white-space:nowrap}
 .field{display:grid;gap:4px}
@@ -344,6 +345,13 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
         <label><input type="radio" name="pk" value="fall" id="pk-fall"> fall</label>
       </fieldset>
     </div>
+    <fieldset class="wxpick" id="wxpick"><legend>Weather</legend>
+      <label><input type="radio" name="wx" value="random" id="wx-random"> <b>Random</b>: new weather each game.</label>
+      <label><input type="radio" name="wx" value="standard" id="wx-standard"> <b>Standard</b> (seed 12345): a typical run of weather.</label>
+      <label><input type="radio" name="wx" value="hard" id="wx-hard"> <b>Hard</b> (seed 313): harsh colonial years, where careful planning saves many lives.</label>
+      <label><input type="radio" name="wx" value="extreme" id="wx-extreme"> <b>Extreme</b> (seed 2024): droughts in 1592 and 1600; no tested plan avoids hunger, so success is how many people you keep alive.</label>
+      <p class="free">The difficulty changes only the weather, never the rules. Each preset is a sequence drawn from the game's own weather model and chosen by testing 2,304 plans on 2,000 seeds; it is not a record of the real weather in those years.</p>
+    </fieldset>
     <div class="field"><label for="hyp">Why do you think so? (one or two sentences)</label>
       <textarea id="hyp" rows="2" placeholder="e.g. What will the mita and tribute change for a farming family?"></textarea></div>
     <div class="field"><label for="who">Your name (goes on your report)</label>
@@ -496,12 +504,20 @@ const shortShare = I => 0.5*(1+erf((GOAL - I)/(0.3*I)/Math.SQRT2));
 const act = y => y <= 3 ? 1 : 2;
 
 const URL_SEED = (() => { try { return Math.abs(parseInt(new URLSearchParams(location.search).get('seed'), 10)) || 0; } catch (e) { return 0; } })();
+// Weather presets: difficulty changes only the seed. def = the default plan with "Best land first" at each re-plan:
+// colonial food (kcal a day, harvests 4-6) and hunger deaths. tests/review_model.cjs re-measures these on every PR.
+const WX_PRESETS = {
+  standard: {seed: 12345, name: 'Standard', def: {k2: 1411.1, deaths: 26.5}},
+  hard:     {seed: 313,   name: 'Hard',     def: {k2: 1066.6, deaths: 92.3}},
+  extreme:  {seed: 2024,  name: 'Extreme',  def: {k2: 548.4,  deaths: 216.8}}};
+const wxKeyFor = seed => Object.keys(WX_PRESETS).find(k => WX_PRESETS[k].seed === seed) || null;
+const wxName = (mode, seed) => WX_PRESETS[mode] ? `${WX_PRESETS[mode].name} weather (seed ${seed})` : mode === 'link' ? `weather from the link (seed ${seed})` : `random weather (seed ${seed})`;
 let S;
 function fresh(){
   return {phase:'intro', year:1, pop:1000, store:150, built:{yunga:false,quechua:false,suni:false,puna:false},
     building:{yunga:false,quechua:false,suni:false,puna:false},
     alloc:{yunga:4,quechua:4,suni:3,puna:1}, chuno:2, wage:0, yr:null, hist:[], pred:{}, hyp:'', who:'', anim:null,
-    N1573:0, mitaCrews:0, tribTotal:0, seed: URL_SEED || Math.floor(Math.random() * 2147483646) + 1, seen: {}, log: []};
+    N1573:0, mitaCrews:0, tribTotal:0, seed: URL_SEED || Math.floor(Math.random() * 2147483646) + 1, mode: URL_SEED ? (wxKeyFor(URL_SEED) || 'link') : 'random', seen: {}, log: []};
 }
 S = fresh();
 let LAST = null; // summary of the previous finished run, for "replay with the same weather"
@@ -1308,6 +1324,13 @@ function compareOnSameWeather(seed, mine, done){
   setTimeout(batch, 0);
 }
 
+// Survival is judged against this weather, so choosing Hard or Extreme is never a penalty: for a preset the default
+// plan's result on the same weather is the yardstick, and any seed can be replayed from its number alone.
+function survivalLine(){
+  const p = WX_PRESETS[S.mode], again = `Play this weather again with <code>?seed=${S.seed}</code> in the address.`;
+  if (!p) return `You played ${wxName(S.mode, S.seed)}. ${again}`;
+  return `You played ${wxName(S.mode, S.seed)}, a sequence from the game's weather model, not a record of those years. On it the default plan (with best land first at each re-plan) keeps about ${kcal(p.def.k2)} kcal a day after 1573 and loses about ${fmt(p.def.deaths)} people to hunger: compare your community with that, not with an easier weather. ${again}`;
+}
 function showEnd(){
   S.phase = 'end';
   PLAY.auto = false; stopAutoTimers();
@@ -1380,8 +1403,8 @@ function showEnd(){
     <span class="eyebrow">Results</span>
     <h2 style="font-size:28px;font-stretch:112%;text-transform:uppercase">${dg === 'rise' && dk === 'fall' ? 'In your game, GDP grew. Life did not get better.' : dk !== 'fall' ? 'You kept people fed' : 'Six harvests on the mountain'}</h2>
     <p class="keymsg" style="margin:0"><b>GDP per person ${g2 >= g1 ? 'rose' : 'fell'} ${Math.abs(Math.round((g2/g1 - 1)*100))}%; food per person ${k2 >= k1 ? 'rose' : 'fell'} ${Math.abs(Math.round((k2/k1 - 1)*100))}%.</b> GDP is an average of everything produced; it says nothing about who ate. That gap between growth and welfare is the point of this game. (GDP counts silver sent to Spain and China as output too; see below for how much of the change it explains.)</p>
-    <div class="success"><b>What counts as success.</b> After 1573 no plan we tested kept food at the 1,700 goal on average over 80 weathers: the best of 2,304 strategies averaged about 1,580 kcal, and the default plan about 1,390. So success here is protecting your community, and explaining why GDP and food moved apart. Your colonial years: <b>${kcal(k2)} kcal</b> a day on average, <b>${fmt(hungerDeaths)}</b> ${Math.round(hungerDeaths) === 1 ? 'person' : 'people'} lost to hunger over the game, stores of <b>${fmt(S.store / GOAL * 365)} days</b> at the end.</div>
-    <div class="samewx" id="samewx"><b>Compared with tested plans on the same weather.</b> <span id="samewx-out">Playing the 2,304 tested plans on your weather…</span></div>
+    <div class="success"><b>Community survival.</b> Your colonial years: <b>${kcal(k2)} kcal</b> a day on average, <b>${fmt(hungerDeaths)}</b> ${Math.round(hungerDeaths) === 1 ? 'person' : 'people'} lost to hunger over the game, stores of <b>${fmt(S.store / GOAL * 365)} days</b> at the end. ${survivalLine()} <b>What counts as success.</b> After 1573 no plan we tested kept food at the 1,700 goal on average over 80 weathers: the best of 2,304 strategies averaged about 1,580 kcal, and the default plan about 1,390. So success here is protecting your community, and explaining why GDP and food moved apart.</div>
+    <div class="samewx" id="samewx"><b>Decision quality: compared with tested plans on the same weather.</b> <span id="samewx-out">Playing the 2,304 tested plans on your weather…</span></div>
     <div class="turns"><b>Turning points in your game:</b> ${Object.keys(S.seen).length ? Object.entries(S.seen).sort((a, b) => a[1] - b[1]).map(([k, y]) => `<span class="chip ${k === 'fed' ? 'ok' : k === 'paradox' ? '' : 'low'}">${MILESTONE_TITLE[k] || k} · harvest ${y}</span>`).join(' ') : 'none'}</div>
     <div class="cmp">
       <div><span>Inca years, food available per person</span><b>${kcal(k1)} kcal</b></div>
@@ -1494,6 +1517,7 @@ function showEnd(){
 function esc(s){ return s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 function reportText(k1,k2,g1,g2,dg,dk){
   const L = [`Frost and Silver: report${S.who?` by ${S.who}`:''}`, '',
+    `Weather: ${wxName(S.mode, S.seed)}.`,
     `Prediction: after the mita, GDP per person would ${S.pred.g} and calories would ${S.pred.k}.`,
     S.hyp ? `Reasoning: ${S.hyp}` : '', '',
     'Harvest, year | food available kcal/day | GDP index (Maddison 1500 = 100) | welfare index | people | frost reached | drought',
@@ -1514,7 +1538,7 @@ function restart(){
 // Same predictions, same weather (seed); the player changes choices and the end screen compares the runs.
 function replaySame(){
   compareGen++;
-  const keep = {pred: S.pred, hyp: S.hyp, who: S.who, seed: S.seed};
+  const keep = {pred: S.pred, hyp: S.hyp, who: S.who, seed: S.seed, mode: S.mode};
   PLAY.auto = false; stopAutoTimers();
   S = fresh(); Object.assign(S, keep);
   $('p-end').hidden = true; $('card').hidden = true; $('notice').hidden = true; $('p-intro').hidden = true;
@@ -1527,10 +1551,22 @@ $('start').addEventListener('click', () => {
   const g = document.querySelector('input[name=pg]:checked'), k = document.querySelector('input[name=pk]:checked');
   if (!g || !k) { $('intro-msg').textContent = 'Pick both predictions first.'; $('intro-msg').classList.add('warn'); return; }
   S.pred = {g: g.value, k: k.value}; S.hyp = $('hyp').value.trim(); S.who = $('who').value.trim();
+  const wx = (document.querySelector('input[name=wx]:checked') || {value: S.mode}).value;
+  if (WX_PRESETS[wx]) S.seed = WX_PRESETS[wx].seed;
+  else if (wx === 'random' && S.mode !== 'random') S.seed = Math.floor(Math.random() * 2147483646) + 1;
+  else if (wx === 'link') S.seed = URL_SEED;
+  S.mode = wx;
   $('p-intro').hidden = true; $('stage').hidden = false; $('p-plan').hidden = false; $('transport').hidden = false;
   S.year = 1; S.yr = rollYear(); S.phase = 'plan'; clampAlloc(); renderPlan(); bringIntoView($('stage'));
-  logAdd(logTag(1), `Started: ${fmt(S.pop)} people, ${crews().avail} crews, community stores ${fmt(S.store / GOAL * 365)} days.`);
+  logAdd(logTag(1), `Started: ${fmt(S.pop)} people, ${crews().avail} crews, community stores ${fmt(S.store / GOAL * 365)} days. ${wxName(S.mode, S.seed).replace(/^./, c => c.toUpperCase())}.`);
 });
+// The weather choice on the intro: a link's ?seed= preselects its preset, or adds a "from the link" option.
+(function initWeatherPick(){
+  const key = S.mode;
+  if (key === 'link') $('wx-random').closest && $('wx-random').closest('label').insertAdjacentHTML('beforebegin',
+    `<label><input type="radio" name="wx" value="link" id="wx-link"> <b>From the link</b> (seed ${URL_SEED}): the weather your teacher chose.</label>`);
+  const r = $('wx-' + key); if (r) r.checked = true;
+})();
 
 /* ---------- canvas ---------- */
 const cv = $('cv'), ctx = cv.getContext('2d');

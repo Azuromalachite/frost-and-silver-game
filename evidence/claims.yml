@@ -929,3 +929,26 @@ claims:
       - path: docs/literature-notes.md
         anchor: The practical recommendations emphasize reflective play logs
     notes: Pedagogical recommendations, not measured educational effectiveness of Frost and Silver.
+
+  - id: claim.game.weather_presets
+    statement: >
+      In the game, the Hard weather (seed 313) leaves the default plan with about
+      1,070 kcal a day after 1573 and about 90 hunger deaths, while a careful plan
+      can save most of them; on the Extreme weather (seed 2024) no tested plan
+      avoids mass hunger. The presets are sequences from the game's weather model,
+      not records of real years.
+    layer: game_result
+    status: labelled
+    sources: [trasmonte2008]
+    pages:
+      - path: frost-and-silver.html
+        anchor: it is not a record of the real weather in those years
+      - path: docs/hard-mode-2026-11-18.md
+        anchor: Difficulty changes only the weather sequence.
+    notes: >
+      Screened 2026-11-18 on seeds 1-2000 with tools/seeds.html (default plan,
+      best land first at each re-plan; 2,304 tested plans picked after the weather
+      is known). The default-plan numbers are WX_PRESETS in the game and are
+      re-measured by tests/review_model.cjs on every pull request. The source is
+      the weather model's frost source (claim.game.frost_from_top); it supports
+      nothing about these seeds, whose drought and winter odds are play values.
