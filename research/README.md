@@ -1,0 +1,39 @@
+# Research models (Path B)
+
+The teaching game (`frost-and-silver.html`) is frozen as a baseline: it teaches one lesson, that GDP per person can
+rise while food per person falls, inside a small decision space. This folder is for the questions the evidence base
+has opened that the game cannot answer, such as when paid work at Potosí improves a household's food, when spreading
+fields across heights protects against a bad year, or when a community with enough food overall still has hungry
+households.
+
+These models are allowed, and expected, to contradict the game. The game was tuned to land near Maddison's
+estimates, so agreeing with them proves nothing. A model here earns trust only by stating in advance what would show
+it wrong.
+
+## Rules
+
+1. **Pre-register before running.** Each experiment starts as a file in `pre-registrations/`
+   (`YYYY-MM-DD-<slug>.md`) with the question, the predicted result, a decision rule, the frozen comparisons and
+   every threshold or range chosen. It is committed before any result exists. Later changes are appended as dated
+   deviations, never edited in.
+2. **Report every outcome,** including nulls and failures, in `results/`, next to the pre-registration it answers.
+   Anything chosen after seeing results is labelled exploratory.
+3. **Separate from the game.** Research code reads the game's model or copies what it needs; it does not change
+   `frost-and-silver.html`. The game's CI and pinned run must not move because of work here.
+4. **Evidence through the registry.** A parameter that comes from a source is a claim in `evidence/claims.yml` with
+   its access level. A parameter that does not is a range chosen by judgement, written down as such in the
+   pre-registration, never presented as historical.
+5. **Model results are not history.** Every finding states the model and assumptions it holds under. A model can
+   show that a conclusion depends on an assumption; it cannot show what happened in the 1500s without independent
+   evidence.
+6. **Graduation.** A mechanism moves into the game only if a pre-registered result here supports it, it can be
+   explained to a class in a sentence, and the author agrees. The game then gets it as a minor upgrade with its own
+   claim and CI check.
+
+## Layout
+
+| path | what |
+|---|---|
+| `pre-registrations/` | one file per experiment, frozen before running |
+| `results/` | what each experiment found, linked to its pre-registration |
+| `models/` | code for each experiment (browser pages or scripts, runnable without the game's CI) |
