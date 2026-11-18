@@ -63,8 +63,11 @@ canvas{display:block;width:100%;aspect-ratio:16/7.2;max-width:100%}
 .stat{display:flex;gap:4px;align-items:baseline;white-space:nowrap}
 .stat span{color:var(--muted);font-size:11px;font-family:var(--f-mono);text-transform:uppercase;letter-spacing:.06em}
 .stat b{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
-.forecast{font-size:13px;color:var(--muted)}
-.forecast b{font-family:var(--f-mono);font-size:12px}
+.forecast{font-size:14px;color:var(--ink);border:1px solid var(--line);border-radius:4px;padding:8px 10px;margin-bottom:10px;display:flex;gap:6px 14px;flex-wrap:wrap;align-items:center}
+.forecast p{margin:0;flex:1 1 30ch;max-width:70ch}
+.forecast b{font-family:var(--f-mono);font-size:12px;text-transform:uppercase;letter-spacing:.06em;margin-right:4px}
+.forecast .fstrip{flex:0 0 auto;width:240px;max-width:100%;height:auto}
+.forecast .fnote{display:block;color:var(--muted);font-size:13px;margin-top:2px}
 
 /* panels */
 .panel{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:16px;display:grid;gap:14px;min-width:0}
@@ -281,7 +284,7 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
   .step small{display:none}
   .build{font-size:11px;padding:4px}
   .hud{font-size:12px;gap:4px 10px;padding:6px 8px}
-  .forecast{font-size:12px}
+  .forecast{font-size:13px}
   canvas{aspect-ratio:16/12}
   .zones{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 12px}
   .dock{padding:8px}
@@ -335,12 +338,12 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
     </div>
     <div class="dock" id="dock" hidden>
       <div class="replan" id="replan" role="region" aria-labelledby="rp-h" hidden></div>
+      <div class="forecast" id="forecast" hidden></div>
       <div class="dzones" id="dzones"></div>
       <div class="drow">
         <div class="dxs" id="dextras"></div>
         <div class="dgo"><span class="free" id="free"></span><button class="btn" id="endyear">Harvest this year</button></div>
       </div>
-      <div class="forecast" id="forecast" hidden></div>
     </div>
     <div class="autobar" id="autobar" hidden><span id="autobar-txt" aria-hidden="true"></span><span class="sr" id="autobar-sr" role="status"></span><button class="tbtn" id="autobar-pause">❚❚ Pause</button></div>
     <div class="transport" id="transport" hidden>
@@ -893,13 +896,30 @@ function renderHUD(){
     <span class="stat"><span>People</span><b>${fmt(S.pop)}</b></span>
     <span class="stat"><span>Stores</span><b>${fmt(days)} days</b></span>`;
 }
+// 20 years as squares: 7 hazy (3 dry), 13 clear (1 dry). Filled = dry, outline = rains came, so the reading does not
+// rest on colour. This year's group is in full ink, the other faded.
+function forecastStrip(hz, txt){
+  const sq = 11, gap = 3, groupGap = 14, groups = [{n: 7, dry: 3, on: hz, t: 'hazy'}, {n: 13, dry: 1, on: !hz, t: 'clear'}];
+  let x = 1, s = '';
+  for (const g of groups) {
+    const x0 = x, op = g.on ? 1 : .35;
+    for (let i = 0; i < g.n; i++, x += sq + gap) s += `<rect x="${x}" y="1" width="${sq}" height="${sq}" rx="1.5" style="fill:${i < g.dry ? 'var(--ink)' : 'none'};stroke:var(--ink);stroke-width:1.2;opacity:${op}"/>`;
+    s += `<text x="${x0}" y="27" style="fill:var(--ink);opacity:${g.on ? 1 : .55};font:${g.on ? 600 : 400} 10px var(--f-mono)">${g.t}: ${g.dry} of ${g.n} dry</text>`;
+    x += groupGap - gap;
+  }
+  return `<svg class="fstrip" viewBox="0 0 ${x} 31" role="img" aria-label="${txt} Of every 20 years in this game, about 7 are hazy and 3 of those turn dry; 13 are clear and 1 of those turns dry.">${s}</svg>`;
+}
 function renderForecast(){
   const el = $('forecast');
   if (S.phase !== 'plan') { el.hidden = true; return; }
   el.hidden = false;
-  el.innerHTML = S.yr.hazy
-    ? `<b>June forecast</b> The Pleiades rose hazy and dim. Elders read this as a sign of poor rains. In this game, a hazy year turns out dry a bit under half the time.`
-    : `<b>June forecast</b> The Pleiades rose bright and clear. Elders expect normal rains. In this game they are right about nine times in ten.`;
+  // Odds follow rollYear: P(dry) = .2, P(hazy | dry) = .75, P(hazy | wet) = .25, so 3 in 7 hazy years and 1 in 13 clear
+  // years turn dry. The practice is documented in modern communities (Orlove, Chiang & Cane 2000); the odds are the game's.
+  const hz = S.yr.hazy;
+  const txt = hz
+    ? 'The Pleiades rose hazy and dim. Andean farmers today read this as poor rains ahead. In this game about 3 in 7 hazy years turn dry (1 in 5 years overall).'
+    : 'The Pleiades rose bright and clear. Andean farmers today expect normal rains. In this game about 1 in 13 clear years turns dry (1 in 5 years overall).';
+  el.innerHTML = `<p><b>June forecast</b>${txt}<span class="fnote">A dry year cuts every zone by the same quarter, so moving crews between zones cannot escape it (game rule).</span></p>${forecastStrip(hz, txt)}`;
 }
 
 /* ---------- year resolution ---------- */
@@ -1023,8 +1043,8 @@ function whyList(r){
   // The hint used to point only to waru waru, in High grain; "Best land first" at 1573 then leaves High grain empty, so a
   // student who followed every hint wasted the build. Valley terraces protect and widen the best land, which stays farmed.
   else if (r.year <= 4 && r.line < 3 && !S.built.yunga) out.push('In this game, terraces cut a zone\'s frost loss by a third and waru waru by more than half, but a build pays only while crews farm its zone. Valley terraces mainly widen your best land (more room, +10% yield; the valley itself rarely freezes), and it stays farmed after crews fall; waru waru in High grain pay only if crews still farm there.');
-  if (r.drought) out.push(`A dry year cut every harvest by a quarter (game figure; in the southern Andes El Niño years tend to be dry, though not everywhere).${r.hazy ? ' The hazy Pleiades warned you.' : ' The Pleiades gave no warning.'}`);
-  else if (r.hazy) out.push('The Pleiades looked hazy, but the rains came anyway.');
+  if (r.drought) out.push(`A dry year cut every harvest by a quarter (game figure; in the southern Andes El Niño years tend to be dry, though not everywhere).${r.hazy ? ' The Pleiades rose hazy, and as in about 3 of every 7 hazy years, the rains failed.' : ' The Pleiades rose clear: about 1 in 13 clear years still turns dry.'} A dry year cuts every zone alike, so moving crews could not have escaped it.`);
+  else out.push(r.hazy ? 'Hazy Pleiades, but the rains came: about 4 in 7 hazy years bring normal rains.' : 'Clear Pleiades, and normal rains came.');
   if (r.act === 1) out.push(`One man in ten worked the state and temple fields under the Inca labour duty; ${fmt(r.ret)} came back as feasts and rations (game assumption: half the state harvest).`);
   if (r.act === 2 && r.silver > 0) out.push(r.year === 4
     ? 'Potosí\'s silver output is about to surge: mercury amalgamation, introduced in the 1570s, let miners refine poorer ore. In the game, each mine worker\'s silver is worth more in later harvests (game figure).'
@@ -1055,8 +1075,8 @@ function logHarvest(r){
   if (r.line === 4) logAdd(tag, 'No frost.');
   else if (r.lost < 1) logAdd(tag, `Frost down to the ${zone} zone; no crops there.`);
   else logAdd(tag, `Frost down to the ${zone} zone: −${fmt(r.lost)}${r.saved > 0 ? `; terraces and raised fields saved ${fmt(r.saved)}` : ''}.`, 'neg');
-  if (r.drought) logAdd(tag, `Dry year (in the southern Andes El Niño years tend to be dry, though not everywhere): every zone −25% (game figure). ${r.hazy ? 'The hazy Pleiades warned of it.' : 'No warning from the Pleiades.'}`, 'neg');
-  else if (r.hazy) logAdd(tag, 'Hazy Pleiades, but the rains came.');
+  if (r.drought) logAdd(tag, `Dry year (in the southern Andes El Niño years tend to be dry, though not everywhere): every zone −25% (game figure). ${r.hazy ? 'Pleiades hazy (3 in 7 hazy years turn dry).' : 'Pleiades clear (1 in 13 clear years turns dry).'}`, 'neg');
+  else logAdd(tag, r.hazy ? 'Hazy Pleiades, but the rains came.' : 'Clear Pleiades, normal rains.');
   if (r.ret > 0) logAdd(tag, `Inca feasts and rations +${fmt(r.ret)}.`, 'pos');
   if (r.tribute > 0) logAdd(tag, `Tribute −${fmt(r.tribute)} (${Math.round(r.tRate*100)}% of the harvest; game rule).`, 'neg');
   if (r.chuno > 0) logAdd(tag, `${WINTER_WORD[r.winter]}: chuño crews could freeze-dry up to ${fmt(r.chunoRoom)}.`, r.winter === 'hard' ? 'pos' : r.winter === 'mild' ? 'neg' : '');
