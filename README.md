@@ -1,6 +1,6 @@
 # Frost & Silver
 
-A browser game for a world-history class. You run an Andean ayllu (a farming community of about 1,000 people) across six harvests, each one farming year. Harvests 1–3 are consecutive years under the Inca, around 1500. Harvests 4–6 are sample years (c. 1575, c. 1592, c. 1600) after the 1573 colonial mita began sending one man in seven from the mita region to the silver mines at Potosí. Step through by hand (Next step, or Bring in harvest) or press Play to let the harvests run, at 1×, 2× or 4×; Pause stops it. Milestones (everyone fed, hunger, stores used up, a killing frost, and the first colonial harvest where output is up but food is down) appear at the top of the harvest report and pause auto-play. Add `?seed=123` to the address to give a whole class the same weather.
+A browser game for a world-history class. You run an Andean ayllu (a farming community of about 1,000 people) across six harvests, each one farming year. Harvests 1–3 are consecutive years under the Inca, around 1500. Harvests 4–6 are sample years (c. 1575, c. 1592, c. 1600) after the 1573 colonial mita began sending one man in seven from the mita region to the silver mines at Potosí. Step through by hand (Next step, or Bring in harvest) or press Play to let the harvests run, at 1×, 2× or 4×; Pause stops it. Milestones (everyone fed, hunger, stores used up, a killing frost, and the first colonial harvest where output is up but food is down) appear at the top of the harvest report and pause auto-play. Add `?seed=123` to the address to give a whole class the same weather, or pick a weather preset on the intro screen: Standard (seed 12345), Hard (seed 313) or Extreme (seed 2024). Presets change only the weather, never the rules; how they were chosen: [docs/hard-mode-2026-11-18.md](docs/hard-mode-2026-11-18.md).
 
 **The key message: GDP per person grew in sixteenth-century Latin America, but life did not get better, because food per person fell.** The game lets students watch both numbers side by side and see how growth and welfare can come apart.
 
@@ -75,6 +75,7 @@ The text and model were checked by four independent reviews (claims and charts; 
 | [tests/test_check_evidence.py](tests/test_check_evidence.py) | plants one defect per rule and shows each rule can fail |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | the rules, and how to run the checks |
 | [AGENTS.md](AGENTS.md) | the short, binding rules for anyone changing the repository, human or AI |
+| [docs/hard-mode-2026-11-18.md](docs/hard-mode-2026-11-18.md) | the weather presets: how Standard, Hard and Extreme were screened from 2,000 seeds, and what the end screen compares them with |
 | [docs/teaching-guide.md](docs/teaching-guide.md) | for instructors: seeds, the session, what counts as success, discussion prompts, the smoke test |
 | [docs/design.md](docs/design.md) | the visual and writing style, for anyone building a similar game |
 

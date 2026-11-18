@@ -10,6 +10,7 @@
 //   - an identical replay reproduces every harvest;
 //   - changing a choice keeps the weather and changes the result;
 //   - the welfare index equals the sum of its parts;
+//   - each weather preset's benchmark (WX_PRESETS, shown on the end screen) is what the default plan does on its seed;
 //   - the GDP grading split over seeds 1-80 (claim.game.grading_weather).
 //
 // DOM stubs and disabled timers: this checks the model, not the page. It drives
@@ -29,7 +30,7 @@ const REPLAN = 'best';
 function load(html) {
   const m = html.match(/<script>\s*([\s\S]*?)<\/script>/);
   assert.ok(m, 'no inline <script> in the game file');
-  const code = m[1].replace(/\}\)\(\);\s*$/, `globalThis.game={get state(){return S}, fresh,rollYear,clampAlloc,harvest,nextYear,showTransition,showEnd,replaySame,settle,shortShare,gi,dir,reportText,PLAY,replanTo,GDP_TOL};})();`);
+  const code = m[1].replace(/\}\)\(\);\s*$/, `globalThis.game={get state(){return S}, fresh,rollYear,clampAlloc,harvest,nextYear,showTransition,showEnd,replaySame,settle,shortShare,gi,dir,reportText,PLAY,replanTo,GDP_TOL,WX_PRESETS};})();`);
   assert.notEqual(code, m[1], 'the game script no longer ends in })(); so the harness cannot reach the model');
   return code;
 }
@@ -80,6 +81,7 @@ function finish(g, replay = false, edit) {
     gdp:[g.gi(avg(a,'gdp')), g.gi(avg(b,'gdp'))],
     short:[...[a, b].map(x => x.reduce((s, r) => s + g.shortShare(r.avail), 0) / x.length * 100)],
     weather:h.map(r => ({line:r.line, drought:r.drought, hazy:r.hazy, winter:r.winter})),
+    deaths:h.reduce((s, r) => s + Math.max(0, r.popBefore - r.pop), 0),
     history:JSON.parse(JSON.stringify(h))};
 }
 
@@ -92,6 +94,12 @@ function check(html) {
   const edited = finish(g, true, x => { if (x.state.year === 1) { x.state.alloc.suni -= 1; x.state.chuno += 1; } });
   assert.deepEqual(edited.weather, first.weather, 'changing a choice must not change the weather');
   assert.notDeepEqual(edited.history, first.history, 'changing a choice must change the result');
+  // The weather presets' benchmarks, shown on the end screen, must be what the default plan does on that seed.
+  const presets = JSON.parse(JSON.stringify(g.WX_PRESETS));
+  for (const [key, p] of Object.entries(presets)) {
+    const t = finish(make(code, p.seed)), r1 = v => Math.round(v * 10) / 10;
+    assert.deepEqual({k2: r1(t.food[1]), deaths: r1(t.deaths)}, p.def, `weather preset ${key} (seed ${p.seed}) benchmark moved: re-run the screen and update WX_PRESETS and docs/hard-mode-2026-11-18.md together`);
+  }
   for (const r of first.history) assert.ok(Math.abs(r.cwi - r.cwiParts.cal - r.cwiParts.buf - r.cwiParts.res) < 1e-8, 'welfare index must equal the sum of its parts');
 
   const runs = [];
@@ -102,7 +110,7 @@ function check(html) {
   const counts = {}; for (const x of grades) counts[x.g] = (counts[x.g] || 0) + 1;
   assert.deepEqual(counts, GRADES_1_80, 'GDP grading split over seeds 1-80 moved: update claim.game.grading_weather, the end-screen sentence and GRADES_1_80 together');
   const mean = k => [0, 1].map(i => runs.reduce((s, t) => s + t[k][i], 0) / runs.length);
-  return {pinned, gdp_grades_1_80:counts,
+  return {pinned, presets, gdp_grades_1_80:counts,
     rise_seeds:grades.filter(x => x.g === 'rise').map(x => x.seed),
     means_1_80:{food:mean('food'), welfare:mean('welfare'), gdp:mean('gdp')},
     food_effect_grades_1_80:grades.reduce((o, x) => (o[x.k] = (o[x.k] || 0) + 1, o), {})};
@@ -128,6 +136,8 @@ const PLANTS = [
   ['winter roll removed', "winter = w < .25 ? 'hard' : w < .75 ? 'normal' : 'mild'", "winter = 'normal'", /pinned run/],
   // the grade's tolerance moves only the grading split, so this plant tests that assertion, not the pinned run
   ['GDP tolerance changed', 'const GDP_TOL = 12.5;', 'const GDP_TOL = 2.5;', /grading split/],
+  // a preset pointing at another seed must fail on its benchmark, not slip through to the end screen
+  ['Hard preset seed changed', 'hard:     {seed: 313,', 'hard:     {seed: 314,', /weather preset hard/],
 ];
 function selfTest(html) {
   check(html); // the unplanted game must pass first, or a failure below proves nothing

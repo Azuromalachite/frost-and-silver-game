@@ -25,9 +25,20 @@ shows from what the game assumes.
   then gets the same frosts, droughts and forecasts, so differences in results
   come from choices, and the graded food prediction is comparable. Without a seed
   each player gets different weather.
-- **Try your seed first.** Some are harsh: seed 2024 has droughts at both 1592
-  and 1600, and the default plan averages about 550 kcal after 1573. A harsh seed
-  can be a deliberate lesson, but it should not be a surprise.
+- **Or pick a weather preset** on the intro screen: Standard (seed 12345, a
+  typical weather), Hard (seed 313) or Extreme (seed 2024). Difficulty changes
+  only the weather, never the rules. On Hard the default plan loses about 90
+  people to hunger and a careful plan can save almost all of them; on Extreme
+  (droughts at both 1592 and 1600, about 550 kcal after 1573 with the default
+  plan) every tested plan loses well over 100, so success is how many survive.
+  A link with `?seed=313` or `?seed=2024` preselects the preset. The end screen
+  judges survival against the default plan on the same weather, so a group that
+  chose Hard is not marked down for it. How the seeds were chosen:
+  [hard-mode-2026-11-18.md](hard-mode-2026-11-18.md).
+- **A class experiment**: give every group the Hard seed, let each choose its own
+  policy, then compare who kept the most people alive and why.
+- **Try your seed first.** Some are harsh. A harsh seed can be a deliberate
+  lesson, but it should not be a surprise.
 - **Try it on the classroom browser and a phone** before the session; see the
   smoke test below.
 - **Tell students how time works** (it is on the 1573 screen too): harvests 1–3

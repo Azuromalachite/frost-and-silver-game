@@ -94,7 +94,10 @@ Each one cites what taught it.
    model recalibrates (60–80 games of default play), then updates this line,
    `PINNED` in `tests/review_model.cjs`, and the numbers in `README.md` and the
    evidence document. CI's model check enforces the line and the 75/5 grading
-   split, so a moved number cannot merge unrecorded.
+   split, so a moved number cannot merge unrecorded. It also re-measures the
+   weather presets' benchmarks (`WX_PRESETS`: Standard 12345, Hard 313, Extreme
+   2024); a model change that moves them re-runs `tools/seeds.html` and updates
+   `WX_PRESETS` and `docs/hard-mode-2026-11-18.md` together.
 3. **Every checker rule can fail.** Each rule has a test that plants its
    defect, and the same test with the rule disabled must pass. A rule with no
    failing case is not known to work.
