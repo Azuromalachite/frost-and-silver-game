@@ -52,7 +52,7 @@ const REPLAN = 'best'; // the pinned run's re-plan choice
 function load(html) {
   const m = html.match(/<script>\s*([\s\S]*?)<\/script>/);
   assert.ok(m, 'no inline <script> in the game file');
-  const code = m[1].replace(/\}\)\(\);\s*$/, `globalThis.game={get state(){return S}, fresh,rollYear,clampAlloc,harvest,nextYear,showTransition,showEnd,replaySame,settle,shortShare,gi,dir,reportText,PLAY,replanTo,GDP_TOL,WX_PRESETS,simulatePlan,PLAN_GRID,applyGridPlan,collapseState,advanceState,P,ADVANCE_PLAN};})();`);
+  const code = m[1].replace(/\}\)\(\);\s*$/, `globalThis.game={get state(){return S}, fresh,rollYear,clampAlloc,harvest,nextYear,showTransition,showEnd,replaySame,settle,grow,crews,ZONES,shortShare,gi,dir,reportText,PLAY,replanTo,GDP_TOL,WX_PRESETS,simulatePlan,PLAN_GRID,applyGridPlan,collapseState,advanceState,P,ADVANCE_PLAN};})();`);
   assert.notEqual(code, m[1], 'the game script no longer ends in })(); so the harness cannot reach the model');
   return code;
 }

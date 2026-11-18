@@ -118,6 +118,13 @@ These notes record proposed gameplay changes; they do not implement them.
 
 Its readings were checked by an adversarial review before merging: six papers read only in part are recorded as `sections_read`, so the claims resting on them are `partly_supported`, not `supported`.
 
+The [crop and camelid reading notes](docs/agropastoral-literature-2026-11-18.md)
+add twelve bounded sources, including the supplied Winkel and alpaca-survival
+papers. The [implementation review after PR #29](docs/implementation-review-2026-11-18.md)
+distinguishes resolved upstream issues from remaining commodity, herd, water,
+seed, market and historical-time limits. Its diagnostics reuse the existing
+model check; they introduce no new gameplay rules or historical parameter values.
+
 ## Credits and licence
 
 Adapted from [“Week 2: Tahuantinsuyu Harvest & Frost Defense”](https://superlative-sprinkles-2653a1.netlify.app/) by Amnuayvit Thitibordin, licensed [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
