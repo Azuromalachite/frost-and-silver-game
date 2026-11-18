@@ -9,6 +9,13 @@ more than its source. Both look exactly like correct content. Read this file
 before editing anything. `CLAUDE.md` imports it, so every agent reads the same
 rules. `CONTRIBUTING.md` has the longer version.
 
+**The game is frozen as a teaching baseline (Path A, since 18 November 2026).**
+Change it only for bugs, accessibility, classroom feedback, evidence corrections
+and the author's decisions. No new mechanics, decisions or scoring. New
+questions (markets, assets, household inequality, spatial climate risk) are
+investigated in `research/` (Path B) under its own rules; a mechanism moves into
+the game only by the graduation rule in `research/README.md`.
+
 ## Run it
 
 ```bash
