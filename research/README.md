@@ -43,7 +43,7 @@ herds, obligations). A model that changes the structure is compared with the gam
 | # | question | status |
 |---|---|---|
 | 1 | Does the lesson survive the game's structural choices (the player's plan; fixed tribute)? | done: robust, all four cells ≥ 2/3 ([results](results/2026-11-18-structural-robustness.md)) |
-| 2 | When do wages and food markets improve a household's food? | next; needs PR #34's sources fixed |
+| 2 | When does work at Potosí raise a household's food? | pre-registered 2026-11-19 ([plan](pre-registrations/2026-11-19-wage-food-breakeven.md)); 2b waits for Bakewell pp. 102–104 prices |
 
 ## Layout
 
