@@ -339,6 +339,7 @@ sources:
     notes: Source of the 1,700 → 1,200 kcal course figure. The figure itself has no source.
 
   # --- research contribution, 2026-11-18 --------------------------------------
+
   - key: valdez_bettcher2025
     title: "Los sistemas de almacenamiento inka de Tambo Viejo"
     author: Lidio M. Valdez; Katrina J. Bettcher
@@ -448,6 +449,140 @@ sources:
     url: https://doi.org/10.1177/1046878116646693
     locator: Simulation and Gaming 47(4), pp. 517-542; supplied advance-version PDF pp. 8-20
     notes: Relevant theory and best practices read. The supplied PDF uses pagination 1-26. Full text now available, resolving the earlier access gap; does not validate learning outcomes of this game.
+
+  # --- crop ecology and pastoralism review, 2026-11-18 -----------------------
+
+  - key: winkel_etal2009
+    title: "Assessing the protective effect of vertically heterogeneous canopies against radiative frost: The case of quinoa on the Andean Altiplano"
+    author: Thierry Winkel; Jean-Paul Lhomme; J. P. Nina Laura; C. Mamani Alcon; C. del Castillo; Alain Rocheteau
+    date: 2009
+    access: full_text_read
+    by: Codex agropastoral review
+    when: 2026-11-18
+    url: https://doi.org/10.1016/j.agrformet.2009.06.005
+    locator: All ten supplied PDF pages, printed pp. 1759-1768; Table 1 and Sections 2, 3 and 4
+    notes: Quinoa leaf microclimate, one site-season and adjacent cultivar plots; no measured grain-yield advantage. Full-text access resolved by supplied PDF. Not a kaniwa parameter source.
+
+  - key: condori_etal2014
+    title: "Managing Potato Biodiversity to Cope with Frost Risk in the High Andes: A Modeling Perspective"
+    author: Bruno Condori; Robert J. Hijmans; Jean-Francois Ledent; Roberto Quiroz
+    date: 2014
+    access: sections_read
+    by: Codex agropastoral review
+    when: 2026-11-18
+    url: https://doi.org/10.1371/journal.pone.0081510
+    locator: e81510, HTML Materials and Methods; Results and Discussion, especially Scenario Analysis; Conclusions
+    notes: Field experiments inform modern crop simulations; absolute yields and cultivar mixtures are not c.1500 calibration.
+
+  - key: jacobsen_etal2005
+    title: "Plant responses of quinoa (Chenopodium quinoa Willd.) to frost at various phenological stages"
+    author: S.-E. Jacobsen; C. Monteros; J. L. Christiansen; L. A. Bravo; L. J. Corcuera; A. Mujica
+    date: 2005
+    access: sections_read
+    by: Codex agropastoral review
+    when: 2026-11-18
+    url: https://doi.org/10.1016/j.eja.2004.01.003
+    locator: Printed pp. 131-137, author-uploaded article text; experiments 1-3, Tables 1-6 and Discussion
+    notes: Controlled frost exposures, not historical weather. Table 5 implies approximately 10 percent early-stage loss; abstract reports 9 percent.
+
+  - key: leceta_etal2024
+    title: "The impact of agriculture on tropical mountain soils in the western Peruvian Andes: a pedo-geoarchaeological study of terrace agricultural systems in the Laramate region (14.5 degrees S)"
+    author: Fernando Leceta; Christoph Binder; Christian Mader; Bertil Machtle; Erik Marsh; Laura Dietrich; Markus Reindel; Bernhard Eitel; Julia Meister
+    date: 2024
+    access: sections_read
+    by: Codex agropastoral review
+    when: 2026-11-18
+    url: https://doi.org/10.5194/soil-10-727-2024
+    locator: SOIL 10, pp. 727-761; HTML Abstract, selected profiles in Section 4, Discussion 5.1-5.4 and Conclusion 6
+    notes: Local soil comparison; post-abandonment recovery uncertain. Camelid manure remains a hypothesis here.
+
+  - key: arce_etal2019
+    title: "The Spatial-Temporal Dynamics of Potato Agrobiodiversity in the Highlands of Central Peru: A Case Study of Smallholder Management across Farming Landscapes"
+    author: Alejandra Arce; Stef de Haan; Henry Juarez; Dharani Dhar Burra; Franklin Plasencia; Raul Ccanto; Severin Polreich; Maria Scurrah
+    date: 2019
+    access: sections_read
+    by: Codex agropastoral review
+    when: 2026-11-18
+    url: https://doi.org/10.3390/land8110169
+    locator: Article 169 PDF pp. 1-2, 7-9 and 20-25; field management, Discussion and study limitations
+    notes: Modern observational comparison; not a historical altitude boundary or estimate of crop-failure covariance.
+
+  - key: lane_etal2022
+    title: "Pre-Hispanic anthropogenic wetlands in the upper Ica drainage, south-central Andes: dating and context"
+    author: Kevin Lane; David Beresford-Jones; Luis Coll; Erik Marsh; Rob Scaife; Catriel Greco; Oliver Huaman Oros; Alexander Herrera; Jennifer Grant; Charles French
+    date: 2022
+    access: sections_read
+    by: Codex agropastoral review
+    when: 2026-11-18
+    url: https://doi.org/10.15184/aqy.2022.103
+    locator: Antiquity 96(389), pp. 1251-1271; HTML Introduction, Anthropogenic wetlands, Discussion (peat, pollen and dates), Conclusions
+    notes: Pre-Hispanic wetland engineering evidence; no universal carrying-capacity or maintenance-labour coefficient.
+
+  - key: castellaro_etal2004
+    title: "Botanical composition of alpaca and llama diets in two seasons of the year on highland ranges of Parinacota province, Chile"
+    author: Giorgio Castellaro; Tamara Ullrich; Birgit Wackwitz; Alberto Raggi
+    date: 2004
+    access: sections_read
+    by: Codex agropastoral review
+    when: 2026-11-18
+    url: https://doi.org/10.4067/S0365-28072004000400004
+    locator: Agricultura Tecnica 64(4); SciELO Abstract, Introduction and Materials and Methods (site and pasture sampling)
+    notes: Local seasonal diet overlap; not a universal mixed-herd complementarity benefit.
+
+  - key: riek_etal2019
+    title: "Energy expenditure and body temperature variations in llamas living in the High Andes of Peru"
+    author: Alexander Riek; Anna Stolzl; Rodolfo Marquina Bernedo; Thomas Ruf; Walter Arnold; Catherine Hambly; John R. Speakman; Martina Gerken
+    date: 2019
+    access: sections_read
+    by: Codex agropastoral review
+    when: 2026-11-18
+    url: https://doi.org/10.1038/s41598-019-40576-9
+    locator: Scientific Reports 9, 4037, PDF pp. 1-6; Abstract, Results (Table 2), opening Discussion
+    notes: Seven adult non-pregnant female llamas; not pack-work, newborn, pregnancy or historical energy requirements.
+
+  - key: gomezquispe_etal2022
+    title: "Analysis of alpaca (Vicugna pacos) cria survival under extensive management conditions in the high elevations of the Andes Mountains of Peru"
+    author: O. E. Gomez-Quispe; E. L. Rodriguez; R. M. Benites; S. Valenzuela; J. Moscoso-Munoz; V. Ibanez; C. R. Youngs
+    date: 2022
+    access: full_text_read
+    by: Codex agropastoral review
+    when: 2026-11-18
+    url: https://doi.org/10.1016/j.smallrumres.2022.106839
+    locator: All six supplied PDF pages; Methods 2.1-2.4, Results, Table 1, Discussion 4.1-4.2
+    notes: Full text supplied after publisher/repository access barrier. Modern 2019 cohort; no necropsies, frost treatment or measured maternal condition. Illness classification uses follow-up information.
+
+  - key: valenzuela_etal2021
+    title: "Impact of cria protection strategy on post-natal survival and growth of alpacas (Vicugna pacos)"
+    author: Santiago Valenzuela; Ruth M. Benites; Juan E. Moscoso-Munoz; Curtis R. Youngs; Oscar E. Gomez-Quispe
+    date: 2021
+    access: sections_read
+    by: Codex agropastoral review
+    when: 2026-11-18
+    url: https://doi.org/10.1016/j.vas.2020.100162
+    locator: Article 100162, HTML Abstract, Materials and methods, Results 3.1-3.2 (Table 1), Discussion and Conclusion
+    notes: Modern protection trial; shed versus open-corral difference was not significant. Contemporary vests do not establish historical use.
+
+  - key: lecoq1998
+    title: "Algunos apuntes sobre el papel de los llameros y de las recuas de llamas en el auge de la Villa Imperial de Potosi"
+    author: Patrice Lecoq
+    date: 1998
+    access: sections_read
+    by: Codex agropastoral review
+    when: 2026-11-18
+    url: https://revistas.fhycs.unju.edu.ar/revistacuadernos/index.php/cuadernos/article/view/497
+    locator: Cuadernos FHyCS-UNJu 11, pp. 19-48; opening pp. 19-20 read in public PDF
+    notes: Historical transport connection; do not infer universal payloads, caravan labour or incomes from the opening examples.
+
+  - key: szpak_etal2012_field
+    title: "Influence of seabird guano and camelid dung fertilization on the nitrogen isotopic composition of field-grown maize (Zea mays)"
+    author: Paul Szpak; Jean-Francois Millaire; Christine D. White; Fred J. Longstaffe
+    date: 2012
+    access: abstract_read
+    by: Codex agropastoral review
+    when: 2026-11-18
+    url: https://doi.org/10.1016/j.jas.2012.06.035
+    locator: Journal of Archaeological Science 39, pp. 3721-3740; abstract on author-hosted PDF p. 2 (including cover)
+    notes: Full PDF available; only abstract used here. Isotope effects do not supply historical fertilizer rates or yield benefits.
 
   - key: saavedra_takahashi2017
     title: "Physical controls on frost events in the central Andes of Peru using in situ observations and energy flux models"

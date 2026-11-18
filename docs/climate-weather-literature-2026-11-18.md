@@ -1,6 +1,6 @@
 # Climate, weather and food access: evidence review
 
-18 November 2026. Reviewed against main `6a6dda4` (PR #22). This is an
+18 November 2026. Reviewed against main `8e443c5` (PR #29). This is an
 evidence and design contribution. It supplies no historical weather series,
 new probabilities, loss coefficients or gameplay changes. It complements the
 crop and camelid review in [PR #23](https://github.com/Azuromalachite/frost-and-silver-game/pull/23).

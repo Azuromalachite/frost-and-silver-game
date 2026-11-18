@@ -73,3 +73,29 @@ Joint plot losses, feasible historical response costs and a chosen geographic
 setting remain calibration gaps even where articles are available.
 
 The bibliography contains metadata and public links. It includes no PDFs, full article extracts, private file links, or privately circulated teaching slides.
+
+## Crop ecology and camelids: access recheck, 18 November 2026
+
+This adds to the original collection; it does not erase its seven unresolved
+works. The [new notes](../docs/agropastoral-literature-2026-11-18.md) and source
+registry distinguish obtaining a full text from reading selected sections.
+
+| Work | Full-text route and access finding | Reading recorded here |
+|---|---|---|
+| Winkel et al. (2009), quinoa canopy | Complete PDF supplied; earlier IRD request barrier resolved | All ten pages |
+| Gomez-Quispe et al. (2022), cria survival | Complete PDF supplied; publisher/repository request barrier resolved | All six pages |
+| Condori et al. (2014), potato frost risk | [Open publisher article](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0081510) | Named methods, results and conclusions |
+| Jacobsen et al. (2005), quinoa stages | [Author-uploaded article text](https://www.academia.edu/30359178/Plant_responses_of_quinoa_Chenopodium_quinoa_Willd_to_frost_at_various_phenological_stages); publisher retrieval returned 403 | Printed pp. 131-137 |
+| Leceta et al. (2024), Laramate soils | [Open HTML and PDF](https://soil.copernicus.org/articles/10/727/2024/) | Named sections |
+| Arce et al. (2019), potato landscapes | [Publisher PDF](https://mdpi-res.com/d_attachment/land/land-08-00169/article_deploy/land-08-00169-v2.pdf?version=1573637075); landing page sometimes exposes only abstract | Named PDF pages |
+| Lane et al. (2022), bofedales | [Open publisher article](https://doi.org/10.15184/aqy.2022.103) | Named sections |
+| Castellaro et al. (2004), diets | [SciELO full text](https://www.scielo.cl/scielo.php?lng=es&nrm=iso&pid=S0365-28072004000400004&script=sci_arttext); intermittent 403 | Abstract and named opening sections |
+| Riek et al. (2019), energetics | [Publisher PDF](https://www.nature.com/articles/s41598-019-40576-9.pdf) works despite repository 403 | PDF pp. 1-6 |
+| Valenzuela et al. (2021), protection trial | [Open article](https://pmc.ncbi.nlm.nih.gov/articles/PMC7807147/); automated retrieval sometimes encounters CAPTCHA | Named methods, results and discussion |
+| Lecoq (1998), caravans | [Public PDF](https://dialnet.unirioja.es/descarga/articulo/8505350.pdf) opened, then intermittent timeouts | Opening pp. 19-20 |
+| Szpak et al. (2012), dung and isotopes | [Author-hosted PDF](https://www.paulszpak.com/_files/ugd/76b0b0_b15503416a36468a97ffc3884b71084f.pdf) works | Abstract only |
+
+There is no remaining confirmed full-text barrier among these twelve after the
+supplied attachments, but some retrieval routes are unreliable and several works
+still need complete reading. Do not confuse that statement with resolution of the
+older book/chapter gaps above. No subscription purchase or author contact was made.

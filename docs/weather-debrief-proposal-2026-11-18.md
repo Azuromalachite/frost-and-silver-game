@@ -2,7 +2,7 @@
 
 18 November 2026. Design proposal based on the
 [climate review](climate-weather-literature-2026-11-18.md), checked against main
-`6a6dda4` through PR #22. This document proposes behaviour; it does not implement
+`8e443c5` through PR #29. This document proposes behaviour; it does not implement
 a new screen, weather generator, assessment rule or historical parameter.
 
 ## Teaching question
@@ -19,13 +19,23 @@ estimate from those readings.
 
 ## What already exists
 
-PR #22 provides Random, Standard, Hard and Extreme seeds, same-weather survival
-yardsticks and replay links. The end screen already compares restricted strategies
-under the player's weather, explicitly as a hindsight benchmark. The existing
-matched Inca-rules comparison starts from each factual harvest's state.
+The game provides Random, Standard, Hard and Extreme seeds, same-weather
+survival yardsticks and replay links. The end screen now leads with a strategy
+chosen in advance, scored under the player's weather, and separately labels the
+restricted hindsight search. The re-plan box preserves hand-added wage crews,
+projects hand-set plans and identifies its averages as sample weathers rather
+than the player's weather. These changes through PR #29 are already implemented.
+
+Resilience now scores protected fields only; no occupied-zone bonus remains.
+The deliberate per-person food-store carryover across the historical gap is
+labelled and retained. The existing matched Inca-rules comparison starts from
+each factual harvest's state.
 
 The proposed addition is replaying a defined strategy over other weather, with
 clearer separation of weather effects, decision quality and institutional rules.
+The hand-set re-plan projection is not a replay of an inferred player policy
+across complete alternative histories.
+
 The [weather-preset study](hard-mode-2026-11-18.md) remains the record of how those
 selected seeds were chosen. Three selected presets are not an empirical climate
 distribution or a representative uncertainty interval.
@@ -51,7 +61,8 @@ people. A strategy must specify a decision rule for crew reductions, constructio
 processing and optional wage labour. It must also specify which forecasts and
 past outcomes may inform decisions.
 
-Initially support named, reproducible policies, including a disclosed re-plan rule.
+Extend the existing advance-selected policy across alternative weather, with its
+re-plan rule disclosed. Add other named, reproducible policies only as needed.
 If the player's choices cannot be translated reliably into such a rule, show
 named-policy results rather than claiming to have cloned the player's strategy.
 Do not silently improve a policy after seeing each alternative weather sequence.

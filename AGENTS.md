@@ -52,7 +52,8 @@ states a claim more strongly than its registry entry allows is wrong.
   Maddison's 416 and 438; matching them is a design choice, not evidence.
 - **Name a single cause for the GDP rise.** It depends on the decomposition.
   At the game's settings (default plan, seeds 1–80) silver adds about 8 index
-  points and the mita's lost field labour takes about 6.5 back, while the
+  points and the field output lost to the mita and resettlement takes about
+  6.5 back (resettlement about 2.5 of it), while the
   population collapse adds about 6.5, mostly through the player's re-plan
   ("Best land first" drops chuño crews and high fields); more land per survivor is about
   1.5 of that. With best land first, without silver GDP barely rises (+0.07);
@@ -89,7 +90,7 @@ Each one cites what taught it.
    stalled. **Test the Pages copy, not only a local or artifact copy.**
 2. **The pinned run reproduces exactly.** With `?seed=12345`, the default plan
    and Next step only, the results read
-   `1,760 kcal | 1,410 kcal | 80 → 55 | 103 | 109 | 45% → 75%`, choosing "Best land first" at each re-plan. A change that
+   `1,760 kcal | 1,410 kcal | 74 → 52 | 103 | 109 | 45% → 75%`, choosing "Best land first" at each re-plan. A change that
    is meant to leave the model alone must reproduce this. A change to the
    model recalibrates (60–80 games of default play), then updates this line,
    `PINNED` in `tests/review_model.cjs`, and the numbers in `README.md` and the

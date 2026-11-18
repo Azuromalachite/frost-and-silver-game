@@ -6,6 +6,19 @@
 > choosing "Best land first" at each re-plan, which gives colonial food of about
 > 1,385 kcal (1,386 before).
 
+> **Update, terrace fix (18 November 2026).** Terraces and raised fields now count
+> toward the welfare index's resilience from the harvest after they are built,
+> as they always did for frost losses. Food and deaths are unchanged. The best
+> plan by welfare is the same (and the same when chosen on seeds 1–40 or 41–80
+> alone); its welfare averages 73.9 (75.0 before). The end screen now leads with
+> it as a plan chosen in advance (`claim.game.advance_plan`). Welfare figures
+> below are from before the fix.
+>
+> **Update, resilience (18 November 2026).** The welfare index's resilience part
+> no longer gives points for spreading crews across zones (it counts only crews
+> on terraces or raised fields). The default plan's welfare is now 64 → 46; the
+> best plan is unchanged and averages 75.0. Food and deaths are unchanged.
+
 **Question.** What is the best way to play, how much better is it than the
 default plan, and do the game's numbers reward what its text teaches?
 
@@ -19,7 +32,7 @@ spreading crews across the zones "insurance" while its numbers always punished
 spreading. The text is corrected; the model is unchanged (see below).
 
 Reproduce it: serve the repository root (`python -m http.server`) and open
-`tools/strategies.html` (about a minute).
+`tools/strategies.html` (a few minutes).
 
 ## Method
 
@@ -99,9 +112,9 @@ model does:
 The rule is registered as `claim.game.frost_from_top`, and the question of which
 bad years differ by height is open question 7 in `history-and-evidence.md`.
 
-The welfare index still gives a few points for spreading (its resilience part
-counts the zones in use). The best strategy wins on welfare anyway, so the
-index does not reverse the finding.
+The welfare index used to give a few points for spreading (its resilience part
+counted the zones in use). The best strategy won on welfare anyway; since
+18 November 2026 the index no longer rewards spreading at all.
 
 ## Limits
 

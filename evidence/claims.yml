@@ -12,7 +12,7 @@
 #               for unsourced:      unsupported
 #               'supported' needs a source at full_text_read or figures_checked;
 #               'partly_supported' needs at least abstract_read or reference_work.
-#   sources     keys in sources.yml
+#   sources     keys in sources.yml (a game_result may have none: it is the model's own output)
 #   code        game_assumption only: the exact code that sets the number(s); must
 #               appear in frost-and-silver.html, so changing a constant forces an update here
 #   searched    unsourced only: what was searched without finding a source
@@ -138,8 +138,8 @@ claims:
       When crews fall (1573, after the 1585-91 epidemics, and after hunger deaths) the game asks the
       player to re-plan: keep the plan's shares on fewer crews, put every crew on
       the best land first, or set them by hand; harvest and play wait for the
-      choice. The choice decides much of the GDP rise, the GDP grade and colonial
-      food.
+      choice. The choice decides much of the GDP rise and colonial food; which
+      choice grows more depends on the plan held (claim.game.replan_dominance).
     layer: game_assumption
     status: labelled
     sources: [maddison2003]
@@ -149,9 +149,11 @@ claims:
         anchor: The choice is yours, and it decides much of the result
     notes: >
       Measured 2026-11-18, default plan, seeds 1-80. Best land first: colonial
-      food 1,385 kcal, welfare 70 -> 49, 41 deaths, GDP grade 75 stay / 5 rise.
-      Same shares: colonial food 1,004 kcal, welfare 70 -> 35, 95 deaths, grade
-      40 stay / 40 rise. Before 18 Nov 2026 the board re-planned silently (wage,
+      food 1,385 kcal, welfare 70 -> 49 (64 -> 46 since resilience stopped
+      rewarding spread), 41 deaths, the GDP effect reads 75 stay /
+      5 rise (shown, not graded). Same shares: colonial food 1,004 kcal, welfare
+      70 -> 35, 95 deaths, reads 40 stay / 40 rise. The mean food under each
+      choice is asserted by tests/review_model.cjs (MEAN_FOOD_1_80). Before 18 Nov 2026 the board re-planned silently (wage,
       then chuño, then the highest fields), which a sensitivity sweep found drove
       much of the GDP rise; making it the player's choice was the fix. The pinned
       run and the model check choose best land first. No source sets either
@@ -240,11 +242,21 @@ claims:
     layer: game_assumption
     status: labelled
     sources: [thitibordin_game]
-    code: ["res: 20 * Math.min(1, 0.7 * protShare + 0.3 * spread)"]
+    code: ["res: 20 * protShare"]
     pages:
       - path: frost-and-silver.html
         anchor: It is a model output, not a measurement.
-    notes: The 50/30/20 weights come from the original game; the scoring of each part is this adaptation's.
+    notes: >
+      The 50/30/20 weights come from the original game; the scoring of each part
+      is this adaptation's. Resilience counts crews on terraces and raised fields
+      that stood before the harvest; until 2026-11-18 it also counted those
+      finished that year (frost losses never did). Fixing it left the default
+      plan unchanged and lowered building plans' welfare by about 1 point.
+      Also on 2026-11-18, by the author's decision, resilience stopped giving 30%
+      of its points for spreading crews across zones, which this game's frost
+      never pays (a simulated student who spread out-scored a careful one while
+      losing more people). The default plan's welfare fell from 70 -> 49 to
+      64 -> 46 (seeds 1-80); food, deaths and GDP are unchanged.
 
   - id: claim.game.key_message
     statement: >
@@ -274,6 +286,7 @@ claims:
         anchor: Potosí silver went to Spain and, through trade, as far as China
 
   # --- records ------------------------------------------------------------------
+
   - id: claim.quipu.decimal_knots
     statement: >
       Quipus recorded numbers in base ten: clusters of single knots for tens,
@@ -315,6 +328,7 @@ claims:
     notes: Which figures a cord keeper recorded is not known; GDP is left off on purpose.
 
   # --- food -------------------------------------------------------------------
+
   - id: claim.food.kcal_1700_to_1200
     statement: >
       Indigenous Andean food intake fell from about 1,700 to about 1,200 kcal a
@@ -383,6 +397,7 @@ claims:
         anchor: Skeletons and isotopes show diet changed after contact
 
   # --- land and farming -------------------------------------------------------
+
   - id: claim.land.vertical_archipelago
     statement: >
       Andean communities held land at several altitudes, so one frost or drought
@@ -583,6 +598,7 @@ claims:
     notes: Use around 1500 is not established. The game's forecast accuracy is a play value.
 
   # --- the Inca system --------------------------------------------------------
+
   - id: claim.inca.labour_duty
     statement: >
       Under the Inca, communities owed labour to the state in turns (mit'a) and
@@ -634,6 +650,7 @@ claims:
         anchor: argue exchange and markets also mattered
 
   # --- the colonial system ----------------------------------------------------
+
   - id: claim.colonial.potosi_1545
     statement: Spaniards began mining the Cerro Rico at Potosí in 1545.
     layer: documented
@@ -767,6 +784,7 @@ claims:
         anchor: including mercury used in refining
 
   # --- population -------------------------------------------------------------
+
   - id: claim.population.collapse_large
     statement: >
       The Andean population fell by well over half between the 1520s and the
@@ -813,6 +831,7 @@ claims:
         anchor: output in a zone grows with labour to the power 0.9,
 
   # --- additional research evidence; not new gameplay rules -------------------
+
   - id: claim.research.tambo_architecture
     statement: >
       Valdez and Bettcher document semisubterranean cists and storage vessels at
@@ -939,7 +958,7 @@ claims:
       not records of real years.
     layer: game_result
     status: labelled
-    sources: [trasmonte2008]
+    sources: []
     pages:
       - path: frost-and-silver.html
         anchor: it is not a record of the real weather in those years
@@ -949,9 +968,231 @@ claims:
       Screened 2026-11-18 on seeds 1-2000 with tools/seeds.html (default plan,
       best land first at each re-plan; 2,304 tested plans picked after the weather
       is known). The default-plan numbers are WX_PRESETS in the game and are
-      re-measured by tests/review_model.cjs on every pull request. The source is
-      the weather model's frost source (claim.game.frost_from_top); it supports
-      nothing about these seeds, whose drought and winter odds are play values.
+      re-measured by tests/review_model.cjs on every pull request. No source: the
+      seeds are the model's own output. The colonial rules' food effect depends on
+      the weather (about -490, -720 and -1,040 kcal on Standard, Hard and
+      Extreme), so groups on different presets are not comparable.
+
+  - id: claim.game.replan_dominance
+    statement: >
+      Which re-plan choice grows more food after crews fall depends on the plan
+      the player held. With the starting plan (two chuño crews) keeping the same
+      shares grew less colonial food than best land first on every one of seeds
+      1-80; with a plan of 5/5/3/1 crews and none on chuño it grew more on 24 of
+      80, because spreading crews over the lower zones grows more than crowding
+      the valley. The re-plan box shows both choices for the player's own plan,
+      on sample weathers.
+    layer: game_result
+    status: labelled
+    sources: []
+    pages:
+      - path: frost-and-silver.html
+        anchor: Which choice is better depends on the plan you held
+      - path: docs/teaching-guide.md
+        anchor: Which choice grows more depends on the plan the student held
+    notes: >
+      Asserted by tests/review_model.cjs (SHARES_WINS), whose self-test plants a
+      "Keep the same shares" that silently does best land first. Until review 3
+      (2026-11-18) the game told every student that keeping the shares "never does
+      better", a result measured on the starting plan only. A review's Python copy
+      of the model counted 22 seeds for the 5/5/3/1 plan; the game itself gives 24.
+
+  - id: claim.game.changing_plan
+    statement: >
+      Building Valley and Upper-field terraces in harvest 1 with no chuño crews,
+      three chuño crews in harvests 2 and 3, then every crew on the best land
+      after 1573, beat the best fixed plan picked after the weather was known on
+      58 of seeds 1-80. With Valley terraces alone, or other numbers of chuño
+      crews, a changing plan rarely does.
+    layer: game_result
+    status: labelled
+    sources: []
+    pages:
+      - path: frost-and-silver.html
+        anchor: one plan that changes by harvest beat it on 58 of 80 test weathers
+    notes: >
+      Asserted by tests/review_model.cjs (CHANGING_WINS). The end screen used to
+      say "about two seeds in three" without naming the terraces; a review found
+      the obvious reading (Valley terraces only) beats it on 0-13 of 80. It was
+      57 of 80 until terraces stopped counting toward the welfare index's
+      resilience in the year they are built, then 52, and 58 once resilience
+      stopped rewarding spread (both 2026-11-18).
+
+  - id: claim.game.advance_plan
+    statement: >
+      Of the 2,304 tested plans, building Valley terraces, one chuño crew and best
+      land first in the Inca years, then every crew on the best land first after
+      1573, had the highest welfare averaged over seeds 1-80, and is the same plan
+      when chosen on seeds 1-40 or 41-80 alone. Scored on each weather it averages
+      75.0 welfare and 1,550 kcal after 1573, against 78.4 and 1,589 for the best
+      plan picked knowing that weather; it reaches 1,700 kcal on 21 seeds.
+    layer: game_result
+    status: labelled
+    sources: []
+    pages:
+      - path: frost-and-silver.html
+        anchor: Of the 2,304 tested plans it had the best welfare averaged over 80 test weathers
+    notes: >
+      The end screen leads with it as a fair benchmark, a plan chosen before the
+      weather is known, and shows the hindsight best below it. Measured
+      2026-11-18 after the terrace fix (claim.game.welfare_index); the same plan
+      won before it.
+
+  - id: claim.game.stores_carried
+    statement: >
+      Each person's share of the community stores is carried across the 70 years
+      from harvest 3 (c. 1502) to harvest 4 (c. 1575): the collapse halves people
+      and food together. No store lasts 70 years; the game keeps the simplification
+      and labels it.
+    layer: game_assumption
+    status: labelled
+    sources: [morris1986]
+    code: ["S.pop *= (1 - COLLAPSE);"]
+    pages:
+      - path: frost-and-silver.html
+        anchor: keeps each person's share of the community stores across the gap
+    notes: >
+      Measured 2026-11-18 on the default plan, seeds 1-80: halving the stores at
+      1573 gives colonial food 1,324 kcal and 49 deaths, emptying them 1,263 and
+      56, against 1,385 and 41 as played; the lesson (GDP up, food down) holds on
+      72 and 75 of 80 seeds against 68. Kept by the author's decision, because the
+      lesson does not depend on it; Hard and Extreme are unaffected (their stores
+      are empty by 1573). The source documents Inca storehouses, not their
+      survival across the conquest.
+
+  - id: claim.research.quinoa_canopy
+    statement: >
+      Winkel and colleagues measured warmer sheltered leaves within a heterogeneous
+      quinoa canopy during radiative cooling; their experiment does not establish
+      a grain-yield advantage or a kaniwa protection coefficient.
+    layer: documented
+    status: supported
+    sources: [winkel_etal2009]
+    pages:
+      - path: docs/agropastoral-literature-2026-11-18.md
+        anchor: Sheltered quinoa leaves were warmer during radiative cooling.
+
+  - id: claim.research.potato_genotype_timing
+    statement: >
+      Condori and colleagues' modern field-informed simulations distinguish potato
+      genotype and frost timing; resistant monocultures can outperform mixtures.
+    layer: documented
+    status: partly_supported
+    sources: [condori_etal2014]
+    pages:
+      - path: docs/agropastoral-literature-2026-11-18.md
+        anchor: Resistant monocultures sometimes outperformed the simulated mixtures.
+
+  - id: claim.research.quinoa_stage
+    statement: >
+      Jacobsen and colleagues' controlled exposures found stage-dependent quinoa
+      frost damage; seedling tolerance cannot be applied throughout development.
+    layer: documented
+    status: partly_supported
+    sources: [jacobsen_etal2005]
+    pages:
+      - path: docs/agropastoral-literature-2026-11-18.md
+        anchor: Quinoa frost damage depended on developmental stage and exposure duration.
+
+  - id: claim.research.laramate_soils
+    statement: >
+      Leceta and colleagues found generally favourable but variable terrace soil
+      properties at Laramate, with uncertainty about recovery after abandonment.
+    layer: interpretation
+    status: partly_supported
+    sources: [leceta_etal2024]
+    pages:
+      - path: docs/agropastoral-literature-2026-11-18.md
+        anchor: The three Laramate terrace systems did not have identical soil responses.
+
+  - id: claim.research.potato_land_access
+    statement: >
+      Arce and colleagues' contemporary landscape comparison shows that market
+      production and landrace conservation can coexist; land access matters.
+    layer: documented
+    status: partly_supported
+    sources: [arce_etal2019]
+    pages:
+      - path: docs/agropastoral-literature-2026-11-18.md
+        anchor: Commercial production and landrace conservation coexisted in the surveyed landscapes.
+
+  - id: claim.research.engineered_pasture
+    statement: >
+      Lane and colleagues interpret archaeological and palaeoenvironmental evidence
+      as pre-Hispanic enhancement of camelid wetland pasture in the upper Ica drainage.
+    layer: interpretation
+    status: partly_supported
+    sources: [lane_etal2022]
+    pages:
+      - path: docs/agropastoral-literature-2026-11-18.md
+        anchor: Bofedal pasture could be enlarged through hydraulic infrastructure.
+
+  - id: claim.research.camelid_diets
+    statement: >
+      Castellaro and colleagues' Parinacota study reports differing seasonal llama
+      and alpaca diets with substantial overlap, rather than complete niche separation.
+    layer: documented
+    status: partly_supported
+    sources: [castellaro_etal2004]
+    pages:
+      - path: docs/agropastoral-literature-2026-11-18.md
+        anchor: Llama and alpaca diets differed but overlapped substantially.
+
+  - id: claim.research.llama_energetics
+    statement: >
+      Riek and colleagues measured environmentally variable energy expenditure and
+      body temperature in seven adult non-pregnant female llamas at high altitude.
+    layer: documented
+    status: partly_supported
+    sources: [riek_etal2019]
+    pages:
+      - path: docs/agropastoral-literature-2026-11-18.md
+        anchor: Adult llama energetics varied with environmental conditions and movement.
+
+  - id: claim.research.cria_cohort
+    statement: >
+      Gomez-Quispe and colleagues observed 22 deaths among 100 newborn alpacas in
+      a 2019 cohort, all during the first six weeks; causes were not established
+      by necropsy and the study did not isolate frost effects.
+    layer: documented
+    status: supported
+    sources: [gomezquispe_etal2022]
+    pages:
+      - path: docs/agropastoral-literature-2026-11-18.md
+        anchor: The 2019 alpaca cohort had 22 deaths among 100 crias.
+
+  - id: claim.research.cria_protection
+    statement: >
+      Valenzuela and colleagues' modern trial reports higher survival with body
+      vests, but no statistically significant shed-versus-open-corral difference.
+    layer: documented
+    status: partly_supported
+    sources: [valenzuela_etal2021]
+    pages:
+      - path: docs/agropastoral-literature-2026-11-18.md
+        anchor: The body-vest group outperformed both comparison groups in the modern trial.
+
+  - id: claim.research.caravan_supplies
+    statement: >
+      Lecoq's historical account connects llama caravans and their workers to
+      supplying colonial Potosi with food and other necessities.
+    layer: documented
+    status: partly_supported
+    sources: [lecoq1998]
+    pages:
+      - path: docs/agropastoral-literature-2026-11-18.md
+        anchor: Llama caravans helped provision colonial Potosi.
+
+  - id: claim.research.fertilizer_isotopes
+    statement: >
+      Szpak and colleagues report fertilizer effects on maize nitrogen isotopes,
+      which can complicate dietary reconstruction; these are not calorie estimates.
+    layer: documented
+    status: partly_supported
+    sources: [szpak_etal2012_field]
+    pages:
+      - path: docs/agropastoral-literature-2026-11-18.md
+        anchor: Fertilizer can alter the isotopic baseline used to reconstruct diet.
 
   - id: claim.climate.frost_controls
     statement: "Clouds, humidity and soil moisture influence minimum temperature together."

@@ -60,7 +60,7 @@ Open the game with `?seed=12345`, predict anything, and play the default plan
 with Next step only, choosing **Best land first** each time the game asks you to
 re-plan (at 1573 and after the 1585–91 epidemics). The results tiles must read, in order:
 
-`1,760 kcal | 1,410 kcal | 80 → 55 | 103 | 109 | 45% → 75%`
+`1,760 kcal | 1,410 kcal | 74 → 52 | 103 | 109 | 45% → 75%`
 
 (Since the re-plan choice, 18 November 2026. Before it the board re-planned
 silently and the line read `1,764 | 1,371 | 80 → 53 | 103 | 108 | 46% → 73%`.)
@@ -78,12 +78,20 @@ reproduce this exactly. A change to the model will move it: recalibrate
 
 `tests/review_model.cjs` runs the game's own script headless under Node.js and
 asserts the pinned run below, identical replays, weather unchanged by choices,
-the welfare sum, and the GDP grading split over seeds 1–80
-(`claim.game.grading_weather`). CI runs it on every pull request, with
-`--self-test`, which plants three model changes and requires each to be caught.
-A change that moves the pinned run or the split must update `PINNED` or
-`GRADES_1_80` in that file, and the places that quote them, in the same pull
-request. (`evidence/review-model-2026-11-18.json` is the first run's output, a
+the welfare sum, the weather presets' benchmarks, and over seeds 1–80 the
+numbers the game and the docs quote: mean colonial food under each re-plan
+choice, the rules' food effect falling in every game (the graded prediction),
+how the ungraded GDP effect reads and how often the two re-plan choices read it
+differently (`claim.game.grading_weather`), which re-plan choice grows more by
+board (`claim.game.replan_dominance`) and the changing plan's record
+(`claim.game.changing_plan`), the plan offered as chosen in advance
+(`claim.game.advance_plan`), and the field output the rules cost apart from
+silver, with resettlement's part. CI runs it on every pull request, with
+`--self-test`, which plants eleven model changes and requires each to trip the
+assertion meant for it. A change that moves one of these numbers must update
+the constant at the top of that file, and the places that quote it, in the same
+pull request. Without Node, `tools/run_model_check.html` runs the same file in a
+browser. (`evidence/review-model-2026-11-18.json` is the first run's output, a
 dated snapshot of commit `d0d9474`.)
 
 ## Before you open a pull request
