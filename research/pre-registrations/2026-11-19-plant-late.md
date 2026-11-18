@@ -1,5 +1,5 @@
 # Pre-registration: does planting late give the Pleiades forecast decision value?
-Date: 2026-11-19 · Project: Frost & Silver, Path B, experiment 3 · Verdict: PURSUE (recommended; awaiting the author)
+Date: 2026-11-19 · Project: Frost & Silver, Path B, experiment 3 · Verdict: PURSUE (accepted by the author 2026-11-19, before any computation)
 
 ## Seed observation (what sparked this)
 Classroom feedback: the June forecast is easily ignored. It is right to ignore it. In the game a dry year multiplies
