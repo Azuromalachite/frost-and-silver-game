@@ -4,6 +4,11 @@
 experiment only: no new climate generator, optimization results, probabilities,
 historical weather reconstruction or gameplay changes are claimed.
 
+> **Not yet runnable.** Under `research/README.md` this is a Path B experiment: no
+> data are downloaded and nothing is run until a pre-registration in
+> `research/pre-registrations/` fixes the decision rule below with numbers and the
+> author accepts it. The section "Pre-registration required" lists what it must fix.
+
 ## Question and scope
 
 Can modern Andean weather observations, paired with defensible crop responses,
@@ -116,15 +121,43 @@ winner also minimizes hunger.
 - Any multi-season pilot must declare consecutive annual seasons. Do not apply
   one annual debt/herd/seed transition across the game's long historical gaps.
 
+## Pre-registration required (before any data are downloaded)
+
+As written, "a meaningful difference" and "survives plausible … uncertainty" have no numbers, so the stop rule cannot
+fail. With about 40 seasons, CVaR at 10% rests on about 4 seasons, and on a 30/10 split the held-out CVaR at 10% is
+the single worst test season. The pre-registration must fix:
+
+- **the primary measure:** CVaR at 20% or the probability of a shortfall below a stated threshold, because the season
+  count cannot support CVaR at 10% (report CVaR at 10% as descriptive only);
+- **the minimum gain** in the primary measure that counts as separation, in kg/ha or as a share of the mean;
+- **the largest loss in mean production** allowed for that gain;
+- **the split:** leave-one-block-out over whole consecutive seasons, with the block length and the number of folds;
+- **the decision rule,** for example "gap at or above the minimum in at least k of K folds";
+- **what counts as no separation,** reported as a result.
+
+Proposed values, for the author to accept or change in the pre-registration (not yet fixed): primary measure CVaR at
+20%; minimum gain 5% of mean production; largest mean loss 2%; blocks of 5 consecutive seasons; separation if the
+gap holds in at least three quarters of the folds; no separation otherwise.
+
+## Threats to validity
+
+- **Modern weather is an analogue for 1530–1600.** The sixteenth century falls in the Little Ice Age, and the 1600
+  Huaynaputina eruption altered Andean climate; means, variances and especially cross-site tail dependence may have
+  shifted. Specific modern values are therefore not transferred: the independent and perfectly coupled cases remain
+  the bounds. Any game mode built on this must be labelled "modern weather analogue", never presented as the
+  weather of those years.
+- **Proceeding also requires the strategy ranking to hold under a cooler, shifted-mean scenario** stated in the
+  pre-registration, not only under modern observations.
+
 ## Deliverables and stop conditions
 
 Deliver a dated dataset manifest, weather/exposure diagnostics, crop-response
 specification, feasible strategy set, mean-risk frontier, held-out comparison and
 uncertainty analysis. Preserve negative or fragile results.
 
-Proceed to an optional game mode only if the difference in strategy performance
-survives plausible exposure, biological-response and cost uncertainty and remains
-interpretable for students. Otherwise report the lack of separation and its
+Proceed to an optional game mode only if the pre-registered decision rule above
+is met, the ranking also holds under the cooler shifted-mean scenario, and the
+result remains interpretable for students. Otherwise report the lack of separation and its
 causes. Any gameplay change must re-run the repository's full model checks and
 re-record affected benchmarks in the same implementation PR. This proposal
 leaves all current presets, probabilities, grading and pinned results intact.

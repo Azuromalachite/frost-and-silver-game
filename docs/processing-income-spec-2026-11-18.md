@@ -65,10 +65,9 @@ recovery. It can motivate a debrief distinguishing calories from nutritional
 quality, without introducing a vitamin-specific survival rule.
 Claim: `claim.research.processing_vitamin_c`.
 
-Bibliographic correction: `10.1016/j.jfca.2008.05.013` identifies the vitamin C
-paper. The chuño protein/mineral paper is `10.1016/j.jfca.2008.09.001`. Earlier
-conversation notes paired the latter title with the former DOI; do not propagate
-that mismatch. The supplied PDFs resolved both references.
+Bibliographic note: `10.1016/j.jfca.2008.05.013` identifies the vitamin C
+paper; the chuño protein/mineral paper is `10.1016/j.jfca.2008.09.001`. Both
+match Crossref on title, authors, volume and pages.
 
 ### Candidate mass and energy data
 
@@ -85,9 +84,17 @@ metabolizable-energy recovery. Claim: `claim.research.processing_energy_candidat
 | Luk'i | 60 | 17.89 | 347.50 | 1036.13 |
 
 Formula: `(output_kg / input_kg) * product_kcal_per_100g * 10`.
-Combining Luk'i yield and moisture implies 106.06% dry-matter recovery. Check
-original Table 6, moisture results and laboratory annexes A-C/E-G before using
-these estimates. They are not a validated historical range or game parameters.
+The Luk'i row is excluded: the source's own figures do not add up. Fresh Luk'i
+is printed at 5.60 kcal per g dry matter, which is impossible without heavy fat;
+its fresh composition sums to 102.2% and its chuño to 100.8%; and its implied
+solids recovery is 106%, although the peel was removed. Checking the annexes
+cannot rescue a row whose printed composition fails at both ends. The energy
+values are calculated from composition, not measured, so they inherit any
+moisture error. The Waych'a and Wila pala rows pass the dry-matter check
+(3.55 and 3.83 kcal/g), but their composition has not been checked, because their
+fresh energy appears only in a figure. None of these values is a validated
+historical range or a game parameter; `tests/test_chuno_audit.py` recomputes
+them and fails on a planted error.
 The [calculation record](../evidence/chuno-energy-audit-2026-11-18.json) retains
 inputs and derived values separately.
 
@@ -112,8 +119,10 @@ not total food recovery. Claim: `claim.research.processing_black_mass`.
 **Bakewell distinguishes compulsory wages, hired earnings and substitute-worker payments.**
 Supplied page images cover pp. 100-111, 122-125 and 132-133. Prescribed rates,
 occupation, period and ore compensation matter. Around 1600, pp. 124-125 report
-56-72 reales per five-day week for additional hired ore cutters; substitute
-workers receive that stated amount plus 20 reales in regular mita wages.
+56-72 reales per five-day week for additional hired ore cutters. A worker hired
+to substitute for a mita conscript is reported at that rate plus the 20-real weekly
+mita wage; which party paid each part is not recorded here and must be checked on
+pp. 124-125 before any budget uses it.
 Ore payments are separate. Do not apply these earnings to every worker or add
 payments to GDP as if all were separate new output.
 Claim: `claim.research.mining_earnings_categories`.
@@ -128,7 +137,10 @@ the game's final harvest and cannot directly calibrate 1575.
 Claim: `claim.research.mining_budget_case`.
 
 Currency warning: the table's `200.1.0` is a compound monetary amount, not
-200.10 decimal pesos. Keep historical currency and its declared conversion in
+200.10 decimal pesos. The unit is taken here as pesos of 8 reales, an inference
+from the figures (26 weeks × 20 reales ÷ 8 = 65 pesos, the Godoy wage), not a
+reading of Bakewell's own statement; read the trailing places (reales, then
+granos or maravedís) from p. 105 before converting. Keep historical currency and its declared conversion in
 the data schema. Page 104's alternative-food calorie columns spend the entire
 wage on each food in turn; never add them into one basket. Family work and
 provisions brought to town can cover costs, but such support is not free at

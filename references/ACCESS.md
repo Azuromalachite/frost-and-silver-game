@@ -129,13 +129,13 @@ the supplied-paper readings and numerical limits; the
 
 | Work | Access and reading status |
 |---|---|
-| Werge (1979), DOI 10.1080/03670244.1979.9990534 | Supplied PDF resolves earlier full-text barrier; text pp. 229-234 read. Labour-table component/total discrepancy needs page-image checking. |
+| Werge (1979), DOI 10.1080/03670244.1979.9990534 | Supplied PDF read (not in repo); text pp. 229-234 read. Labour-table component/total discrepancy needs page-image checking. |
 | De Haan et al. (2012), DOI 10.1002/jsfa.5589 | Supplied complete PDF; selected methods, Table 1 and discussion read. |
-| Burgos et al. (2009), chuno protein/minerals | Correct DOI **10.1016/j.jfca.2008.09.001**; supplied full text resolves barrier; extracted table, not an independent figure audit. |
-| Burgos et al. (2009), ascorbic acid | DOI **10.1016/j.jfca.2008.05.013**; additional supplied paper. Earlier conversation linked this DOI to the wrong title. |
-| Bakewell (1984) | Supplied pp. 100-111, 122-125 and 132-133 resolve critical wage/budget passages. Whole-book access remains partial; production series not audited. |
-| Cole (1985) | Supplied pp. 46-54 resolve that chapter section only; earlier service-calendar/compensation sections remain a reading target. |
-| Callizaya Huanca (2021), T-2902 | [Public text mirror](https://es.scribd.com/document/579193284/T-2902) readable; [university route](https://repositorio.umsa.bo/xmlui/handle/123456789/25934) failed or redirected. Original Table 6 and laboratory annexes remain to verify. |
+| Burgos et al. (2009), chuño protein/minerals | DOI **10.1016/j.jfca.2008.09.001**; supplied full text read (not in repo); extracted table, not an independent figure audit. |
+| Burgos et al. (2009), ascorbic acid | DOI **10.1016/j.jfca.2008.05.013**; additional supplied paper (not in repo). |
+| Bakewell (1984) | Supplied page images, pp. 100-111, 122-125 and 132-133, read (not in repo); they cover the wage and budget passages used. Whole-book access remains partial; production series not audited. |
+| Cole (1985) | Supplied pp. 46-54 read (not in repo), that chapter section only; earlier service-calendar/compensation sections remain a reading target. |
+| Callizaya Huanca (2021), T-2902 | The [university record](https://repositorio.umsa.bo/xmlui/handle/123456789/25934) was unreachable; the text was read from a third-party upload on Scribd (uploader unknown), for reading only. Original Table 6 and laboratory annexes remain to verify; no number from it is used beyond `provisional`. |
 | Luque Vilca et al. (2024) | [Publisher abstract](https://unaj.edu.pe/revista/index.php/vpin/article/view/298) readable; article PDF requests failed. |
 | Calizaya Pari and Huaman Choque (2024) | [Associated thesis PDF](https://repositorio.unaj.edu.pe/server/api/core/bitstreams/53e53573-934b-463b-93b2-0660eeef1dad/content) accessible; selected sections read, screenshot retrieval timed out. Not independent of the associated article. |
 | Valdivieso et al. (2025) | [SciELO full text](https://www.scielo.org.bo/scielo.php?pid=S0250-54602025000100016&script=sci_arttext) accessible; selected methods/results read. |
@@ -146,3 +146,10 @@ publisher/JSTOR access and a reliable page-image check remain unresolved. It is
 a price/provisioning lead, not an unread source asserted to support new numerical
 claims here. An inaccessible retrieval route is not proof a work is paywalled.
 No subscriptions, author contacts, supplied PDFs or private file links are included.
+
+## Third-party uploads
+
+A copy uploaded by someone other than the author or the publisher (Scribd, document-sharing sites) may be read to
+find a passage, but it is never the registry `url`, its copyright status and fidelity are unknown, and no number read
+only from it leaves `provisional` until the publisher's, the institution's or the author's copy is checked. The
+registry links the institutional or publisher record and names the upload in `notes`.

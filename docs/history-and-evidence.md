@@ -264,7 +264,7 @@ new markets, stocks, pests, protection costs or historical parameters.
 
 The [new specification](processing-income-spec-2026-11-18.md) records the supplied
 processing papers and Bakewell/Cole page images, distinguishes mass yield from
-energy recovery, corrects the two Burgos DOIs and documents a provisional batch
+energy recovery, records the two Burgos DOIs and documents a provisional batch
 audit. Historical receipts, provisioning costs and transfers require separate
 accounts. These readings do not validate the existing food, death or silver-path
 coefficients. The pre-existing silver-surge claim remains unverified rather than

@@ -323,7 +323,7 @@ sources:
     locator: The Cambridge World History, vol. 6
 
   - key: bakewell1984
-    title: "Miners of the Red Mountain: Indian Labor in Potosi, 1545-1650"
+    title: "Miners of the Red Mountain: Indian Labor in Potosí, 1545–1650"
     author: Peter Bakewell
     date: 1984
     access: sections_read
@@ -766,7 +766,7 @@ sources:
     notes: "Text read; figures not independently audited. White-chuno labour excludes transport and guarding. Extracted component-row upper sum differs from reported total; verify page image before numerical adoption."
 
   - key: dehaan_etal2012_chuno
-    title: "Effect of production environment, genotype and process on the mineral content of native bitter potato cultivars converted into white chuno"
+    title: "Effect of production environment, genotype and process on the mineral content of native bitter potato cultivars converted into white chuño"
     author: "Stef de Haan; Gabriela Burgos; Raul Ccanto; Jesus Arcos; Maria Scurrah; Elisa Salas; Merideth Bonierbale"
     date: 2012
     access: "sections_read"
@@ -777,7 +777,7 @@ sources:
     notes: "Dry matter concerns cooked/rehydrated samples, not a whole-batch fresh-to-dried mass or energy balance. No universal recovery coefficient."
 
   - key: burgos_etal2009_chuno
-    title: "Protein, iron, zinc and calcium concentrations of potatoes following traditional processing as chuno"
+    title: "Protein, iron, zinc and calcium concentrations of potatoes following traditional processing as chuño"
     author: "Gabriela Burgos; Stef de Haan; Elisa Salas; Merideth Bonierbale"
     date: 2009
     access: "sections_read"
@@ -810,29 +810,29 @@ sources:
     notes: "Partial book access. Water and milling discussion includes seventeenth-century episodes; employer petitions and proposed remedies are not neutral measurements or implemented interventions. No historical weather penalty calibrated."
 
   - key: callizaya2021
-    title: "Valor nutricional del chuno de tres variedades de papa en la localidad de Viacha, La Paz"
+    title: "Valor nutricional del chuño de tres variedades de papa en la localidad de Viacha, La Paz"
     author: "Sumilda Callizaya Huanca"
     date: 2021
     access: "sections_read"
     by: "Codex processing and income review"
     when: "2026-11-18"
-    url: "https://es.scribd.com/document/579193284/T-2902"
+    url: "https://repositorio.umsa.bo/xmlui/handle/123456789/25934"
     locator: "Text mirror: methods pp. 36-45; energy pp. 51-52; Table 6 p. 80; conclusions pp. 82-83"
-    notes: "Original university PDF route failed. Candidate paired data require laboratory-annex verification; combined Luki yield/moisture implies more than 100 percent solids recovery. Calculations are provisional."
+    notes: "The university record is linked; it was unreachable when read, so the text was read from a third-party upload (es.scribd.com/document/579193284/T-2902, uploader unknown), used for reading only. No number from this source leaves provisional until the UMSA PDF or page images are checked. Candidate paired data require laboratory-annex verification; combined Luki yield/moisture implies more than 100 percent solids recovery. Calculations are provisional."
 
   - key: luque_etal2024_chuno
-    title: "Produccion de chuno utilizando papa nativa dulce Imilla Negra y papa amarga Locka bajo condiciones controladas"
+    title: "Producción de chuño utilizando papa nativa dulce Imilla Negra y papa amarga Locka bajo condiciones controladas"
     author: "Olivia Magaly Luque Vilca; Brayyan Arnaldo Calizaya Pari; Yessica Huaman Choque"
     date: 2024
     access: "abstract_read"
     by: "Codex processing and income review"
     when: "2026-11-18"
-    url: "https://doi.org/10.47190/nric.v4i4.298"
+    url: "https://unaj.edu.pe/revista/index.php/vpin/article/view/298"
     locator: "Publisher abstract and metadata; article PDF routes failed"
-    notes: "Mass yields and product composition reported in abstract. Associated 2024 thesis supplies selected methods/tables; these are not independent studies."
+    notes: "Nawparisun 4(4): 67-73. Publisher-printed DOI 10.47190/nric.v4i4.298 is not registered at doi.org (checked 2026-11-19: does not exist, HTTP 404), so the landing page is linked instead. Mass yields and product composition reported in abstract. Associated 2024 thesis supplies selected methods/tables; these are not independent studies."
 
   - key: calizaya_huaman2024
-    title: "Caracterizacion de las propiedades fisicoquimicas, termicas y reologicas de almidones nativos y modificados de papa (Solanum tuberosum) y chuno para su uso en recubrimientos comestibles"
+    title: "Caracterización de las propiedades fisicoquímicas, térmicas y reológicas de almidones nativos y modificados de papa (Solanum tuberosum) y chuño para su uso en recubrimientos comestibles"
     author: "Brayyan Arnaldo Calizaya Pari; Yessica Huaman Choque"
     date: 2024
     access: "sections_read"
@@ -843,15 +843,15 @@ sources:
     notes: "Controlled freezer process; text and diagrams differ on duration. Extracted composition needs audit. Same authors and associated research as Luque et al. 2024; avoid double-counting evidence."
 
   - key: valdivieso_etal2025_chuno
-    title: "Chuno prepared experimentally from three varieties of Bolivian potatoes (Solanum spp.): starch extraction, amylose quantification, and microscopy imaging"
+    title: "Chuño prepared experimentally from three varieties of Bolivian potatoes (Solanum spp.): starch extraction, amylose quantification, and microscopy imaging"
     author: "Fabiola Valdivieso; Jose A. Bravo; Patricia Mollinedo"
     date: 2025
     access: "sections_read"
     by: "Codex processing and income review"
     when: "2026-11-18"
-    url: "https://doi.org/10.53287/zhee8928ha24t"
-    locator: "SciELO full text: Experimental; Obtaining chuno from potatoes; Fig. 5 discussion"
-    notes: "Three small samples per variety. Mass loss does not establish energy retention; starch extraction is a distinct yield. Figure values read from discussion, not independently image-audited."
+    url: "https://bolivianchemistryjournaliiq.umsa.bo/wp-content/uploads/2025/11/2.-StarchChuno-Valdivieso2025N.pdf"
+    locator: "SciELO full text: Experimental; Obtaining chuño from potatoes; Fig. 5 discussion"
+    notes: "Rev. Bol. Quim. 42(1): 16-25. Publisher-printed DOI 10.53287/zhee8928ha24t is not registered at doi.org (checked 2026-11-19: does not exist, HTTP 404). The url is the journal PDF found by search; its host did not respond on 2026-11-19. Three small samples per variety. Mass loss does not establish energy retention; starch extraction is a distinct yield. Figure values read from discussion, not independently image-audited."
 
   - key: aitsahlia_etal2011
     title: "Optimal crop planting schedules and financial hedging strategies under ENSO-based climate forecasts"

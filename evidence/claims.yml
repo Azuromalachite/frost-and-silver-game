@@ -1496,7 +1496,7 @@ claims:
     pages:
       - path: docs/processing-income-spec-2026-11-18.md
         anchor: "Callizaya reports product weights and food-energy values that permit a provisional calculation."
-    notes: "Derived values are provisional; original laboratory annexes not audited and Luki solids balance exceeds 100 percent."
+    notes: "Derived values are provisional; original laboratory annexes not audited. The Luk'i row is excluded as internally inconsistent (fresh energy 5.60 kcal/g dry matter, composition sums of 102.2% and 100.8%, solids recovery above 1); the other two rows pass the dry-matter check but their composition is unchecked. Read from a third-party upload; recomputed by tests/test_chuno_audit.py."
 
   - id: claim.research.processing_controlled_yield
     statement: "Controlled processing provides additional mass-yield observations."
