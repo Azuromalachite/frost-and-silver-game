@@ -31,8 +31,46 @@ The entries below preserve the earlier search's access findings unless an explic
 - The 2025 storage article also has an open PDF at its [publisher](https://revistas.pucp.edu.pe/index.php/boletindearqueologia/article/view/29942).
 - The [MPD2023 release](https://www.rug.nl/ggdc/historicaldevelopment/maddison/releases/maddison-project-database-2023) workbook was obtained and the Peru figures in the literature notes checked.
 - Wernke (2010) has an [author-hosted PDF](https://stevenwernke.com/wp-content/uploads/2020/09/A_reduced_landscape_toward_a_m.pdf). Availability does not upgrade the registry's reading status.
-- Other successfully retrieved collection works still require claim-specific reading: Wernke and Whitmore (2009), Dell (2010), Gil Montero and Zagalsky (2016), Barragan Romano (2020), Arroyo Abad and van Zanden (2016), Bolt and van Zanden's update paper, Kolata and Ortloff (1989), Orlove et al. (2000), Hunter (2025), the CIP freeze-drying chapter, Robins and Hagan (2012), and Allen (2001).
+- Other successfully retrieved collection works still require claim-specific reading: Dell (2010), Gil Montero and Zagalsky (2016), Barragan Romano (2020), Arroyo Abad and van Zanden (2016), Bolt and van Zanden's update paper, Kolata and Ortloff (1989), Orlove et al. (2000), Hunter (2025), the CIP freeze-drying chapter, Robins and Hagan (2012), and Allen (2001).
 - Robins and Hagan's main article was retrieved as full-text HTML; the supplemental calculations remain a retrieval gap. The freeze-drying download is the complete CIP parent volume, not a standalone chapter.
+
+## Climate review: resolved barriers and remaining limits
+
+The [reading ledger](../docs/climate-weather-literature-2026-11-18.md) records
+the sections examined and what they support. All eleven readings are
+`sections_read`; access to an article is not a claim of complete verification.
+
+- **Saavedra and Takahashi (2017):** the supplied complete 13-page PDF resolves
+  the earlier publisher/repository retrieval barrier. Main text, tables and
+  figure captions were read; no independent check of every figure is claimed.
+- **Sae-Lim et al. (2025):** the supplied complete 12-page PDF resolves the earlier
+  publisher barrier. Main text, Table 2 and figure captions were read. Supplements
+  and the archived proxy data were not reanalysed; annual interpolation does not
+  make the record annual observations.
+- **Pouteau et al. (2011):** relevant sections were read in
+  [author-uploaded article text](https://www.researchgate.net/publication/222033638_Downscaling_MODIS-derived_maps_using_GIS_and_boosted_regression_trees_The_case_of_frost_occurrence_over_the_arid_Andean_highlands_of_Bolivia).
+  The [IRD record](https://www.documentation.ird.fr/hor/fdi:010051034) is a metadata
+  and request route. This is no longer an entirely unread full-text gap.
+- **Garcia et al. (2007):** relevant sections were read in
+  [public article text](https://www.academia.edu/6676199/Agroclimatic_constraints_for_rainfed_agriculture_in_the_Bolivian_Altiplano).
+  Original PDF/table verification remains needed before numerical reuse because
+  temperature minus signs can be lost in transcription.
+- **Canedo-Rosso et al. (2021)** and **Cruz et al. (2024):** selected sections read
+  in open publisher HTML. **Bird et al. (2011):** selected open PMC sections read.
+- **Jonaitis et al. (2021):** selected sections read in the
+  [author-institution PDF](https://geo.appstate.edu/sites/default/files/jonaitis_etal_2021_ijoc.pdf).
+- **FAO (2005), volumes 1 and 2:** selected chapters read in official open HTML;
+  full volumes have not been reviewed here.
+- **Wernke and Whitmore (2009):** selected pp. 428-437, especially pp. 432-437,
+  were read in the author-hosted PDF. This extends the earlier abstract-only
+  reading, without validating the game's household calorie spread or deaths.
+- **Historical frost protection:** Garcilaso's account is cited secondhand by
+  Saavedra and Takahashi; the primary passage was not independently checked.
+  It remains a research lead rather than a quantified protection effect.
+
+No remaining access gap above prevents an evidence note or a debrief proposal.
+Joint plot losses, feasible historical response costs and a chosen geographic
+setting remain calibration gaps even where articles are available.
 
 The bibliography contains metadata and public links. It includes no PDFs, full article extracts, private file links, or privately circulated teaching slides.
 

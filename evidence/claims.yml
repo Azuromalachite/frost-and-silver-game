@@ -1193,3 +1193,113 @@ claims:
     pages:
       - path: docs/agropastoral-literature-2026-11-18.md
         anchor: Fertilizer can alter the isotopic baseline used to reconstruct diet.
+
+  - id: claim.climate.frost_controls
+    statement: "Clouds, humidity and soil moisture influence minimum temperature together."
+    layer: documented
+    status: partly_supported
+    sources: [saavedra_takahashi2017]
+    pages:
+      - path: docs/climate-weather-literature-2026-11-18.md
+        anchor: "Clouds, humidity and soil moisture influence minimum temperature together."
+    notes: "Modern site observations and heat-transfer modelling identify related controls; their joint historical crop-loss effects remain uncalibrated."
+
+  - id: claim.climate.proxy_scales
+    statement: "Plant-wax proxies distinguish regional circulation from local moisture stress."
+    layer: interpretation
+    status: partly_supported
+    sources: [saelim_etal2025]
+    pages:
+      - path: docs/climate-weather-literature-2026-11-18.md
+        anchor: "Plant-wax proxies distinguish regional circulation from local moisture stress."
+    notes: "Proxy interpretations depend on vegetation, hydrology and age models; annual resampling does not resolve individual harvests."
+
+  - id: claim.climate.topoclimate
+    statement: "Regional elevation effects coexist with local terrain effects on frost occurrence."
+    layer: documented
+    status: partly_supported
+    sources: [pouteau_etal2011]
+    pages:
+      - path: docs/climate-weather-literature-2026-11-18.md
+        anchor: "Regional elevation effects coexist with local terrain effects on frost occurrence."
+    notes: "Scale-dependent modern temperature occurrence; no calibrated joint plot-loss distribution or crop injury."
+
+  - id: claim.climate.season_timing
+    statement: "Rainfall onset, dry spells and growing-season length interact."
+    layer: documented
+    status: partly_supported
+    sources: [garcia_etal2007]
+    pages:
+      - path: docs/climate-weather-literature-2026-11-18.md
+        anchor: "Rainfall onset, dry spells and growing-season length interact."
+    notes: "Four modern stations; transcription needs original table verification before numerical use."
+
+  - id: claim.climate.drought_heterogeneity
+    statement: "Area averages can conceal local drought impacts."
+    layer: documented
+    status: partly_supported
+    sources: [canedorosso_etal2021]
+    pages:
+      - path: docs/climate-weather-literature-2026-11-18.md
+        anchor: "Area averages can conceal local drought impacts."
+    notes: "Modern satellite indicators measure conditions, not consumption; ENSO has exceptions."
+
+  - id: claim.climate.agricultural_adaptation
+    statement: "Ancient field placement and management addressed local climatic constraints."
+    layer: interpretation
+    status: partly_supported
+    sources: [cruz_etal2024]
+    pages:
+      - path: docs/climate-weather-literature-2026-11-18.md
+        anchor: "Ancient field placement and management addressed local climatic constraints."
+    notes: "Archaeological and ethnographic interpretation, not causal experimental effects of obligations or protection."
+
+  - id: claim.climate.enso_geography
+    statement: "ENSO rainfall relationships differ across southern Peru and Bolivia."
+    layer: documented
+    status: partly_supported
+    sources: [jonaitis_etal2021]
+    pages:
+      - path: docs/climate-weather-literature-2026-11-18.md
+        anchor: "ENSO rainfall relationships differ across southern Peru and Bolivia."
+    notes: "Station-group differences include insignificant opposite signs; no deterministic inverse rules."
+
+  - id: claim.climate.monsoon_history
+    statement: "The Pumacocha record constrains broad monsoon history."
+    layer: documented
+    status: partly_supported
+    sources: [bird_etal2011]
+    pages:
+      - path: docs/climate-weather-literature-2026-11-18.md
+        anchor: "The Pumacocha record constrains broad monsoon history."
+    notes: "Regional isotope reconstruction does not uniquely specify local moisture, frost or harvest weather."
+
+  - id: claim.climate.frost_definitions
+    statement: "Freezing conditions, crop injury and protection mechanisms are distinct."
+    layer: documented
+    status: partly_supported
+    sources: [fao_frost2005_vol1]
+    pages:
+      - path: docs/climate-weather-literature-2026-11-18.md
+        anchor: "Freezing conditions, crop injury and protection mechanisms are distinct."
+    notes: "Modern physics reference; no historical effect-size calibration."
+
+  - id: claim.climate.protection_economics
+    statement: "Protection decisions depend on uncertain benefits and costs."
+    layer: documented
+    status: partly_supported
+    sources: [fao_frost2005_vol2]
+    pages:
+      - path: docs/climate-weather-literature-2026-11-18.md
+        anchor: "Protection decisions depend on uncertain benefits and costs."
+    notes: "Modern decision framework only; no historical cost or probability estimates."
+
+  - id: claim.climate.food_access_limits
+    statement: "Own-farm production shortfalls do not establish observed starvation."
+    layer: documented
+    status: partly_supported
+    sources: [wernke_whitmore2009]
+    pages:
+      - path: docs/climate-weather-literature-2026-11-18.md
+        anchor: "Own-farm production shortfalls do not establish observed starvation."
+    notes: "Production sufficiency model excludes or cannot fully quantify tribute, herding, exchange and sharing; not measured daily consumption or mortality."

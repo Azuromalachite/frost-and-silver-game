@@ -125,6 +125,17 @@ distinguishes resolved upstream issues from remaining commodity, herd, water,
 seed, market and historical-time limits. Its diagnostics reuse the existing
 model check; they introduce no new gameplay rules or historical parameter values.
 
+The [climate and weather review](docs/climate-weather-literature-2026-11-18.md)
+adds ten sources and extends the reading of Wernke and Whitmore (2009). It
+distinguishes regional climate, local frost exposure, crop damage and food access;
+the supplied Saavedra and Takahashi (2017) and Sae-Lim et al. (2025) papers resolve
+two earlier full-text gaps. The [weather debrief proposal](docs/weather-debrief-proposal-2026-11-18.md)
+sets out how to compare a defined strategy across different weather without
+confusing that exercise with the existing same-weather benchmarks. These are
+evidence notes and proposed behaviour, with no gameplay changes or new calibrated
+weather parameters. All new source readings are recorded as `sections_read` and
+the eleven new claims as `partly_supported`.
+
 ## Credits and licence
 
 Adapted from [“Week 2: Tahuantinsuyu Harvest & Frost Defense”](https://superlative-sprinkles-2653a1.netlify.app/) by Amnuayvit Thitibordin, licensed [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
