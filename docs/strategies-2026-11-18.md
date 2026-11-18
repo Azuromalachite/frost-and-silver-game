@@ -18,6 +18,12 @@
 > no longer gives points for spreading crews across zones (it counts only crews
 > on terraces or raised fields). The default plan's welfare is now 64 → 46; the
 > best plan is unchanged and averages 75.0. Food and deaths are unchanged.
+>
+> **Update, review round 3 (18 November 2026).** Resilience now counts protected
+> fields only for a fed community with stores, so the plan chosen in advance
+> loses welfare after 1573 as food falls (73 → 61). The end screen ranks plans by
+> hunger deaths, then food, then welfare; the same plan is still best (18.9
+> deaths, 1,550 kcal, 67.2 welfare on seeds 1–80).
 
 **Question.** What is the best way to play, how much better is it than the
 default plan, and do the game's numbers reward what its text teaches?

@@ -196,9 +196,11 @@ input[type=radio]{width:20px;height:20px;accent-color:var(--accent);vertical-ali
 .notes summary{cursor:pointer;font-weight:700}
 .notes h4{margin:12px 0 4px;font-family:var(--f-display);text-transform:uppercase;font-size:13px;letter-spacing:.03em}
 .notes ul{margin:0;padding-left:18px;display:grid;gap:3px;max-width:75ch}
-.replan{margin:0;padding:8px 10px;border-left:3px solid var(--accent);background:color-mix(in srgb,var(--accent) 7%,transparent);font-size:14px;border-radius:0 4px 4px 0;display:grid;gap:6px}
+.replan{margin:0;padding:8px 10px;border-left:3px solid var(--accent);background:color-mix(in srgb,var(--accent) 7%,transparent);font-size:14px;border-radius:0 4px 4px 0;display:block}
+.replan p{margin:0 0 6px;max-width:70ch}.replan h3{margin:0 0 4px;font-size:15px}
+.replan table{border-collapse:collapse;margin:4px 0 6px;font-size:13px}.replan th,.replan td{padding:2px 10px 2px 0;text-align:left}.replan td.n{text-align:right;font-variant-numeric:tabular-nums}
 .replan .rpbtns{display:inline-flex;flex-wrap:wrap;gap:6px}
-.replan .rphint{font-size:12px;color:var(--muted)}
+.replan .rphint{display:block;margin-top:4px;font-size:12px;color:var(--muted)}
 .notice{margin:0;padding:8px 12px;border-left:3px solid var(--gold);background:color-mix(in srgb,var(--gold) 10%,transparent);font-size:14px;border-radius:0 4px 4px 0}
 /* vertical archipelago: four steps rising left to right */
 .vert{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;align-items:end;margin-top:4px}
@@ -221,7 +223,7 @@ input[type=radio]{width:20px;height:20px;accent-color:var(--accent);vertical-ali
 .intro p{margin:0;max-width:65ch}
 .preds{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
 fieldset{border:1px solid var(--line);border-radius:4px;padding:8px 12px;margin:0;min-width:0}
-.wxpick{margin-top:12px}.wxpick label{display:block;margin:4px 0}.wxpick .free{margin:6px 0 0;font-size:13px}
+.wxpick{margin-top:12px}.wxpick label{display:block;margin:4px 0;white-space:normal}.wxpick .free{margin:6px 0 0;font-size:13px}
 legend{font-weight:700;padding:0 4px}
 fieldset label{margin-right:14px;white-space:nowrap}
 .field{display:grid;gap:4px}
@@ -298,7 +300,7 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
       <div class="hud" id="hud"></div>
     </div>
     <div class="dock" id="dock" hidden>
-      <p class="replan" id="replan" role="status" hidden></p>
+      <div class="replan" id="replan" role="region" aria-labelledby="rp-h" hidden></div>
       <div class="dzones" id="dzones"></div>
       <div class="drow">
         <div class="dxs" id="dextras"></div>
@@ -350,7 +352,7 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
       <label><input type="radio" name="wx" value="random" id="wx-random"> <b>Random</b>: new weather each game.</label>
       <label><input type="radio" name="wx" value="standard" id="wx-standard"> <b>Standard</b> (seed 12345): a typical run of weather.</label>
       <label><input type="radio" name="wx" value="hard" id="wx-hard"> <b>Hard</b> (seed 313): harsh colonial years, where careful planning saves many lives.</label>
-      <label><input type="radio" name="wx" value="extreme" id="wx-extreme"> <b>Extreme</b> (seed 2024): droughts in 1592 and 1600; no tested plan avoids hunger, so success is how many people you keep alive.</label>
+      <label><input type="radio" name="wx" value="extreme" id="wx-extreme"> <b>Extreme</b> (seed 2024): the harshest weather we found; no tested plan avoids hunger, so success is how many people you keep alive.</label>
       <p class="free">The difficulty changes only the weather, never the rules. Each preset is a sequence drawn from the game's own weather model and chosen by testing 2,304 plans on 2,000 seeds; it is not a record of the real weather in those years.</p>
     </fieldset>
     <div class="field"><label for="hyp">Why do you think so? (one or two sentences)</label>
@@ -398,14 +400,14 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
     <h4>How the numbers are shown</h4>
     <ul>
       <li><b>GDP as an index (Maddison's 1500 level, 416, = 100).</b> Historical GDP series come in different dollars: Maddison (2003) uses 1990 international dollars, the newer Maddison Project Database (Bolt &amp; van Zanden) uses 2011 dollars and gives Peru-specific estimates for the early 1600s. An index lets the game compare with either without mixing units. On the chart, the diamond is Maddison's 1600 estimate for all of Latin America, 5% above 1500. Because the game was tuned to start near 1500's level, matching it there is a design choice, not a test.</li>
-      <li><b>Caloric Welfare Index</b>, out of 100: 50 points for food adequacy, 30 for stores, 20 for farming resilience. The weights come from the original game's classroom model; how each part is scored here (food against 1,700 kcal, stores against 90 days, resilience from the share of farm crews on terraces or raised fields that stood before the harvest) is this adaptation's assumption. It no longer rewards spreading crews across zones, because in this game spreading never pays. It is a model output, not a measurement.</li>
+      <li><b>Caloric Welfare Index</b>, out of 100: 50 points for food adequacy, 30 for stores, 20 for farming resilience. The weights come from the original game's classroom model; how each part is scored here (food against 1,700 kcal, stores against 90 days, resilience from the share of farm crews on terraces or raised fields that stood before the harvest, scaled by how well people ate and how full the stores are, so a hungry community with empty stores scores no resilience) is this adaptation's assumption. It does not reward spreading crews across zones, because in this game spreading never pays. It is a model output, not a measurement.</li>
       <li><b>Silver.</b> Potosí's output rose sharply late in the century, after mercury amalgamation spread in the 1570s. The game raises the value of each mine worker's silver from harvest 4 to harvest 6; the path is a teaching assumption.</li>
     </ul>
   </details>
 
   <footer class="foot">
     <p>Adapted from <a href="https://superlative-sprinkles-2653a1.netlify.app/" target="_blank" rel="noopener">“Week 2: Tahuantinsuyu Harvest &amp; Frost Defense”</a> by Amnuayvit Thitibordin, licensed <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a>. Changes: rebuilt as a turn-based game with a colonial second act, a new model and a new visual design. This adaptation is also licensed CC BY-NC-SA 4.0. Adapted by Thanakrit Wongsatit. The original author built the game around one message: GDP per person grew in sixteenth-century Latin America, but life did not get better, because food per person fell. He drew on Maddison's historical statistics and his familiarity with global economic history, and also used the game to teach the quipu.</p>
-    <p>The game is a model, not a reconstruction. Anchors: GDP per person of 416 in 1500 and 438 in 1600 are Maddison's conjectural estimates for Latin America as a whole (1990 international dollars; not Andes-specific), and the game's GDP formula was tuned to start near 416. The fall from about 1,700 to about 1,200 kcal is the original game's teaching figure and has no source we could confirm. Here “kcal per person per day” means average food available across all ages, capped at 1,900. The household share assumes household food varies 30% around the average; it is a guess that illustrates the point Wernke &amp; Whitmore (2009, <i>Human Ecology</i> 37:421) make, that households can go short while a region has a surplus. Every other number is the game's own. For scale, adults in a modern multi-country sample that excluded manual labourers used about 2,190 (women) and 2,720 (men) kcal a day (Pontzer et al. 2016, <i>Nature</i> 533:390, Table 1); a community average that includes children is lower.</p>
+    <p>The game is a model, not a reconstruction. Anchors: GDP per person of 416 in 1500 and 438 in 1600 are Maddison's conjectural estimates for Latin America as a whole (1990 international dollars; not Andes-specific), and the game's GDP formula was tuned to start near 416. The fall from about 1,700 to about 1,200 kcal is the original game's teaching figure and has no source we could confirm. Here “kcal per person per day” means average food available across all ages, capped at 1,900. The household share assumes household food varies 30% around the average; it is a guess that illustrates the point Wernke &amp; Whitmore (2009, <i>Human Ecology</i> 37:421) make about production, that some households' own fields fall short while the community has a surplus (they measure what fields produced, not what people ate). Every other number is the game's own. For scale, adults in a modern multi-country sample that excluded manual labourers used about 2,190 (women) and 2,720 (men) kcal a day (Pontzer et al. 2016, <i>Nature</i> 533:390, Table 1); a community average that includes children is lower.</p>
   </footer>
 </div>
 
@@ -903,7 +905,7 @@ function harvest(){
   const farm = ZONES.reduce((s, z) => s + S.alloc[z.key], 0);
   const protShare = farm ? ZONES.reduce((s, z) => s + (builtBefore[z.key] && z.build ? S.alloc[z.key] : 0), 0) / farm : 0;
   const cwiParts = {cal: 50 * Math.min(1, intake / GOAL), buf: 30 * Math.min(1, (S.store / GOAL * 365) / 90),
-    res: 20 * protShare /* until 2026-11-18 30% of this part rewarded spreading across zones, which this game's frost never pays */};
+    res: 20 * protShare * Math.min(1, intake / GOAL) * Math.min(1, (S.store / GOAL * 365) / 90) /* protected fields count only for a fed community with stores: protection cannot score while people go hungry. Until 2026-11-18 30% of this part rewarded spreading, which this game's frost never pays */};
   const cwi = cwiParts.cal + cwiParts.buf + cwiParts.res;
   const rec = {year:S.year, act:act(S.year), cwi, cwiParts, alloc: {...S.alloc}, chuno: S.chuno, gidx: gdp / 416 * 100, H, lost, saved, tribute, tRate, ret, stateOut, d, rf: a2 ? reducNow() : 1, toStore, spoiled, draw, intake, avail, gdp, silver, cf,
     pop:S.pop, popBefore, mita, wage:S.wage, line:Y.line, drought:Y.drought, hazy:Y.hazy, winter:Y.winter, chunoRoom: S.chuno * CHUNO_CAP * wm * per, zr, builtNow,
@@ -969,8 +971,8 @@ function whyList(r){
   if (r.saved > 0) out.push(`Your terraces and raised fields saved ${fmt(r.saved)}.`);
   // The hint used to point only to waru waru, in High grain; "Best land first" at 1573 then leaves High grain empty, so a
   // student who followed every hint wasted the build. Valley terraces protect and widen the best land, which stays farmed.
-  else if (r.line < 3 && !S.built.yunga) out.push('In this game, terraces cut a zone\'s frost loss by a third and waru waru by more than half, but a build pays only while crews farm its zone. Valley terraces protect and widen your best land, which stays farmed after crews fall; waru waru in High grain pay only if crews still farm there.');
-  if (r.drought) out.push(`A dry year (in the southern Andes often, though not everywhere, linked to El Niño) cut every harvest by a quarter (game figure).${r.hazy ? ' The hazy Pleiades warned you.' : ' The Pleiades gave no warning.'}`);
+  else if (r.year <= 4 && r.line < 3 && !S.built.yunga) out.push('In this game, terraces cut a zone\'s frost loss by a third and waru waru by more than half, but a build pays only while crews farm its zone. Valley terraces mainly widen your best land (more room, +10% yield; the valley itself rarely freezes), and it stays farmed after crews fall; waru waru in High grain pay only if crews still farm there.');
+  if (r.drought) out.push(`A dry year cut every harvest by a quarter (game figure; in the southern Andes El Niño years tend to be dry, though not everywhere).${r.hazy ? ' The hazy Pleiades warned you.' : ' The Pleiades gave no warning.'}`);
   else if (r.hazy) out.push('The Pleiades looked hazy, but the rains came anyway.');
   if (r.act === 1) out.push(`One man in ten worked the state and temple fields under the Inca labour duty; ${fmt(r.ret)} came back as feasts and rations (game assumption: half the state harvest).`);
   if (r.act === 2 && r.silver > 0) out.push(r.year === 4
@@ -1002,7 +1004,7 @@ function logHarvest(r){
   if (r.line === 4) logAdd(tag, 'No frost.');
   else if (r.lost < 1) logAdd(tag, `Frost down to the ${zone} zone; no crops there.`);
   else logAdd(tag, `Frost down to the ${zone} zone: −${fmt(r.lost)}${r.saved > 0 ? `; terraces and raised fields saved ${fmt(r.saved)}` : ''}.`, 'neg');
-  if (r.drought) logAdd(tag, `Dry year (often, not everywhere, linked to El Niño): every zone −25% (game figure). ${r.hazy ? 'The hazy Pleiades warned of it.' : 'No warning from the Pleiades.'}`, 'neg');
+  if (r.drought) logAdd(tag, `Dry year (in the southern Andes El Niño years tend to be dry): every zone −25% (game figure). ${r.hazy ? 'The hazy Pleiades warned of it.' : 'No warning from the Pleiades.'}`, 'neg');
   else if (r.hazy) logAdd(tag, 'Hazy Pleiades, but the rains came.');
   if (r.ret > 0) logAdd(tag, `Inca feasts and rations +${fmt(r.ret)}.`, 'pos');
   if (r.tribute > 0) logAdd(tag, `Tribute −${fmt(r.tribute)} (${Math.round(r.tRate*100)}% of the harvest; game rule).`, 'neg');
@@ -1150,11 +1152,20 @@ function renderReplan(){
   if (!S.replan || S.phase !== 'plan') { el.hidden = true; return; }
   const k = S.replan.kind;
   el.hidden = false;
-  const p = replanProjection(), dF = p.best.food - p.shares.food, hadChuno = S.replan.from[SHARE_KEYS.indexOf('chuno')] > 0;
+  const p = replanProjection(), dF = p.best.food - p.shares.food;
+  const hadChuno = S.replan.from[SHARE_KEYS.indexOf('chuno')] > 0, hadWage = S.replan.from[SHARE_KEYS.indexOf('wage')] > 0;
   const verdict = Math.abs(dF) < 25 ? 'For this plan the two came out about the same on average.'
     : dF > 0 ? `For this plan best land first grew more on average: ${hadChuno ? 'the chuño crews it drops grow nothing to eat' : 'it moves crews down from the colder, frostier zones'}.`
+    : hadWage ? 'For this plan keeping the shares grew more on average: it trims wage crews along with the rest, while best land first keeps every wage crew and so farms with fewer crews.'
     : 'For this plan keeping the shares grew more on average: spreading crews over the lower zones grows more than crowding the valley.';
-  el.innerHTML = `<b>${k ? 'Re-planned' : 'Choose how to re-plan'}: ${S.replan.B} crews instead of ${S.replan.was}.</b> <b>Keep the same shares</b>: your plan on fewer crews; chuño crews and the high fields carry on. <b>Best land first</b>: every crew on the lowest zones, each filled before the next; no chuño crews, nothing growing up high; wage crews stay. Played on to the end from here on ${REPLAN_SAMPLE} sample weathers (not yours), with the same choice at any later re-plan: keeping the shares averaged <b>${kcal(p.shares.food)} kcal</b> a day and ${fmt(p.shares.deaths)} hunger deaths, best land first <b>${kcal(p.best.food)} kcal</b> and ${fmt(p.best.deaths)}${p.own ? `; the crews as you set them by hand <b>${kcal(p.own.food)} kcal</b> and ${fmt(p.own.deaths)}` : ''}. ${verdict} Which choice is better depends on the plan you held, and on weather nobody can see yet.${k ? '' : ' The harvest waits until you choose.'}
+  const cause = S.year === 4 ? '1573: the mita and the population collapse' : S.year === 5 ? 'the 1585–91 epidemics' : 'hunger deaths';
+  const row = (name, q) => `<tr><td>${name}</td><td class="n">${kcal(q.food)}</td><td class="n">${fmt(q.deaths)}</td></tr>`;
+  el.innerHTML = `<h3 id="rp-h">${k ? 'Re-planned' : 'Choose how to re-plan'}: ${S.replan.B} crews instead of ${S.replan.was} (${cause})</h3>
+    <p><b>Keep the same shares</b>: your plan on fewer crews; chuño crews and the high fields carry on. <b>Best land first</b>: every crew on the lowest zones, each filled before the next; no chuño crews, nothing growing up high; wage crews stay.</p>
+    <table><caption style="text-align:left;font-size:12px;color:var(--muted)">The rest of the game from here, averaged over ${REPLAN_SAMPLE} sample weathers (not yours), with the same choice at any later re-plan</caption>
+      <thead><tr><th scope="col">Choice</th><th scope="col">Food a day</th><th scope="col">Hunger deaths</th></tr></thead>
+      <tbody>${row('Keep the same shares', p.shares)}${row('Best land first', p.best)}${p.own ? row('As you set them by hand', p.own) : ''}</tbody></table>
+    <p>${verdict} Which choice is better depends on the plan you held, and on weather nobody can see yet.${k ? '' : ' The harvest waits until you choose.'}</p>
     <span class="rpbtns"><button class="tbtn" data-replan="shares" aria-pressed="${k === 'shares'}">Keep the same shares</button><button class="tbtn" data-replan="best" aria-pressed="${k === 'best'}">Best land first</button></span>
     <span class="rphint">${k === 'own' ? 'You set the crews yourself.' : 'Or set the crews yourself below; changing any crew counts as your choice.'}</span>`;
   el.querySelectorAll('[data-replan]').forEach(b => b.onclick = () => replanTo(b.dataset.replan));
@@ -1360,10 +1371,13 @@ function applyGridPlan(st){
   if ((col ? st.colRule : st.incaRule) === 'best') { for (const z of GRID_ORDER) { const k = Math.min(free, room(z)); S.alloc[z] = k; free -= k; } }
   else { let moved = true; while (free > 0 && moved) { moved = false; for (const z of GRID_ORDER) if (free > 0 && S.alloc[z] < room(z)) { S.alloc[z]++; free--; moved = true; } } }
 }
-// A plan the student could have chosen before playing: the grid plan with the highest welfare averaged over test
-// seeds, and the same plan whether it is chosen on seeds 1-40 or 41-80 (docs/strategies-2026-11-18.md). Scored on the
+// A plan the student could have chosen before playing: the grid plan with the fewest hunger deaths averaged over test
+// seeds (then food, then welfare: betterOutcome), and the same plan whether it is chosen on seeds 1-40 or 41-80 (docs/strategies-2026-11-18.md). Scored on the
 // student's own weather it is a fair benchmark; the best of the grid on that weather is picked with hindsight.
 const ADVANCE_PLAN = {build: ['yunga'], incaChuno: 1, incaRule: 'best', colChuno: 0, wage: 0, colRule: 'best'};
+// How the end screen ranks two results ({deaths, k2, w}): fewer hunger deaths first, then more food after 1573, then
+// welfare. Welfare alone once let a student who lost 134 people "match or beat" a plan that lost 20.
+const betterOutcome = (a, b) => Math.abs(a.deaths - b.deaths) > 0.5 ? a.deaths < b.deaths : Math.abs(a.k2 - b.k2) > 5 ? a.k2 > b.k2 : a.w > b.w;
 function simulatePlan(seed, st){
   const keep = S;
   try {
@@ -1389,7 +1403,7 @@ function compareOnSameWeather(seed, mine, done){
     // highest welfare over the whole game, not colonial food alone: the plan with the most colonial food can
     // starve the Inca years to pay for it.
     let bi = 0;
-    res.forEach((r, j) => { const b = res[bi]; if (r.w > b.w + 0.05 || (Math.abs(r.w - b.w) <= 0.05 && r.deaths < b.deaths)) bi = j; });
+    res.forEach((r, j) => { if (betterOutcome(r, res[bi])) bi = j; });
     done({n: res.length, best: res[bi], plan: PLAN_GRID[bi]});
   };
   setTimeout(batch, 0);
@@ -1398,9 +1412,15 @@ function compareOnSameWeather(seed, mine, done){
 // Survival is judged against this weather, so choosing Hard or Extreme is never a penalty: for a preset the default
 // plan's result on the same weather is the yardstick, and any seed can be replayed from its number alone.
 // The fair benchmark: ADVANCE_PLAN was chosen on test weathers, before anyone knew this one, and is scored on it.
+function fairVerdict(f, me){
+  if (!betterOutcome(f, me)) return 'Your community did as well or better (judged first by hunger deaths, then food after 1573, then welfare).';
+  if (Math.abs(f.deaths - me.deaths) > 0.5) return `It lost ${fmt(me.deaths - f.deaths)} fewer people to hunger.`;
+  if (Math.abs(f.k2 - me.k2) > 5) return `It lost about as many people and kept ${kcal(f.k2 - me.k2)} kcal more a day after 1573.`;
+  return 'It lost about as many people, kept about as much food and scored a little more on welfare.';
+}
 function fairLine(k2, hungerDeaths){
-  const f = simulatePlan(S.seed, ADVANCE_PLAN), myW = S.hist.reduce((s, r) => s + r.cwi, 0) / S.hist.length, d = Math.round(f.w) - Math.round(myW);
-  return `A plan you could have chosen before playing: build Valley terraces; in the Inca years 1 crew on chuño and the rest on the best land first; after 1573 every crew on the best land first. Of the 2,304 tested plans it had the best welfare averaged over 80 test weathers, and it is the same plan whether chosen on the first 40 or the last 40. On your weather it scored <b>${Math.round(f.w)}</b>, kept ${kcal(f.k2)} kcal a day after 1573 and lost ${fmt(f.deaths)} people to hunger. Your plan scored <b>${Math.round(myW)}</b>, kept ${kcal(k2)} kcal and lost ${fmt(hungerDeaths)}. ${d <= 0 ? 'You matched or beat it.' : `It scored ${d} point${d === 1 ? '' : 's'} more.`}`;
+  const f = simulatePlan(S.seed, ADVANCE_PLAN), myW = S.hist.reduce((s, r) => s + r.cwi, 0) / S.hist.length;
+  return `A plan you could have chosen before playing: build Valley terraces; in the Inca years 1 crew on chuño and the rest on the best land first; after 1573 every crew on the best land first. Of the 2,304 tested plans it lost the fewest people to hunger averaged over 80 test weathers, and it is the same plan whether chosen on the first 40 or the last 40. On your weather it scored <b>${Math.round(f.w)}</b>, kept ${kcal(f.k2)} kcal a day after 1573 and lost ${fmt(f.deaths)} people to hunger. Your plan scored <b>${Math.round(myW)}</b>, kept ${kcal(k2)} kcal and lost ${fmt(hungerDeaths)}. ${fairVerdict(f, {deaths: hungerDeaths, k2, w: myW})}`;
 }
 function survivalLine(){
   const p = WX_PRESETS[S.mode], again = `Play this weather again with <code>?seed=${S.seed}</code> in the address.`;
@@ -1544,7 +1564,7 @@ function showEnd(){
     </div>
     <div>
       <h3 style="font-size:18px;margin-bottom:6px">What the record suggests</h3>
-      <p style="margin:0;max-width:65ch">Maddison's estimates for Latin America as a whole have GDP per person rising slightly, from 416 in 1500 to 438 in 1600 (1990 Int$), even as total output and population fell. For this period they are informed guesses, not measurements. Output per person can rise for more than one reason: more silver, or fewer people sharing the same land. In this game both matter, and which matters more depends on how you count: silver against the field labour the mita takes out (your game splits them above), and how survivors re-plan their fewer crews. The course figure of 1,700 falling to 1,200 kcal a day has no primary source we could confirm, so treat it as a teaching figure. From the sources checked so far: colonial labour drafts pulled workers out of the farming cycle, the population fell steeply, and one village study (Wernke &amp; Whitmore 2009, abstract read) finds households short of food even where the community as a whole produced a surplus. GDP per person is an average of output. It says nothing about who eats.</p>
+      <p style="margin:0;max-width:65ch">Maddison's estimates for Latin America as a whole have GDP per person rising slightly, from 416 in 1500 to 438 in 1600 (1990 Int$), even as total output and population fell. For this period they are informed guesses, not measurements. Output per person can rise for more than one reason: more silver, or fewer people sharing the same land. In this game both matter, and which matters more depends on how you count: silver against the field labour the mita takes out (your game splits them above), and how survivors re-plan their fewer crews. The course figure of 1,700 falling to 1,200 kcal a day has no primary source we could confirm, so treat it as a teaching figure. From the sources checked so far: colonial labour drafts pulled workers out of the farming cycle, the population fell steeply, and one village study (Wernke &amp; Whitmore 2009) finds households whose own fields produced less than they needed even where the community as a whole produced a surplus; it measures production, not food eaten, and leaves out tribute, herding, trade and sharing. GDP per person is an average of output. It says nothing about who eats.</p>
     </div>
     <div class="actions">
       <span class="free" id="copymsg">Copy a text report to paste into your class page.</span>
@@ -1560,10 +1580,10 @@ function showEnd(){
     const rule = r => r === 'best' ? 'best land first' : 'crews spread across the zones';
     const how = `${builds.length ? `build ${builds.join(' and ')}` : 'build nothing'}; in the Inca years ${crewsN(st.incaChuno)} on chuño and the rest ${rule(st.incaRule)}; after 1573 ${crewsN(st.colChuno)} on chuño, ${crewsN(st.wage)} for wages, the rest ${rule(st.colRule)}`;
     const myW = S.hist.reduce((s, r) => s + r.cwi, 0) / S.hist.length;
-    const ceiling = `It is not a ceiling either: one plan that changes by harvest beat it on 58 of 80 test weathers: build Valley and Upper-field terraces in harvest 1 with no chuño crews, put three crews on chuño in harvests 2 and 3, then every crew on the best land after 1573 (with other terraces it rarely does). Your explanation of why GDP and food moved apart matters more than this comparison.`;
+    const ceiling = `It is not a ceiling either: one plan that changes by harvest beat it on 40 of 80 test weathers: build Valley and Upper-field terraces in harvest 1 with no chuño crews, put three crews on chuño in harvests 2 and 3, then every crew on the best land after 1573 (other changing plans do well too; which terraces you build matters). Your explanation of why GDP and food moved apart matters more than this comparison.`;
     // on some weathers the plan chosen in advance is also the hindsight best: say so instead of repeating it
     if (JSON.stringify(st) === JSON.stringify(ADVANCE_PLAN)) { el.innerHTML = `On your weather (seed ${endSeed}) the plan above was also the best of the ${fmt(c.n)} tested plans picked after the weather was known. ${ceiling.replace('It is not a ceiling either:', 'It is not a ceiling:')}`; return; }
-    el.innerHTML = `On your weather (seed ${endSeed}), the best of ${fmt(c.n)} tested plans that keep one rule for each period, picked after the weather was known, judged by welfare over the whole game, scored <b>${Math.round(c.best.w)}</b>, kept ${kcal(c.best.k2)} kcal a day after 1573${c.best.k2 >= 1700 ? ' (it reached the goal only because it was chosen knowing this weather; averaged over many weathers no plan does)' : ''} and lost ${fmt(c.best.deaths)} people to hunger. It was: ${how}. Your plan scored <b>${Math.round(myW)}</b>, kept ${kcal(k2)} kcal and lost ${fmt(hungerDeaths)}. Nobody could have picked it in advance. ${ceiling}`;
+    el.innerHTML = `On your weather (seed ${endSeed}), the best of ${fmt(c.n)} tested plans that keep one rule for each period, picked after the weather was known, judged first by hunger deaths, then food after 1573, then welfare, scored <b>${Math.round(c.best.w)}</b>, kept ${kcal(c.best.k2)} kcal a day after 1573${c.best.k2 >= 1700 ? ' (it reached the goal on this weather; averaged over many weathers no tested plan does)' : ''} and lost ${fmt(c.best.deaths)} people to hunger. It was: ${how}. Your plan scored <b>${Math.round(myW)}</b>, kept ${kcal(k2)} kcal and lost ${fmt(hungerDeaths)}. Nobody could have picked it in advance. ${ceiling}`;
   });
   // Core model (expected values, no weather): index 1 = output per person with all labour farming in the Inca years.
   //   food_I = (1−m)^α + r·(1 − (1−m)^α)       food_C = Y_C·(1−τ)

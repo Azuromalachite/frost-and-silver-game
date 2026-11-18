@@ -42,17 +42,21 @@ const SHARES_WINS = {default: 0, '5/5/3/1 no chuño': 24};
 // Seeds 1-80, default plan, best land first: GDP index points the rules cost apart from silver, and resettlement's
 // part of it, to the nearest 0.5 (README, AGENTS.md, history-and-evidence.md: "about 6.5 … resettlement about 2.5").
 const FIELD_LOSS_1_80 = {total: -6.5, resettlement: -2.5};
-// The changing plan named on the end screen beats the hindsight-best fixed plan on this many of seeds 1-80.
-const CHANGING_WINS = 58; // 57 before terraces stopped counting as protection in their build year, then 52; 58 since resilience no longer rewards spreading
-// The end screen's plan chosen in advance (ADVANCE_PLAN): best on seeds 1-40, 41-80 and 1-80; its mean welfare and
-// colonial food on seeds 1-80, and the seeds where it reaches 1,700 kcal.
-const ADVANCE = {chosen: [true, true, true], w: 75, k2: 1550, reach1700: 21};
+// The changing plan named on the end screen beats the hindsight-best fixed plan on this many of seeds 1-80, both judged
+// the end screen's way (betterOutcome: hunger deaths, then food after 1573, then welfare).
+const CHANGING_WINS = 40; // 58 when judged on welfare alone // 57 before terraces stopped counting as protection in their build year, then 52; 58 since resilience no longer rewards spreading
+// The end screen's plan chosen in advance (ADVANCE_PLAN): best by betterOutcome on mean results over seeds 1-40, 41-80
+// and 1-80; its mean welfare, colonial food and hunger deaths on seeds 1-80, and the seeds where it reaches 1,700 kcal.
+const ADVANCE = {chosen: [true, true, true], w: 67.2, k2: 1550, deaths: 18.9, reach1700: 21};
+// The plan offered as chosen in advance, seeds 1-80: welfare must fall after 1573 as food does (the key message). Mean
+// welfare Inca -> colonial and the seeds where it rises; it rose on 49 when resilience could max out with people hungry.
+const ADVANCE_WELFARE = {inca: 73, colonial: 61.3, rises: 19};
 const REPLAN = 'best'; // the pinned run's re-plan choice
 
 function load(html) {
   const m = html.match(/<script>\s*([\s\S]*?)<\/script>/);
   assert.ok(m, 'no inline <script> in the game file');
-  const code = m[1].replace(/\}\)\(\);\s*$/, `globalThis.game={get state(){return S}, fresh,rollYear,clampAlloc,harvest,nextYear,showTransition,showEnd,replaySame,settle,grow,crews,ZONES,shortShare,gi,dir,reportText,PLAY,replanTo,GDP_TOL,WX_PRESETS,simulatePlan,PLAN_GRID,applyGridPlan,collapseState,advanceState,P,ADVANCE_PLAN};})();`);
+  const code = m[1].replace(/\}\)\(\);\s*$/, `globalThis.game={get state(){return S}, fresh,rollYear,clampAlloc,harvest,nextYear,showTransition,showEnd,replaySame,settle,grow,crews,ZONES,shortShare,gi,dir,reportText,PLAY,replanTo,GDP_TOL,WX_PRESETS,simulatePlan,PLAN_GRID,applyGridPlan,collapseState,advanceState,P,ADVANCE_PLAN,betterOutcome};})();`);
   assert.notEqual(code, m[1], 'the game script no longer ends in })(); so the harness cannot reach the model');
   return code;
 }
@@ -122,8 +126,9 @@ function playPlans(code, seed, planFor) {
     g.applyGridPlan(planFor(S().year)); g.harvest();
     if (S().year === 3) { g.collapseState(); g.advanceState(); } else if (S().year < 6) g.advanceState();
   }
-  const h = S().hist;
-  return {w: h.reduce((s, r) => s + r.cwi, 0) / 6, deaths: h.reduce((s, r) => s + Math.max(0, r.popBefore - r.pop), 0)};
+  const h = S().hist, a = h.slice(0, 3), b = h.slice(3);
+  return {w: h.reduce((s, r) => s + r.cwi, 0) / 6, deaths: h.reduce((s, r) => s + Math.max(0, r.popBefore - r.pop), 0),
+    k2: b.reduce((s, r) => s + r.intake, 0) / 3, w1: a.reduce((s, r) => s + r.cwi, 0) / 3, w2: b.reduce((s, r) => s + r.cwi, 0) / 3};
 }
 const BOARD_5531 = g => { if (g.state.year <= 3) { Object.assign(g.state.alloc, {yunga:5, quechua:5, suni:3, puna:1}); g.state.chuno = 0; g.state.wage = 0; g.clampAlloc(); } };
 const GENERAL = {build:['yunga'], incaChuno:1, incaRule:'best', colChuno:0, wage:0, colRule:'best'};
@@ -187,29 +192,39 @@ function check(html, {heavy = true} = {}) {
   soft(() => assert.deepEqual(sharesWins, SHARES_WINS, 're-plan dominance by board moved: update claim.game.replan_dominance, the docs and SHARES_WINS'));
 
   // The changing plan the end screen names, against the best fixed plan picked after the weather is known.
+  // The plan offered as chosen in advance loses welfare after 1573, as food falls (claim.game.welfare_index).
+  let aw = {inca: 0, colonial: 0, rises: 0};
+  for (let seed = 1; seed <= 80; seed++) { const t = playPlans(code, seed, () => g.ADVANCE_PLAN); aw.inca += t.w1 / 80; aw.colonial += t.w2 / 80; if (t.w2 > t.w1) aw.rises++; }
+  aw = {inca: r1(aw.inca), colonial: r1(aw.colonial), rises: aw.rises};
+  soft(() => assert.deepEqual(aw, ADVANCE_WELFARE, 'the advance plan\'s welfare across 1573 moved: it must fall as food falls; update ADVANCE_WELFARE and claim.game.welfare_index'));
+  soft(() => assert.ok(aw.colonial < aw.inca - 5, `the advance plan's welfare does not fall after 1573 (${aw.inca} -> ${aw.colonial}), while food does: the welfare index contradicts the key message`));
+
   // The plan the end screen offers as one chosen in advance: the grid's best by mean welfare on seeds 1-40, on 41-80
   // and on 1-80, scored on each weather (claim.game.advance_plan).
   let changingWins = null, advance = null;
   if (heavy) {
     changingWins = 0;
-    const grid = g.PLAN_GRID, W = [], K = [];
+    const grid = g.PLAN_GRID, W = [], K = [], D = [];
     for (let seed = 1; seed <= 80; seed++) {
       const gg = make(code, seed), res = grid.map(p => gg.simulatePlan(seed, p));
-      W.push(res.map(r => r.w)); K.push(res.map(r => r.k2));
-      if (playPlans(code, seed, CHANGING).w > Math.max(...W[seed - 1])) changingWins++;
+      W.push(res.map(r => r.w)); K.push(res.map(r => r.k2)); D.push(res.map(r => r.deaths));
+      const best = res.reduce((b, r) => g.betterOutcome(r, b) ? r : b);
+      if (g.betterOutcome(playPlans(code, seed, CHANGING), best)) changingWins++;
     }
     soft(() => assert.equal(changingWins, CHANGING_WINS, `the changing plan beat the hindsight best on ${changingWins} of 80 seeds, recorded ${CHANGING_WINS}: update the end screen, claim.game.changing_plan and CHANGING_WINS`));
-    const pick = (a, b) => { let bj = 0, bv = -Infinity; grid.forEach((_, j) => { let t = 0; for (let s = a; s <= b; s++) t += W[s - 1][j]; if (t > bv) { bv = t; bj = j; } }); return bj; };
+    const mean = (A, j, a, b) => { let t = 0; for (let s = a; s <= b; s++) t += A[s - 1][j]; return t / (b - a + 1); };
+    const at = (j, a, b) => ({deaths: mean(D, j, a, b), k2: mean(K, j, a, b), w: mean(W, j, a, b)});
+    const pick = (a, b) => { let bj = 0; grid.forEach((_, j) => { if (g.betterOutcome(at(j, a, b), at(bj, a, b))) bj = j; }); return bj; };
     const key = p => JSON.stringify(p), aj = grid.findIndex(p => key(p) === key(g.ADVANCE_PLAN));
     advance = {chosen: [pick(1, 40), pick(41, 80), pick(1, 80)].map(j => j === aj),
-      w: r1(W.reduce((s, w) => s + w[aj], 0) / 80), k2: Math.round(K.reduce((s, k) => s + k[aj], 0) / 80), reach1700: K.filter(k => k[aj] >= 1700).length};
+      w: r1(W.reduce((s, w) => s + w[aj], 0) / 80), k2: Math.round(K.reduce((s, k) => s + k[aj], 0) / 80), deaths: r1(D.reduce((s, d) => s + d[aj], 0) / 80), reach1700: K.filter(k => k[aj] >= 1700).length};
     soft(() => assert.deepEqual(advance, ADVANCE, 'the advance plan is no longer the best chosen on seeds 1-40, 41-80 and 1-80, or its record moved: update ADVANCE_PLAN, claim.game.advance_plan and ADVANCE'));
   }
 
   if (fails.length) throw new assert.AssertionError({message: fails.join('\n')});
   const mean = k => [0, 1].map(i => runs.best.reduce((s, t) => s + t[k][i], 0) / runs.best.length);
   return {pinned, presets: presetOut, hard_general_plan: {deaths: r1(gen.deaths), w: r1(gen.w)}, gdp_reads_1_80: counts, replan_gdp_disagree: disagree,
-    advance_plan: advance, food_falls: foodFalls, mean_colonial_food: meanFood, field_loss: {total: r1(mb('lostIdx')), resettlement: r1(-mb('resettleIdx'))}, shares_wins: sharesWins, changing_wins: changingWins,
+    advance_plan: advance, advance_welfare: aw, food_falls: foodFalls, mean_colonial_food: meanFood, field_loss: {total: r1(mb('lostIdx')), resettlement: r1(-mb('resettleIdx'))}, shares_wins: sharesWins, changing_wins: changingWins,
     means_1_80_best_land:{food:mean('food'), welfare:mean('welfare'), gdp:mean('gdp')}};
 }
 
@@ -248,7 +263,10 @@ const PLANTS = [
   // the end screen offering a plan that is not the one chosen on the test weathers
   ['advance plan changed', "const ADVANCE_PLAN = {build: ['yunga'], incaChuno: 1,", "const ADVANCE_PLAN = {build: ['yunga'], incaChuno: 2,", [/advance plan/], true],
   // terraces counted as protection in the year they are built again: the changing plan's record moves
-  ['terraces protect a year early', "builtBefore[z.key] && z.build ? S.alloc[z.key] : 0", "S.built[z.key] && z.build ? S.alloc[z.key] : 0", [/changing plan/], true],
+  // resilience maxing out for survivors on terraced land however hungry they are: welfare stops falling after 1573
+  ['resilience ignores hunger', 'res: 20 * protShare * Math.min(1, intake / GOAL) * Math.min(1, (S.store / GOAL * 365) / 90)', 'res: 20 * protShare', [/does not fall after 1573/]],
+  // (welfare only: since plans are ranked by deaths first it no longer moves the changing plan's count)
+  ['terraces protect a year early', "builtBefore[z.key] && z.build ? S.alloc[z.key] : 0", "S.built[z.key] && z.build ? S.alloc[z.key] : 0", [/advance plan's welfare across 1573 moved/, /advance plan is no longer the best/], true],
 ];
 function selfTest(html) {
   check(html); // the unplanted game must pass first, or a failure below proves nothing

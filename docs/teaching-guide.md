@@ -75,11 +75,14 @@ sweep](strategies-2026-11-18.md)). So reaching 1,700 is not the test. Success is
 - protecting the community: fewer hunger deaths, stores kept, food kept up;
 - explaining, with the end screen's numbers, why GDP rose while food fell.
 
-The end screen says this and shows each student's own numbers. It also plays
-the 2,304 tested plans on the student's own weather and names the best one by
-welfare over the whole game. It is picked after the weather is known, so it is a
-hindsight benchmark, not a fair score (on about a third of seeds the hindsight
-best even reaches 1,700). A student can replay to try it. It lists the turning points of their game
+The end screen says this and shows each student's own numbers. It first scores
+a plan the student could have chosen before playing (Valley terraces, one Inca
+chuño crew, best land first throughout; the tested plan with the fewest hunger
+deaths on average) on the student's own weather, and compares it with theirs:
+hunger deaths first, then food after 1573, then welfare. Below that it names the
+best of the 2,304 tested plans on that weather, picked after the weather is
+known, so a hindsight benchmark rather than a fair score (it reaches 1,700 on
+about a quarter of seeds). A student can replay to try either. It lists the turning points of their game
 (milestones, with the harvest each happened in). Assess the explanation, not the
 outcome: two students with the same reasoning can get different results,
 because the weather differs between seeds.
@@ -142,6 +145,7 @@ with a fixed seed:
 - [ ] the end screen shows the success box, the charts, the graded food prediction and the ungraded GDP answer;
 - [ ] Replay with the same weather gives the same frosts, and the comparison table appears;
 - [ ] Copy report copies the text report;
-- [ ] in dark mode, everything is readable.
+- [ ] in dark mode, everything is readable;
+- [ ] on a phone (375 px wide) nothing scrolls sideways: the intro with its weather choice, the re-plan box and the end screen.
 
 A run of this list is recorded in [smoke-test-2026-11-18.md](smoke-test-2026-11-18.md).

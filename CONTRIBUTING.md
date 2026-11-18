@@ -87,7 +87,7 @@ board (`claim.game.replan_dominance`) and the changing plan's record
 (`claim.game.changing_plan`), the plan offered as chosen in advance
 (`claim.game.advance_plan`), and the field output the rules cost apart from
 silver, with resettlement's part. CI runs it on every pull request, with
-`--self-test`, which plants eleven model changes and requires each to trip the
+`--self-test`, which plants twelve model changes and requires each to trip the
 assertion meant for it. A change that moves one of these numbers must update
 the constant at the top of that file, and the places that quote it, in the same
 pull request. Without Node, `tools/run_model_check.html` runs the same file in a

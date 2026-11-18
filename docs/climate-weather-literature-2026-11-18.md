@@ -117,9 +117,10 @@ back to satellite resolution; independent field validation remains limited.
 Different marginal risks do not supply simultaneous plot-loss covariance or crop
 damage functions. Claim: `claim.climate.topoclimate`.
 
-**For the game:** this cuts against `claim.game.frost_from_top`. Local cold-air
-drainage and exposure are how a lower field can freeze while a higher one stays
-clear, which the game's rule (frost always strikes from the top down) rules out.
+**For the game (our inference, not the paper's):** the drainage and exposure
+effects it reports, at about 1 km, suggest that cold air draining downhill can
+freeze a lower field while a higher one stays clear, which the game's rule
+(frost always strikes from the top down, `claim.game.frost_from_top`) rules out.
 The rule stays a labelled simplification, because the paper gives frost
 occurrence, not the joint crop losses by height that diversification would need.
 [DOI](https://doi.org/10.1016/j.rse.2010.08.011).
