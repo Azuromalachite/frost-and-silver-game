@@ -6,6 +6,14 @@
 > choosing "Best land first" at each re-plan, which gives colonial food of about
 > 1,385 kcal (1,386 before).
 
+> **Update, terrace fix (18 November 2026).** Terraces and raised fields now count
+> toward the welfare index's resilience from the harvest after they are built,
+> as they always did for frost losses. Food and deaths are unchanged. The best
+> plan by welfare is the same (and the same when chosen on seeds 1–40 or 41–80
+> alone); its welfare averages 73.9 (75.0 before). The end screen now leads with
+> it as a plan chosen in advance (`claim.game.advance_plan`). Welfare figures
+> below are from before the fix.
+
 **Question.** What is the best way to play, how much better is it than the
 default plan, and do the game's numbers reward what its text teaches?
 
@@ -19,7 +27,7 @@ spreading crews across the zones "insurance" while its numbers always punished
 spreading. The text is corrected; the model is unchanged (see below).
 
 Reproduce it: serve the repository root (`python -m http.server`) and open
-`tools/strategies.html` (about a minute).
+`tools/strategies.html` (a few minutes).
 
 ## Method
 

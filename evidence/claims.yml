@@ -245,7 +245,12 @@ claims:
     pages:
       - path: frost-and-silver.html
         anchor: It is a model output, not a measurement.
-    notes: The 50/30/20 weights come from the original game; the scoring of each part is this adaptation's.
+    notes: >
+      The 50/30/20 weights come from the original game; the scoring of each part
+      is this adaptation's. Resilience counts crews on terraces and raised fields
+      that stood before the harvest; until 2026-11-18 it also counted those
+      finished that year (frost losses never did). Fixing it left the default
+      plan unchanged and lowered building plans' welfare by about 1 point.
 
   - id: claim.game.key_message
     statement: >
@@ -984,15 +989,59 @@ claims:
       Building Valley and Upper-field terraces in harvest 1 with no chuño crews,
       three chuño crews in harvests 2 and 3, then every crew on the best land
       after 1573, beat the best fixed plan picked after the weather was known on
-      57 of seeds 1-80. With Valley terraces alone, or other numbers of chuño
+      52 of seeds 1-80. With Valley terraces alone, or other numbers of chuño
       crews, a changing plan rarely does.
     layer: game_result
     status: labelled
     sources: []
     pages:
       - path: frost-and-silver.html
-        anchor: one plan that changes by harvest beat it on 57 of 80 test weathers
+        anchor: one plan that changes by harvest beat it on 52 of 80 test weathers
     notes: >
       Asserted by tests/review_model.cjs (CHANGING_WINS). The end screen used to
       say "about two seeds in three" without naming the terraces; a review found
-      the obvious reading (Valley terraces only) beats it on 0-13 of 80.
+      the obvious reading (Valley terraces only) beats it on 0-13 of 80. It was
+      57 of 80 until terraces stopped counting toward the welfare index's
+      resilience in the year they are built (2026-11-18).
+
+  - id: claim.game.advance_plan
+    statement: >
+      Of the 2,304 tested plans, building Valley terraces, one chuño crew and best
+      land first in the Inca years, then every crew on the best land first after
+      1573, had the highest welfare averaged over seeds 1-80, and is the same plan
+      when chosen on seeds 1-40 or 41-80 alone. Scored on each weather it averages
+      73.9 welfare and 1,550 kcal after 1573, against 76.6 and 1,587 for the best
+      plan picked knowing that weather; it reaches 1,700 kcal on 21 seeds.
+    layer: game_result
+    status: labelled
+    sources: []
+    pages:
+      - path: frost-and-silver.html
+        anchor: Of the 2,304 tested plans it had the best welfare averaged over 80 test weathers
+    notes: >
+      The end screen leads with it as a fair benchmark, a plan chosen before the
+      weather is known, and shows the hindsight best below it. Measured
+      2026-11-18 after the terrace fix (claim.game.welfare_index); the same plan
+      won before it.
+
+  - id: claim.game.stores_carried
+    statement: >
+      Each person's share of the community stores is carried across the 70 years
+      from harvest 3 (c. 1502) to harvest 4 (c. 1575): the collapse halves people
+      and food together. No store lasts 70 years; the game keeps the simplification
+      and labels it.
+    layer: game_assumption
+    status: labelled
+    sources: [morris1986]
+    code: ["S.pop *= (1 - COLLAPSE);"]
+    pages:
+      - path: frost-and-silver.html
+        anchor: keeps each person's share of the community stores across the gap
+    notes: >
+      Measured 2026-11-18 on the default plan, seeds 1-80: halving the stores at
+      1573 gives colonial food 1,324 kcal and 49 deaths, emptying them 1,263 and
+      56, against 1,385 and 41 as played; the lesson (GDP up, food down) holds on
+      72 and 75 of 80 seeds against 68. Kept by the author's decision, because the
+      lesson does not depend on it; Hard and Extreme are unaffected (their stores
+      are empty by 1573). The source documents Inca storehouses, not their
+      survival across the conquest.
