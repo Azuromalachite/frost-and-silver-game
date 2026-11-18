@@ -203,7 +203,7 @@ sources:
     by: review agent (claims and charts)
     when: 2026-11-17
     url: https://doi.org/10.1038/47456
-    notes: Reports a correlation, not a hit rate. Modern practice; use around 1500 is not established.
+    notes: Reports a correlation, not a hit rate. Modern practice; use around 1500 is not established. Abstract re-read via PubMed (10638752) on 2026-11-19 for claim.land.plant_late_practice.
 
   - key: fonseca_dehaan2021
     title: "Traditional freeze-drying: chuño, kaya, chullqi"

@@ -65,6 +65,9 @@ const HARD_GENERAL_DEATHS = 4.1, EXTREME_MIN_DEATHS = 130.4, STANDARD_ADVANCE_FO
 const HINDSIGHT = {deaths: 16.3, k2: 1561, w: 65.4, reach1700: 22};
 const RULES_FOOD_EFFECT_1_80 = -479;
 const README_MEANS = {food: [1675, 1385], welfare: [64, 46], gdp: [102, 109]};
+// Planting late (graduated from research experiment 3): ADVANCE_PLAN, seeds 1-80, mean hunger deaths when never late,
+// always late, and late when the Pleiades rose hazy. Late when hazy must beat both, or the forecast has no use again.
+const LATE_1_80 = {never: 18.9, always: 19.8, hazy: 14.3};
 const REPLAN = 'best'; // the pinned run's re-plan choice
 
 function load(html) {
@@ -133,11 +136,11 @@ function finish(g, replay = false, edit, kind = REPLAN) {
     history:JSON.parse(JSON.stringify(h))};
 }
 // A plan given harvest by harvest as grid plans, played the way the end screen's comparison plays them.
-function playPlans(code, seed, planFor) {
+function playPlans(code, seed, planFor, lateFor = () => false) {
   const g = make(code, seed), S = () => g.state;
   S().phase = 'plan'; S().yr = g.rollYear(); g.clampAlloc();
   while (S().hist.length < 6) {
-    g.applyGridPlan(planFor(S().year)); g.harvest();
+    g.applyGridPlan(planFor(S().year)); S().plantLate = lateFor(S().yr); g.harvest();
     if (S().year === 3) { g.collapseState(); g.advanceState(); } else if (S().year < 6) g.advanceState();
   }
   const h = S().hist, a = h.slice(0, 3), b = h.slice(3);
@@ -219,6 +222,13 @@ function check(html, {heavy = true} = {}) {
   soft(() => assert.deepEqual(aw, ADVANCE_WELFARE, 'the advance plan\'s welfare across 1573 moved: it must fall as food falls; update ADVANCE_WELFARE and claim.game.welfare_index'));
   soft(() => assert.ok(aw.colonial < aw.inca - 5, `the advance plan's welfare does not fall after 1573 (${aw.inca} -> ${aw.colonial}), while food does: the welfare index contradicts the key message`));
 
+  // Planting late: late when hazy must beat both always and never by 2 deaths (research experiment 3's margin)
+  const late = {};
+  for (const [k, f] of Object.entries({never: () => false, always: () => true, hazy: yr => yr.hazy}))
+    late[k] = r1([...Array(80).keys()].reduce((s, i) => s + playPlans(code, i + 1, () => g.ADVANCE_PLAN, f).deaths, 0) / 80);
+  soft(() => assert.ok(late.hazy <= late.never - 2 && late.hazy <= late.always - 2, `plant late: late when hazy lost ${late.hazy} against never ${late.never} and always ${late.always}; the forecast no longer pays`));
+  soft(() => assert.deepEqual(late, LATE_1_80, 'plant late: deaths by planting policy moved: update claim.game.plant_late_costs, research/results and LATE_1_80'));
+
   // The plan the end screen offers as one chosen in advance: the grid's best by mean welfare on seeds 1-40, on 41-80
   // and on 1-80, scored on each weather (claim.game.advance_plan).
   let changingWins = null, advance = null;
@@ -257,7 +267,7 @@ function check(html, {heavy = true} = {}) {
   if (fails.length) throw new assert.AssertionError({message: fails.join('\n')});
   return {pinned, presets: presetOut, hard_general_plan: {deaths: r1(gen.deaths), w: r1(gen.w)}, gdp_reads_1_80: counts, replan_gdp_disagree: disagree,
     advance_plan: advance, advance_welfare: aw, food_falls: foodFalls, mean_colonial_food: meanFood, field_loss: {total: r1(mb('lostIdx')), resettlement: r1(-mb('resettleIdx'))}, shares_wins: sharesWins, changing_wins: changingWins,
-    means_1_80_best_land:{food:mean('food'), welfare:mean('welfare'), gdp:mean('gdp')}};
+    plant_late_1_80: late, means_1_80_best_land:{food:mean('food'), welfare:mean('welfare'), gdp:mean('gdp')}};
 }
 
 // The pinned line is quoted in CONTRIBUTING.md and AGENTS.md; it must match PINNED, or the docs describe another game.
@@ -281,6 +291,8 @@ const readmeText = () => fs.readFileSync(path.join(__dirname, '..', 'README.md')
 // The last field (heavy) also runs the slow checks (the 2,304-plan grid), needed only by the plants that target them.
 const PLANTS = [
   ['tribute raised (a model constant)', 'TRIB_PP = 500', 'TRIB_PP = 520', [/pinned run/]],
+  // planting late made worthless: a late planting loses as much in a dry year and costs nothing in a normal one
+  ['late planting does nothing', 'const LATE_DRY = .90, LATE_NORMAL = .95;', 'const LATE_DRY = .75, LATE_NORMAL = 1;', [/plant late: late when hazy/]],
   // Frost almost never reaches the fields. (A first version moved .15 to .25,
   // which seed 12345 happens never to draw, so it tested nothing.)
   ['frost odds changed (the weather)', 'const line = r < .15 ? 4', 'const line = r < .95 ? 4', [/pinned run/]],

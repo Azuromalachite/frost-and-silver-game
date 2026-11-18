@@ -631,6 +631,41 @@ claims:
         anchor: Andean elders forecast rain from how clearly the Pleiades rise in June
     notes: Use around 1500 is not established. The game's forecast accuracy is a play value.
 
+  - id: claim.land.plant_late_practice
+    statement: >
+      Andean farmers who forecast reduced rainfall from the Pleiades moderate its
+      effect by adjusting the planting dates of potatoes, their most important crop.
+    layer: documented
+    status: partly_supported
+    sources: [orlove2000]
+    pages:
+      - path: frost-and-silver.html
+        anchor: as Andean farmers adjust planting dates when they expect poor rains
+      - path: research/results/2026-11-19-plant-late.md
+        anchor: Orlove et al. support the direction of the practice only
+    notes: >
+      From the abstract (PubMed 10638752, read 2026-11-19), which calls the method centuries old;
+      use around 1500 is not established. The abstract says adjusting, not delaying or reducing, and
+      gives no yield figures.
+
+  - id: claim.game.plant_late_costs
+    statement: >
+      In the game a late planting loses 10% of the harvest in a dry year instead of
+      25%, and 5% in a normal year; planting late when the Pleiades rose hazy then
+      saves about 6 hunger deaths a game against never (research experiment 3).
+    layer: game_assumption
+    status: labelled
+    sources: [orlove2000]
+    code: ["const LATE_DRY = .90, LATE_NORMAL = .95;"]
+    pages:
+      - path: frost-and-silver.html
+        anchor: cuts a dry year's loss from 25% to 10% (game figures)
+      - path: research/results/2026-11-19-plant-late.md
+        anchor: At 10% / 5% it closes 56% of the gap
+    notes: >
+      Judged magnitudes, chosen in a pilot and then tested on holdout seeds 81-400 across 24 cost
+      settings; Orlove et al. give no figures. Checked in CI (LATE_1_80).
+
   # --- the Inca system --------------------------------------------------------
 
   - id: claim.inca.labour_duty
