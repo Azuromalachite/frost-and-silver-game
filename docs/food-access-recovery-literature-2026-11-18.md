@@ -1,6 +1,6 @@
 # Food access, obligations and recovery: seven-paper review
 
-18 November 2026. Reviewed against main `d860c39`, including PR #26.
+18 November 2026. Reviewed against main `8e443c5`, including PR #29.
 This contribution records evidence and proposed work, with no gameplay changes
 or new historical coefficients. The [implementation review](food-access-recovery-gaps-2026-11-18.md)
 separates current code observations from possible extensions.

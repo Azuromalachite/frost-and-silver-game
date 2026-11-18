@@ -1,11 +1,13 @@
 # Food access and recovery: implementation gaps
 
-18 November 2026. Static review of main `d860c39d12cece19fc4064990d4d70f7a1731c4f`
-(PR #26), linked to the [seven-paper review](food-access-recovery-literature-2026-11-18.md).
+18 November 2026. Static review of main `8e443c566094b93561182e2ffb068e039cbb6270`
+(PR #29), linked to the [seven-paper review](food-access-recovery-literature-2026-11-18.md).
 No gameplay, constants, grading or UI changes accompany this document.
 The [crop/camelid PR #23](https://github.com/Azuromalachite/frost-and-silver-game/pull/23)
 and [climate PR #24](https://github.com/Azuromalachite/frost-and-silver-game/pull/24)
-are separate contributions; this review does not depend on them being merged.
+are preceding contributions in the refreshed review stack: #23 targets main,
+#24 targets #23's branch, and this contribution targets #24's branch. Review and
+merge in that order; the inherited readings retain their original evidence bounds.
 
 ## Current behaviour and possible work
 
@@ -19,7 +21,7 @@ functions in [the game](../frost-and-silver.html) at the revision above.
 | Obligation versus fulfilment | `crews` applies the stored mita requirement as a reduction in crew strength; `harvest` applies a fixed tribute total with wage relief and a harvest cap. | Distinguish required liability, actual labour, money paid, and household financing. Qualify historical wording before selecting a new mechanism. | Do not insert the later 1610 regional fulfilment proportions as 1575 rates. |
 | Food versus productive reserves | `settle` tracks one food store and processing capacity; `grow` has no viable-seed stock or replanting demand. | Define edible stock, retained planting material and feasible replacement sources. | Do not assign a generic seed-loss penalty from retrospective survey frequencies. |
 | Continuing herd services | Puna enters `grow` through the same zone-output calculation; no persistent animal count or dung ledger is present. | Decide whether a herd is a stock with food, transport or other services, and what access to those services requires. | Distinguish ownership from access; modern mixed-species budgets are not precolonial parameters. |
-| Spatial scales of resilience | `grow` applies zone weather losses; the welfare calculation also rewards the number of occupied zones. No within-zone field geometry or pest movement is represented. | Keep elevation exposure, local clustering and rotation separate in any future pest model. | One species and one season cannot set a universal diversification bonus or penalty. |
+| Spatial scales of resilience | `grow` applies zone weather losses. PR #29 removed the occupied-zone welfare bonus; resilience now counts only protected fields. No within-zone field geometry or pest movement is represented. | Keep elevation exposure, local clustering and rotation separate in any future pest model. | One species and one season cannot set a universal diversification bonus or penalty. |
 | Adoption and upkeep | Construction already occupies crews in `used` and becomes completed after the harvest. There is no learning-failure or dung/soil-maintenance account. | Ask whether an additional transition or maintenance cost creates a useful, evidenced decision. | Existing construction has a cost; kiln observations do not calibrate that cost or prove an omission needs a new control. |
 
 Once wage relief has reduced the model's tribute to zero, additional earnings
@@ -31,7 +33,13 @@ name its starting state and policy.
 
 PRs #25 and #26 already make re-plan advice depend on the board, qualify GDP
 explanations, score terraces from the next harvest and lead with a strategy
-chosen in advance. This review preserves those corrections. It also preserves
+chosen in advance. PR #28 preserves hand-added wage crews when Best land first
+is chosen again, projects the hand-set plan, warns about stores at the choice
+and explains disabled actions. PR #29 removes the spreading bonus and points
+the frost hint to occupied Valley terraces. These issues are resolved, rather
+than outstanding gaps in this review. The household shortfall estimate uses
+food available before the consumption cap; different estimates at the same
+displayed intake are intentional. This review preserves those decisions. It also preserves
 the explicit teaching assumption that each person's stores carry across the
 historical gap (claim.game.stores_carried). Existing matched harvest comparisons
 remain distinct from an independently evolving alternative history.

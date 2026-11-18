@@ -31,8 +31,46 @@ The entries below preserve the earlier search's access findings unless an explic
 - The 2025 storage article also has an open PDF at its [publisher](https://revistas.pucp.edu.pe/index.php/boletindearqueologia/article/view/29942).
 - The [MPD2023 release](https://www.rug.nl/ggdc/historicaldevelopment/maddison/releases/maddison-project-database-2023) workbook was obtained and the Peru figures in the literature notes checked.
 - Wernke (2010) has an [author-hosted PDF](https://stevenwernke.com/wp-content/uploads/2020/09/A_reduced_landscape_toward_a_m.pdf). Availability does not upgrade the registry's reading status.
-- Other successfully retrieved collection works still require claim-specific reading: Wernke and Whitmore (2009), Dell (2010), Gil Montero and Zagalsky (2016), Arroyo Abad and van Zanden (2016), Bolt and van Zanden's update paper, Kolata and Ortloff (1989), Orlove et al. (2000), Hunter (2025), the CIP freeze-drying chapter, Robins and Hagan (2012), and Allen (2001).
+- Other successfully retrieved collection works still require claim-specific reading: Dell (2010), Gil Montero and Zagalsky (2016), Arroyo Abad and van Zanden (2016), Bolt and van Zanden's update paper, Kolata and Ortloff (1989), Orlove et al. (2000), Hunter (2025), the CIP freeze-drying chapter, Robins and Hagan (2012), and Allen (2001).
 - Robins and Hagan's main article was retrieved as full-text HTML; the supplemental calculations remain a retrieval gap. The freeze-drying download is the complete CIP parent volume, not a standalone chapter.
+
+## Climate review: resolved barriers and remaining limits
+
+The [reading ledger](../docs/climate-weather-literature-2026-11-18.md) records
+the sections examined and what they support. All eleven readings are
+`sections_read`; access to an article is not a claim of complete verification.
+
+- **Saavedra and Takahashi (2017):** the supplied complete 13-page PDF resolves
+  the earlier publisher/repository retrieval barrier. Main text, tables and
+  figure captions were read; no independent check of every figure is claimed.
+- **Sae-Lim et al. (2025):** the supplied complete 12-page PDF resolves the earlier
+  publisher barrier. Main text, Table 2 and figure captions were read. Supplements
+  and the archived proxy data were not reanalysed; annual interpolation does not
+  make the record annual observations.
+- **Pouteau et al. (2011):** relevant sections were read in
+  [author-uploaded article text](https://www.researchgate.net/publication/222033638_Downscaling_MODIS-derived_maps_using_GIS_and_boosted_regression_trees_The_case_of_frost_occurrence_over_the_arid_Andean_highlands_of_Bolivia).
+  The [IRD record](https://www.documentation.ird.fr/hor/fdi:010051034) is a metadata
+  and request route. This is no longer an entirely unread full-text gap.
+- **Garcia et al. (2007):** relevant sections were read in
+  [public article text](https://www.academia.edu/6676199/Agroclimatic_constraints_for_rainfed_agriculture_in_the_Bolivian_Altiplano).
+  Original PDF/table verification remains needed before numerical reuse because
+  temperature minus signs can be lost in transcription.
+- **Canedo-Rosso et al. (2021)** and **Cruz et al. (2024):** selected sections read
+  in open publisher HTML. **Bird et al. (2011):** selected open PMC sections read.
+- **Jonaitis et al. (2021):** selected sections read in the
+  [author-institution PDF](https://geo.appstate.edu/sites/default/files/jonaitis_etal_2021_ijoc.pdf).
+- **FAO (2005), volumes 1 and 2:** selected chapters read in official open HTML;
+  full volumes have not been reviewed here.
+- **Wernke and Whitmore (2009):** selected pp. 428-437, especially pp. 432-437,
+  were read in the author-hosted PDF. This extends the earlier abstract-only
+  reading, without validating the game's household calorie spread or deaths.
+- **Historical frost protection:** Garcilaso's account is cited secondhand by
+  Saavedra and Takahashi; the primary passage was not independently checked.
+  It remains a research lead rather than a quantified protection effect.
+
+No remaining access gap above prevents an evidence note or a debrief proposal.
+Joint plot losses, feasible historical response costs and a chosen geographic
+setting remain calibration gaps even where articles are available.
 
 ## Food access and recovery review: public routes and partial reads
 
@@ -56,3 +94,29 @@ as proof of readable content. No raw historical records or supplemental datasets
 were reanalysed.
 
 The bibliography contains metadata and public links. It includes no PDFs, full article extracts, private file links, or privately circulated teaching slides.
+
+## Crop ecology and camelids: access recheck, 18 November 2026
+
+This adds to the original collection; it does not erase its seven unresolved
+works. The [new notes](../docs/agropastoral-literature-2026-11-18.md) and source
+registry distinguish obtaining a full text from reading selected sections.
+
+| Work | Full-text route and access finding | Reading recorded here |
+|---|---|---|
+| Winkel et al. (2009), quinoa canopy | Complete PDF supplied; earlier IRD request barrier resolved | All ten pages |
+| Gomez-Quispe et al. (2022), cria survival | Complete PDF supplied; publisher/repository request barrier resolved | All six pages |
+| Condori et al. (2014), potato frost risk | [Open publisher article](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0081510) | Named methods, results and conclusions |
+| Jacobsen et al. (2005), quinoa stages | [Author-uploaded article text](https://www.academia.edu/30359178/Plant_responses_of_quinoa_Chenopodium_quinoa_Willd_to_frost_at_various_phenological_stages); publisher retrieval returned 403 | Printed pp. 131-137 |
+| Leceta et al. (2024), Laramate soils | [Open HTML and PDF](https://soil.copernicus.org/articles/10/727/2024/) | Named sections |
+| Arce et al. (2019), potato landscapes | [Publisher PDF](https://mdpi-res.com/d_attachment/land/land-08-00169/article_deploy/land-08-00169-v2.pdf?version=1573637075); landing page sometimes exposes only abstract | Named PDF pages |
+| Lane et al. (2022), bofedales | [Open publisher article](https://doi.org/10.15184/aqy.2022.103) | Named sections |
+| Castellaro et al. (2004), diets | [SciELO full text](https://www.scielo.cl/scielo.php?lng=es&nrm=iso&pid=S0365-28072004000400004&script=sci_arttext); intermittent 403 | Abstract and named opening sections |
+| Riek et al. (2019), energetics | [Publisher PDF](https://www.nature.com/articles/s41598-019-40576-9.pdf) works despite repository 403 | PDF pp. 1-6 |
+| Valenzuela et al. (2021), protection trial | [Open article](https://pmc.ncbi.nlm.nih.gov/articles/PMC7807147/); automated retrieval sometimes encounters CAPTCHA | Named methods, results and discussion |
+| Lecoq (1998), caravans | [Public PDF](https://dialnet.unirioja.es/descarga/articulo/8505350.pdf) opened, then intermittent timeouts | Opening pp. 19-20 |
+| Szpak et al. (2012), dung and isotopes | [Author-hosted PDF](https://www.paulszpak.com/_files/ugd/76b0b0_b15503416a36468a97ffc3884b71084f.pdf) works | Abstract only |
+
+There is no remaining confirmed full-text barrier among these twelve after the
+supplied attachments, but some retrieval routes are unreliable and several works
+still need complete reading. Do not confuse that statement with resolution of the
+older book/chapter gaps above. No subscription purchase or author contact was made.

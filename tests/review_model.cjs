@@ -30,7 +30,7 @@ const vm = require('node:vm');
 const path = require('node:path');
 const assert = require('node:assert/strict');
 
-const PINNED = [1764, 1411, 80, 55, 103, 109, 46, 73]; // food Inca, colonial; welfare; GDP index; % short
+const PINNED = [1764, 1411, 74, 52, 103, 109, 46, 73]; // food Inca, colonial; welfare; GDP index; % short
 // Seeds 1-80, default plan, "Best land first": how the rules' GDP effect reads (shown, not graded).
 const GDP_READS_1_80 = {stay: 75, rise: 5};
 // Seeds 1-80, default plan: the two re-plan choices read the GDP effect differently on this many seeds.
@@ -38,21 +38,21 @@ const REPLAN_GDP_DISAGREE = 35;
 // Seeds 1-80, default plan, mean colonial food (kcal a day, harvests 4-6) under each re-plan choice.
 const MEAN_FOOD_1_80 = {best: 1385, shares: 1004};
 // Seeds where keeping the shares grows more colonial food than best land first, by the board held before 1573.
-const SHARES_WINS = {default: 0, '5/5/3/1 no chuño': 24};
+const SHARES_WINS = {default: 0, '5/5/3/1 no chu챰o': 24};
 // Seeds 1-80, default plan, best land first: GDP index points the rules cost apart from silver, and resettlement's
-// part of it, to the nearest 0.5 (README, AGENTS.md, history-and-evidence.md: "about 6.5 … resettlement about 2.5").
+// part of it, to the nearest 0.5 (README, AGENTS.md, history-and-evidence.md: "about 6.5 ??resettlement about 2.5").
 const FIELD_LOSS_1_80 = {total: -6.5, resettlement: -2.5};
 // The changing plan named on the end screen beats the hindsight-best fixed plan on this many of seeds 1-80.
-const CHANGING_WINS = 52; // 57 before terraces stopped counting as protection in the year they are built
+const CHANGING_WINS = 58; // 57 before terraces stopped counting as protection in their build year, then 52; 58 since resilience no longer rewards spreading
 // The end screen's plan chosen in advance (ADVANCE_PLAN): best on seeds 1-40, 41-80 and 1-80; its mean welfare and
 // colonial food on seeds 1-80, and the seeds where it reaches 1,700 kcal.
-const ADVANCE = {chosen: [true, true, true], w: 73.9, k2: 1550, reach1700: 21};
+const ADVANCE = {chosen: [true, true, true], w: 75, k2: 1550, reach1700: 21};
 const REPLAN = 'best'; // the pinned run's re-plan choice
 
 function load(html) {
   const m = html.match(/<script>\s*([\s\S]*?)<\/script>/);
   assert.ok(m, 'no inline <script> in the game file');
-  const code = m[1].replace(/\}\)\(\);\s*$/, `globalThis.game={get state(){return S}, fresh,rollYear,clampAlloc,harvest,nextYear,showTransition,showEnd,replaySame,settle,shortShare,gi,dir,reportText,PLAY,replanTo,GDP_TOL,WX_PRESETS,simulatePlan,PLAN_GRID,applyGridPlan,collapseState,advanceState,P,ADVANCE_PLAN};})();`);
+  const code = m[1].replace(/\}\)\(\);\s*$/, `globalThis.game={get state(){return S}, fresh,rollYear,clampAlloc,harvest,nextYear,showTransition,showEnd,replaySame,settle,grow,crews,ZONES,shortShare,gi,dir,reportText,PLAY,replanTo,GDP_TOL,WX_PRESETS,simulatePlan,PLAN_GRID,applyGridPlan,collapseState,advanceState,P,ADVANCE_PLAN};})();`);
   assert.notEqual(code, m[1], 'the game script no longer ends in })(); so the harness cannot reach the model');
   return code;
 }
@@ -109,7 +109,7 @@ function finish(g, replay = false, edit, kind = REPLAN) {
     deaths:h.reduce((s, r) => s + Math.max(0, r.popBefore - r.pop), 0),
     ck:b.reduce((s, r) => s + r.intake - r.cf.intake, 0) / 3, cg:b.reduce((s, r) => s + r.gdp - r.cf.gdp, 0) / 3,
     // the rules' GDP effect apart from silver (index points): field output lost to the mita, wage crews and resettlement,
-    // and resettlement's part of it, P·(H/rf − H)
+    // and resettlement's part of it, P쨌(H/rf ??H)
     lostIdx:g.gi(b.reduce((s, r) => s + r.gdp - r.cf.gdp - r.silver, 0) / 3), resettleIdx:g.gi(b.reduce((s, r) => s + g.P * (r.H / r.rf - r.H), 0) / 3),
     weather:h.map(r => ({line:r.line, drought:r.drought, hazy:r.hazy, winter:r.winter})),
     history:JSON.parse(JSON.stringify(h))};
@@ -183,7 +183,7 @@ function check(html, {heavy = true} = {}) {
   const sharesWins = {default: runs.shares.filter((t, i) => t.food[1] > runs.best[i].food[1]).length};
   let w5531 = 0;
   for (let seed = 1; seed <= 80; seed++) if (finish(make(code, seed), false, BOARD_5531, 'shares').food[1] > finish(make(code, seed), false, BOARD_5531, 'best').food[1]) w5531++;
-  sharesWins['5/5/3/1 no chuño'] = w5531;
+  sharesWins['5/5/3/1 no chu챰o'] = w5531;
   soft(() => assert.deepEqual(sharesWins, SHARES_WINS, 're-plan dominance by board moved: update claim.game.replan_dominance, the docs and SHARES_WINS'));
 
   // The changing plan the end screen names, against the best fixed plan picked after the weather is known.
@@ -217,7 +217,7 @@ function check(html, {heavy = true} = {}) {
 const fmtK = n => n.toLocaleString('en-US');
 // as the end screen shows it: food to the nearest 10 kcal, household shares to the nearest 5%
 const r10 = v => Math.round(v / 10) * 10, r5 = v => Math.round(v / 5) * 5;
-const pinnedLine = p => `${fmtK(r10(p[0]))} kcal | ${fmtK(r10(p[1]))} kcal | ${p[2]} → ${p[3]} | ${p[4]} | ${p[5]} | ${r5(p[6])}% → ${r5(p[7])}%`;
+const pinnedLine = p => `${fmtK(r10(p[0]))} kcal | ${fmtK(r10(p[1]))} kcal | ${p[2]} ??${p[3]} | ${p[4]} | ${p[5]} | ${r5(p[6])}% ??${r5(p[7])}%`;
 function checkDocs(pinned, texts) {
   for (const [name, text] of Object.entries(texts))
     assert.ok(text.includes('`' + pinnedLine(pinned) + '`'), `${name} does not quote the pinned run ${pinnedLine(pinned)}`);

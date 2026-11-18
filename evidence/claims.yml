@@ -149,7 +149,8 @@ claims:
         anchor: The choice is yours, and it decides much of the result
     notes: >
       Measured 2026-11-18, default plan, seeds 1-80. Best land first: colonial
-      food 1,385 kcal, welfare 70 -> 49, 41 deaths, the GDP effect reads 75 stay /
+      food 1,385 kcal, welfare 70 -> 49 (64 -> 46 since resilience stopped
+      rewarding spread), 41 deaths, the GDP effect reads 75 stay /
       5 rise (shown, not graded). Same shares: colonial food 1,004 kcal, welfare
       70 -> 35, 95 deaths, reads 40 stay / 40 rise. The mean food under each
       choice is asserted by tests/review_model.cjs (MEAN_FOOD_1_80). Before 18 Nov 2026 the board re-planned silently (wage,
@@ -241,7 +242,7 @@ claims:
     layer: game_assumption
     status: labelled
     sources: [thitibordin_game]
-    code: ["res: 20 * Math.min(1, 0.7 * protShare + 0.3 * spread)"]
+    code: ["res: 20 * protShare"]
     pages:
       - path: frost-and-silver.html
         anchor: It is a model output, not a measurement.
@@ -251,6 +252,11 @@ claims:
       that stood before the harvest; until 2026-11-18 it also counted those
       finished that year (frost losses never did). Fixing it left the default
       plan unchanged and lowered building plans' welfare by about 1 point.
+      Also on 2026-11-18, by the author's decision, resilience stopped giving 30%
+      of its points for spreading crews across zones, which this game's frost
+      never pays (a simulated student who spread out-scored a careful one while
+      losing more people). The default plan's welfare fell from 70 -> 49 to
+      64 -> 46 (seeds 1-80); food, deaths and GDP are unchanged.
 
   - id: claim.game.key_message
     statement: >
@@ -280,6 +286,7 @@ claims:
         anchor: Potosí silver went to Spain and, through trade, as far as China
 
   # --- records ------------------------------------------------------------------
+
   - id: claim.quipu.decimal_knots
     statement: >
       Quipus recorded numbers in base ten: clusters of single knots for tens,
@@ -321,6 +328,7 @@ claims:
     notes: Which figures a cord keeper recorded is not known; GDP is left off on purpose.
 
   # --- food -------------------------------------------------------------------
+
   - id: claim.food.kcal_1700_to_1200
     statement: >
       Indigenous Andean food intake fell from about 1,700 to about 1,200 kcal a
@@ -389,6 +397,7 @@ claims:
         anchor: Skeletons and isotopes show diet changed after contact
 
   # --- land and farming -------------------------------------------------------
+
   - id: claim.land.vertical_archipelago
     statement: >
       Andean communities held land at several altitudes, so one frost or drought
@@ -589,6 +598,7 @@ claims:
     notes: Use around 1500 is not established. The game's forecast accuracy is a play value.
 
   # --- the Inca system --------------------------------------------------------
+
   - id: claim.inca.labour_duty
     statement: >
       Under the Inca, communities owed labour to the state in turns (mit'a) and
@@ -640,6 +650,7 @@ claims:
         anchor: argue exchange and markets also mattered
 
   # --- the colonial system ----------------------------------------------------
+
   - id: claim.colonial.potosi_1545
     statement: Spaniards began mining the Cerro Rico at Potosí in 1545.
     layer: documented
@@ -778,6 +789,7 @@ claims:
         anchor: including mercury used in refining
 
   # --- population -------------------------------------------------------------
+
   - id: claim.population.collapse_large
     statement: >
       The Andean population fell by well over half between the 1520s and the
@@ -824,6 +836,7 @@ claims:
         anchor: output in a zone grows with labour to the power 0.9,
 
   # --- additional research evidence; not new gameplay rules -------------------
+
   - id: claim.research.tambo_architecture
     statement: >
       Valdez and Bettcher document semisubterranean cists and storage vessels at
@@ -994,20 +1007,21 @@ claims:
       Building Valley and Upper-field terraces in harvest 1 with no chuño crews,
       three chuño crews in harvests 2 and 3, then every crew on the best land
       after 1573, beat the best fixed plan picked after the weather was known on
-      52 of seeds 1-80. With Valley terraces alone, or other numbers of chuño
+      58 of seeds 1-80. With Valley terraces alone, or other numbers of chuño
       crews, a changing plan rarely does.
     layer: game_result
     status: labelled
     sources: []
     pages:
       - path: frost-and-silver.html
-        anchor: one plan that changes by harvest beat it on 52 of 80 test weathers
+        anchor: one plan that changes by harvest beat it on 58 of 80 test weathers
     notes: >
       Asserted by tests/review_model.cjs (CHANGING_WINS). The end screen used to
       say "about two seeds in three" without naming the terraces; a review found
       the obvious reading (Valley terraces only) beats it on 0-13 of 80. It was
       57 of 80 until terraces stopped counting toward the welfare index's
-      resilience in the year they are built (2026-11-18).
+      resilience in the year they are built, then 52, and 58 once resilience
+      stopped rewarding spread (both 2026-11-18).
 
   - id: claim.game.advance_plan
     statement: >
@@ -1015,7 +1029,7 @@ claims:
       land first in the Inca years, then every crew on the best land first after
       1573, had the highest welfare averaged over seeds 1-80, and is the same plan
       when chosen on seeds 1-40 or 41-80 alone. Scored on each weather it averages
-      73.9 welfare and 1,550 kcal after 1573, against 76.6 and 1,587 for the best
+      75.0 welfare and 1,550 kcal after 1573, against 78.4 and 1,589 for the best
       plan picked knowing that weather; it reaches 1,700 kcal on 21 seeds.
     layer: game_result
     status: labelled
@@ -1050,6 +1064,250 @@ claims:
       lesson does not depend on it; Hard and Extreme are unaffected (their stores
       are empty by 1573). The source documents Inca storehouses, not their
       survival across the conquest.
+
+  - id: claim.research.quinoa_canopy
+    statement: >
+      Winkel and colleagues measured warmer sheltered leaves within a heterogeneous
+      quinoa canopy during radiative cooling; their experiment does not establish
+      a grain-yield advantage or a kaniwa protection coefficient.
+    layer: documented
+    status: supported
+    sources: [winkel_etal2009]
+    pages:
+      - path: docs/agropastoral-literature-2026-11-18.md
+        anchor: Sheltered quinoa leaves were warmer during radiative cooling.
+
+  - id: claim.research.potato_genotype_timing
+    statement: >
+      Condori and colleagues' modern field-informed simulations distinguish potato
+      genotype and frost timing; resistant monocultures can outperform mixtures.
+    layer: documented
+    status: partly_supported
+    sources: [condori_etal2014]
+    pages:
+      - path: docs/agropastoral-literature-2026-11-18.md
+        anchor: Resistant monocultures sometimes outperformed the simulated mixtures.
+
+  - id: claim.research.quinoa_stage
+    statement: >
+      Jacobsen and colleagues' controlled exposures found stage-dependent quinoa
+      frost damage; seedling tolerance cannot be applied throughout development.
+    layer: documented
+    status: partly_supported
+    sources: [jacobsen_etal2005]
+    pages:
+      - path: docs/agropastoral-literature-2026-11-18.md
+        anchor: Quinoa frost damage depended on developmental stage and exposure duration.
+
+  - id: claim.research.laramate_soils
+    statement: >
+      Leceta and colleagues found generally favourable but variable terrace soil
+      properties at Laramate, with uncertainty about recovery after abandonment.
+    layer: interpretation
+    status: partly_supported
+    sources: [leceta_etal2024]
+    pages:
+      - path: docs/agropastoral-literature-2026-11-18.md
+        anchor: The three Laramate terrace systems did not have identical soil responses.
+
+  - id: claim.research.potato_land_access
+    statement: >
+      Arce and colleagues' contemporary landscape comparison shows that market
+      production and landrace conservation can coexist; land access matters.
+    layer: documented
+    status: partly_supported
+    sources: [arce_etal2019]
+    pages:
+      - path: docs/agropastoral-literature-2026-11-18.md
+        anchor: Commercial production and landrace conservation coexisted in the surveyed landscapes.
+
+  - id: claim.research.engineered_pasture
+    statement: >
+      Lane and colleagues interpret archaeological and palaeoenvironmental evidence
+      as pre-Hispanic enhancement of camelid wetland pasture in the upper Ica drainage.
+    layer: interpretation
+    status: partly_supported
+    sources: [lane_etal2022]
+    pages:
+      - path: docs/agropastoral-literature-2026-11-18.md
+        anchor: Bofedal pasture could be enlarged through hydraulic infrastructure.
+
+  - id: claim.research.camelid_diets
+    statement: >
+      Castellaro and colleagues' Parinacota study reports differing seasonal llama
+      and alpaca diets with substantial overlap, rather than complete niche separation.
+    layer: documented
+    status: partly_supported
+    sources: [castellaro_etal2004]
+    pages:
+      - path: docs/agropastoral-literature-2026-11-18.md
+        anchor: Llama and alpaca diets differed but overlapped substantially.
+
+  - id: claim.research.llama_energetics
+    statement: >
+      Riek and colleagues measured environmentally variable energy expenditure and
+      body temperature in seven adult non-pregnant female llamas at high altitude.
+    layer: documented
+    status: partly_supported
+    sources: [riek_etal2019]
+    pages:
+      - path: docs/agropastoral-literature-2026-11-18.md
+        anchor: Adult llama energetics varied with environmental conditions and movement.
+
+  - id: claim.research.cria_cohort
+    statement: >
+      Gomez-Quispe and colleagues observed 22 deaths among 100 newborn alpacas in
+      a 2019 cohort, all during the first six weeks; causes were not established
+      by necropsy and the study did not isolate frost effects.
+    layer: documented
+    status: supported
+    sources: [gomezquispe_etal2022]
+    pages:
+      - path: docs/agropastoral-literature-2026-11-18.md
+        anchor: The 2019 alpaca cohort had 22 deaths among 100 crias.
+
+  - id: claim.research.cria_protection
+    statement: >
+      Valenzuela and colleagues' modern trial reports higher survival with body
+      vests, but no statistically significant shed-versus-open-corral difference.
+    layer: documented
+    status: partly_supported
+    sources: [valenzuela_etal2021]
+    pages:
+      - path: docs/agropastoral-literature-2026-11-18.md
+        anchor: The body-vest group outperformed both comparison groups in the modern trial.
+
+  - id: claim.research.caravan_supplies
+    statement: >
+      Lecoq's historical account connects llama caravans and their workers to
+      supplying colonial Potosi with food and other necessities.
+    layer: documented
+    status: partly_supported
+    sources: [lecoq1998]
+    pages:
+      - path: docs/agropastoral-literature-2026-11-18.md
+        anchor: Llama caravans helped provision colonial Potosi.
+
+  - id: claim.research.fertilizer_isotopes
+    statement: >
+      Szpak and colleagues report fertilizer effects on maize nitrogen isotopes,
+      which can complicate dietary reconstruction; these are not calorie estimates.
+    layer: documented
+    status: partly_supported
+    sources: [szpak_etal2012_field]
+    pages:
+      - path: docs/agropastoral-literature-2026-11-18.md
+        anchor: Fertilizer can alter the isotopic baseline used to reconstruct diet.
+
+  - id: claim.climate.frost_controls
+    statement: "Clouds, humidity and soil moisture influence minimum temperature together."
+    layer: documented
+    status: partly_supported
+    sources: [saavedra_takahashi2017]
+    pages:
+      - path: docs/climate-weather-literature-2026-11-18.md
+        anchor: "Clouds, humidity and soil moisture influence minimum temperature together."
+    notes: "Modern site observations and heat-transfer modelling identify related controls; their joint historical crop-loss effects remain uncalibrated."
+
+  - id: claim.climate.proxy_scales
+    statement: "Plant-wax proxies distinguish regional circulation from local moisture stress."
+    layer: interpretation
+    status: partly_supported
+    sources: [saelim_etal2025]
+    pages:
+      - path: docs/climate-weather-literature-2026-11-18.md
+        anchor: "Plant-wax proxies distinguish regional circulation from local moisture stress."
+    notes: "Proxy interpretations depend on vegetation, hydrology and age models; annual resampling does not resolve individual harvests."
+
+  - id: claim.climate.topoclimate
+    statement: "Regional elevation effects coexist with local terrain effects on frost occurrence."
+    layer: documented
+    status: partly_supported
+    sources: [pouteau_etal2011]
+    pages:
+      - path: docs/climate-weather-literature-2026-11-18.md
+        anchor: "Regional elevation effects coexist with local terrain effects on frost occurrence."
+    notes: "Scale-dependent modern temperature occurrence; no calibrated joint plot-loss distribution or crop injury."
+
+  - id: claim.climate.season_timing
+    statement: "Rainfall onset, dry spells and growing-season length interact."
+    layer: documented
+    status: partly_supported
+    sources: [garcia_etal2007]
+    pages:
+      - path: docs/climate-weather-literature-2026-11-18.md
+        anchor: "Rainfall onset, dry spells and growing-season length interact."
+    notes: "Four modern stations; transcription needs original table verification before numerical use."
+
+  - id: claim.climate.drought_heterogeneity
+    statement: "Area averages can conceal local drought impacts."
+    layer: documented
+    status: partly_supported
+    sources: [canedorosso_etal2021]
+    pages:
+      - path: docs/climate-weather-literature-2026-11-18.md
+        anchor: "Area averages can conceal local drought impacts."
+    notes: "Modern satellite indicators measure conditions, not consumption; ENSO has exceptions."
+
+  - id: claim.climate.agricultural_adaptation
+    statement: "Ancient field placement and management addressed local climatic constraints."
+    layer: interpretation
+    status: partly_supported
+    sources: [cruz_etal2024]
+    pages:
+      - path: docs/climate-weather-literature-2026-11-18.md
+        anchor: "Ancient field placement and management addressed local climatic constraints."
+    notes: "Archaeological and ethnographic interpretation, not causal experimental effects of obligations or protection."
+
+  - id: claim.climate.enso_geography
+    statement: "ENSO rainfall relationships differ across southern Peru and Bolivia."
+    layer: documented
+    status: partly_supported
+    sources: [jonaitis_etal2021]
+    pages:
+      - path: docs/climate-weather-literature-2026-11-18.md
+        anchor: "ENSO rainfall relationships differ across southern Peru and Bolivia."
+    notes: "Station-group differences include insignificant opposite signs; no deterministic inverse rules."
+
+  - id: claim.climate.monsoon_history
+    statement: "The Pumacocha record constrains broad monsoon history."
+    layer: documented
+    status: partly_supported
+    sources: [bird_etal2011]
+    pages:
+      - path: docs/climate-weather-literature-2026-11-18.md
+        anchor: "The Pumacocha record constrains broad monsoon history."
+    notes: "Regional isotope reconstruction does not uniquely specify local moisture, frost or harvest weather."
+
+  - id: claim.climate.frost_definitions
+    statement: "Freezing conditions, crop injury and protection mechanisms are distinct."
+    layer: documented
+    status: partly_supported
+    sources: [fao_frost2005_vol1]
+    pages:
+      - path: docs/climate-weather-literature-2026-11-18.md
+        anchor: "Freezing conditions, crop injury and protection mechanisms are distinct."
+    notes: "Modern physics reference; no historical effect-size calibration."
+
+  - id: claim.climate.protection_economics
+    statement: "Protection decisions depend on uncertain benefits and costs."
+    layer: documented
+    status: partly_supported
+    sources: [fao_frost2005_vol2]
+    pages:
+      - path: docs/climate-weather-literature-2026-11-18.md
+        anchor: "Protection decisions depend on uncertain benefits and costs."
+    notes: "Modern decision framework only; no historical cost or probability estimates."
+
+  - id: claim.climate.food_access_limits
+    statement: "Own-farm production shortfalls do not establish observed starvation."
+    layer: documented
+    status: partly_supported
+    sources: [wernke_whitmore2009]
+    pages:
+      - path: docs/climate-weather-literature-2026-11-18.md
+        anchor: "Own-farm production shortfalls do not establish observed starvation."
+    notes: "Production sufficiency model excludes or cannot fully quantify tribute, herding, exchange and sharing; not measured daily consumption or mortality."
 
   - id: claim.research.wage_purchasing_power
     statement: "Reconstructed purchasing power differs between free miners and mita workers."

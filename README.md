@@ -30,7 +30,7 @@ The game is a teaching model, not a reconstruction. The default plan, played wit
 | | Inca years | Colonial years |
 |---|---|---|
 | Food available per person per day | ~1,670 kcal | ~1,390 kcal |
-| Caloric Welfare Index (out of 100) | ~70 | ~49 |
+| Caloric Welfare Index (out of 100) | ~64 | ~46 |
 | GDP per person (index, Maddison 1500 = 100) | ~101 | ~109 |
 
 Each harvest is followed by a winter that sets how much chuño a crew can freeze-dry (hard, normal or mild; a game assumption). It leaves these averages almost unchanged but moves single runs: colonial food differs by up to about 100 kcal a day, mostly because mild Inca winters leave smaller stores to carry past 1573.
@@ -118,11 +118,29 @@ These notes record proposed gameplay changes; they do not implement them.
 
 Its readings were checked by an adversarial review before merging: six papers read only in part are recorded as `sections_read`, so the claims resting on them are `partly_supported`, not `supported`.
 
+The [crop and camelid reading notes](docs/agropastoral-literature-2026-11-18.md)
+add twelve bounded sources, including the supplied Winkel and alpaca-survival
+papers. The [implementation review after PR #29](docs/implementation-review-2026-11-18.md)
+distinguishes resolved upstream issues from remaining commodity, herd, water,
+seed, market and historical-time limits. Its diagnostics reuse the existing
+model check; they introduce no new gameplay rules or historical parameter values.
+
+The [climate and weather review](docs/climate-weather-literature-2026-11-18.md)
+adds ten sources and extends the reading of Wernke and Whitmore (2009). It
+distinguishes regional climate, local frost exposure, crop damage and food access;
+the supplied Saavedra and Takahashi (2017) and Sae-Lim et al. (2025) papers resolve
+two earlier full-text gaps. The [weather debrief proposal](docs/weather-debrief-proposal-2026-11-18.md)
+sets out how to compare a defined strategy across different weather without
+confusing that exercise with the existing same-weather benchmarks. These are
+evidence notes and proposed behaviour, with no gameplay changes or new calibrated
+weather parameters. All new source readings are recorded as `sections_read` and
+the eleven new claims as `partly_supported`.
+
 The [seven-paper food-access and recovery review](docs/food-access-recovery-literature-2026-11-18.md)
 examines wages and purchasing power, quota fulfilment, seed exchange, spatial pest
 effects, dung resources and household mining work. Its
 [implementation-gap review](docs/food-access-recovery-gaps-2026-11-18.md) is based
-on main through PR #26 and proposes an order of work without changing gameplay.
+on main through PR #29 and proposes an order of work without changing gameplay.
 Five sources are newly registered and two earlier readings extended; all seven
 are `sections_read`, with nine new claims at `partly_supported`.
 
