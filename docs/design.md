@@ -184,7 +184,9 @@ reports.
   time, and any click takes over.
 - Predictions first: the player commits to a guess before playing. The end
   screen grades the food prediction against a fair comparison (same people, same
-  weather) and shows the GDP one for discussion, ungraded.
+  weather). GDP is asked as "what raised it?" (silver, fewer people, both), and
+  the end screen answers it from the game's own split, ungraded: the headline
+  already says GDP grew, so asking whether it would rise only primed the answer.
 - Replay with the same weather (`?seed=N` in the address) so a class can compare
   one changed choice.
 
