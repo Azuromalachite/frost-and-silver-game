@@ -52,7 +52,8 @@ states a claim more strongly than its registry entry allows is wrong.
   Maddison's 416 and 438; matching them is a design choice, not evidence.
 - **Name a single cause for the GDP rise.** It depends on the decomposition.
   At the game's settings (default plan, seeds 1–80) silver adds about 8 index
-  points and the mita's lost field labour takes about 6.5 back, while the
+  points and the field output lost to the mita and resettlement takes about
+  6.5 back (resettlement about 2.5 of it), while the
   population collapse adds about 6.5, mostly through the player's re-plan
   ("Best land first" drops chuño crews and high fields); more land per survivor is about
   1.5 of that. With best land first, without silver GDP barely rises (+0.07);

@@ -133,7 +133,7 @@ def check(root):
             errors.append(f"{where}: no statement")
 
         keys = c.get("sources") or []
-        if not keys:
+        if not keys and layer != "game_result":  # a game result is the model's own output
             errors.append(f"{where}: no sources")
         for k in keys:
             if k not in source_by_key:
