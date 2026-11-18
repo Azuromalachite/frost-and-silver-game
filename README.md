@@ -30,7 +30,7 @@ The game is a teaching model, not a reconstruction. The default plan, played wit
 | | Inca years | Colonial years |
 |---|---|---|
 | Food available per person per day | ~1,670 kcal | ~1,390 kcal |
-| Caloric Welfare Index (out of 100) | ~70 | ~49 |
+| Caloric Welfare Index (out of 100) | ~64 | ~46 |
 | GDP per person (index, Maddison 1500 = 100) | ~101 | ~109 |
 
 Each harvest is followed by a winter that sets how much chuño a crew can freeze-dry (hard, normal or mild; a game assumption). It leaves these averages almost unchanged but moves single runs: colonial food differs by up to about 100 kcal a day, mostly because mild Inca winters leave smaller stores to carry past 1573.
