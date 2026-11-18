@@ -44,13 +44,15 @@ const SHARES_WINS = {default: 0, '5/5/3/1 no chuño': 24};
 const FIELD_LOSS_1_80 = {total: -6.5, resettlement: -2.5};
 // The changing plan named on the end screen beats the hindsight-best fixed plan on this many of seeds 1-80, both judged
 // the end screen's way (betterOutcome: hunger deaths, then food after 1573, then welfare).
-const CHANGING_WINS = 40; // 58 when judged on welfare alone // 57 before terraces stopped counting as protection in their build year, then 52; 58 since resilience no longer rewards spreading
+const CHANGING_WINS = 42; // 58 when judged on welfare alone; 40 before resilience counted the full 14 crews // 57 before terraces stopped counting as protection in their build year, then 52; 58 since resilience no longer rewards spreading
 // The end screen's plan chosen in advance (ADVANCE_PLAN): best by betterOutcome on mean results over seeds 1-40, 41-80
 // and 1-80; its mean welfare, colonial food and hunger deaths on seeds 1-80, and the seeds where it reaches 1,700 kcal.
-const ADVANCE = {chosen: [true, true, true], w: 67.2, k2: 1550, deaths: 18.9, reach1700: 21};
+const ADVANCE = {chosen: [true, true, true], w: 65.3, k2: 1550, deaths: 18.9, reach1700: 21};
 // The plan offered as chosen in advance, seeds 1-80: welfare must fall after 1573 as food does (the key message). Mean
 // welfare Inca -> colonial and the seeds where it rises; it rose on 49 when resilience could max out with people hungry.
-const ADVANCE_WELFARE = {inca: 73, colonial: 61.3, rises: 19};
+const ADVANCE_WELFARE = {inca: 72.6, colonial: 58, rises: 2, h4StrictlyBest: 0};
+// (until review 4: 73 -> 61.3 with 19 rises, and harvest 4 the advance plan's strictly best harvest on 48 seeds, because
+// resilience counted protected crews against the crews left after the collapse rather than the community's 14)
 // Quoted elsewhere and checked here (review round 3 found them unchecked):
 // - Hard: the general plan's hunger deaths (intro, teaching guide "92 against 4", hard-mode doc);
 // - Extreme: the fewest hunger deaths of any tested plan (intro "no tested plan avoids hunger", hard-mode doc ~130);
@@ -60,7 +62,7 @@ const ADVANCE_WELFARE = {inca: 73, colonial: 61.3, rises: 19};
 // - the rules' food effect averaged over seeds 1-80 (README "about -480", hard-mode doc -479);
 // - the README table of default-plan means (food to the nearest 5 kcal, welfare and GDP index to the nearest 1).
 const HARD_GENERAL_DEATHS = 4.1, EXTREME_MIN_DEATHS = 130.4, STANDARD_ADVANCE_FOOD = 1530, BEST_GRID_FOOD = 1580;
-const HINDSIGHT = {deaths: 16.3, k2: 1561, w: 67.5, reach1700: 22};
+const HINDSIGHT = {deaths: 16.3, k2: 1561, w: 65.4, reach1700: 22};
 const RULES_FOOD_EFFECT_1_80 = -479;
 const README_MEANS = {food: [1675, 1385], welfare: [64, 46], gdp: [102, 109]};
 const REPLAN = 'best'; // the pinned run's re-plan choice
@@ -140,7 +142,7 @@ function playPlans(code, seed, planFor) {
   }
   const h = S().hist, a = h.slice(0, 3), b = h.slice(3);
   return {w: h.reduce((s, r) => s + r.cwi, 0) / 6, deaths: h.reduce((s, r) => s + Math.max(0, r.popBefore - r.pop), 0),
-    k2: b.reduce((s, r) => s + r.intake, 0) / 3, w1: a.reduce((s, r) => s + r.cwi, 0) / 3, w2: b.reduce((s, r) => s + r.cwi, 0) / 3};
+    k2: b.reduce((s, r) => s + r.intake, 0) / 3, w1: a.reduce((s, r) => s + r.cwi, 0) / 3, w2: b.reduce((s, r) => s + r.cwi, 0) / 3, ws: h.map(r => r.cwi)};
 }
 const BOARD_5531 = g => { if (g.state.year <= 3) { Object.assign(g.state.alloc, {yunga:5, quechua:5, suni:3, puna:1}); g.state.chuno = 0; g.state.wage = 0; g.clampAlloc(); } };
 const GENERAL = {build:['yunga'], incaChuno:1, incaRule:'best', colChuno:0, wage:0, colRule:'best'};
@@ -207,9 +209,13 @@ function check(html, {heavy = true} = {}) {
 
   // The changing plan the end screen names, against the best fixed plan picked after the weather is known.
   // The plan offered as chosen in advance loses welfare after 1573, as food falls (claim.game.welfare_index).
-  let aw = {inca: 0, colonial: 0, rises: 0};
-  for (let seed = 1; seed <= 80; seed++) { const t = playPlans(code, seed, () => g.ADVANCE_PLAN); aw.inca += t.w1 / 80; aw.colonial += t.w2 / 80; if (t.w2 > t.w1) aw.rises++; }
-  aw = {inca: r1(aw.inca), colonial: r1(aw.colonial), rises: aw.rises};
+  // ...and its first colonial harvest is never strictly its best one (it may tie an Inca harvest: fed, with the stores
+  // carried across the 70 years)
+  let aw = {inca: 0, colonial: 0, rises: 0, h4StrictlyBest: 0};
+  for (let seed = 1; seed <= 80; seed++) { const t = playPlans(code, seed, () => g.ADVANCE_PLAN); aw.inca += t.w1 / 80; aw.colonial += t.w2 / 80; if (t.w2 > t.w1) aw.rises++;
+    if (t.ws[3] > Math.max(...t.ws.filter((_, i) => i !== 3)) + 0.5) aw.h4StrictlyBest++; }
+  aw = {inca: r1(aw.inca), colonial: r1(aw.colonial), rises: aw.rises, h4StrictlyBest: aw.h4StrictlyBest};
+  soft(() => assert.ok(aw.h4StrictlyBest <= 8, `harvest 4 (c. 1575) is the advance plan's best harvest on ${aw.h4StrictlyBest} of 80 seeds: life looks best just after the mita and the collapse`));
   soft(() => assert.deepEqual(aw, ADVANCE_WELFARE, 'the advance plan\'s welfare across 1573 moved: it must fall as food falls; update ADVANCE_WELFARE and claim.game.welfare_index'));
   soft(() => assert.ok(aw.colonial < aw.inca - 5, `the advance plan's welfare does not fall after 1573 (${aw.inca} -> ${aw.colonial}), while food does: the welfare index contradicts the key message`));
 
@@ -297,7 +303,9 @@ const PLANTS = [
   ['advance plan changed', "const ADVANCE_PLAN = {build: ['yunga'], incaChuno: 1,", "const ADVANCE_PLAN = {build: ['yunga'], incaChuno: 2,", [/advance plan/], true],
   // terraces counted as protection in the year they are built again: the changing plan's record moves
   // resilience maxing out for survivors on terraced land however hungry they are: welfare stops falling after 1573
-  ['resilience ignores hunger', 'res: 20 * protShare * Math.min(1, intake / GOAL) * Math.min(1, (S.store / GOAL * 365) / 90)', 'res: 20 * protShare', [/does not fall after 1573/]],
+  ['resilience ignores the stores', 'res: 20 * protShare * Math.min(1, (S.store / GOAL * 365) / 90)', 'res: 20 * protShare', [/advance plan's welfare across 1573 moved/]],
+  // protection as a share of the crews left: survivors crowded onto terraces score as fully protected again
+  ['resilience against the crews left', '0) / BASE_CREWS;', '0) / Math.max(1, farm);', [/best harvest on/]],
   // (welfare only: since plans are ranked by deaths first it no longer moves the changing plan's count)
   ['terraces protect a year early', "builtBefore[z.key] && z.build ? S.alloc[z.key] : 0", "S.built[z.key] && z.build ? S.alloc[z.key] : 0", [/advance plan's welfare across 1573 moved/, /advance plan is no longer the best/], true],
 ];

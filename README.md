@@ -103,6 +103,14 @@ The checker prints the current number of claims and sources, and how many histor
 
 Some of these were added from a reference collection's reading notes; the papers themselves have not all been re-read for this version.
 
+## Status: a frozen teaching baseline, and research beside it
+
+Since 18 November 2026 the game is frozen as a teaching baseline: it gets fixes,
+accessibility work and changes from classroom feedback or the original author,
+not new mechanics. Questions the evidence base has opened beyond the game's one
+lesson are investigated in [`research/`](research/README.md) as separate,
+pre-registered models that are allowed to contradict the game.
+
 ## Research contribution, 18 November 2026
 
 The [Codex-assisted research review](docs/research-review-2026-11-18.md) records
