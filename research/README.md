@@ -44,7 +44,7 @@ herds, obligations). A model that changes the structure is compared with the gam
 |---|---|---|
 | 1 | Does the lesson survive the game's structural choices (the player's plan; fixed tribute)? | done: robust, all four cells ≥ 2/3 ([results](results/2026-11-18-structural-robustness.md)) |
 | 2 | When does work at Potosí raise a household's food? | done: hired work raised food in 3.4% of draws, mita in 0%; supports the game's rule within these ranges; the Godoy costs carry it ([results](results/2026-11-19-wage-food-breakeven.md)). 2b waits for Bakewell pp. 102–104 prices |
-| 3 | Does planting late give the Pleiades forecast decision value, robustly or only at a tuned cost? | done: robust; late when hazy saves about 6 deaths a game at 10% / 5% on holdout seeds and wins in 9 of 14 band cells; all four graduation rules pass, so it goes to the author as a proposal; two predictions missed ([results](results/2026-11-19-plant-late.md)) |
+| 3 | Does planting late give the Pleiades forecast decision value, robustly or only at a tuned cost? | done: robust; late when hazy saves about 6 deaths a game at 10% / 5% on holdout seeds and wins in 9 of 14 band cells; all four graduation rules pass; two predictions missed ([results](results/2026-11-19-plant-late.md)). **Graduated** into the game by the author's decision, 2026-11-19 |
 
 ## Layout
 

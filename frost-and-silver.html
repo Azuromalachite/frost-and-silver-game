@@ -121,6 +121,7 @@ input[type=radio]{width:20px;height:20px;accent-color:var(--accent);vertical-ali
 .dxs{display:flex;flex-wrap:wrap;gap:8px 18px}
 .dx{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:14px;font-weight:700}
 .dxhint{flex:1 1 220px;max-width:44ch;font:400 12px/1.35 var(--f-body);color:var(--muted)}
+.dx .build{flex:0 0 auto;white-space:nowrap;font-weight:600} /* the plant-late toggle keeps its label on one line */
 .dgo{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin-left:auto}
 .flog{border-top:1px solid var(--line);background:var(--surface);padding:6px 10px 8px}
 .flog summary{font:800 12px var(--f-display);text-transform:uppercase;letter-spacing:.08em;cursor:pointer;color:var(--ink)}
@@ -455,6 +456,9 @@ textarea,input[type=text]{font:15px var(--f-body);padding:8px;border-radius:4px;
 // GDP_TOL: a GDP change smaller than this ($, = 3 index points) reads as "stay" (the GDP effect is shown, not graded)
 const GDP_TOL = 12.5;
 const GOAL = 1700, COLONIAL = 1200, GDP_ANCHOR = 416, BASE_CREWS = 14, BASE_CAP = 5, CHUNO_CAP = 120;
+// Planting late (graduated from research experiment 3): a late planting loses 10% in a dry year instead of 25%, and
+// 5% in a normal one. Game figures; Orlove et al. 2000 support only the practice of adjusting planting dates.
+const LATE_DRY = .90, LATE_NORMAL = .95;
 // Chuño is made in the dry-season winter after the harvest: potatoes freeze at night and dry in the sun by day.
 // How much a crew can freeze-dry depends on that winter's nights (game assumption; the multipliers average 1).
 const WINTER_CHUNO = {hard: 1.3, normal: 1, mild: 0.7};
@@ -560,7 +564,7 @@ let S;
 function fresh(){
   return {phase:'intro', year:1, pop:1000, store:150, built:{yunga:false,quechua:false,suni:false,puna:false},
     building:{yunga:false,quechua:false,suni:false,puna:false},
-    alloc:{yunga:4,quechua:4,suni:3,puna:1}, chuno:2, wage:0, yr:null, hist:[], pred:{}, hyp:'', who:'', anim:null,
+    alloc:{yunga:4,quechua:4,suni:3,puna:1}, chuno:2, wage:0, plantLate:false, yr:null, hist:[], pred:{}, hyp:'', who:'', anim:null,
     N1573:0, mitaCrews:0, tribTotal:0, seed: URL_SEED || Math.floor(Math.random() * 2147483646) + 1, mode: URL_SEED ? (wxKeyFor(URL_SEED) || 'link') : 'random', replanKinds: [], seen: {}, log: []};
 }
 S = fresh();
@@ -618,7 +622,7 @@ function grow(strength, alloc, colonial){
   ZONES.forEach((z,i) => {
     const prot = S.built[z.key] && !!z.build;
     const E = (alloc[z.key] || 0) * strength;
-    const base = (E > 0 ? z.y * BASE_CAP * Math.pow(E / BASE_CAP, ALPHA) : 0) * (prot ? 1.1 : 1) * (Y.drought ? .75 : 1) * per;
+    const base = (E > 0 ? z.y * BASE_CAP * Math.pow(E / BASE_CAP, ALPHA) : 0) * (prot ? 1.1 : 1) * (Y.drought ? (S.plantLate ? LATE_DRY : .75) : (S.plantLate ? LATE_NORMAL : 1)) * per;
     const froze = i >= Y.line;
     const rate = froze ? (prot ? z.lo : z.hi) : 0;
     H += base * (1 - rate); lost += base * rate;
@@ -669,6 +673,7 @@ function renderPlan(){
   // one line beside each stepper saying what that crew does (the mechanism, not the best number)
   let dx = `<div class="dx">Chuño ${stepper('data-x', 'chuno', S.chuno, S.chuno > 0, free > 0, 'chuño')}<span class="dxhint">Grows no food. Freeze-dries this harvest's surplus into stores for a bad year: about ${CHUNO_CAP} kcal per person a day per crew, more in a hard winter. No surplus, nothing to dry.</span></div>`;
   if (act(S.year) === 2) dx += `<div class="dx">Potosí wages ${stepper('data-x', 'wage', S.wage, S.wage > 0, free > 0, 'Potosí wages')}<span class="dxhint">Grows no food. Earns silver, which counts as output (GDP), and pays part of the tribute.</span></div>`;
+  dx += `<div class="dx"><button class="build" data-late="1" aria-pressed="${!!S.plantLate}" style="--zc:var(--muted)">${S.plantLate ? '✓ Planting late' : 'Plant late'}</button><span class="dxhint">Shift potato planting later, as Andean farmers adjust planting dates when they expect poor rains. Costs 5% of the harvest in a normal year; cuts a dry year's loss from 25% to 10% (game figures).</span></div>`;
   $('dextras').innerHTML = dx;
   // descriptions: in the panel below
   $('zones').innerHTML = ZONES.map(z => `<div class="zone" style="--zc:var(${z.c})">
@@ -874,6 +879,7 @@ document.addEventListener('click', e => {
     S.alloc[z.key] = Math.max(0, S.alloc[z.key] + d); renderPlan(); handSet(); }
   else if (t.dataset.x) { const k = t.dataset.x, d = +t.dataset.d; if (d > 0 && free <= 0) return why('No free crews: take one off a zone first.');
     S[k] = Math.max(0, S[k] + d); renderPlan(); handSet(); }
+  else if (t.dataset.late) { S.plantLate = !S.plantLate; renderPlan(); }
   else if (t.dataset.b) { const k = t.dataset.b, z = ZONES.find(q => q.key === k);
     if (!S.building[k] && free < 2) return why(`Building ${z.what} takes 2 free crews; you have ${free}. Take crews off a zone first.`);
     S.building[k] = !S.building[k]; renderPlan(); handSet(); }
@@ -919,7 +925,7 @@ function renderForecast(){
   const txt = hz
     ? 'The Pleiades rose hazy and dim. Andean farmers today read this as poor rains ahead. In this game about 3 in 7 hazy years turn dry (1 in 5 years overall).'
     : 'The Pleiades rose bright and clear. Andean farmers today expect normal rains. In this game about 1 in 13 clear years turns dry (1 in 5 years overall).';
-  el.innerHTML = `<p><b>June forecast</b>${txt}<span class="fnote">A dry year cuts every zone by the same quarter, so moving crews between zones cannot escape it (game rule).</span></p>${forecastStrip(hz, txt)}`;
+  el.innerHTML = `<p><b>June forecast</b>${txt}<span class="fnote">A dry year cuts every zone by the same quarter, so moving crews cannot escape it; planting late softens it, at a cost (below).</span></p>${forecastStrip(hz, txt)}`;
 }
 
 /* ---------- year resolution ---------- */
@@ -979,7 +985,7 @@ function harvest(){
     res: 20 * protShare * Math.min(1, (S.store / GOAL * 365) / 90) /* protection counts only for a community with stores (stores are eaten before anyone goes short, so empty stores also mean hunger; a separate food factor never took effect). Until 2026-11-18 30% of this part rewarded spreading, which this game's frost never pays */};
   const cwi = cwiParts.cal + cwiParts.buf + cwiParts.res;
   const rec = {year:S.year, act:act(S.year), cwi, cwiParts, alloc: {...S.alloc}, chuno: S.chuno, gidx: gdp / 416 * 100, H, lost, saved, tribute, tRate, ret, stateOut, d, rf: a2 ? reducNow() : 1, toStore, spoiled, draw, intake, avail, gdp, silver, cf,
-    pop:S.pop, popBefore, mita, wage:S.wage, line:Y.line, drought:Y.drought, hazy:Y.hazy, winter:Y.winter, chunoRoom: S.chuno * CHUNO_CAP * wm * per, zr, builtNow,
+    pop:S.pop, popBefore, mita, wage:S.wage, line:Y.line, drought:Y.drought, hazy:Y.hazy, late:!!S.plantLate, winter:Y.winter, chunoRoom: S.chuno * CHUNO_CAP * wm * per, zr, builtNow,
     idle: 0, storeDays: S.store / GOAL * 365};
   S.hist.push(rec);
   return rec;
@@ -1043,8 +1049,11 @@ function whyList(r){
   // The hint used to point only to waru waru, in High grain; "Best land first" at 1573 then leaves High grain empty, so a
   // student who followed every hint wasted the build. Valley terraces protect and widen the best land, which stays farmed.
   else if (r.year <= 4 && r.line < 3 && !S.built.yunga) out.push('In this game, terraces cut a zone\'s frost loss by a third and waru waru by more than half, but a build pays only while crews farm its zone. Valley terraces mainly widen your best land (more room, +10% yield; the valley itself rarely freezes), and it stays farmed after crews fall; waru waru in High grain pay only if crews still farm there.');
-  if (r.drought) out.push(`A dry year cut every harvest by a quarter (game figure; in the southern Andes El Niño years tend to be dry, though not everywhere).${r.hazy ? ' The Pleiades rose hazy, and as in about 3 of every 7 hazy years, the rains failed.' : ' The Pleiades rose clear: about 1 in 13 clear years still turns dry.'} A dry year cuts every zone alike, so moving crews could not have escaped it.`);
-  else out.push(r.hazy ? 'Hazy Pleiades, but the rains came: about 4 in 7 hazy years bring normal rains.' : 'Clear Pleiades, and normal rains came.');
+  const sky = r.hazy ? ' The Pleiades rose hazy, and as in about 3 of every 7 hazy years, the rains failed.' : ' The Pleiades rose clear: about 1 in 13 clear years still turns dry.';
+  if (r.drought && r.late) out.push(`A dry year (game figure; in the southern Andes El Niño years tend to be dry, though not everywhere). You planted late: the drought took 10% of the harvest, not 25%.${sky}`);
+  else if (r.drought) out.push(`A dry year cut every harvest by a quarter (game figure; in the southern Andes El Niño years tend to be dry, though not everywhere).${sky}${r.hazy ? ' Planting late would have cut the loss to 10%.' : ' Moving crews could not have escaped it.'}`);
+  else if (r.late) out.push(r.hazy ? 'Hazy, but the rains came: planting late cost 5% of the harvest.' : 'The rains came: planting late cost 5% of the harvest.');
+  else out.push(r.hazy ? 'Hazy Pleiades, but the rains came: about 4 in 7 hazy years bring normal rains. Planting on time paid off.' : 'Clear Pleiades, normal rains: planting on time paid off.');
   if (r.act === 1) out.push(`One man in ten worked the state and temple fields under the Inca labour duty; ${fmt(r.ret)} came back as feasts and rations (game assumption: half the state harvest).`);
   if (r.act === 2 && r.silver > 0) out.push(r.year === 4
     ? 'Potosí\'s silver output is about to surge: mercury amalgamation, introduced in the 1570s, let miners refine poorer ore. In the game, each mine worker\'s silver is worth more in later harvests (game figure).'
@@ -1075,7 +1084,8 @@ function logHarvest(r){
   if (r.line === 4) logAdd(tag, 'No frost.');
   else if (r.lost < 1) logAdd(tag, `Frost down to the ${zone} zone; no crops there.`);
   else logAdd(tag, `Frost down to the ${zone} zone: −${fmt(r.lost)}${r.saved > 0 ? `; terraces and raised fields saved ${fmt(r.saved)}` : ''}.`, 'neg');
-  if (r.drought) logAdd(tag, `Dry year (in the southern Andes El Niño years tend to be dry, though not everywhere): every zone −25% (game figure). ${r.hazy ? 'Pleiades hazy (3 in 7 hazy years turn dry).' : 'Pleiades clear (1 in 13 clear years turns dry).'}`, 'neg');
+  if (r.drought) logAdd(tag, `Dry year (in the southern Andes El Niño years tend to be dry, though not everywhere): every zone −${r.late ? '10%, planted late' : '25%'} (game figure). ${r.hazy ? 'Pleiades hazy (3 in 7 hazy years turn dry).' : 'Pleiades clear (1 in 13 clear years turns dry).'}`, 'neg');
+  else if (r.late) logAdd(tag, `Planted late; the rains came: −5% (game figure). Pleiades ${r.hazy ? 'hazy' : 'clear'}.`);
   else logAdd(tag, r.hazy ? 'Hazy Pleiades, but the rains came.' : 'Clear Pleiades, normal rains.');
   if (r.ret > 0) logAdd(tag, `Inca feasts and rations +${fmt(r.ret)}.`, 'pos');
   if (r.tribute > 0) logAdd(tag, `Tribute −${fmt(r.tribute)} (${Math.round(r.tRate*100)}% of the harvest; game rule).`, 'neg');
@@ -1286,7 +1296,7 @@ function replanProjection(){
 // Moving on, state only (no screen): used by the game and by the same-weather comparison of tested plans.
 function advanceState(){
   const prevBase = S.lastBase ?? BASE_CREWS, usedBefore = used(), before = planCounts();
-  S.year++; S.yr = rollYear(); S.phase = 'plan'; S.anim = null;
+  S.year++; S.yr = rollYear(); S.phase = 'plan'; S.anim = null; S.plantLate = false;
   const late = S.year === 5;
   if (late) { S.store /= (1 - LATE_EPIDEMIC); S.pop *= (1 - LATE_EPIDEMIC); } // same food, fewer people
   if (S.replan && S.replan.kind) S.replanKinds.push(S.replan.kind); // the choice made at the last re-plan
@@ -1699,6 +1709,7 @@ function showEnd(){
       const diffs = [];
       ZONES.forEach(z => { if (r.alloc[z.key] !== p.alloc[z.key]) diffs.push(`${zname(z.key)} ${p.alloc[z.key]} → ${r.alloc[z.key]} crews`); });
       if (r.chuno !== p.chuno) diffs.push(`chuño ${p.chuno} → ${r.chuno}`);
+      if (!!r.late !== !!p.late) diffs.push(`planted ${p.late ? 'late' : 'on time'} → ${r.late ? 'late' : 'on time'}`);
       if (r.wage !== p.wage) diffs.push(`wage crews ${p.wage} → ${r.wage}`);
       if (r.builtNow.join() !== p.builtNow.join()) diffs.push(`built ${p.builtNow.join(' and ') || 'nothing'} → ${r.builtNow.join(' and ') || 'nothing'}`);
       if (diffs.length) changes.push(`<li>Harvest ${r.year}: ${diffs.join('; ')}</li>`);
@@ -1886,7 +1897,7 @@ function reportText(k1,k2,g1,g2,cg,dk,hungerDeaths){
     `What raised GDP per person (not graded): ${WHY_LABEL[S.pred.why] || 'no answer'}.`,
     `Reasoning: ${S.hyp || '(none written)'}`, '',
     'Harvest, year | food available kcal/day | GDP index (Maddison 1500 = 100) | welfare index | people | hunger deaths (each rounded; the total below is not the sum of the rounded rows) | stores (days) | frost reached | drought',
-    ...S.hist.map(r => `${r.year} ${YEARS[r.year-1]} | ${kcal(r.intake)} | ${gi(r.gdp).toFixed(0)} | ${Math.round(r.cwi)} | ${fmt(r.pop)} | ${fmt(dead(r))} | ${days(r.storeDays)} | ${r.line===4?'none':ZONES[r.line].name} | ${r.drought?'yes':'no'}`), '',
+    ...S.hist.map(r => `${r.year} ${YEARS[r.year-1]} | ${kcal(r.intake)} | ${gi(r.gdp).toFixed(0)} | ${Math.round(r.cwi)} | ${fmt(r.pop)} | ${fmt(dead(r))} | ${days(r.storeDays)} | ${r.line===4?'none':ZONES[r.line].name} | ${r.drought?'yes':'no'}${r.late?', planted late':''}`), '',
     `Inca years average: ${kcal(k1)} kcal, GDP index ${gi(g1).toFixed(0)}. Colonial years average: ${kcal(k2)} kcal, GDP index ${gi(g2).toFixed(0)}.`,
     `Community: ${fmt(hungerDeaths)} ${Math.round(hungerDeaths) === 1 ? 'person' : 'people'} lost to hunger over the game; stores of ${days(S.store / GOAL * 365)} days at the end; welfare ${Math.round(myW)} on average.`,
     `Plan chosen in advance (Valley terraces; 1 Inca chuño crew; best land first throughout), on the same weather: ${kcal(f.k2)} kcal a day after 1573, ${fmt(f.deaths)} lost to hunger, welfare ${Math.round(f.w)}. ${fairVerdict(f, {deaths: hungerDeaths, k2, w: myW})}`,
