@@ -30,7 +30,7 @@ const REPLAN = 'best';
 function load(html) {
   const m = html.match(/<script>\s*([\s\S]*?)<\/script>/);
   assert.ok(m, 'no inline <script> in the game file');
-  const code = m[1].replace(/\}\)\(\);\s*$/, `globalThis.game={get state(){return S}, fresh,rollYear,clampAlloc,harvest,nextYear,showTransition,showEnd,replaySame,settle,shortShare,gi,dir,reportText,PLAY,replanTo,GDP_TOL,WX_PRESETS};})();`);
+  const code = m[1].replace(/\}\)\(\);\s*$/, `globalThis.game={get state(){return S}, fresh,rollYear,clampAlloc,harvest,nextYear,showTransition,showEnd,replaySame,settle,grow,crews,ZONES,shortShare,gi,dir,reportText,PLAY,replanTo,GDP_TOL,WX_PRESETS};})();`);
   assert.notEqual(code, m[1], 'the game script no longer ends in })(); so the harness cannot reach the model');
   return code;
 }
@@ -157,8 +157,12 @@ function selfTest(html) {
   console.log(`confirmed: all ${PLANTS.length} planted model changes and the docs mismatch are rejected`);
 }
 
-const args = process.argv.slice(2);
-const file = args.find(a => !a.startsWith('--')) || path.join(__dirname, '..', 'frost-and-silver.html');
-const html = fs.readFileSync(file, 'utf8');
-if (args.includes('--self-test')) selfTest(html);
-else { checkDocs(PINNED, docTexts()); console.log(JSON.stringify({commit:process.env.GITHUB_SHA || 'local', ...check(html)}, null, 2)); }
+// Research diagnostics reuse this loader; importing must not execute a second sweep.
+module.exports = {load, make, check};
+if (require.main === module) {
+  const args = process.argv.slice(2);
+  const file = args.find(a => !a.startsWith('--')) || path.join(__dirname, '..', 'frost-and-silver.html');
+  const html = fs.readFileSync(file, 'utf8');
+  if (args.includes('--self-test')) selfTest(html);
+  else { checkDocs(PINNED, docTexts()); console.log(JSON.stringify({commit:process.env.GITHUB_SHA || 'local', ...check(html)}, null, 2)); }
+}

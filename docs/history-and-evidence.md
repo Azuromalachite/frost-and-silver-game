@@ -168,6 +168,12 @@ years in a row; harvests 4–6 are snapshots decades apart.
    (claim.game.frost_from_top). Trasmonte et al. (2008) rank frost risk by
    altitude and say nothing about valley floors freezing while slopes stay warm.
 
+8. In the original classroom design, what does puna food output represent:
+   slaughter, exchange supported by livestock, or an aggregated pastoral return?
+   That affects the scope of a herd model. The [new reading notes](agropastoral-literature-2026-11-18.md)
+   and [implementation review](implementation-review-2026-11-18.md) distinguish
+   those research questions from the present formula and historical evidence.
+
 ## Sources
 
 | source | used for | read here? |
