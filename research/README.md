@@ -30,6 +30,21 @@ it wrong.
    explained to a class in a sentence, and the author agrees. The game then gets it as a minor upgrade with its own
    claim and CI check.
 
+## What Path B may change
+
+Research models are not bound to the game's structure. They may run more harvests, more crews or people, separate
+households, markets or assets, wherever a question needs it (the author's decision, 18 November 2026). Each such
+choice is written into that model's pre-registration with its reason, because it changes what can be compared:
+more harvests mean more weather draws and more re-plans, and more people add something only if they differ (land,
+herds, obligations). A model that changes the structure is compared with the game only on outcomes both can measure.
+
+## Experiments
+
+| # | question | status |
+|---|---|---|
+| 1 | Does the lesson survive the game's structural choices (the player's plan; fixed tribute)? | done: robust, all four cells ≥ 2/3 ([results](results/2026-11-18-structural-robustness.md)) |
+| 2 | When do wages and food markets improve a household's food? | next; needs PR #34's sources fixed |
+
 ## Layout
 
 | path | what |
