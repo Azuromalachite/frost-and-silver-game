@@ -107,7 +107,7 @@ years in a row; harvests 4–6 are snapshots decades apart.
 | Colonial Peru and Mexico saw economic growth from about 1550, driven partly by mining | interpretation | Arroyo Abad & van Zanden (2016), cited from a literature review, not re-read. |
 | In the game, GDP per person rises through silver and through the population collapse; which is the main cause depends on the decomposition | game result | Default plan, seeds 1–80: silver adds about 8 index points and the field output lost to the mita and resettlement takes about 6.5 back (resettlement about 2.5 of it); the collapse adds about 6.5, of which about 3.0 is chuño crews moved to the fields, 2.0 retreating to the best zones and 1.5 more land per survivor ([sensitivity sweep](sensitivity-2026-11-18.md)). With best land first at each re-plan, without silver GDP barely rises (+0.07); without the collapse it still rises (+5.47); with the same shares the rules are most of a smaller rise (3.05 of 4.65). In the game's formula chuño work counts for nothing in GDP. The re-plan when crews fall is the player's choice (claim.game.crew_trim_order); these numbers use "Best land first". Keeping the same shares leaves colonial food near 1,000 kcal. |
 | Food per person fell from about 1,700 to about 1,200 kcal a day | unsourced | The original game's figure. Not found in any source. Shown in the game as a dotted, labelled line. |
-| Households can go short even when a region produces a surplus | documented | Wernke & Whitmore (2009), selected model and results sections read. Own-farm shortfalls are not observed consumption or starvation; herding, trade and sharing are not fully quantified. The game's "households below 1,700 kcal" share comes from an assumed 30% spread, not from their figures. |
+| Some households' own fields fall short even when the community produces a surplus | documented | Wernke & Whitmore (2009), selected model and results sections read. Own-farm shortfalls are not observed consumption or starvation; herding, trade and sharing are not fully quantified. The game's "households below 1,700 kcal" share comes from an assumed 30% spread, not from their figures. |
 | Adults use about 2,190 (women) and 2,720 (men) kcal a day | documented, modern | Pontzer et al. (2016), Table 1, read. A modern multi-country sample that excluded manual labourers; used only for scale. |
 | Skeletons and isotopes show diet changed after contact | documented, from notes | Klaus & Tam (2010); Tessone et al. (2025). Neither gives kcal a day. |
 
@@ -176,8 +176,9 @@ years in a row; harvests 4–6 are snapshots decades apart.
    The [climate review](climate-weather-literature-2026-11-18.md) now supplies
    evidence for terrain effects (claim.climate.topoclimate), interacting physical
    controls (claim.climate.frost_controls), and geographically differing drought
-   responses (claim.climate.drought_heterogeneity). The terrain evidence cuts
-   against the game's rule: local cold-air drainage and exposure are how a lower
+   responses (claim.climate.drought_heterogeneity). Our inference from the
+   terrain evidence (Pouteau et al. report drainage and exposure effects at
+   about 1 km, not this mechanism): cold air draining downhill is how a lower
    field can freeze while a higher one does not, which claim.game.frost_from_top
    rules out. It does not supply the joint
    crop-loss probabilities needed to quantify diversification. A basin or an

@@ -242,7 +242,7 @@ claims:
     layer: game_assumption
     status: labelled
     sources: [thitibordin_game]
-    code: ["res: 20 * protShare"]
+    code: ["res: 20 * protShare * Math.min(1, intake / GOAL) * Math.min(1, (S.store / GOAL * 365) / 90)"]
     pages:
       - path: frost-and-silver.html
         anchor: It is a model output, not a measurement.
@@ -256,7 +256,14 @@ claims:
       of its points for spreading crews across zones, which this game's frost
       never pays (a simulated student who spread out-scored a careful one while
       losing more people). The default plan's welfare fell from 70 -> 49 to
-      64 -> 46 (seeds 1-80); food, deaths and GDP are unchanged.
+      64 -> 46 (seeds 1-80); food, deaths and GDP are unchanged. That left the
+      plan offered as chosen in advance with welfare flat across 1573 (75.1 ->
+      74.9, rising on 49 of 80 seeds) while its food fell, because survivors on
+      terraced land maxed out resilience however hungry they were. Since then
+      resilience is scaled by food adequacy and stores (by the author's
+      decision): that plan goes 73 -> 61.3, rising on 19 seeds, all of them with
+      colonial food still above the 1,700 goal. tests/review_model.cjs asserts
+      the fall (ADVANCE_WELFARE), with a planted defect.
 
   - id: claim.game.key_message
     statement: >
@@ -348,16 +355,23 @@ claims:
 
   - id: claim.food.household_shortfall
     statement: >
-      Households could go short of food even where the community or region
-      produced a surplus.
+      Some households' own fields produced less than they needed even where the
+      community as a whole produced a surplus. This is a production shortfall,
+      not measured food eaten: tribute, herding, trade and sharing are not fully
+      quantified.
     layer: documented
     status: partly_supported
     sources: [wernke_whitmore2009]
     pages:
       - path: docs/history-and-evidence.md
-        anchor: Households can go short even when a region produces a surplus
+        anchor: Some households' own fields fall short even when the community produces a surplus
       - path: frost-and-silver.html
-        anchor: households can go short while a region has a surplus
+        anchor: some households' own fields fall short while the community has a surplus
+    notes: >
+      The game quoted this as households "short of food" and "abstract read"
+      until review round 3 (2026-11-18); the reading now covers pp. 428-437 and
+      the paper measures own-field production. How much the key message's food
+      half rests on it is for the original author to weigh.
 
   - id: claim.game.household_spread
     statement: >
@@ -436,9 +450,10 @@ claims:
       did. Murra's insurance argument rests on bad years that hit heights
       differently (claim.land.vertical_archipelago), which the game does not model.
       Pouteau et al. (2011, sections read; claim.climate.topoclimate) find local
-      terrain effects on frost alongside the elevation gradient: cold-air
-      drainage and exposure are how a lower field can freeze while a higher one
-      does not, which the rule does not allow. That cuts against its
+      terrain effects on frost, through drainage and exposure at about 1 km,
+      alongside the elevation gradient. Our inference, not theirs: cold-air
+      drainage is how a lower field can freeze while a higher one does not,
+      which the rule does not allow. That cuts against its
       historical footing; it stays a labelled simplification until a source
       gives joint crop-loss probabilities by height.
 
@@ -1013,36 +1028,39 @@ claims:
       Building Valley and Upper-field terraces in harvest 1 with no chuño crews,
       three chuño crews in harvests 2 and 3, then every crew on the best land
       after 1573, beat the best fixed plan picked after the weather was known on
-      58 of seeds 1-80. With Valley terraces alone, or other numbers of chuño
+      40 of seeds 1-80, judged by hunger deaths, then food, then welfare. With Valley terraces alone, or other numbers of chuño
       crews, a changing plan rarely does.
     layer: game_result
     status: labelled
     sources: []
     pages:
       - path: frost-and-silver.html
-        anchor: one plan that changes by harvest beat it on 58 of 80 test weathers
+        anchor: one plan that changes by harvest beat it on 40 of 80 test weathers
     notes: >
       Asserted by tests/review_model.cjs (CHANGING_WINS). The end screen used to
       say "about two seeds in three" without naming the terraces; a review found
       the obvious reading (Valley terraces only) beats it on 0-13 of 80. It was
       57 of 80 until terraces stopped counting toward the welfare index's
       resilience in the year they are built, then 52, and 58 once resilience
-      stopped rewarding spread (both 2026-11-18).
+      stopped rewarding spread (both 2026-11-18), judged on welfare alone; 40 once
+      the end screen ranked plans by hunger deaths first (review round 3).
 
   - id: claim.game.advance_plan
     statement: >
       Of the 2,304 tested plans, building Valley terraces, one chuño crew and best
       land first in the Inca years, then every crew on the best land first after
-      1573, had the highest welfare averaged over seeds 1-80, and is the same plan
-      when chosen on seeds 1-40 or 41-80 alone. Scored on each weather it averages
-      75.0 welfare and 1,550 kcal after 1573, against 78.4 and 1,589 for the best
-      plan picked knowing that weather; it reaches 1,700 kcal on 21 seeds.
+      1573, lost the fewest people to hunger averaged over seeds 1-80 (ranked by
+      deaths, then food, then welfare), and is the same plan when chosen on seeds
+      1-40 or 41-80 alone. Scored on each weather it averages 18.9 hunger deaths,
+      1,550 kcal after 1573 and 67.2 welfare, against 16.3, 1,561 and 67.5 for the
+      best plan picked knowing that weather; it reaches 1,700 kcal on 21 seeds
+      against 22.
     layer: game_result
     status: labelled
     sources: []
     pages:
       - path: frost-and-silver.html
-        anchor: Of the 2,304 tested plans it had the best welfare averaged over 80 test weathers
+        anchor: Of the 2,304 tested plans it lost the fewest people to hunger averaged over 80 test weathers
     notes: >
       The end screen leads with it as a fair benchmark, a plan chosen before the
       weather is known, and shows the hindsight best below it. Measured
@@ -1407,18 +1425,19 @@ claims:
 
   - id: claim.climate.drought_el_nino
     statement: >
-      In the southern Andes dry years are often, though not everywhere or always,
-      linked to El Niño: the rainfall response differs between station groups in
-      southern Peru and Bolivia.
+      In the southern Andes El Niño years tend to be dry, though not everywhere or
+      always: the rainfall response differs between station groups in southern
+      Peru and Bolivia. A dry year is not thereby an El Niño year.
     layer: documented
     status: partly_supported
     sources: [orlove2000, jonaitis_etal2021]
     pages:
       - path: frost-and-silver.html
-        anchor: in the southern Andes often, though not everywhere, linked to El Niño
+        anchor: in the southern Andes El Niño years tend to be dry, though not everywhere
     notes: >
       The game's harvest report used to say "what we now link to El Niño", which
-      read as a rule. Orlove et al. (2000, abstract read) tie El Niño years to
+      read as a rule, and then (#30, briefly) that dry years are often linked to
+      El Niño, which reversed the conditional the sources support. Orlove et al. (2000, abstract read) tie El Niño years to
       lower rainfall and the Pleiades forecast; Jonaitis et al. (2021, sections
       read) find the relationship varies across southern Peru and Bolivia, with
       some station groups showing insignificant or opposite signs. The game's
