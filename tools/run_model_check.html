@@ -22,7 +22,7 @@ remains the reference.</p>
 const out = document.getElementById('out'), status = document.getElementById('status');
 async function run(args) {
   const files = {};
-  for (const f of ['frost-and-silver.html', 'CONTRIBUTING.md', 'AGENTS.md', 'tests/review_model.cjs'])
+  for (const f of ['frost-and-silver.html', 'CONTRIBUTING.md', 'AGENTS.md', 'README.md', 'tests/review_model.cjs'])
     files[f] = await fetch('../' + f, {cache: 'no-store'}).then(r => { if (!r.ok) throw new Error(f + ' ' + r.status); return r.text(); });
   const log = [];
   const cons = {log: (...a) => log.push(a.join(' ')), error: (...a) => log.push('ERROR ' + a.join(' ')), warn: (...a) => log.push(a.join(' '))};

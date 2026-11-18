@@ -41,7 +41,7 @@ shows from what the game assumes.
   (about −490 kcal on Standard, −720 on Hard and −1,040 on Extreme), because a
   fixed tribute takes a larger share of a poor harvest.
 - **Standard is a typical weather**: on it the default plan's food is close to
-  the best tested plan's (about 1,410 against 1,530 kcal after 1573). Use Hard
+  the plan chosen in advance's (about 1,410 against 1,530 kcal after 1573). Use Hard
   to show how many lives planning saves (92 hunger deaths against 4).
 - **Try your seed first.** Some are harsh. A harsh seed can be a deliberate
   lesson, but it should not be a surprise.
