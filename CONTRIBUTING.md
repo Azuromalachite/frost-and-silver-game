@@ -84,9 +84,10 @@ choice, the rules' food effect falling in every game (the graded prediction),
 how the ungraded GDP effect reads and how often the two re-plan choices read it
 differently (`claim.game.grading_weather`), which re-plan choice grows more by
 board (`claim.game.replan_dominance`) and the changing plan's record
-(`claim.game.changing_plan`), and the field output the rules cost apart from
+(`claim.game.changing_plan`), the plan offered as chosen in advance
+(`claim.game.advance_plan`), and the field output the rules cost apart from
 silver, with resettlement's part. CI runs it on every pull request, with
-`--self-test`, which plants nine model changes and requires each to trip the
+`--self-test`, which plants eleven model changes and requires each to trip the
 assertion meant for it. A change that moves one of these numbers must update
 the constant at the top of that file, and the places that quote it, in the same
 pull request. Without Node, `tools/run_model_check.html` runs the same file in a

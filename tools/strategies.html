@@ -14,7 +14,7 @@
 <h1>Strategy sweep</h1>
 <p>Plays every strategy in a fixed grid on weather seeds 1–80 with the game's own model, run headless.
 Serve the repository root (<code>python -m http.server</code>) and open <code>/tools/strategies.html</code>.
-It takes about two minutes. Write-up: <code>docs/strategies-2026-11-18.md</code>.</p>
+It takes a few minutes. Write-up: <code>docs/strategies-2026-11-18.md</code>.</p>
 <p>A strategy is: which improvements to build in harvest 1; chuño crews in the Inca years; how the other crews
 are placed ("best": Valley, Upper fields, High grain, Puna, each up to its room; "spread": one crew per zone in turn);
 and, after 1573, chuño crews, Potosí wage crews and the same placing rule.</p>
@@ -27,7 +27,7 @@ const SHORT = {yunga:'V', quechua:'U', suni:'W'};
 
 function makeGame(html) {
   const m = html.match(/<script>\s*([\s\S]*?)<\/script>/);
-  const code = m[1].replace(/\}\)\(\);\s*$/, `globalThis.game={get state(){return S}, reset(seed){S=fresh(); S.seed=seed; S.pred={g:'stay',k:'stay'};}, rollYear,clampAlloc,harvest,nextYear,showTransition,gi,crews,cap,ZONES,act,replanTo};})();`);
+  const code = m[1].replace(/\}\)\(\);\s*$/, `replanProjection = () => ({shares: {food: 0, deaths: 0}, best: {food: 0, deaths: 0}}); /* the re-plan box is never shown here: skip its 48 projected games per re-plan */ globalThis.game={get state(){return S}, reset(seed){S=fresh(); S.seed=seed; S.pred={g:'stay',k:'stay'};}, rollYear,clampAlloc,harvest,nextYear,showTransition,gi,crews,cap,ZONES,act,replanTo};})();`);
   if (code === m[1]) throw new Error('the game script no longer ends in })();');
   const nodes = new Map();
   const node = id => { if (nodes.has(id)) return nodes.get(id); const handlers = {};
