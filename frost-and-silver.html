@@ -78,6 +78,7 @@ canvas{display:block;width:100%;aspect-ratio:16/7.2;max-width:100%}
 .build{font:13px var(--f-body);text-align:left;padding:6px 8px;border-radius:4px;border:1px dashed var(--zc);background:transparent;color:var(--ink);cursor:pointer;line-height:1.25}
 .build[aria-pressed="true"]{border-style:solid;background:color-mix(in srgb,var(--zc) 18%,transparent)}
 .build:disabled{cursor:default}
+.build[aria-disabled="true"]{opacity:.55;cursor:not-allowed}
 .done{font-size:12px;color:var(--good);font-family:var(--f-mono)}
 .extras{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px 16px;border-top:1px solid var(--line);padding-top:12px}
 .extra{display:grid;gap:4px;min-width:0}
@@ -620,7 +621,7 @@ function renderPlan(){
     let b = '';
     if (z.build) {
       if (S.built[z.key]) b = `<span class="done">✓ ${z.what}</span>`;
-      else b = `<button class="build" data-b="${z.key}" aria-pressed="${S.building[z.key]}" ${(!S.building[z.key] && free < 2) ? 'disabled' : ''}>${S.building[z.key] ? `Building ${z.what} · 2` : `+ ${z.what} · 2 crews`}</button>`;
+      else b = `<button class="build" data-b="${z.key}" aria-pressed="${S.building[z.key]}" ${(!S.building[z.key] && free < 2) ? 'aria-disabled="true" title="Needs 2 free crews"' : ''}>${S.building[z.key] ? `Building ${z.what} · 2` : `+ ${z.what} · 2 crews`}</button>`;
     }
     return `<div class="dz" style="--zc:var(${z.c})"><span class="dzn">${z.name} <small class="mono" style="font-weight:500;color:var(--muted)">${n}/${c}</small></span>
       ${stepper('data-z', z.key, n, n > 0, n < c && free > 0, z.name)}${b}</div>`;
@@ -654,6 +655,9 @@ function renderPlan(){
   const dealing = !!DEAL.t;
   f.textContent = free > 0 ? `${free} crew${free>1?'s':''} ${dealing ? 'still to place' : 'unassigned'}` : 'All crews assigned';
   f.className = 'free' + (free > 0 && !dealing ? ' warn' : '');
+  // stores are spent silently when a harvest falls short; say so while the plan can still change
+  const days = S.store / GOAL * 365;
+  if (!dealing && days >= 1) f.textContent += ` · Stores: ${fmt(days)} days. A harvest short of 1,700 is made up from them${S.chuno ? '' : ', and with no chuño crews nothing goes back in'}.`;
   $('dock').hidden = false;
   renderHUD(); renderForecast(); scheduleAuto(); requestDraw();
 }
@@ -803,17 +807,22 @@ $('tplay').addEventListener('click', () => {
 document.querySelectorAll('[data-speed]').forEach(b => b.addEventListener('click', () => { PLAY.speed = +b.dataset.speed; scheduleAuto(); }));
 document.addEventListener('click', e => {
   const t = e.target.closest('button'); if (!t || S.phase !== 'plan') return;
-  if ((t.dataset.z || t.dataset.x || t.dataset.b) && replanPending()) {
-    S.replan.kind = 'own'; logAdd(logTag(S.year), 'Re-planned by hand.'); renderReplan();
+  // any crew change while a re-plan is open makes it a hand-set plan, also after one of the two buttons was chosen
+  if ((t.dataset.z || t.dataset.x || t.dataset.b) && S.replan && !S.replan.done && S.replan.kind !== 'own') {
+    S.replan.kind = 'own'; logAdd(logTag(S.year), 'Re-planned by hand.');
   }
+  const handSet = () => { if (S.replan && S.replan.kind === 'own') renderReplan(); }; // re-project the hand-set board
   const free = crews().avail - used();
+  const why = msg => { const f = $('free'); f.textContent = msg; f.className = 'free warn'; };
   if (t.dataset.z) { const z = ZONES.find(q => q.key === t.dataset.z), d = +t.dataset.d;
-    if (d > 0 && (free <= 0 || S.alloc[z.key] >= cap(z))) return;
-    S.alloc[z.key] = Math.max(0, S.alloc[z.key] + d); renderPlan(); }
-  else if (t.dataset.x) { const k = t.dataset.x, d = +t.dataset.d; if (d > 0 && free <= 0) return;
-    S[k] = Math.max(0, S[k] + d); renderPlan(); }
-  else if (t.dataset.b) { const k = t.dataset.b;
-    if (!S.building[k] && free < 2) return; S.building[k] = !S.building[k]; renderPlan(); }
+    if (d > 0 && free <= 0) return why('No free crews: take one off another zone or job first.');
+    if (d > 0 && S.alloc[z.key] >= cap(z)) return why(`${z.name} is full (room for ${cap(z)} crews).`);
+    S.alloc[z.key] = Math.max(0, S.alloc[z.key] + d); renderPlan(); handSet(); }
+  else if (t.dataset.x) { const k = t.dataset.x, d = +t.dataset.d; if (d > 0 && free <= 0) return why('No free crews: take one off a zone first.');
+    S[k] = Math.max(0, S[k] + d); renderPlan(); handSet(); }
+  else if (t.dataset.b) { const k = t.dataset.b, z = ZONES.find(q => q.key === k);
+    if (!S.building[k] && free < 2) return why(`Building ${z.what} takes 2 free crews; you have ${free}. Take crews off a zone first.`);
+    S.building[k] = !S.building[k]; renderPlan(); handSet(); }
 });
 
 function renderHUD(){
@@ -968,7 +977,7 @@ function whyList(r){
     : `Potosí's output has surged since the 1570s, so each mine worker's silver adds more to output this harvest (game figure).`);
   if (r.act === 2) out.push(`Resettlement into towns (the reducciones) left many fields far from home: yields are ${Math.round((1 - r.rf) * 100)}% lower this harvest (game figure; the loss grows as distant fields are given up, and varied from place to place).`);
   if (r.tribute > 0) out.push(`Colonial tribute (game rule: a fixed total, taken in food) took ${fmt(r.tribute)}, ${Math.round(r.tRate*100)}% of the harvest. The total was fixed at the 1573 count, so it weighs more when there are fewer people.`);
-  if (r.mita) out.push(`${cap1(menIn7(r.d))} were away at Potosí on the 1573 quota, so every crew worked that much short${r.wage?`, and ${r.wage} more crew${r.wage>1?'s':''} went for wages`:''}.`);
+  if (r.mita) out.push(`${cap1(menIn7(r.d))} ${menIn7(r.d).startsWith('one') ? 'was' : 'were'} away at Potosí on the 1573 quota, so every crew worked that much short${r.wage?`, and ${r.wage} more crew${r.wage>1?'s':''} went for wages`:''}.`);
   if (r.draw > 0) out.push(`Your community stores covered ${fmt(r.draw)} of the shortfall.`);
   if (r.chuno > 0 && r.winter !== 'normal') out.push(`${WINTER_WORD[r.winter]} after the harvest: each chuño crew could freeze-dry ${r.winter === 'hard' ? 'more' : 'less'} than usual (${fmt(WINTER_CHUNO[r.winter] * CHUNO_CAP)} instead of ${CHUNO_CAP}; game figure).`);
   if (r.spoiled > 1) out.push(`${fmt(r.spoiled)} of surplus spoiled because no one freeze-dried it${r.chuno > 0 && r.winter === 'mild' ? ' (the mild winter slowed the chuño crews)' : ''}.`);
@@ -1036,7 +1045,7 @@ function showSummary(r){
     <button class="btn" id="next">${r.year === 3 ? 'Continue to 1573 →' : r.year === 6 ? 'See your results →' : r.year === 4 ? 'Plan harvest 5 (c. 1592) →' : r.year === 5 ? 'Plan harvest 6 (c. 1600) →' : `Plan harvest ${r.year+1} (next year) →`}</button></div>
     <div class="rtiles">
       <div><span>Food per person</span><b>${kcal(r.intake)}<small> kcal/day</small></b>${trend(r.intake, prev && prev.intake, v => fmt(v), true)}<small>goal 1,700 (game)</small></div>
-      <div><span>GDP per person</span><b>${gi(r.gdp).toFixed(0)}<small> index</small></b>${trend(gi(r.gdp), prev && gi(prev.gdp), v => `${v.toFixed(0)} points`, false)}<small>Maddison 1500 = 100${r.silver ? ` · ${gi(r.silver).toFixed(0)} points from silver` : ''}</small></div>
+      <div><span>GDP per person</span><b>${gi(r.gdp).toFixed(0)}<small> index</small></b>${trend(gi(r.gdp), prev && gi(prev.gdp), v => `${v.toFixed(0)} points`, false)}<small>Maddison 1500 = 100${r.silver ? ` · silver +${gi(r.silver).toFixed(0)}, field output lost to the rules ${sgn1(gi(r.gdp - r.cf.gdp - r.silver))} (the end screen splits the rest)` : ''}</small></div>
       <div><span>Welfare (CWI)</span><b>${Math.round(r.cwi)}<small> / 100</small></b>${trend(r.cwi, prev && prev.cwi, v => Math.round(v), true)}<small>food ${Math.round(r.cwiParts.cal)}/50 · stores ${Math.round(r.cwiParts.buf)}/30 · resilience ${Math.round(r.cwiParts.res)}/20</small></div>
       <div><span>People</span><b>${fmt(r.pop)}</b>${prev ? trend(r.pop, prev.pop, v => fmt(v), true) : `<small class="${dPop<-0.5?'neg':dPop>0.5?'pos':''}">${Math.abs(dPop) < 0.5 ? 'no change' : `${dPop>0?'+':'−'}${fmt(Math.abs(dPop))} this harvest`}</small>`}</div>
     </div>
@@ -1119,16 +1128,20 @@ function keepShares(from, B){
 }
 function bestLandFirst(B){
   // keeps the player's Potosí wage crews (they used to be reset to 0 without a word); the rest go to the best land
-  const out = SHARE_KEYS.map(() => 0), w = Math.min(B, S.replan ? S.replan.from[SHARE_KEYS.indexOf('wage')] || 0 : 0);
+  // the wage crews now on the board once the player has re-planned (and maybe changed them by hand); before that,
+  // the plan they held before crews fell
+  const k = S.replan && S.replan.kind, wPlan = S.replan ? S.replan.from[SHARE_KEYS.indexOf('wage')] || 0 : 0;
+  const out = SHARE_KEYS.map(() => 0), w = Math.min(B, k === 'best' || k === 'own' ? S.wage : wPlan);
   out[SHARE_KEYS.indexOf('wage')] = w; let free = B - w;
   ZONES.forEach((z, i) => { const k = Math.min(free, cap(z)); out[i] = k; free -= k; });
   return out;
 }
 function replanTo(kind){
   if (!S.replan) return;
+  const same = S.replan.kind === kind;
   setCounts(kind === 'best' ? bestLandFirst(S.replan.B) : keepShares(S.replan.from, S.replan.B));
   S.replan.kind = kind; clampAlloc();
-  logAdd(logTag(S.year), kind === 'best' ? 'Re-planned: every crew on the best land first; no chuño crews; wage crews kept.' : 'Re-planned: the same shares as before, on fewer crews.');
+  if (!same) logAdd(logTag(S.year), kind === 'best' ? 'Re-planned: every crew on the best land first; no chuño crews; wage crews kept.' : 'Re-planned: the same shares as before, on fewer crews.');
   renderReplan(); renderPlan();
 }
 function renderReplan(){
@@ -1136,11 +1149,11 @@ function renderReplan(){
   if (!S.replan || S.phase !== 'plan') { el.hidden = true; return; }
   const k = S.replan.kind;
   el.hidden = false;
-  const p = replanProjection(), dF = p.best.food - p.shares.food;
+  const p = replanProjection(), dF = p.best.food - p.shares.food, hadChuno = S.replan.from[SHARE_KEYS.indexOf('chuno')] > 0;
   const verdict = Math.abs(dF) < 25 ? 'For this plan the two came out about the same on average.'
-    : dF > 0 ? 'For this plan best land first grew more on average: the chuño crews it drops grow nothing to eat.'
+    : dF > 0 ? `For this plan best land first grew more on average: ${hadChuno ? 'the chuño crews it drops grow nothing to eat' : 'it moves crews down from the colder, frostier zones'}.`
     : 'For this plan keeping the shares grew more on average: spreading crews over the lower zones grows more than crowding the valley.';
-  el.innerHTML = `<b>${k ? 'Re-planned' : 'Choose how to re-plan'}: ${S.replan.B} crews instead of ${S.replan.was}.</b> <b>Keep the same shares</b>: your plan on fewer crews; chuño crews and the high fields carry on. <b>Best land first</b>: every crew on the lowest zones, each filled before the next; no chuño crews, nothing growing up high; wage crews stay. Played on to the end from here on ${REPLAN_SAMPLE} sample weathers (not yours), with the same choice at any later re-plan: keeping the shares averaged <b>${kcal(p.shares.food)} kcal</b> a day and ${fmt(p.shares.deaths)} hunger deaths, best land first <b>${kcal(p.best.food)} kcal</b> and ${fmt(p.best.deaths)}. ${verdict} Which choice is better depends on the plan you held, and on weather nobody can see yet.${k ? '' : ' The harvest waits until you choose.'}
+  el.innerHTML = `<b>${k ? 'Re-planned' : 'Choose how to re-plan'}: ${S.replan.B} crews instead of ${S.replan.was}.</b> <b>Keep the same shares</b>: your plan on fewer crews; chuño crews and the high fields carry on. <b>Best land first</b>: every crew on the lowest zones, each filled before the next; no chuño crews, nothing growing up high; wage crews stay. Played on to the end from here on ${REPLAN_SAMPLE} sample weathers (not yours), with the same choice at any later re-plan: keeping the shares averaged <b>${kcal(p.shares.food)} kcal</b> a day and ${fmt(p.shares.deaths)} hunger deaths, best land first <b>${kcal(p.best.food)} kcal</b> and ${fmt(p.best.deaths)}${p.own ? `; the crews as you set them by hand <b>${kcal(p.own.food)} kcal</b> and ${fmt(p.own.deaths)}` : ''}. ${verdict} Which choice is better depends on the plan you held, and on weather nobody can see yet.${k ? '' : ' The harvest waits until you choose.'}
     <span class="rpbtns"><button class="tbtn" data-replan="shares" aria-pressed="${k === 'shares'}">Keep the same shares</button><button class="tbtn" data-replan="best" aria-pressed="${k === 'best'}">Best land first</button></span>
     <span class="rphint">${k === 'own' ? 'You set the crews yourself.' : 'Or set the crews yourself below; changing any crew counts as your choice.'}</span>`;
   el.querySelectorAll('[data-replan]').forEach(b => b.onclick = () => replanTo(b.dataset.replan));
@@ -1154,15 +1167,22 @@ const replanPending = () => !!(S.replan && !S.replan.kind && !S.replan.done);
 const REPLAN_SAMPLE = 24;
 function replanProjection(){
   if (!S.replan) return null;
-  if (S.replan.proj) return S.replan.proj;
-  const keep = S, base = JSON.stringify(S), res = {};
+  const own = S.replan.kind === 'own' ? JSON.stringify(planCounts()) : null;
+  if (S.replan.proj && S.replan.proj.ownKey === own) return S.replan.proj;
+  const keep = S, base = JSON.stringify(S), res = {ownKey: own};
   try {
-    for (const kind of ['shares', 'best']) {
+    // 'own': the board as the player set it by hand now, then the same shares at any later re-plan
+    for (const kind of own ? ['shares', 'best', 'own'] : ['shares', 'best']) {
       let food = 0, deaths = 0, n = 0;
       for (let sd = 1; n < REPLAN_SAMPLE; sd++) {
         if (sd === keep.seed) continue;
         S = JSON.parse(base); S.seed = sd; S.yr = rollYear(); n++;
-        const from = S.year, choose = () => { setCounts(kind === 'best' ? bestLandFirst(S.replan.B) : keepShares(S.replan.from, S.replan.B)); S.replan.kind = kind; clampAlloc(); };
+        let first = true;
+        const from = S.year, choose = () => {
+          if (kind === 'own' && first) setCounts(JSON.parse(own));
+          else setCounts(kind === 'best' ? bestLandFirst(S.replan.B) : keepShares(S.replan.from, S.replan.B));
+          S.replan.kind = kind; clampAlloc(); first = false;
+        };
         choose();
         while (S.hist.length < 6) {
           harvest();
@@ -1458,7 +1478,7 @@ function showEnd(){
     <span class="eyebrow">Results</span>
     <h2 style="font-size:28px;font-stretch:112%;text-transform:uppercase">${dg === 'rise' && dk === 'fall' ? 'In your game, GDP grew. Life did not get better.' : dk !== 'fall' ? 'You kept people fed' : 'Six harvests on the mountain'}</h2>
     <p class="keymsg" style="margin:0"><b>GDP per person ${dg === 'stay' ? `changed little (${g2 >= g1 ? '+' : '−'}${Math.abs(Math.round((g2/g1 - 1)*100))}%)` : `${pastTense(dg)} ${Math.abs(Math.round((g2/g1 - 1)*100))}%`}; food per person ${k2 >= k1 ? 'rose' : 'fell'} ${Math.abs(Math.round((k2/k1 - 1)*100))}%.</b> GDP is an average of everything produced; it says nothing about who ate. That gap between growth and welfare is the point of this game. (GDP counts silver sent to Spain and China as output too; see below for how much of the change it explains.)</p>
-    <div class="success"><b>Community survival.</b> Your colonial years: <b>${kcal(k2)} kcal</b> a day on average, <b>${fmt(hungerDeaths)}</b> ${Math.round(hungerDeaths) === 1 ? 'person' : 'people'} lost to hunger over the game, stores of <b>${fmt(S.store / GOAL * 365)} days</b> at the end. ${survivalLine()} <b>What counts as success.</b> After 1573 no plan we tested kept food at the 1,700 goal on average over 80 weathers: the best of 2,304 strategies averaged about 1,580 kcal, and the default plan about 1,390. So success here is protecting your community, and explaining why GDP and food moved apart.</div>
+    <div class="success"><b>Community survival.</b> Your colonial years: <b>${kcal(k2)} kcal</b> a day on average, <b>${fmt(hungerDeaths)}</b> ${Math.round(hungerDeaths) === 1 ? 'person' : 'people'} lost to hunger over the game, stores of <b>${fmt(S.store / GOAL * 365)} days</b> at the end. ${survivalLine()} <b>What counts as success.</b> After 1573 no plan we tested kept food at the 1,700 goal on average over 80 weathers: the best of 2,304 strategies averaged about 1,580 kcal, and the default plan about 1,390 (averages over those 80 weathers, not yours). So success here is protecting your community, and explaining why GDP and food moved apart.</div>
     <div class="samewx" id="samewx"><b>Your plan against one you could have chosen in advance, on your weather.</b> ${fairLine(k2, hungerDeaths)}
       <p style="margin:6px 0 0;font-size:13px;color:var(--muted)"><b>Looking back (hindsight).</b> <span id="samewx-out">Playing the 2,304 tested plans on your weather…</span></p></div>
     <div class="turns"><b>Turning points in your game:</b> ${Object.keys(S.seen).length ? Object.entries(S.seen).sort((a, b) => a[1] - b[1]).map(([k, y]) => `<span class="chip ${k === 'fed' ? 'ok' : k === 'paradox' ? '' : 'low'}">${MILESTONE_TITLE[k] || k} · harvest ${y}</span>`).join(' ') : 'none'}</div>
@@ -1504,7 +1524,7 @@ function showEnd(){
       <h3 style="font-size:18px;margin-bottom:6px">Your predictions</h3>
       <p style="margin:0 0 6px;font-size:14px;max-width:65ch">Both compare your colonial years with Inca rules in the same years (the same people and weather), not with the start of the game. Only the food prediction is graded: under the colonial rules food fell in every game we tested. The GDP answer is for discussion, because it depends on the weather and on how you re-planned at 1573 (the two re-plan choices give different GDP answers on almost half of the weathers we tested).</p>
       <ul class="why">
-        <li>The colonial rules would make GDP per person <b>${S.pred.g}</b>. <span class="chip">not graded</span> <span style="color:var(--muted)">In your game, with your choices, they changed it by ${sgn1(gi(cg))} index points against Inca rules (a change of less than 3 points reads as "stay"). Over time GDP ${pastTense(dg)}. Discuss: what made the difference?</span></li>
+        <li>The colonial rules would make GDP per person <b>${S.pred.g}</b>. <span class="chip">not graded</span> <span style="color:var(--muted)">In your game, with your choices, they changed it by ${(gi(cg) >= 0 ? '+' : '−') + Math.abs(gi(cg)).toFixed(1)} index points against Inca rules (a change of less than 3 points reads as "stay"). Over time GDP ${pastTense(dg)}. Discuss: what made the difference?</span></li>
         <li>…and food per person <b>${S.pred.k}</b>. ${right(S.pred.k, dkC)} <span style="color:var(--muted)">(${sgn(ck)} kcal against Inca rules. Over time: ${pastTense(dk)})</span></li>
         ${S.hyp ? `<li>Your reasoning: “${esc(S.hyp)}”</li>` : ''}
       </ul>
