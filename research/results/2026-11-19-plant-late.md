@@ -47,7 +47,7 @@ keeps helping a little past the analytic limit. The pilot (seeds 1–80) had sug
 ## Holdout grid (seeds 81–400, `ADVANCE_PLAN`, mean hunger deaths per game)
 
 Food is kcal a day after 1573; welfare is the game-average Caloric Welfare Index. "better/worse" counts seeds where late
-when hazy lost fewer / more people than never (whole people). Never late is the game today: 20.63 deaths, 1,526 kcal,
+when hazy lost fewer / more people than never (whole people). Never late was the game at the time of this run: 20.63 deaths, 1,526 kcal,
 welfare 63.7.
 
 | dL / c | in band | always | late when hazy | perfect knowledge | better / worse | food (hazy) | welfare (hazy) |
@@ -107,3 +107,9 @@ Never 44.12 · always 42.58 · late when hazy **35.16** · perfect knowledge 27.
 4. A statement of whether the pinned run uses the choice. If the toggle defaults to off and the pinned play never touches
    it, the pinned run, `ADVANCE_PLAN`'s figures and the plan grid stay as they are. If the plan grid gains a "late when
    hazy" option, the hindsight numbers and the end screen's 42-of-80 note move and must be re-measured.
+
+## Updates after this result (dated)
+- **2026-11-19, #48:** planting late graduated into the game as a per-harvest toggle, off by default.
+- **2026-11-19, #51:** every tested plan now plants late when hazy. As point 4 above anticipated, the hindsight
+  figures and the end screen's changing-plan note were re-measured: the changing plan now beats the hindsight best on
+  53 of 80 seeds (42 before). The numbers in this file are unchanged: they describe the model as it was run.
