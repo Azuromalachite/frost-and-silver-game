@@ -565,7 +565,7 @@ function fresh(){
   return {phase:'intro', year:1, pop:1000, store:150, built:{yunga:false,quechua:false,suni:false,puna:false},
     building:{yunga:false,quechua:false,suni:false,puna:false},
     alloc:{yunga:4,quechua:4,suni:3,puna:1}, chuno:2, wage:0, plantLate:false, yr:null, hist:[], pred:{}, hyp:'', who:'', anim:null,
-    N1573:0, mitaCrews:0, tribTotal:0, seed: URL_SEED || Math.floor(Math.random() * 2147483646) + 1, mode: URL_SEED ? (wxKeyFor(URL_SEED) || 'link') : 'random', replanKinds: [], seen: {}, log: []};
+    N1573:0, mitaCrews:0, tribTotal:0, seed: URL_SEED || Math.floor(Math.random() * 2147483646) + 1, mode: URL_SEED ? (wxKeyFor(URL_SEED) || 'link') : 'random', replanKinds: [], seen: {}, log: [], replanLog: []};
 }
 S = fresh();
 let RUNS = []; // every finished run on the current weather (seed), oldest first, for "replay with the same weather"
@@ -649,12 +649,24 @@ function clampAlloc(){
 }
 
 /* ---------- plan panel ---------- */
+// What a frost-free, rain-fed year would leave above the goal with this board (the chuño crews' raw material), so the
+// player can see when a chuño crew would have nothing to dry. Same food arithmetic as harvest(); nothing is changed.
+function goodYearSurplus(){
+  const keep = S.yr;
+  try {
+    S.yr = {...S.yr, line: 4, drought: false};
+    const a2 = act(S.year) === 2, {strength, s0} = crews(), {H} = grow(strength, S.alloc, a2);
+    const ret = a2 ? 0 : INCA_RETURN * (grow(s0, S.alloc).H - H);
+    const trib = a2 ? Math.min(0.6 * H, Math.max(0, (S.tribTotal - WAGE_TRIB * S.wage * 1000) / S.pop)) : 0;
+    return Math.max(0, H + ret - trib - GOAL);
+  } finally { S.yr = keep; }
+}
 function renderPlan(){
   const {avail, mita} = crews();
   const free = avail - used();
   $('planh').innerHTML = 'Your plan';
   $('plansub').textContent = `${act(S.year)===1 ? 'Inca' : 'Colonial'} · ${avail} crews to assign`;
-  const eb = $('endyear'); eb.disabled = replanPending(); eb.textContent = replanPending() ? 'Choose a re-plan first' : `Bring in harvest ${S.year}`;
+  const eb = $('endyear'); eb.disabled = replanPending(); eb.textContent = replanPending() ? 'Choose a re-plan first' : `Bring in harvest ${S.year}${free > 0 ? ` (${free} crew${free > 1 ? 's' : ''} with no work)` : ''}`;
   const stepper = (attr, key, n, canDec, canInc, label) =>
     `<div class="step"><button ${attr}="${key}" data-d="-1" aria-label="One fewer crew: ${label}" ${canDec?'':'disabled'}>−</button>
       <output aria-live="polite">${n}</output>
@@ -671,7 +683,7 @@ function renderPlan(){
       ${stepper('data-z', z.key, n, n > 0, n < c && free > 0, z.name)}${b}</div>`;
   }).join('');
   // one line beside each stepper saying what that crew does (the mechanism, not the best number)
-  let dx = `<div class="dx">Chuño ${stepper('data-x', 'chuno', S.chuno, S.chuno > 0, free > 0, 'chuño')}<span class="dxhint">Grows no food. Freeze-dries this harvest's surplus into stores for a bad year: about ${CHUNO_CAP} kcal per person a day per crew, more in a hard winter. No surplus, nothing to dry.</span></div>`;
+  let dx = `<div class="dx">Chuño ${stepper('data-x', 'chuno', S.chuno, S.chuno > 0, free > 0, 'chuño')}<span class="dxhint">Grows no food. Freeze-dries this harvest's surplus into stores for a bad year: about ${CHUNO_CAP} kcal per person a day per crew, more in a hard winter. No surplus, nothing to dry.${(() => { const sur = goodYearSurplus(), per1 = CHUNO_CAP * (1000 / S.pop), n = Math.max(1, Math.round(sur / per1)); return ` <b>With this board, a year without frost or drought leaves about ${fmt(sur)} kcal per person a day to dry${sur > 0 ? `, enough to keep about ${n} chuño crew${n === 1 ? '' : 's'} busy` : ''}; a frost or dry year leaves less, often none.</b>`; })()}</span></div>`;
   if (act(S.year) === 2) dx += `<div class="dx">Potosí wages ${stepper('data-x', 'wage', S.wage, S.wage > 0, free > 0, 'Potosí wages')}<span class="dxhint">Grows no food. Earns silver, which counts as output (GDP), and pays part of the tribute.</span></div>`;
   dx += `<div class="dx"><button class="build" data-late="1" aria-pressed="${!!S.plantLate}" style="--zc:var(--muted)">${S.plantLate ? '✓ Planting late' : 'Plant late'}</button><span class="dxhint">Shift potato planting later, as Andean farmers adjust planting dates when they expect poor rains. Costs 5% of the harvest in a normal year; cuts a dry year's loss from 25% to 10% (game figures).</span></div>`;
   $('dextras').innerHTML = dx;
@@ -698,7 +710,7 @@ function renderPlan(){
   $('extras').innerHTML = ex;
   const f = $('free');
   const dealing = !!DEAL.t;
-  f.textContent = free > 0 ? `${free} crew${free>1?'s':''} ${dealing ? 'still to place' : 'unassigned'}` : 'All crews assigned';
+  f.textContent = free > 0 ? `${free} crew${free>1?'s':''} ${dealing ? 'still to place' : 'with no work this year'}` : 'All crews assigned';
   f.className = 'free' + (free > 0 && !dealing ? ' warn' : '');
   // stores are spent silently when a harvest falls short; say so while the plan can still change
   const days = S.store / GOAL * 365;
@@ -971,6 +983,15 @@ function harvest(){
   else if (intake >= 1800) S.pop *= 1.01;
   S.store *= popBefore / S.pop; // the store is food per person; same food, different number of people
   const builtNow = ZONES.filter(z => S.building[z.key]).map(z => `${z.what} (${z.name})`); // 'terraces' alone did not say where
+  const buildKeys = ZONES.filter(z => S.building[z.key]).map(z => z.key);
+  // Chuño crews beyond what this harvest's surplus needed dried nothing; what they would have grown on the best open
+  // field instead (same weather, before tribute), so the report can say so.
+  const perChunoCrew = CHUNO_CAP * wm * per, chunoUsed = toStore > 0 ? Math.ceil(toStore / perChunoCrew - 1e-9) : 0;
+  const idleChuno = Math.max(0, S.chuno - chunoUsed);
+  let idleChunoGain = 0;
+  if (idleChuno > 0) { const al = {...S.alloc}; let k = idleChuno;
+    for (const z of ZONES) while (k > 0 && al[z.key] < cap(z)) { al[z.key]++; k--; }
+    idleChunoGain = Math.max(0, grow(strength, al, a2).H - H); }
   // Protection in this harvest is what stood before it: terraces finished this year protect from the next harvest
   // (the frost loss already works this way; until 2026-11-18 the welfare index counted them a year early).
   const builtBefore = {...S.built};
@@ -985,7 +1006,7 @@ function harvest(){
     res: 20 * protShare * Math.min(1, (S.store / GOAL * 365) / 90) /* protection counts only for a community with stores (stores are eaten before anyone goes short, so empty stores also mean hunger; a separate food factor never took effect). Until 2026-11-18 30% of this part rewarded spreading, which this game's frost never pays */};
   const cwi = cwiParts.cal + cwiParts.buf + cwiParts.res;
   const rec = {year:S.year, act:act(S.year), cwi, cwiParts, alloc: {...S.alloc}, chuno: S.chuno, gidx: gdp / 416 * 100, H, lost, saved, tribute, tRate, ret, stateOut, d, rf: a2 ? reducNow() : 1, toStore, spoiled, draw, intake, avail, gdp, silver, cf,
-    pop:S.pop, popBefore, mita, wage:S.wage, line:Y.line, drought:Y.drought, hazy:Y.hazy, late:!!S.plantLate, winter:Y.winter, chunoRoom: S.chuno * CHUNO_CAP * wm * per, zr, builtNow,
+    pop:S.pop, popBefore, mita, wage:S.wage, line:Y.line, drought:Y.drought, hazy:Y.hazy, late:!!S.plantLate, winter:Y.winter, chunoRoom: S.chuno * CHUNO_CAP * wm * per, idleChuno, idleChunoGain, zr, builtNow, buildKeys,
     idle: 0, storeDays: S.store / GOAL * 365};
   S.hist.push(rec);
   return rec;
@@ -1054,6 +1075,7 @@ function whyList(r){
   else if (r.drought) out.push(`A dry year cut every harvest by a quarter (game figure; in the southern Andes El Niño years tend to be dry, though not everywhere).${sky}${r.hazy ? ' Planting late would have cut the loss to 10%.' : ' Moving crews could not have escaped it.'}`);
   else if (r.late) out.push(r.hazy ? 'Hazy, but the rains came: planting late cost 5% of the harvest.' : 'The rains came: planting late cost 5% of the harvest.');
   else out.push(r.hazy ? 'Hazy Pleiades, but the rains came: about 4 in 7 hazy years bring normal rains. Planting on time paid off.' : 'Clear Pleiades, normal rains: planting on time paid off.');
+  if (r.idleChuno > 0) out.push(`${r.toStore > 0 ? `Your ${r.chuno} chuño crew${r.chuno > 1 ? 's' : ''} could dry up to ${fmt(r.chunoRoom)}; the surplus was ${fmt(r.toStore)}, so ${r.idleChuno} had nothing to dry.` : `There was no surplus to dry, so your ${r.chuno} chuño crew${r.chuno > 1 ? 's' : ''} dried nothing.`}${r.idleChunoGain >= 1 ? ` On the best open field ${r.idleChuno > 1 ? 'they' : 'it'} would have grown about ${fmt(r.idleChunoGain)} more (before tribute).` : ''}`);
   if (r.act === 1) out.push(`One man in ten worked the state and temple fields under the Inca labour duty; ${fmt(r.ret)} came back as feasts and rations (game assumption: half the state harvest).`);
   if (r.act === 2 && r.silver > 0) out.push(r.year === 4
     ? 'In this game, silver output per mine worker rises in later harvests, a teaching assumption.'
@@ -1091,6 +1113,7 @@ function logHarvest(r){
   if (r.tribute > 0) logAdd(tag, `Tribute −${fmt(r.tribute)} (${Math.round(r.tRate*100)}% of the harvest; game rule).`, 'neg');
   if (r.chuno > 0) logAdd(tag, `${WINTER_WORD[r.winter]}: chuño crews could freeze-dry up to ${fmt(r.chunoRoom)}.`, r.winter === 'hard' ? 'pos' : r.winter === 'mild' ? 'neg' : '');
   if (r.toStore > 0) logAdd(tag, `${fmt(r.toStore)} freeze-dried into chuño stores.`, 'pos');
+  if (r.idleChuno > 0) logAdd(tag, `${r.idleChuno} chuño crew${r.idleChuno > 1 ? 's' : ''} had nothing to dry${r.idleChunoGain >= 1 ? `; in the fields: about +${fmt(r.idleChunoGain)}` : ''}.`, 'neg');
   if (r.draw > 0) logAdd(tag, `Stores covered ${fmt(r.draw)} of the shortfall.`);
   if (r.spoiled > 1) logAdd(tag, `${fmt(r.spoiled)} of surplus spoiled.`);
   if (r.builtNow.length) logAdd(tag, `New ${r.builtNow.join(' and ')} finished: less frost loss from next year.`, 'pos');
@@ -1299,10 +1322,10 @@ function advanceState(){
   S.year++; S.yr = rollYear(); S.phase = 'plan'; S.anim = null; S.plantLate = false;
   const late = S.year === 5;
   if (late) { S.store /= (1 - LATE_EPIDEMIC); S.pop *= (1 - LATE_EPIDEMIC); } // same food, fewer people
-  if (S.replan && S.replan.kind) S.replanKinds.push(S.replan.kind); // the choice made at the last re-plan
+  if (S.replan && S.replan.kind) { S.replanKinds.push(S.replan.kind); (S.replanLog ||= []).push({year: S.replan.year, kind: S.replan.kind}); } // the choice made at the last re-plan
   S.replan = null;
   const B = crews().avail;
-  if (usedBefore > B) { S.replan = {from: before, B, was: usedBefore, kind: null}; setCounts(keepShares(before, B)); }
+  if (usedBefore > B) { S.replan = {from: before, B, was: usedBefore, kind: null, year: S.year}; setCounts(keepShares(before, B)); }
   clampAlloc();
   const {base} = crews(), diff = base - prevBase;
   S.lastBase = base;
@@ -1427,6 +1450,8 @@ function chartIndexed(){
 function dir(a, b, tol){ return b - a > tol ? 'rise' : a - b > tol ? 'fall' : 'stay'; }
 // The re-plan choices of this game, in order (the last one may still be on S.replan).
 const replanChoices = () => [...(S.replanKinds || []), ...(S.replan && S.replan.kind ? [S.replan.kind] : [])];
+// each re-plan with the harvest it opened at (crews fell before that harvest)
+const replanEvents = () => [...(S.replanLog || []), ...(S.replan && S.replan.kind ? [{year: S.replan.year, kind: S.replan.kind}] : [])];
 const REPLAN_WORD = {best: 'best land first', shares: 'kept the shares', own: 'set by hand'};
 const WHY_LABEL = {silver: 'silver from the mines', people: 'fewer people sharing the land', both: 'both', unsure: 'not sure'};
 // What raised GDP per person over time in this game, as the model splits it (not graded: the split depends on how it
@@ -1487,6 +1512,38 @@ function simulatePlan(seed, st){
     const b = S.hist.slice(3);
     return {k2: b.reduce((s, r) => s + r.intake, 0) / 3, w: S.hist.reduce((s, r) => s + r.cwi, 0) / 6, deaths: S.hist.reduce((s, r) => s + Math.max(0, r.popBefore - r.pop), 0)};
   } finally { S = keep; }
+}
+// Replay recorded boards (one per harvest: crews, chuño, wage crews, builds, planting late) on a seed, the way
+// simulatePlan plays a grid plan. Crews that no longer exist after an earlier change are trimmed by clampAlloc.
+function simulateBoards(seed, boards){
+  const keep = S;
+  try {
+    S = fresh(); S.seed = seed; S.year = 1; S.yr = rollYear(); S.phase = 'plan'; clampAlloc();
+    while (S.hist.length < 6) {
+      const b = boards[S.hist.length];
+      S.alloc = {...b.alloc}; S.chuno = b.chuno; S.wage = b.wage; S.plantLate = !!b.late; S.replan = null;
+      for (const z of ZONES) S.building[z.key] = !S.built[z.key] && (b.buildKeys || []).includes(z.key);
+      clampAlloc(); harvest();
+      if (S.year === 3) { collapseState(); advanceState(); } else if (S.year < 6) advanceState();
+    }
+    return {deaths: S.hist.reduce((t, r) => t + Math.max(0, r.popBefore - r.pop), 0), k2: S.hist.slice(3).reduce((t, r) => t + r.intake, 0) / 3};
+  } finally { S = keep; }
+}
+const boardOf = r => ({alloc: {...r.alloc}, chuno: r.chuno, wage: r.wage, buildKeys: r.buildKeys || [], late: !!r.late});
+// What changed between two runs on the same weather, harvest by harvest, in words.
+function runDiff(prevHist, curHist){
+  const zname = k => ZONES.find(z => z.key === k).name, out = [];
+  curHist.forEach((r, i) => {
+    const p = prevHist[i]; if (!p) return;
+    const diffs = [];
+    ZONES.forEach(z => { if (r.alloc[z.key] !== p.alloc[z.key]) diffs.push(`${zname(z.key)} ${p.alloc[z.key]} → ${r.alloc[z.key]} crews`); });
+    if (r.chuno !== p.chuno) diffs.push(`chuño ${p.chuno} → ${r.chuno}`);
+    if (!!r.late !== !!p.late) diffs.push(`planted ${p.late ? 'late' : 'on time'} → ${r.late ? 'late' : 'on time'}`);
+    if (r.wage !== p.wage) diffs.push(`wage crews ${p.wage} → ${r.wage}`);
+    if (r.builtNow.join() !== p.builtNow.join()) diffs.push(`built ${p.builtNow.join(' and ') || 'nothing'} → ${r.builtNow.join(' and ') || 'nothing'}`);
+    if (diffs.length) out.push({i, year: r.year, text: diffs.join('; ')});
+  });
+  return out;
 }
 let compareGen = 0; // bumped by every new comparison, replay and new game; an older job stops when it sees a newer one
 function compareOnSameWeather(seed, mine, done){
@@ -1553,7 +1610,7 @@ function runsChart(bi){
       <div style="flex:1 1 240px">${one('Food after 1573, kcal a day', r => r.k2, v => fmt(v), '--ice', 300, false)}</div>
       <div style="flex:1 1 240px">${one('People lost to hunger', r => r.deaths, v => fmt(v), '--accent', 10, true)}</div>
     </div>
-    <p style="margin:0;font-size:12px;color:var(--muted)">Runs on this weather, left to right; the ringed point is your best run so far. Hover a point for its value.</p>`;
+    <p style="margin:0;font-size:12px;color:var(--muted)">Runs on this weather, numbered left to right; the ringed point is your best run so far (fewest hunger deaths, then food after 1573, then welfare).</p>`;
 }
 // ---- end screen charts (2026-11-19 redesign) ------------------------------------------------------------------------
 // Series colours are chart tokens (--s-food, --s-gdp, --s-loss), checked with the dataviz palette validator in both
@@ -1705,18 +1762,23 @@ function showEnd(){
   const LAST = RUNS.length > 1 ? RUNS[RUNS.length - 2] : null, FIRST = RUNS[0];
   let compareHTML = '';
   if (LAST) {
-    const zname = k => ZONES.find(z => z.key === k).name;
-    const changes = [];
-    S.hist.forEach((r, i) => {
-      const p = LAST.hist[i]; if (!p) return;
-      const diffs = [];
-      ZONES.forEach(z => { if (r.alloc[z.key] !== p.alloc[z.key]) diffs.push(`${zname(z.key)} ${p.alloc[z.key]} → ${r.alloc[z.key]} crews`); });
-      if (r.chuno !== p.chuno) diffs.push(`chuño ${p.chuno} → ${r.chuno}`);
-      if (!!r.late !== !!p.late) diffs.push(`planted ${p.late ? 'late' : 'on time'} → ${r.late ? 'late' : 'on time'}`);
-      if (r.wage !== p.wage) diffs.push(`wage crews ${p.wage} → ${r.wage}`);
-      if (r.builtNow.join() !== p.builtNow.join()) diffs.push(`built ${p.builtNow.join(' and ') || 'nothing'} → ${r.builtNow.join(' and ') || 'nothing'}`);
-      if (diffs.length) changes.push(`<li>Harvest ${r.year}: ${diffs.join('; ')}</li>`);
-    });
+    const diff = runDiff(LAST.hist, S.hist), changes = diff.map(d => `<li>Harvest ${d.year}: ${d.text}</li>`);
+    // The change that mattered: replay this run with one harvest's change undone (the last run's board for that
+    // harvest), same weather, and rank by hunger deaths. Deterministic, like the hindsight comparison.
+    let mattered = '';
+    if (diff.length) {
+      const mine = S.hist.map(boardOf), base = simulateBoards(S.seed, mine);
+      const undo = diff.map(d => { const bs = mine.slice(); bs[d.i] = boardOf(LAST.hist[d.i]); return {...d, saved: base.deaths - simulateBoards(S.seed, bs).deaths}; });
+      const top = undo.reduce((b, u) => u.saved > b.saved ? u : b, undo[0]);
+      mattered = Math.round(top.saved) >= 1
+        ? `Undoing your harvest ${top.year} change alone (${top.text}) would have lost about ${fmt(top.saved)} fewer ${Math.round(top.saved) === 1 ? 'person' : 'people'} to hunger.`
+        : undo.every(u => Math.round(u.saved) <= -1) ? 'Each change helped: undoing any one of them would have lost more people to hunger.'
+        : 'No single change moved hunger deaths by a whole person.';
+    }
+    // the contrast the lesson is about, when the runs show it
+    const iG = RUNS.reduce((b, r, i) => r.g2 > RUNS[b].g2 ? i : b, 0), iD = RUNS.reduce((b, r, i) => r.deaths > RUNS[b].deaths ? i : b, 0);
+    const contrast = iG === iD && Math.round(RUNS[iD].deaths) > Math.round(Math.min(...RUNS.map(r => r.deaths)))
+      ? `<p style="margin:0 0 6px;font-size:15px"><b>Your highest GDP and your most hunger deaths came in the same run (run ${iG + 1}).</b></p>` : '';
     const n = RUNS.length, showFirst = n > 2;
     // good: whether a rise is better (food, welfare) or worse (deaths); GDP is neither, so its change is uncoloured
     const num = t => Number(String(t).replace(/,/g, '')); // the value as shown, so 3 | 3 never reads "+1"
@@ -1727,17 +1789,17 @@ function showEnd(){
     const bi = RUNS.reduce((b, r, i) => betterOutcome(r, RUNS[b]) ? i : b, 0);
     compareHTML = `<div class="cmpruns">
       <h3 style="font-size:18px;margin-bottom:6px">Same weather, different choices</h3>
+      ${contrast}${mattered ? `<p style="margin:0 0 6px;font-size:15px">${mattered}</p>` : ''}
       <p style="margin:0 0 6px;font-size:14px">This is run ${n} on this weather. ${n > 2 ? `The table compares it with your first run and your last one; the chart below shows every run.` : 'The table compares it with your last run.'} Best so far: <b>run ${bi + 1}</b> (judged first by hunger deaths, then food after 1573, then welfare).</p>
-      <table class="ledger"><thead><tr><td></td>${showFirst ? '<td>First run (1)</td>' : ''}<td>Last run (${n - 1})</td><td>This run (${n})</td></tr></thead><tbody>
+      <table class="ledger"><thead><tr><td></td>${showFirst ? '<td>First run (1)</td>' : ''}<td>Last run (${n - 1})</td><td>This run (${n}), change since the last run</td></tr></thead><tbody>
         ${row('Food, Inca harvests (kcal/day)', r => r.k1, k, true)}
         ${row('Food, colonial harvests (kcal/day)', r => r.k2, k, true)}
         ${row('People lost to hunger', r => r.deaths, k, false)}
         ${row('Welfare index, colonial harvests', r => r.c2, w, true)}
-        ${row('GDP index, colonial harvests', r => r.g2, ix)}
+        ${row('GDP index, colonial harvests (output, not welfare)', r => r.g2, ix)}
       </tbody></table>
       ${n > 2 ? runsChart(bi) : ''}
-      <p style="margin:8px 0 4px;font-size:14px"><b>What you changed since your last run:</b></p>
-      ${changes.length ? `<ul class="why">${changes.join('')}</ul>` : '<p style="margin:0;font-size:14px;color:var(--muted)">Nothing: both runs used the same choices, so the results are the same.</p>'}
+      ${changes.length ? `<details style="margin-top:8px"><summary style="cursor:pointer;font-size:14px"><b>Every change since your last run</b> (${changes.length} harvest${changes.length > 1 ? 's' : ''})</summary><ul class="why">${changes.join('')}</ul></details>` : '<p style="margin:8px 0 0;font-size:14px;color:var(--muted)">You changed nothing since your last run: both runs used the same choices, so the results are the same.</p>'}
       <p style="margin:6px 0 0;font-size:13px;color:var(--muted)">The frost, droughts and forecasts were identical, so every difference above comes from your choices.</p>
     </div>`;
   }
@@ -1796,7 +1858,7 @@ function showEnd(){
       <p>${fairVerdict(adv, me).replace(/^It /, 'The plan chosen in advance ')} Averaged over 80 test weathers, no tested plan kept 1,700 kcal after 1573. Success here is lives kept, and the gap explained.</p>
     </div>
     ${compareHTML}
-    ${S.hyp ? `<p class="endnote">Your reasoning: “${esc(S.hyp)}”</p>` : ''}
+    ${S.hyp ? `<p class="endnote">Your reasoning: “${esc(S.hyp)}” (In this game the mita draws its workers from your own community; no outside workers are added.)</p>` : ''}
     <div class="endsec">
       <p>Change one choice and replay the same weather. The game sets the runs side by side.</p>
       <div class="endbtns"><button class="btn" id="replay">Replay with the same weather</button><button class="btn ghost" id="copy">Copy report</button><button class="btn ghost" id="again">New game</button><span class="free" id="copymsg">Copy a text report to paste into your class page.</span></div>
@@ -1898,13 +1960,15 @@ function reportText(k1,k2,g1,g2,cg,dk,hungerDeaths){
     `Weather: ${wxName(S.mode, S.seed)}${RUNS.length > 1 ? `; run ${RUNS.length} on this weather` : ''}.`,
     `Prediction (graded): under the colonial rules, food per person would ${S.pred.k}.`,
     `What raised GDP per person (not graded): ${WHY_LABEL[S.pred.why] || 'no answer'}.`,
-    `Reasoning: ${S.hyp || '(none written)'}`, '',
-    'Harvest, year | food available kcal/day | GDP index (Maddison 1500 = 100) | welfare index | people | hunger deaths (each rounded; the total below is not the sum of the rounded rows) | stores (days) | frost reached | drought',
-    ...S.hist.map(r => `${r.year} ${YEARS[r.year-1]} | ${kcal(r.intake)} | ${gi(r.gdp).toFixed(0)} | ${Math.round(r.cwi)} | ${fmt(r.pop)} | ${fmt(dead(r))} | ${days(r.storeDays)} | ${r.line===4?'none':ZONES[r.line].name} | ${r.drought?'yes':'no'}${r.late?', planted late':''}`), '',
+    `Reasoning: ${S.hyp || '(none written)'}`, 'Note: in this game the mita draws its workers from the community itself; no outside workers are added.', '',
+    'Harvest, year | food available kcal/day | GDP index (Maddison 1500 = 100) | welfare index | people | hunger deaths | stores (days) | frost reached | drought',
+    ...S.hist.map(r => `${r.year} ${YEARS[r.year-1]} | ${kcal(r.intake)} | ${gi(r.gdp).toFixed(0)} | ${Math.round(r.cwi)} | ${fmt(r.pop)} | ${fmt(dead(r))} | ${days(r.storeDays)} | ${r.line===4?'none':ZONES[r.line].name} | ${r.drought?'yes':'no'}${r.late?', planted late':''}`),
+    'Hunger deaths are rounded in each row; the total below is not the sum of the rounded rows.', '',
     `Inca years average: ${kcal(k1)} kcal, GDP index ${gi(g1).toFixed(0)}. Colonial years average: ${kcal(k2)} kcal, GDP index ${gi(g2).toFixed(0)}.`,
     `Community: ${fmt(hungerDeaths)} ${Math.round(hungerDeaths) === 1 ? 'person' : 'people'} lost to hunger over the game; stores of ${days(S.store / GOAL * 365)} days at the end; welfare ${Math.round(myW)} on average.`,
     `Plan chosen in advance (Valley terraces; 1 Inca chuño crew; best land first throughout; planting late when hazy), on the same weather: ${kcal(f.k2)} kcal a day after 1573, ${fmt(f.deaths)} lost to hunger, welfare ${Math.round(f.w)}. ${fairVerdict(f, {deaths: hungerDeaths, k2, w: myW})}`,
-    `Re-plan choices when crews fell: ${replanChoices().map(x => REPLAN_WORD[x] || x).join(', ') || 'none'}.`,
+    `Re-plans when crews fell: ${replanEvents().map(e => `harvest ${e.year}, ${REPLAN_WORD[e.kind] || e.kind}`).join('; ') || 'none'}.`,
+    ...(RUNS.length > 1 ? [`Changed since run ${RUNS.length - 1}: ${runDiff(RUNS[RUNS.length - 2].hist, S.hist).map(d => `harvest ${d.year}: ${d.text}`).join('; ') || 'nothing'}.`] : []),
     `Effect of the colonial rules (same people and weather, against Inca rules): food ${dk} (graded).`,
     `What raised GDP in this game (model result, not graded): silver ${sgn1(gi(silvRep))}; field output lost to the mita, wage crews and resettlement ${sgn1(gi(cg - silvRep))}; everything else (fewer people, the re-plan, the weather) ${sgn1(gi(g2 - g1 - cg))}.`, '',
     'Frost and Silver, adapted by Thanakrit Wongsatit from "Week 2: Tahuantinsuyu Harvest & Frost Defense" by Amnuayvit Thitibordin, CC BY-NC-SA 4.0.'];
