@@ -25,7 +25,7 @@ the README, the evidence document and `claim.game.gdp_rise_from_land` now say so
 
 Reproduce it: serve the repository root (`python -m http.server`) and open
 `tools/sweep.html`. It runs in about 15 seconds and first checks that the
-unchanged model still gives the pinned run and the 74/6 grading split. If it
+unchanged model still gives the pinned run and the 75/5 grading split (74/6 when this was written). If it
 does not, the game has changed and this page needs re-measuring.
 
 ## What kind of analysis this is
