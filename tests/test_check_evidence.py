@@ -85,7 +85,7 @@ CASES = {
         "a game claim must be stated in frost-and-silver.html",
         'if layer in GAME_LAYERS and GAME_FILE not in {p.get("path") for p in pages}:'),
     "anchor edited away from the game": (
-        G, "When people died, the quotas were not cut to match.", "When people died, nothing changed.",
+        G, "mita allocations followed a different adjustment process. The game holds both totals fixed.", "nothing changed.",
         "anchor not found in frost-and-silver.html",
         "elif norm(str(anchor)) not in text:"),
     "page missing": (
@@ -110,7 +110,7 @@ CASES = {
         "mentions unknown claim claim.food.no_such_claim", "if m not in seen_ids:"),
     # Review round 2, item 11: a phrase that sits only in a JavaScript comment is not stated in the game
     "anchor only in a code comment": (
-        C, "        anchor: When people died, the quotas were not cut to match.\n", "        anchor: same food, fewer people\n",
+        C, "        anchor: mita allocations followed a different adjustment process. The game holds both totals fixed.\n", "        anchor: same food, fewer people\n",
         "anchor not found in frost-and-silver.html",
         "if raw is not None and path == GAME_FILE:"),
     "code snippet only in a code comment": (

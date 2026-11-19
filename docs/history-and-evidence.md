@@ -66,7 +66,7 @@ years in a row; harvests 4–6 are snapshots decades apart.
 
 | claim in the game | label | source and limits |
 | --- | --- | --- |
-| Andean communities held fields at several altitudes so that one frost or drought rarely ruined everything | interpretation (widely accepted) | Murra (1972), the "vertical archipelago". Murra described access rights to separate "islands" of land, often far apart; the game draws one contiguous slope, which is a simplification. |
+| Andean communities held fields at several altitudes so that one frost or drought rarely ruined everything (the game no longer states this frequency claim: it describes access to resources at several heights, and says whether that buffered a bad year depends on which places and crops were affected) | interpretation | Murra (1972), the "vertical archipelago", from notes; no joint crop-loss evidence checked. Murra described access rights to separate "islands" of land, often far apart; the game draws one contiguous slope, which is a simplification. |
 | In the game, frost always strikes from the top down, so higher fields are never safer than the valley | game assumption (claim.game.frost_from_top) | Frost risk rising with altitude: Trasmonte et al. (2008), abstract read. That a frost never spares a higher zone while hitting a lower one is the game's simplification. Its consequence, measured in a [strategy sweep](strategies-2026-11-18.md): placing crews on the best land first always beats spreading them, so the game no longer calls spreading insurance. Murra's insurance argument needs bad years that hit heights differently, which the game leaves out. |
 | The game's four zones (valley, upper fields, high grain, puna) are schematic; real altitude ranges overlap and vary | documented | Geographers also use Quechua-derived names for these zones (Pulgar Vidal 1941); the game uses plain descriptive names and shows the nearest of his names under each: Quechua, Suni, Suni–Puna, Puna. The lecture's zones sit higher than his, so his low Yunga region, used by the original game, has no counterpart. |
 | Each zone's air and soil temperature | game assumption (claim.game.air_temperature, claim.game.soil_temperature) | Air 6.5 °C colder per 1,000 m (the original game's lapse rate), anchored at about 12 °C at Cusco (about 3,400 m); not checked against station data. Soil 4.2 °C below the air, warmed 0.8 °C by terraces and 1.6 °C by waru waru: the original game's rule. Shown for orientation only; frost losses do not depend on them. |
@@ -74,7 +74,7 @@ years in a row; harvests 4–6 are snapshots decades apart.
 | Chuño keeps for years | documented | Fonseca & de Haan (2021), from notes; FAO Mountain Partnership (2023), read, for modern chuño. That it kept as long in 1500 is assumed. |
 | Chuño is made by freezing potatoes at night and drying them in the sun by day | documented (modern practice) | FAO Mountain Partnership (2023), read: night freezing and daytime sun; white chuño is then soaked for 20–30 days and sun-dried for 5–8. It names no season and gives no rates. |
 | How much chuño a crew can make depends on the winter after the harvest | game assumption (claim.game.chuno_winter) | The winter after each harvest is a game assumption: hard (1 in 4, 130% of normal), normal (1 in 2) or mild (1 in 4, 70%). It is unknown when crews are planned, so the same harvest and the same chuño crews can leave different stores. The source describes the process, not how weather changes its pace; the sizes and odds are play values. |
-| Raised fields (waru waru) soften frost; terraces protect less | documented for raised fields; the comparison is a game assumption | Kolata & Ortloff (1989) model raised-field frost protection and show it depends on the field's shape and water. The game's frost losses (20% with waru waru, 40% with terraces, 60% without, 45% for cold-tolerant kañiwa) are play values. |
+| Raised fields (waru waru) soften frost; terraces protect less | unverified for raised fields (Kolata & Ortloff read from notes only); the protection the game uses is a game assumption | Kolata & Ortloff (1989) model raised-field frost protection and show it depends on the field's shape and water. The game's frost losses (20% with waru waru, 40% with terraces, 60% without, 45% for cold-tolerant kañiwa) are play values. |
 | Andean elders forecast rain from how clearly the Pleiades rise in June | documented (modern practice) | Orlove, Chiang & Cane (2000), checked from the abstract. That this was done around 1500 is not established. The game's forecast accuracy is a play value. |
 
 ### The Inca system
@@ -116,7 +116,7 @@ years in a row; harvests 4–6 are snapshots decades apart.
 | claim in the game | label | source and limits |
 | --- | --- | --- |
 | Quipus recorded numbers in base ten on pendant cords: clusters of single knots for tens, hundreds and thousands, a long knot for the units, a figure-eight knot for one, and a gap for zero | documented | Ascher & Ascher (1981); Urton (2003). Not re-read here. The game's quipu follows this convention but leaves out colour coding, subsidiary cords and how cords were grouped. |
-| Early Spanish officials relied on quipu accounts for tribute and census counts | documented | Urton (2003), not re-read here. |
+| Early Spanish officials relied on quipu accounts for tribute and census counts (removed from the game until verified) | documented | Urton (2003), not re-read here. |
 | Each harvest report is drawn as the community's quipu | game assumption | Which figures a community's cord keeper actually recorded is not known; the game picks the ones on its ledger. GDP is not put on the quipu, because no one at the time counted it. |
 
 ### Silver
@@ -124,7 +124,7 @@ years in a row; harvests 4–6 are snapshots decades apart.
 | claim in the game | label | source and limits |
 | --- | --- | --- |
 | Potosí silver went to Spain and, through trade, as far as China | documented | Flynn (2015), cited from a literature review. |
-| Silver output at Potosí rose sharply after the 1570s, once mercury amalgamation spread | documented | Bakewell (1984), not re-read here. |
+| Silver output at Potosí rose sharply after the 1570s, once mercury amalgamation spread (removed from the game until verified: the game says only that its silver per mine worker rises, a teaching assumption) | documented | Bakewell (1984); the pages read so far concern wages and budgets, not the production trend. |
 | Each mine worker's silver is worth more in later colonial harvests | game assumption | The path (harvests 4, 5, 6) is chosen to follow the late-century surge; its size is invented. |
 
 ### How the game shows its numbers

@@ -46,12 +46,12 @@ The end screen separates two things:
 
 | Mechanism | In the game | Status |
 |---|---|---|
-| Colonial quotas set at the 1573 count | mita = one man in seven of the 1573 population; tribute a set total (500 kcal per person at 1573, taken in food). Quotas were not cut as people died; only a slow, contested recount could lower them. The game keeps both fixed, so the burden per survivor rises | structure follows Toledo's system; tribute size is a game figure |
+| Colonial quotas set at the 1573 count | mita = one man in seven of the 1573 population; tribute a set total (500 kcal per person at 1573, taken in food). Tribute could be reassessed after a new count; mita allocations followed a different adjustment process. The game keeps both fixed, so the burden per survivor rises | structure follows Toledo's system; tribute size is a game figure |
 | Inca labour duty | one man in ten on state and temple fields (into the state qollqa); half that harvest returned as feasts and rations | teaching assumption; the game leaves out exchange and markets (Hirth & Pillsbury 2013) |
 | Land per person | zone output ∝ labour^0.9, so survivors farm more land each, but terraces need hands | teaching assumption (cf. Wernke 2010) |
 | Reducciones | colonial yields 7% lower at c. 1575, 12% at c. 1592, 15% at c. 1600: families resettled into towns far from fields, with the loss building up | mechanism from Wernke 2010; gradual and locally varied (Hunter 2025; de la Puente Luna & Perales 2026); sizes are teaching assumptions |
 | Population | −50% before 1573, −15% more in the 1585–91 epidemics | round game figures; estimates vary widely |
-| GDP | 340 + 0.045 × field output + silver, shown as an index (416 = 100); each mine worker's silver is worth more at harvests 5 and 6, following the late-century surge after mercury amalgamation | teaching assumptions, tuned to start near Maddison's 416 |
+| GDP | 340 + 0.045 × field output + silver, shown as an index (416 = 100); each mine worker's silver is worth more at harvests 5 and 6 (a teaching assumption; the late-century production trend is not yet verified here) | teaching assumptions, tuned to start near Maddison's 416 |
 
 A "What would have to be true for this to reverse?" panel lets students change the Inca duty, colonial tribute, population fall and the value of mine work against farm work, and shows the thresholds where food would rise or GDP would fall.
 
