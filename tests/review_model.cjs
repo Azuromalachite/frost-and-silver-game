@@ -44,13 +44,13 @@ const SHARES_WINS = {default: 0, '5/5/3/1 no chuño': 24};
 const FIELD_LOSS_1_80 = {total: -6.5, resettlement: -2.5};
 // The changing plan named on the end screen beats the hindsight-best fixed plan on this many of seeds 1-80, both judged
 // the end screen's way (betterOutcome: hunger deaths, then food after 1573, then welfare).
-const CHANGING_WINS = 42; // 58 when judged on welfare alone; 40 before resilience counted the full 14 crews // 57 before terraces stopped counting as protection in their build year, then 52; 58 since resilience no longer rewards spreading
+const CHANGING_WINS = 53; // 42 until every tested plan planted late when hazy (2026-11-19); // 58 when judged on welfare alone; 40 before resilience counted the full 14 crews // 57 before terraces stopped counting as protection in their build year, then 52; 58 since resilience no longer rewards spreading
 // The end screen's plan chosen in advance (ADVANCE_PLAN): best by betterOutcome on mean results over seeds 1-40, 41-80
 // and 1-80; its mean welfare, colonial food and hunger deaths on seeds 1-80, and the seeds where it reaches 1,700 kcal.
-const ADVANCE = {chosen: [true, true, true], w: 65.3, k2: 1550, deaths: 18.9, reach1700: 21};
+const ADVANCE = {chosen: [true, true, true], w: 66.7, k2: 1585, deaths: 14.3, reach1700: 14}; // 65.3, 1550, 18.9, 21 before planting late (2026-11-19)
 // The plan offered as chosen in advance, seeds 1-80: welfare must fall after 1573 as food does (the key message). Mean
 // welfare Inca -> colonial and the seeds where it rises; it rose on 49 when resilience could max out with people hungry.
-const ADVANCE_WELFARE = {inca: 72.6, colonial: 58, rises: 2, h4StrictlyBest: 0};
+const ADVANCE_WELFARE = {inca: 73.5, colonial: 59.9, rises: 1, h4StrictlyBest: 0}; // 72.6 -> 58, 2 rises before planting late
 // (until review 4: 73 -> 61.3 with 19 rises, and harvest 4 the advance plan's strictly best harvest on 48 seeds, because
 // resilience counted protected crews against the crews left after the collapse rather than the community's 14)
 // Quoted elsewhere and checked here (review round 3 found them unchecked):
@@ -61,8 +61,9 @@ const ADVANCE_WELFARE = {inca: 72.6, colonial: 58, rises: 2, h4StrictlyBest: 0};
 // - the hindsight best, averaged over seeds 1-80 (claim.game.advance_plan);
 // - the rules' food effect averaged over seeds 1-80 (README "about -480", hard-mode doc -479);
 // - the README table of default-plan means (food to the nearest 5 kcal, welfare and GDP index to the nearest 1).
-const HARD_GENERAL_DEATHS = 4.1, EXTREME_MIN_DEATHS = 130.4, STANDARD_ADVANCE_FOOD = 1530, BEST_GRID_FOOD = 1580;
-const HINDSIGHT = {deaths: 16.3, k2: 1561, w: 65.4, reach1700: 22};
+// (before every tested plan planted late when hazy, 2026-11-19: 4.1, 130.4, 1530, 1580; Hard's hazy years mostly bring rain)
+const HARD_GENERAL_DEATHS = 10.5, EXTREME_MIN_DEATHS = 110.1, STANDARD_ADVANCE_FOOD = 1600, BEST_GRID_FOOD = 1620;
+const HINDSIGHT = {deaths: 10.9, k2: 1599, w: 67.4, reach1700: 24}; // 16.3, 1561, 65.4, 22 before planting late
 const RULES_FOOD_EFFECT_1_80 = -479;
 const README_MEANS = {food: [1675, 1385], welfare: [64, 46], gdp: [102, 109]};
 // Planting late (graduated from research experiment 3): ADVANCE_PLAN, seeds 1-80, mean hunger deaths when never late,
@@ -136,11 +137,11 @@ function finish(g, replay = false, edit, kind = REPLAN) {
     history:JSON.parse(JSON.stringify(h))};
 }
 // A plan given harvest by harvest as grid plans, played the way the end screen's comparison plays them.
-function playPlans(code, seed, planFor, lateFor = () => false) {
+function playPlans(code, seed, planFor, lateFor = null) { // lateFor overrides the plans' own rule (plant late when hazy)
   const g = make(code, seed), S = () => g.state;
   S().phase = 'plan'; S().yr = g.rollYear(); g.clampAlloc();
   while (S().hist.length < 6) {
-    g.applyGridPlan(planFor(S().year)); S().plantLate = lateFor(S().yr); g.harvest();
+    g.applyGridPlan(planFor(S().year)); if (lateFor) S().plantLate = lateFor(S().yr); g.harvest();
     if (S().year === 3) { g.collapseState(); g.advanceState(); } else if (S().year < 6) g.advanceState();
   }
   const h = S().hist, a = h.slice(0, 3), b = h.slice(3);

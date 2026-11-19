@@ -1463,6 +1463,9 @@ function applyGridPlan(st){
   const room = z => cap(ZONES.find(q => q.key === z));
   if ((col ? st.colRule : st.incaRule) === 'best') { for (const z of GRID_ORDER) { const k = Math.min(free, room(z)); S.alloc[z] = k; free -= k; } }
   else { let moved = true; while (free > 0 && moved) { moved = false; for (const z of GRID_ORDER) if (free > 0 && S.alloc[z] < room(z)) { S.alloc[z]++; free--; moved = true; } } }
+  // Every tested plan plants late when the Pleiades rose hazy (research experiment 3: the best of never, always and
+  // when hazy), so the plans the end screen compares with can take every choice a player can.
+  S.plantLate = !!S.yr.hazy;
 }
 // A plan the student could have chosen before playing: the grid plan with the fewest hunger deaths averaged over test
 // seeds (then food, then welfare: betterOutcome), and the same plan whether it is chosen on seeds 1-40 or 41-80 (docs/strategies-2026-11-18.md). Scored on the
@@ -1515,7 +1518,7 @@ function fairVerdict(f, me){
 }
 function fairLine(k2, hungerDeaths){
   const f = simulatePlan(S.seed, ADVANCE_PLAN), myW = S.hist.reduce((s, r) => s + r.cwi, 0) / S.hist.length;
-  return `A plan you could have chosen before playing: build Valley terraces; in the Inca years 1 crew on chuño and the rest on the best land first; after 1573 every crew on the best land first. Of the 2,304 tested plans it lost the fewest people to hunger averaged over 80 test weathers, and it is the same plan whether chosen on the first 40 or the last 40. On your weather it scored <b>${Math.round(f.w)}</b>, kept ${kcal(f.k2)} kcal a day after 1573 and lost ${fmt(f.deaths)} people to hunger. Your plan scored <b>${Math.round(myW)}</b>, kept ${kcal(k2)} kcal and lost ${fmt(hungerDeaths)}. ${fairVerdict(f, {deaths: hungerDeaths, k2, w: myW})}`;
+  return `A plan you could have chosen before playing: build Valley terraces; in the Inca years 1 crew on chuño and the rest on the best land first; after 1573 every crew on the best land first; in every harvest, plant late when the Pleiades rise hazy. Of the 2,304 tested plans it lost the fewest people to hunger averaged over 80 test weathers, and it is the same plan whether chosen on the first 40 or the last 40. On your weather it scored <b>${Math.round(f.w)}</b>, kept ${kcal(f.k2)} kcal a day after 1573 and lost ${fmt(f.deaths)} people to hunger. Your plan scored <b>${Math.round(myW)}</b>, kept ${kcal(k2)} kcal and lost ${fmt(hungerDeaths)}. ${fairVerdict(f, {deaths: hungerDeaths, k2, w: myW})}`;
 }
 function survivalLine(){
   const p = WX_PRESETS[S.mode], again = `Play this weather again with <code>?seed=${S.seed}</code> in the address.`;
@@ -1846,8 +1849,8 @@ function showEnd(){
     const st = c.plan, crewsN = n => `${n} crew${n === 1 ? '' : 's'}`;
     const builds = st.build.map(z => ({yunga: 'Valley terraces', quechua: 'Upper-field terraces', suni: 'waru waru'})[z]);
     const rule = r => r === 'best' ? 'best land first' : 'crews spread across the zones';
-    const how = `${builds.length ? `build ${builds.join(' and ')}` : 'build nothing'}; in the Inca years ${crewsN(st.incaChuno)} on chuño and the rest ${rule(st.incaRule)}; after 1573 ${crewsN(st.colChuno)} on chuño, ${crewsN(st.wage)} for wages, the rest ${rule(st.colRule)}`;
-    const ceiling = `It is not a ceiling either: one plan that changes by harvest beat it on 42 of 80 test weathers: build Valley and Upper-field terraces in harvest 1 with no chuño crews, put three crews on chuño in harvests 2 and 3, then every crew on the best land after 1573 (other changing plans do well too; which terraces you build matters). Your explanation of why GDP and food moved apart matters more than this comparison.`;
+    const how = `${builds.length ? `build ${builds.join(' and ')}` : 'build nothing'}; in the Inca years ${crewsN(st.incaChuno)} on chuño and the rest ${rule(st.incaRule)}; after 1573 ${crewsN(st.colChuno)} on chuño, ${crewsN(st.wage)} for wages, the rest ${rule(st.colRule)}; plant late in hazy years, as every tested plan does`;
+    const ceiling = `It is not a ceiling either: one plan that changes by harvest beat it on 53 of 80 test weathers: build Valley and Upper-field terraces in harvest 1 with no chuño crews, put three crews on chuño in harvests 2 and 3, then every crew on the best land after 1573, planting late in hazy years (which terraces you build matters). Your explanation of why GDP and food moved apart matters more than this comparison.`;
     // the hindsight best joins the dot plot and the table as a muted, labelled third point
     const pd = $('plandots'); if (pd) pd.innerHTML = planDots(me, adv, c.best);
     const pt = $('plantable'); if (pt) pt.innerHTML = tableOf(['On your weather', 'Lost to hunger', 'Food a day after 1573'], [['You', fmt(hungerDeaths), kcal(k2)], ['Chosen in advance', fmt(adv.deaths), kcal(adv.k2)], ['Best in hindsight (not choosable)', fmt(c.best.deaths), kcal(c.best.k2)]]);
@@ -1900,7 +1903,7 @@ function reportText(k1,k2,g1,g2,cg,dk,hungerDeaths){
     ...S.hist.map(r => `${r.year} ${YEARS[r.year-1]} | ${kcal(r.intake)} | ${gi(r.gdp).toFixed(0)} | ${Math.round(r.cwi)} | ${fmt(r.pop)} | ${fmt(dead(r))} | ${days(r.storeDays)} | ${r.line===4?'none':ZONES[r.line].name} | ${r.drought?'yes':'no'}${r.late?', planted late':''}`), '',
     `Inca years average: ${kcal(k1)} kcal, GDP index ${gi(g1).toFixed(0)}. Colonial years average: ${kcal(k2)} kcal, GDP index ${gi(g2).toFixed(0)}.`,
     `Community: ${fmt(hungerDeaths)} ${Math.round(hungerDeaths) === 1 ? 'person' : 'people'} lost to hunger over the game; stores of ${days(S.store / GOAL * 365)} days at the end; welfare ${Math.round(myW)} on average.`,
-    `Plan chosen in advance (Valley terraces; 1 Inca chuño crew; best land first throughout), on the same weather: ${kcal(f.k2)} kcal a day after 1573, ${fmt(f.deaths)} lost to hunger, welfare ${Math.round(f.w)}. ${fairVerdict(f, {deaths: hungerDeaths, k2, w: myW})}`,
+    `Plan chosen in advance (Valley terraces; 1 Inca chuño crew; best land first throughout; planting late when hazy), on the same weather: ${kcal(f.k2)} kcal a day after 1573, ${fmt(f.deaths)} lost to hunger, welfare ${Math.round(f.w)}. ${fairVerdict(f, {deaths: hungerDeaths, k2, w: myW})}`,
     `Re-plan choices when crews fell: ${replanChoices().map(x => REPLAN_WORD[x] || x).join(', ') || 'none'}.`,
     `Effect of the colonial rules (same people and weather, against Inca rules): food ${dk} (graded).`,
     `What raised GDP in this game (model result, not graded): silver ${sgn1(gi(silvRep))}; field output lost to the mita, wage crews and resettlement ${sgn1(gi(cg - silvRep))}; everything else (fewer people, the re-plan, the weather) ${sgn1(gi(g2 - g1 - cg))}.`, '',
