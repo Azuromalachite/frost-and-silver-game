@@ -109,14 +109,25 @@ because the weather differs between seeds.
   lower zones grows more than crowding the valley. The re-plan box shows both
   for the plan on the student's board. Ask what the game leaves out that might
   have made stores or variety worth keeping.
-- **Why doesn't spreading crews across heights help in this game?** Historians
-  (Murra) argue that farming at several heights protected communities, because
-  a bad year rarely hit every height. In the game it never pays: frost always
-  strikes the highest fields first, so a higher field is never safer. Ask
+- **Why doesn't spreading crews across heights help in this game?** The
+  vertical-archipelago interpretation (Murra's term) describes access to
+  resources at several heights, often in separate places; whether that buffered
+  a bad year depends on which places and crops were affected. In the game it
+  never pays: the game uses a simplified frost boundary that always strikes the
+  highest fields first, so a higher field is never safer. Ask
   students what the game would need to reward spreading, and what evidence
   would justify it. This turns a limit of the model into the lesson.
 - **What does a GDP number hide?** Silver shipped to Spain counts as output;
   in this game's formula chuño made for the stores does not. Who ate?
+- **A misconception to listen for: "the Spanish brought in extra workers."**
+  Students sometimes explain the colonial years with outside labour. In this
+  game the mita draws its workers from the student's own community and no one
+  is added; the copied report says so under the student's reasoning. Ask what
+  happens to the fields when one man in seven leaves.
+- **Which change mattered?** After a replay, the end screen names the single
+  change that, undone on the same weather, would have saved the most people,
+  and says when a run had both the highest GDP and the most hunger deaths. Ask
+  students to explain that one change before the rest.
 
 ## Known limits to mention
 
@@ -125,8 +136,8 @@ because the weather differs between seeds.
   spares lower ground.
 - "Households below 1,700 kcal" comes from an assumed spread around the
   average, a model guess, not a measurement.
-- Quotas stay fixed after 1573. Historically tribute could be lowered by a slow
-  recount; whether mita quotas were is an open question in the evidence notes.
+- Quotas stay fixed after 1573. Tribute could be reassessed after a new count;
+  mita allocations followed a different adjustment process.
 - A community can grow a little in good years, but not enough to gain a crew.
 
 ## If your course materials use other numbers

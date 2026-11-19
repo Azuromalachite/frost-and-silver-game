@@ -145,7 +145,7 @@ claims:
     layer: game_assumption
     status: labelled
     sources: [maddison2003]
-    code: ["if (usedBefore > B) { S.replan = {from: before, B, was: usedBefore, kind: null};"]
+    code: ["if (usedBefore > B) { S.replan = {from: before, B, was: usedBefore, kind: null, year: S.year};"]
     pages:
       - path: frost-and-silver.html
         anchor: The choice is yours, and it decides much of the result
