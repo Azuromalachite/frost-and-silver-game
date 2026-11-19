@@ -276,7 +276,8 @@ claims:
       before anyone goes short): the plan goes 72.6 -> 58, rising on 2 seeds, and
       harvest 4 is never strictly its best harvest (it can tie an Inca harvest,
       fed and with the stores carried across 1573). tests/review_model.cjs asserts
-      both (ADVANCE_WELFARE), with planted defects.
+      both (ADVANCE_WELFARE), with planted defects. Since every tested plan plants
+      late when the Pleiades rise hazy (2026-11-19) the plan goes 73.5 -> 59.9, rising on 1 seed.
 
   - id: claim.game.key_message
     statement: >
@@ -1075,16 +1076,15 @@ claims:
     statement: >
       Building Valley and Upper-field terraces in harvest 1 with no chuño crews,
       three chuño crews in harvests 2 and 3, then every crew on the best land
-      after 1573, beat the best fixed plan picked after the weather was known on
-      42 of seeds 1-80, judged by hunger deaths, then food, then welfare. Other
-      changing plans do well too: a review counted 45 and 47 of 80 for Valley
-      terraces with one, then two or three, chuño crews (main at a881766).
+      after 1573, planting late in hazy years, beat the best fixed plan picked
+      after the weather was known on 53 of seeds 1-80, judged by hunger deaths,
+      then food, then welfare.
     layer: game_result
     status: labelled
     sources: []
     pages:
       - path: frost-and-silver.html
-        anchor: one plan that changes by harvest beat it on 42 of 80 test weathers
+        anchor: one plan that changes by harvest beat it on 53 of 80 test weathers
     notes: >
       Asserted by tests/review_model.cjs (CHANGING_WINS). The end screen used to
       say "about two seeds in three" without naming the terraces; a review found
@@ -1093,18 +1093,20 @@ claims:
       resilience in the year they are built, then 52, and 58 once resilience
       stopped rewarding spread (both 2026-11-18), judged on welfare alone; 42 since
       resilience counts the full 14 crews (review 4), 40 before that, once
-      the end screen ranked plans by hunger deaths first (review round 3).
+      the end screen ranked plans by hunger deaths first (review round 3); 53
+      since every tested plan plants late when hazy (2026-11-19). A review had
+      counted 45 and 47 of 80 for other changing plans before that (main at a881766).
 
   - id: claim.game.advance_plan
     statement: >
-      Of the 2,304 tested plans, building Valley terraces, one chuño crew and best
-      land first in the Inca years, then every crew on the best land first after
-      1573, lost the fewest people to hunger averaged over seeds 1-80 (ranked by
+      Of the 2,304 tested plans (each planting late when the Pleiades rise hazy),
+      building Valley terraces, one chuño crew and best land first in the Inca
+      years, then every crew on the best land first after 1573, lost the fewest people to hunger averaged over seeds 1-80 (ranked by
       deaths, then food, then welfare), and is the same plan when chosen on seeds
-      1-40 or 41-80 alone. Scored on each weather it averages 18.9 hunger deaths,
-      1,550 kcal after 1573 and 65.3 welfare, against 16.3, 1,561 and 65.4 for the
-      best plan picked knowing that weather; it reaches 1,700 kcal on 21 seeds
-      against 22.
+      1-40 or 41-80 alone. Scored on each weather it averages 14.3 hunger deaths,
+      1,585 kcal after 1573 and 66.7 welfare, against 10.9, 1,599 and 67.4 for the
+      best plan picked knowing that weather; it reaches 1,700 kcal on 14 seeds
+      against 24.
     layer: game_result
     status: labelled
     sources: []
@@ -1115,7 +1117,9 @@ claims:
       The end screen leads with it as a fair benchmark, a plan chosen before the
       weather is known, and shows the hindsight best below it. Measured
       2026-11-18 after the terrace fix (claim.game.welfare_index); the same plan
-      won before it.
+      won before it. Re-measured 2026-11-19 once every tested plan planted late when
+      hazy: still the same plan; before that it averaged 18.9 deaths, 1,550 kcal and
+      65.3 welfare against 16.3, 1,561 and 65.4.
 
   - id: claim.game.stores_carried
     statement: >

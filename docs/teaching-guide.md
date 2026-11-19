@@ -41,8 +41,10 @@ shows from what the game assumes.
   (about −490 kcal on Standard, −720 on Hard and −1,040 on Extreme), because a
   fixed tribute takes a larger share of a poor harvest.
 - **Standard is a typical weather**: on it the default plan's food is close to
-  the plan chosen in advance's (about 1,410 against 1,530 kcal after 1573). Use Hard
-  to show how many lives planning saves (92 hunger deaths against 4).
+  the plan chosen in advance's (about 1,410 against 1,600 kcal after 1573). Use Hard
+  to show how many lives planning saves (92 hunger deaths against about 11). On Hard
+  the plan loses a few more than it would without planting late: its hazy years
+  mostly bring rain, so a good rule can still lose on one weather.
 - **Try your seed first.** Some are harsh. A harsh seed can be a deliberate
   lesson, but it should not be a surprise.
 - **Try it on the classroom browser and a phone** before the session; see the
@@ -69,7 +71,7 @@ shows from what the game assumes.
 ## What counts as success
 
 No plan we tested keeps colonial food at the 1,700 goal on average: the best of
-2,304 strategies averaged about 1,580 kcal a day after 1573 ([strategy
+2,304 strategies averaged about 1,620 kcal a day after 1573 ([strategy
 sweep](strategies-2026-11-18.md)). So reaching 1,700 is not the test. Success is:
 
 - protecting the community: fewer hunger deaths, stores kept, food kept up;
@@ -77,12 +79,12 @@ sweep](strategies-2026-11-18.md)). So reaching 1,700 is not the test. Success is
 
 The end screen says this and shows each student's own numbers. It first scores
 a plan the student could have chosen before playing (Valley terraces, one Inca
-chuño crew, best land first throughout; the tested plan with the fewest hunger
+chuño crew, best land first throughout, planting late in hazy years; the tested plan with the fewest hunger
 deaths on average) on the student's own weather, and compares it with theirs:
 hunger deaths first, then food after 1573, then welfare. Below that it names the
 best of the 2,304 tested plans on that weather, picked after the weather is
 known, so a hindsight benchmark rather than a fair score (it reaches 1,700 on
-about a quarter of seeds). A student can replay to try either. It lists the turning points of their game
+about 3 seeds in 10). A student can replay to try either. It lists the turning points of their game
 (milestones, with the harvest each happened in). Assess the explanation, not the
 outcome: two students with the same reasoning can get different results,
 because the weather differs between seeds.
