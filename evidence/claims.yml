@@ -224,8 +224,6 @@ claims:
     status: unverified
     sources: [bakewell1984]
     pages:
-      - path: frost-and-silver.html
-        anchor: after mercury amalgamation spread in the 1570s
       - path: docs/history-and-evidence.md
         anchor: Silver output at Potosí rose sharply after the 1570s
 
@@ -239,7 +237,7 @@ claims:
     code: ["SILVER_BY_HARVEST = {4: 6, 5: 16, 6: 20}"]
     pages:
       - path: frost-and-silver.html
-        anchor: The game raises the value of each mine worker's silver from harvest 4 to harvest 6
+        anchor: In this game, silver output per mine worker rises in later harvests
 
   - id: claim.game.welfare_index
     statement: >
@@ -330,8 +328,6 @@ claims:
     status: unverified
     sources: [urton2003]
     pages:
-      - path: frost-and-silver.html
-        anchor: early Spanish officials relied on them for tribute and census counts
       - path: docs/history-and-evidence.md
         anchor: Early Spanish officials relied on quipu accounts
 
@@ -435,7 +431,7 @@ claims:
     sources: [murra1972]
     pages:
       - path: frost-and-silver.html
-        anchor: The anthropologist John Murra called this the
+        anchor: describes access to resources at different heights, often in separate places
       - path: docs/history-and-evidence.md
         anchor: 'Murra (1972), the "vertical archipelago"'
     notes: Murra described access rights to separate islands of land; the game draws one slope.
@@ -602,7 +598,7 @@ claims:
     sources: [kolata_ortloff1989]
     pages:
       - path: frost-and-silver.html
-        anchor: softening frost; how well it works depends on the field
+        anchor: Water channels may buffer nighttime cooling
       - path: docs/history-and-evidence.md
         anchor: Raised fields (waru waru) soften frost
 
@@ -755,7 +751,7 @@ claims:
     sources: [upenn_dia_mita, zagalsky2014]
     pages:
       - path: frost-and-silver.html
-        anchor: When people died, the quotas were not cut to match.
+        anchor: mita allocations followed a different adjustment process. The game holds both totals fixed.
       - path: docs/history-and-evidence.md
         anchor: Mita and tribute quotas were set from census counts
     notes: >
@@ -766,8 +762,10 @@ claims:
       and claim.research.quota_fulfilment; Cole (1985) remains a reading lead.
       The game keeps both fixed; that is a simplification, labelled in the game.
       The historical statement is narrowed here; the player-facing wording that
-      groups both obligations together remains a documented follow-up in the
-      food-access implementation review, not a reason to upgrade this claim.
+      groups both obligations together was a documented follow-up in the
+      food-access implementation review; since 2026-11-19 the game says tribute
+      could be reassessed and mita allocations followed a different process.
+      Not a reason to upgrade this claim.
       The PR #1 review removed the book-presentation transcript from this claim's
       sources, because it qualifies the claim rather than supporting it.
 
@@ -1125,7 +1123,9 @@ claims:
     statement: >
       Each person's share of the community stores is carried across the 70 years
       from harvest 3 (c. 1502) to harvest 4 (c. 1575): the collapse halves people
-      and food together. No store lasts 70 years; the game keeps the simplification
+      and food together. Carrying the same food across the roughly seventy-year
+      gap is a teaching simplification (intervening consumption and storage losses
+      are not modeled); the game keeps it
       and labels it.
     layer: game_assumption
     status: labelled
