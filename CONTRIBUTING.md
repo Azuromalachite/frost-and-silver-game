@@ -58,7 +58,8 @@ A source records how far anyone in this project has read it (`access`):
 
 Open the game with `?seed=12345`, predict anything, and play the default plan
 with Next step only, choosing **Best land first** each time the game asks you to
-re-plan (at 1573 and after the 1585–91 epidemics). The results tiles must read, in order:
+re-plan (at 1573 and after the 1585–91 epidemics). On the results, open **All numbers
+as tables**; its first table (Averages, read row by row) must read, in order:
 
 `1,760 kcal | 1,410 kcal | 74 → 52 | 103 | 109 | 45% → 75%`
 
@@ -91,7 +92,7 @@ figures the intro relies on, and the README's table of means. Some numbers
 come from one-off sweeps that change the model (the ablations behind "+0.07"
 and "+5.47", the stores halved or emptied, the collapse's parts); those are
 dated where they are quoted and are not re-checked here. CI runs it on every pull request, with
-`--self-test`, which plants fourteen model changes and requires each to trip the
+`--self-test`, which plants fifteen model changes and requires each to trip the
 assertion meant for it. A change that moves one of these numbers must update
 the constant at the top of that file, and the places that quote it, in the same
 pull request. Without Node, `tools/run_model_check.html` runs the same file in a

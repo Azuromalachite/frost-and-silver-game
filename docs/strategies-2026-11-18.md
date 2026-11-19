@@ -1,5 +1,11 @@
 # Strategy sweep, 18 November 2026
 
+> **Update, planting late (19 November 2026).** Since #48 players can plant late, and since #51 every tested plan
+> plants late when the Pleiades rise hazy. The figures below, including the earlier update notes, are from before
+> that. Re-measured on seeds 1–80: the plan chosen in advance is still the same plan and averages 14.3 hunger deaths,
+> 1,585 kcal after 1573 and 66.7 welfare (18.9, 1,550 and 65.3 before); the best tested plan averages about 1,620 kcal
+> after 1573 (1,577 before). `tests/review_model.cjs` asserts the new figures (`ADVANCE`, `BEST_GRID_FOOD`).
+
 > **Update, later on 18 November 2026.** The game now asks the player to re-plan
 > when crews fall, instead of trimming silently. The strategies below set their
 > own plans, so their results are unchanged; the "default plan" row now means

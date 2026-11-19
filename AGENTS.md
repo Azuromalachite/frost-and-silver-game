@@ -14,7 +14,8 @@ Change it only for bugs, accessibility, classroom feedback, evidence corrections
 and the author's decisions. No new mechanics, decisions or scoring. New
 questions (markets, assets, household inequality, spatial climate risk) are
 investigated in `research/` (Path B) under its own rules; a mechanism moves into
-the game only by the graduation rule in `research/README.md`.
+the game only by the graduation rule in `research/README.md`. Graduated so far: planting
+late (experiment 3, 2026-11-19), a per-harvest toggle that is off by default, so the pinned run does not use it.
 
 ## Run it
 

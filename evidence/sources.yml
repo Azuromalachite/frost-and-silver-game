@@ -79,7 +79,7 @@ sources:
     notes: Toledo fixed mita and tribute quotas from 1570s counts; communities stayed liable at those levels. A teaching reference, not a primary source.
 
   - key: gilmontero_zagalsky2016
-    title: "Colonial Organization of Mine Labour in Charcas (Present-Day Bolivia) and Its Consequences"
+    title: "Colonial Organization of Mine Labour in Charcas (Present-Day Bolivia) and Its Consequences (Sixteenth to the Seventeenth Centuries)"
     author: Raquel Gil Montero; Paula C. Zagalsky
     date: 2016
     access: from_notes
@@ -88,7 +88,7 @@ sources:
     url: https://doi.org/10.1017/S0020859016000456
 
   - key: barragan2020
-    title: "Women in the Silver Mines of Potosí: Rethinking the History of “Informality” and “Precarity”"
+    title: "Women in the Silver Mines of Potosí: Rethinking the History of “Informality” and “Precarity” (Sixteenth to Eighteenth Centuries)"
     author: Rossana Barragán Romano
     date: 2020
     access: sections_read
@@ -203,7 +203,7 @@ sources:
     by: review agent (claims and charts)
     when: 2026-11-17
     url: https://doi.org/10.1038/47456
-    notes: Reports a correlation, not a hit rate. Modern practice; use around 1500 is not established.
+    notes: Reports a correlation, not a hit rate. Modern practice; use around 1500 is not established. Abstract re-read via PubMed (10638752) on 2026-11-19 for claim.land.plant_late_practice.
 
   - key: fonseca_dehaan2021
     title: "Traditional freeze-drying: chuño, kaya, chullqi"
@@ -524,7 +524,7 @@ sources:
     notes: Pre-Hispanic wetland engineering evidence; no universal carrying-capacity or maintenance-labour coefficient.
 
   - key: castellaro_etal2004
-    title: "Botanical composition of alpaca and llama diets in two seasons of the year on highland ranges of Parinacota province, Chile"
+    title: "Composición botánica de la dieta de alpacas (Lama pacos L.) y llamas (Lama glama L.) en dos estaciones del año, en praderas altiplánicas de un sector de la Provincia de Parinacota, Chile"
     author: Giorgio Castellaro; Tamara Ullrich; Birgit Wackwitz; Alberto Raggi
     date: 2004
     access: sections_read
@@ -532,7 +532,7 @@ sources:
     when: 2026-11-18
     url: https://doi.org/10.4067/S0365-28072004000400004
     locator: Agricultura Tecnica 64(4); SciELO Abstract, Introduction and Materials and Methods (site and pasture sampling)
-    notes: Local seasonal diet overlap; not a universal mixed-herd complementarity benefit.
+    notes: Local seasonal diet overlap; not a universal mixed-herd complementarity benefit. English title, botanical composition of alpaca and llama diets in two seasons of the year on highland ranges of Parinacota province, Chile.
 
   - key: riek_etal2019
     title: "Energy expenditure and body temperature variations in llamas living in the High Andes of Peru"
@@ -717,7 +717,7 @@ sources:
     access: sections_read
     by: Codex food-access and recovery review
     when: 2026-11-18
-    url: "https://www.frontiersin.org/journals/sustainable-food-systems/articles/10.3389/fsufs.2018.00043/full"
+    url: https://doi.org/10.3389/fsufs.2018.00043
     locator: "Methods: Sample selection and Farmer surveys; Results: Intensity of seed procurement and Structure of seed networks; Discussion: Limitations"
     notes: "Modern retrospective household survey, with different recalled years aggregated by stress condition; not a shared-shock experiment or colonial seed-loss calibration."
 

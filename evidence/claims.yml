@@ -224,8 +224,6 @@ claims:
     status: unverified
     sources: [bakewell1984]
     pages:
-      - path: frost-and-silver.html
-        anchor: after mercury amalgamation spread in the 1570s
       - path: docs/history-and-evidence.md
         anchor: Silver output at Potosí rose sharply after the 1570s
 
@@ -239,7 +237,7 @@ claims:
     code: ["SILVER_BY_HARVEST = {4: 6, 5: 16, 6: 20}"]
     pages:
       - path: frost-and-silver.html
-        anchor: The game raises the value of each mine worker's silver from harvest 4 to harvest 6
+        anchor: In this game, silver output per mine worker rises in later harvests
 
   - id: claim.game.welfare_index
     statement: >
@@ -276,7 +274,8 @@ claims:
       before anyone goes short): the plan goes 72.6 -> 58, rising on 2 seeds, and
       harvest 4 is never strictly its best harvest (it can tie an Inca harvest,
       fed and with the stores carried across 1573). tests/review_model.cjs asserts
-      both (ADVANCE_WELFARE), with planted defects.
+      both (ADVANCE_WELFARE), with planted defects. Since every tested plan plants
+      late when the Pleiades rise hazy (2026-11-19) the plan goes 73.5 -> 59.9, rising on 1 seed.
 
   - id: claim.game.key_message
     statement: >
@@ -329,8 +328,6 @@ claims:
     status: unverified
     sources: [urton2003]
     pages:
-      - path: frost-and-silver.html
-        anchor: early Spanish officials relied on them for tribute and census counts
       - path: docs/history-and-evidence.md
         anchor: Early Spanish officials relied on quipu accounts
 
@@ -434,7 +431,7 @@ claims:
     sources: [murra1972]
     pages:
       - path: frost-and-silver.html
-        anchor: The anthropologist John Murra called this the
+        anchor: describes access to resources at different heights, often in separate places
       - path: docs/history-and-evidence.md
         anchor: 'Murra (1972), the "vertical archipelago"'
     notes: Murra described access rights to separate islands of land; the game draws one slope.
@@ -601,7 +598,7 @@ claims:
     sources: [kolata_ortloff1989]
     pages:
       - path: frost-and-silver.html
-        anchor: softening frost; how well it works depends on the field
+        anchor: Water channels may buffer nighttime cooling
       - path: docs/history-and-evidence.md
         anchor: Raised fields (waru waru) soften frost
 
@@ -626,10 +623,45 @@ claims:
     sources: [orlove2000]
     pages:
       - path: frost-and-silver.html
-        anchor: Elders read this as a sign of poor rains
+        anchor: Andean farmers today read this as poor rains ahead
       - path: docs/history-and-evidence.md
         anchor: Andean elders forecast rain from how clearly the Pleiades rise in June
     notes: Use around 1500 is not established. The game's forecast accuracy is a play value.
+
+  - id: claim.land.plant_late_practice
+    statement: >
+      Andean farmers who forecast reduced rainfall from the Pleiades moderate its
+      effect by adjusting the planting dates of potatoes, their most important crop.
+    layer: documented
+    status: partly_supported
+    sources: [orlove2000]
+    pages:
+      - path: frost-and-silver.html
+        anchor: as Andean farmers adjust planting dates when they expect poor rains
+      - path: research/results/2026-11-19-plant-late.md
+        anchor: Orlove et al. support the direction of the practice only
+    notes: >
+      From the abstract (PubMed 10638752, read 2026-11-19), which calls the method centuries old;
+      use around 1500 is not established. The abstract says adjusting, not delaying or reducing, and
+      gives no yield figures.
+
+  - id: claim.game.plant_late_costs
+    statement: >
+      In the game a late planting loses 10% of the harvest in a dry year instead of
+      25%, and 5% in a normal year; planting late when the Pleiades rose hazy then
+      saves about 6 hunger deaths a game against never (research experiment 3).
+    layer: game_assumption
+    status: labelled
+    sources: [orlove2000]
+    code: ["const LATE_DRY = .90, LATE_NORMAL = .95;"]
+    pages:
+      - path: frost-and-silver.html
+        anchor: cuts a dry year's loss from 25% to 10% (game figures)
+      - path: research/results/2026-11-19-plant-late.md
+        anchor: At 10% / 5% it closes 56% of the gap
+    notes: >
+      Judged magnitudes, chosen in a pilot and then tested on holdout seeds 81-400 across 24 cost
+      settings; Orlove et al. give no figures. Checked in CI (LATE_1_80).
 
   # --- the Inca system --------------------------------------------------------
 
@@ -719,7 +751,7 @@ claims:
     sources: [upenn_dia_mita, zagalsky2014]
     pages:
       - path: frost-and-silver.html
-        anchor: When people died, the quotas were not cut to match.
+        anchor: mita allocations followed a different adjustment process. The game holds both totals fixed.
       - path: docs/history-and-evidence.md
         anchor: Mita and tribute quotas were set from census counts
     notes: >
@@ -730,8 +762,10 @@ claims:
       and claim.research.quota_fulfilment; Cole (1985) remains a reading lead.
       The game keeps both fixed; that is a simplification, labelled in the game.
       The historical statement is narrowed here; the player-facing wording that
-      groups both obligations together remains a documented follow-up in the
-      food-access implementation review, not a reason to upgrade this claim.
+      groups both obligations together was a documented follow-up in the
+      food-access implementation review; since 2026-11-19 the game says tribute
+      could be reassessed and mita allocations followed a different process.
+      Not a reason to upgrade this claim.
       The PR #1 review removed the book-presentation transcript from this claim's
       sources, because it qualifies the claim rather than supporting it.
 
@@ -1040,16 +1074,15 @@ claims:
     statement: >
       Building Valley and Upper-field terraces in harvest 1 with no chuño crews,
       three chuño crews in harvests 2 and 3, then every crew on the best land
-      after 1573, beat the best fixed plan picked after the weather was known on
-      42 of seeds 1-80, judged by hunger deaths, then food, then welfare. Other
-      changing plans do well too: a review counted 45 and 47 of 80 for Valley
-      terraces with one, then two or three, chuño crews (main at a881766).
+      after 1573, planting late in hazy years, beat the best fixed plan picked
+      after the weather was known on 53 of seeds 1-80, judged by hunger deaths,
+      then food, then welfare.
     layer: game_result
     status: labelled
     sources: []
     pages:
       - path: frost-and-silver.html
-        anchor: one plan that changes by harvest beat it on 42 of 80 test weathers
+        anchor: one plan that changes by harvest beat it on 53 of 80 test weathers
     notes: >
       Asserted by tests/review_model.cjs (CHANGING_WINS). The end screen used to
       say "about two seeds in three" without naming the terraces; a review found
@@ -1058,18 +1091,20 @@ claims:
       resilience in the year they are built, then 52, and 58 once resilience
       stopped rewarding spread (both 2026-11-18), judged on welfare alone; 42 since
       resilience counts the full 14 crews (review 4), 40 before that, once
-      the end screen ranked plans by hunger deaths first (review round 3).
+      the end screen ranked plans by hunger deaths first (review round 3); 53
+      since every tested plan plants late when hazy (2026-11-19). A review had
+      counted 45 and 47 of 80 for other changing plans before that (main at a881766).
 
   - id: claim.game.advance_plan
     statement: >
-      Of the 2,304 tested plans, building Valley terraces, one chuño crew and best
-      land first in the Inca years, then every crew on the best land first after
-      1573, lost the fewest people to hunger averaged over seeds 1-80 (ranked by
+      Of the 2,304 tested plans (each planting late when the Pleiades rise hazy),
+      building Valley terraces, one chuño crew and best land first in the Inca
+      years, then every crew on the best land first after 1573, lost the fewest people to hunger averaged over seeds 1-80 (ranked by
       deaths, then food, then welfare), and is the same plan when chosen on seeds
-      1-40 or 41-80 alone. Scored on each weather it averages 18.9 hunger deaths,
-      1,550 kcal after 1573 and 65.3 welfare, against 16.3, 1,561 and 65.4 for the
-      best plan picked knowing that weather; it reaches 1,700 kcal on 21 seeds
-      against 22.
+      1-40 or 41-80 alone. Scored on each weather it averages 14.3 hunger deaths,
+      1,585 kcal after 1573 and 66.7 welfare, against 10.9, 1,599 and 67.4 for the
+      best plan picked knowing that weather; it reaches 1,700 kcal on 14 seeds
+      against 24.
     layer: game_result
     status: labelled
     sources: []
@@ -1080,13 +1115,17 @@ claims:
       The end screen leads with it as a fair benchmark, a plan chosen before the
       weather is known, and shows the hindsight best below it. Measured
       2026-11-18 after the terrace fix (claim.game.welfare_index); the same plan
-      won before it.
+      won before it. Re-measured 2026-11-19 once every tested plan planted late when
+      hazy: still the same plan; before that it averaged 18.9 deaths, 1,550 kcal and
+      65.3 welfare against 16.3, 1,561 and 65.4.
 
   - id: claim.game.stores_carried
     statement: >
       Each person's share of the community stores is carried across the 70 years
       from harvest 3 (c. 1502) to harvest 4 (c. 1575): the collapse halves people
-      and food together. No store lasts 70 years; the game keeps the simplification
+      and food together. Carrying the same food across the roughly seventy-year
+      gap is a teaching simplification (intervening consumption and storage losses
+      are not modeled); the game keeps it
       and labels it.
     layer: game_assumption
     status: labelled
