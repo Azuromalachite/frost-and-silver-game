@@ -1596,3 +1596,33 @@ claims:
       - path: docs/climate-risk-experiment-2026-11-18.md
         anchor: "CVaR-based agricultural planning can be formulated without reinforcement learning."
     notes: "Modern planting/hedging example; no general superiority over RL or direct transfer of institutions/correlation models follows."
+
+  - id: claim.research.bakewell_food_purchasing_power
+    statement: "Bakewell reports alternative-food purchasing power for a five-day wage spread over seven consumption days."
+    layer: documented
+    status: partly_supported
+    sources: [bakewell1984]
+    pages:
+      - path: docs/bakewell-purchasing-power-transcription-2026-11-19.md
+        anchor: "Bakewell reports alternative-food purchasing power for a five-day wage spread over seven consumption days."
+    notes: "Rounded reconstruction, not actual intake or a basket; calendar and units preserved in the transcription."
+
+  - id: claim.research.bakewell_hired_substitute_flows
+    statement: "Bakewell distinguishes extra hired workers from substitutes and identifies a separate payment by the substitute's engager."
+    layer: documented
+    status: partly_supported
+    sources: [bakewell1984]
+    pages:
+      - path: docs/bakewell-purchasing-power-transcription-2026-11-19.md
+        anchor: "Bakewell distinguishes extra hired workers from substitutes and identifies a separate payment by the substitute's engager."
+    notes: "Dates, skill, payer and additional ore compensation differ. No substitution or ore-income mechanism added to experiment 2b."
+
+  - id: claim.research.bakewell_currency_pairing
+    statement: "The wage passages explicitly pair eight reales with one ordinary peso."
+    layer: documented
+    status: partly_supported
+    sources: [bakewell1984]
+    pages:
+      - path: docs/bakewell-purchasing-power-transcription-2026-11-19.md
+        anchor: "The wage passages explicitly pair eight reales with one ordinary peso."
+    notes: "Visually checked paired examples on pp. 124-125; distinct from pesos ensayados and compound notation on p. 105."
