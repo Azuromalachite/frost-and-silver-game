@@ -164,4 +164,4 @@ Adapted from [“Week 2: Tahuantinsuyu Harvest & Frost Defense”](https://super
 
 Adapted by Thanakrit Wongsatit. Changes: rebuilt as a turn-based game with a colonial second act, a new model, and a new visual design. Icons from the IconMCP library.
 
-This adaptation is licensed under **CC BY-NC-SA 4.0** as well (see `LICENSE.md`): you may share and adapt it for non-commercial purposes, with attribution, under the same licence.
+This adaptation is licensed under **CC BY-NC-SA 4.0** as well (see `LICENSE.md`): you may share and adapt it for non-commercial purposes, with attribution, under the same licence. Its copyright holders also grant a Commercial Derivative Exception for substantially modified derivative works; see `LICENSE.md` for its terms. The IconMCP icons are excluded from it.
